@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  m_server:
+      image: webdevops/php-apache-dev:7.1
+      volumes:
+        - ./web:/app
+      ports:
+        - 83:80
+      restart: always
+      environment:
+        WEB_ALIAS_DOMAIN: m.newyutou.com
+        TZ: Asia/Shanghai
+        PHP_DATE_TIMEZONE: Asia/Shanghai
+        WEB_DOCUMENT_ROOT: /app/public
+        XDEBUG_REMOTE_CONNECT_BACK: 0
+        XDEBUG_REMOTE_HOST: host.docker.internal
+        XDEBUG_REMOTE_AUTOSTART: 1
+
+  db_host:
+      image: mysql:5.6
+      ports:
+       - "3383:3306"
+      volumes:
+        - ./mysql_data:/var/lib/mysql
+      restart: always
+      environment:
+        TZ: Asia/Shanghai
+        MYSQL_ROOT_PASSWORD: 123456
