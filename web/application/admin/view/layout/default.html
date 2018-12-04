@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>管理后台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__ADMIN__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__ADMIN__/style/admin.css" media="all">
+    <script src="__ADMIN__/layui/layui.js"></script>
+    {include file="public/js" /}
+</head>
+
+<style>
+    .layui-input,.layui-select,.layui-textarea{
+        height:30px;
+        line-height:30px\9;
+    }
+    .layui-form-item .layui-inline {
+        margin-bottom: 0px;
+        margin-right: 5px;
+    }
+    .layui-input-block {
+        margin-left: 100px;
+        min-height: 30px;
+    }
+    .layui-inline.clear-left .layui-input-block{
+        margin-left:0px;
+    }
+    .layui-card-header {
+        height: 30px;
+        line-height: 30px;
+    }
+    .layui-form-label{
+        padding:5px 10px;
+    }
+    .layui-elem-field legend{
+        font-size: 14px;
+        color:#009688;
+    }
+    .layui-elem-field .layui-field-box {
+        padding: 25px 15px 15px 15px;
+    }
+
+    .layui-form-select dl{
+        top: 30px;
+    }
+    .layui-form-select dl dd, .layui-form-select dl dt{
+        line-height: 30px;
+    }
+</style>
+<body>
+{__CONTENT__}
+</body>
+</html>

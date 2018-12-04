@@ -1,0 +1,179 @@
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="padding:10px;">
+    <div style="height:25px;"></div>
+    <div class="layui-container">
+        <fieldset class="layui-elem-field">
+            <legend>分类信息 <font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属分类</label>
+                        <div class="layui-input-block" style="width:250px;">
+                            <select name="category_id">
+                                <option value="">选择</option>
+                                {$data.category_list|raw}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>规则信息 <font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">规则名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入规则名称" class="layui-input" value="{$data.name}">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">采集地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="url" lay-verify="required" autocomplete="off" placeholder="http://" class="layui-input" value="{$data.url}">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">采集状态</label>
+                        <div class="layui-input-block" style="width:150px;">
+                            <select name="status">
+                                <option value="1" {if $data.status == 1 }selected="" {/if}>开启</option>
+                                <option value="0" {if $data.status == 0 }selected="" {/if}>关闭</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>深度匹配 <font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row" id="route-box">
+                    <div class="layui-col-xs12">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">区块</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="route[block]" lay-verify="required" autocomplete="off" placeholder="<block></block>" class="layui-input" value="{$data['route']['block']}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12 route-list">
+                        <div class="layui-form-item" style="position: relative;">
+                            <label class="layui-form-label">链接</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="route[depth][url]" lay-verify="required" autocomplete="off" placeholder="<a></a>" class="layui-input" value="{$data['route']['depth']['url']}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="position: relative;">
+                            <label class="layui-form-label">标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="route[depth][title]" lay-verify="required" autocomplete="off" placeholder="<title></title>" class="layui-input" value="{$data['route']['depth']['title']}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-block">
+                                <a href="javascript:void(0);" class="add" style="padding-left:10px;padding-right:10px; color: #009688;">
+                                    <i class="layui-icon layui-icon-add-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>内容匹配 <font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row">
+                    <div class="layui-col-xs12">
+                        <div class="layui-form-item" style="position: relative;">
+                            <label class="layui-form-label">区块</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="content[block]" lay-verify="required" autocomplete="off" placeholder="<block></block>" class="layui-input" value="{$data['content']['block']}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="content[title]" lay-verify="required" autocomplete="off" placeholder="<h1></h1>" class="layui-input" value="{$data['content']['title']}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">内容</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="content[details]" lay-verify="required" autocomplete="off" placeholder="<details></details>" class="layui-input" value="{$data['content']['details']}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+
+    </div>
+
+    <div class="layui-form-item layui-hide">
+        <input type="hidden" name="id" value="{$data['id']}">
+        <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
+    </div>
+</div>
+
+<script>
+    bodyD.use(['index','form'], function () {
+        var $ = layui.$,
+            admin = layui.admin,
+            form = layui.form;
+
+        //增加规则
+        $("#route-box").on('click', 'a.add', function () {
+            var listThis = $("#route-box .route-list");
+            var lastThis = listThis.find(".layui-form-item").last();
+            var lastIndex = lastThis.index();
+            listThis.append(lastThis.clone());
+            //更改序号
+            listThis.find(".layui-form-item").last().find('input').val('').each(function () {
+                var newLastThis = $(this);
+                var tName = newLastThis.attr('name');
+                var reText = tName.match(/\d+\b/);
+                var oName = tName.replace(reText, lastIndex + 1);
+                newLastThis.attr('name', oName);
+            });
+        });
+
+        //删除规则
+        $("#route-box").on('click', 'a.del', function () {
+            var oThis = $(this).parent();
+            var listThis = $("#route-box .route-list .layui-form-item");
+            if(listThis.length == 1){
+                return false;
+            }
+            layer.confirm("确定删除此规则？",{icon: 3, title:false}, function (e) {
+                oThis.remove();
+                //重新排序
+                listThis.each(function (i, n) {
+                    $(this).find("input").each(function () {
+                        var aThis = $(this);
+                        var tName = aThis.attr('name');
+                        var reText = tName.match(/\d+\b/);
+                        var oName = tName.replace(reText, i);
+                        aThis.attr('name', oName);
+                    });
+                });
+                layer.close(e);
+            });
+        });
+
+    });
+</script>

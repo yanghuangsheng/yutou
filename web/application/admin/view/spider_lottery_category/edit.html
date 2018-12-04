@@ -1,0 +1,63 @@
+
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="padding:10px;">
+    <div style="height:25px;"></div>
+    <div class="layui-container">
+        <fieldset class="layui-elem-field">
+            <legend>分类菜单 <font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上级菜单</label>
+                        <div class="layui-input-block">
+                            <select name="parent_id">
+                                <option value="0">作为一级菜单</option>
+                                {$data.parent_list|raw}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>分类信息 <font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分类名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入分类名称" class="layui-input" value="{$data.name}">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分类状态</label>
+                        <div class="layui-input-block">
+                            <select name="status">
+                                <option value="1" {if $data.status == 1 }selected="" {/if}>显示</option>
+                                <option value="0" {if $data.status == 0 }selected="" {/if}>隐藏</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="layui-form-item layui-hide">
+        <input type="hidden" name="id" value="{$data.id}">
+        <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
+    </div>
+</div>
+
+<script>
+    bodyD.use(['form'], function () {
+        var $ = layui.$,
+            form = layui.form;
+
+    });
+</script>

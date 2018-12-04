@@ -20,7 +20,7 @@ services:
   db_host:
       image: mysql:5.6
       ports:
-       - "3383:3306"
+       - "3389:3306"
       volumes:
         - ./mysql_data:/var/lib/mysql
       restart: always

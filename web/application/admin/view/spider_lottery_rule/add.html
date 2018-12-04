@@ -1,0 +1,112 @@
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="padding:10px;">
+    <div style="height:25px;"></div>
+    <div class="layui-container">
+        <fieldset class="layui-elem-field">
+            <legend>分类信息 <font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属分类</label>
+                        <div class="layui-input-block" style="width:250px;">
+                            <select name="category_id">
+                                <option value="">选择</option>
+                                {$data.category_list|raw}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>规则信息 <font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">规则名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入规则名称" class="layui-input" value="">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">采集状态</label>
+                        <div class="layui-input-block">
+                            <select name="status">
+                                <option value="1">开启</option>
+                                <option value="0">关闭</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="layui-elem-field">
+            <legend>方案一 （接口）<font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row">
+                    <div class="layui-col-xs12">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">api</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="api_url" autocomplete="off" placeholder="http://" class="layui-input" value="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+
+        <fieldset class="layui-elem-field">
+            <legend>方案二 （采集）<font color="#ccc"></font></legend>
+            <div class="layui-field-box">
+                <div class="layui-row">
+                    <div class="layui-col-xs12">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="url"  autocomplete="off" placeholder="http://" class="layui-input" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">区块</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="route[block]" autocomplete="off" placeholder="<block></block>" class="layui-input" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs12">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">号码</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="content[code]" autocomplete="off" placeholder="<details></details>" class="layui-input" value="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+
+    <div class="layui-form-item layui-hide">
+        <input type="hidden" name="id" value="">
+        <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
+    </div>
+</div>
+
+<script>
+    bodyD.use(['index','form'], function () {
+        var $ = layui.$,
+            admin = layui.admin,
+            form = layui.form;
+    });
+</script>

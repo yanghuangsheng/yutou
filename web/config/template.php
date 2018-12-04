@@ -32,4 +32,21 @@ return [
     'taglib_begin' => '{',
     // 标签库标签结束标记
     'taglib_end'   => '}',
+
+
+    'layout_on'     =>  true,
+    'layout_name'   =>  'layout/default',
+
+    'tpl_replace_string'  =>  [
+        '__STATIC__'=>'/static',
+        '__ADMIN__' => '/static/admin',
+        '__ADMIN_IMAGES__'=>'/static/images',
+        '__ADMIN_JS__' => '/static/admin/js',
+
+        '__WWW__' => '/static/www',
+
+        '__EXTEND__' => '/static/extend',
+
+
+    ]
 ];
