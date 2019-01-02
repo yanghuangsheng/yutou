@@ -71,6 +71,7 @@ class PortalNews extends Base
         if(isset($data['error'])){
             $upload->resultJson(-1,$data['error']);
         }
+        resultThumb($data['file'], 'no', 247, 146);
         $upload->resultJson(0,'success',$data);
     }
 
