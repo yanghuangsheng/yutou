@@ -28,6 +28,8 @@ class Common extends Base
 
         //条件
         $this->whereMap && $model = $model->where($this->whereMap);
+        //排序
+        $this->order && $model = $model->order($this->order[0], $this->order[1]);
         //分页
         $this->limit && $model = $model->limit($this->limit);
 
@@ -86,6 +88,10 @@ class Common extends Base
     {
         is_array($id) && $id = implode(',',$id);
         if($this->model->destroy($id)){
+            //额外删除
+            if(method_exists($this, 'setDelete')){
+                $this->setDelete($id);
+            }
             return true;
         }
 
@@ -122,7 +128,7 @@ class Common extends Base
             if ($this->model->save($postData, ['id' => $postData['id']])) {
                 //额外更新
                 if(method_exists($this, 'setSaveUpdate')){
-                    $this->setSaveUpdate($postData, $this->model);
+                    $this->setSaveUpdate($postData);
                 }
                 return true;
             }
@@ -132,7 +138,7 @@ class Common extends Base
             if ($this->model->data($postData, true)->save()) {
                 //额外新增
                 if(method_exists($this, 'setSaveAdd')){
-                    $this->setSaveAdd($postData, $this->model);
+                    $this->setSaveAdd($this->model);
                 }
                 return true;
             }

@@ -14,7 +14,7 @@ class SpiderLottery extends Common
     //初始化类
     public function __construct()
     {
-        $this->model = new \app\admin\model\SpiderLottery;
+        $this->model = new \app\common\model\SpiderLottery;
     }
 
     /**

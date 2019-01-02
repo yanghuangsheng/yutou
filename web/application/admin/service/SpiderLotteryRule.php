@@ -14,7 +14,7 @@ class SpiderLotteryRule extends Common
     //初始化类
     public function __construct()
     {
-        $this->model = new \app\admin\model\SpiderLotteryRule;
+        $this->model = new \app\common\model\SpiderLotteryRule;
     }
 
     /**

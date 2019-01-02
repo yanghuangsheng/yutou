@@ -1,0 +1,60 @@
+<div class="box-width box-center flex-between flex-align-stretch info-box">
+    <div class="info-box-l">
+        <div class="user-avatar">
+            <img src="{$data['avatar']['200']?:'/static/www/images/user_avatar.png'}" alt="">
+            <a href="javascript:void(0);" class="flex-center flex-align-center uploadAvatar" id="uploadAvatarImg" data-url="{:url('user/uploadAvatarImage')}"><i></i></a>
+        </div>
+        <div class="flex-end nav">
+            <ul>
+                <li><a href="{:url('User/info')}" class="active">基本资料</a></li>
+                <!--<li><a href="{:url('User/updatePass')}" >修改密码</a></li>-->
+                <li><a href="{:url('User/bindPhone')}" >绑定手机</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="info-box-r">
+        <h3>基本资料</h3>
+        <div class="content-box" id="infoForm">
+            <form>
+                <ul>
+                    <li class="flex-start flex-align-center flex-align-stretch">
+                        <div class="name">呢称：</div>
+                        <div class="value"><input type="text" name="name" value="{$data['name']}"></div>
+                    </li>
+                    <li class="flex-start flex-align-center flex-align-stretch">
+                        <div class="name">姓名：</div>
+                        <div class="value"><input type="text" name="real_name" placeholder="真实姓名" value="{$data['real_name']}"></div>
+                    </li>
+                    <li class="flex-start flex-align-center flex-align-stretch">
+                        <div class="name">生日：</div>
+                        <div class="value"><input type="text" name="birthday" placeholder="如：2008-8-8" value="{$data['birthday']}"></div>
+                    </li>
+                    <li class="flex-start flex-align-center flex-align-stretch">
+                        <div class="name">姓别：</div>
+                        <div class="flex-align-center flex-align-stretch value radio">
+                            <label class="flex-align-center"><input type="radio" name="sex" value="1"> 男</label>
+                            <label class="flex-align-center"><input type="radio" name="sex" value="0" checked="checked"> 女</label>
+                        </div>
+                    </li>
+                    <li class="flex-start flex-align-center flex-align-stretch">
+                        <div class="name">爱好：</div>
+                        <div class="value"><input type="text" name="hobby" placeholder="如：看书、旅游、游泳" value="{$data['hobby']}"></div>
+                    </li>
+                    <li class="flex-start flex-align-center flex-align-stretch">
+                        <div class="name">地址：</div>
+                        <div class="value"><input type="text" name="address" placeholder="如：广东省深圳市" value="{$data['address']}"></div>
+                    </li>
+                    <li class="flex-start flex-align-center flex-align-stretch">
+                        <div class="name">简介：</div>
+                        <div class="value"><textarea name="synopsis" placeholder="有趣的简介容易收到更多的欢迎">{$data['synopsis']}</textarea></div>
+                    </li>
+                    <li class="flex-align-center flex-align-stretch">
+                        <div class="name"></div>
+                        <div class="value btn"><button type="button">保存</button></div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+</div>

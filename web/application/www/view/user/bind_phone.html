@@ -1,0 +1,38 @@
+<div class="box-width box-center flex-between flex-align-stretch info-box">
+    <div class="info-box-l">
+        <div class="user-avatar">
+            <img src="{$user_data['avatar']['200']?:'/static/www/images/user_avatar.png'}" alt="">
+        </div>
+        <div class="flex-end nav">
+            <ul>
+                <li><a href="{:url('User/info')}">基本资料</a></li>
+                <li><a href="{:url('User/updatePass')}">修改密码</a></li>
+                <li><a href="{:url('User/bindPhone')}" class="active">绑定手机</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="info-box-r">
+        <h3>绑定手机</h3>
+        <div class="content-box" id="bindPhoneForm">
+            <form>
+                <ul>
+                    <li class="flex-start flex-align-center flex-align-stretch">
+                        <div class="name"></div>
+                        <div class="value"><input type="text" name="phone" placeholder="输入手机号码"></div>
+                    </li>
+                    <li class="flex-start flex-align-center flex-align-stretch verification">
+                        <div class="name"></div>
+                        <div class="value"><input type="text" name="code" placeholder="输入验证码"></div>
+                        <a href="javascript:void(0);" id="sendVerification-updatePass" data-send="0" data-url="{:url('user/sendSms')}">验证码</a>
+                    </li>
+
+                    <li class="flex-align-center flex-align-stretch">
+                        <div class="name"></div>
+                        <div class="value btn"><button type="button">确认修改</button></div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+</div>

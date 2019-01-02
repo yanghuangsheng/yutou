@@ -1,0 +1,11 @@
+<!--热点话题-->
+<div class="forum-hot">
+    <h3>热点话题</h3>
+    <div class="hot-list">
+        <ul>
+            {volist name="data['seven_list']" id="seven"}
+            <li><a href="{:url('Forum/item')}?id={$seven['id']}">{$seven['title']}</a><span class="inline-number">{$seven['comment_num']}<span>人参与</span></span></li>
+            {/volist}
+        </ul>
+    </div>
+</div>

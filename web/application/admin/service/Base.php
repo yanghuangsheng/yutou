@@ -15,6 +15,7 @@ class Base
     protected $keyId = 'id'; //模型默订主键
     protected $whereMap = []; //查询模型条件
     protected $limit = 0; //默认不分页
+    protected $order = [];
 
     /**
      * 设置分页

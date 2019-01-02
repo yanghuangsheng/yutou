@@ -14,7 +14,7 @@ class SpiderLotteryCategory extends Common
     //初始化类
     public function __construct()
     {
-        $this->model = new \app\admin\model\SpiderLotteryCategory;
+        $this->model = new \app\common\model\SpiderLotteryCategory;
     }
 
     /**

@@ -34,17 +34,17 @@ class Task extends Base
      */
     public function news($id)
     {
-        $model = new \app\admin\model\SpiderNewsCategory;
+        $model = new \app\common\model\SpiderNewsCategory;
 
         $categoryList = $model->where([['status', '=', 1],['parent_id', '=', $id]])->select();
 
         //dump($categoryList);
-        $ruleModel = new \app\admin\model\SpiderNewsRule;
+        $ruleModel = new \app\common\model\SpiderNewsRule;
         foreach ($categoryList as $key => $value){
             $ruleData = $ruleModel->where('category_id', $value['id'])->where('status', 1)->field('id')->select();
-
+            $news = new \app\spider\service\News;
             foreach ($ruleData as $key => $value){
-                $this->categoryNewsRule($value['id'], $ruleModel);
+                $news->categoryNewsRule($value['id'], $ruleModel);
             }
         }
     }
@@ -55,166 +55,22 @@ class Task extends Base
      */
     public function lottery($id)
     {
-        $model = new \app\admin\model\SpiderLotteryCategory;
+        $model = new \app\common\model\SpiderLotteryCategory;
 
         $categoryList = $model->where([['status', '=', 1],['parent_id', '=', $id]])->select();
 
         //dump($categoryList);
-        $ruleModel = new \app\admin\model\SpiderLotteryRule;
+        $ruleModel = new \app\common\model\SpiderLotteryRule;
         foreach ($categoryList as $key => $value){
             $ruleData = $ruleModel->where('category_id', $value['id'])->where('status', 1)->field('id')->select();
-
+            $lottery = new \app\spider\service\Lottery;
             foreach ($ruleData as $key => $value){
-                $this->categoryLotteryRule($value['id'], $ruleModel);
+                $lottery->categoryLotteryRule($value['id'], $ruleModel);
             }
         }
 
     }
 
 
-    /**
-     * 执行采集任务
-     * @param $rule_id
-     * @param $model
-     * @return bool
-     */
-    protected function categoryLotteryRule($rule_id, $model)
-    {
-        $pattern = $model->find($rule_id);
-        //dump($pattern);
 
-        $this->url = $pattern['api_url'];
-
-        if($this->curlGet() === false){
-            echo '获取数据出错';
-            return false;
-        }
-
-        if($data = json_decode($this->result, true)){
-            //dump($data['data']);
-            $newData = [];
-            //补充数据
-            foreach ($data['data'] as $key => $value){
-                $newData[] = [
-                    'category_id' => $pattern['category_id'],
-                    'lottery_no' => $value['expect'],
-                    'open_code' => $value['opencode'],
-                    'open_time' => $value['opentimestamp'],
-                ];
-            }
-
-            $this->saveAddLottery($newData);
-
-        }
-
-    }
-
-    /**
-     * 保存数据
-     * @param $data
-     * @return bool
-     */
-    protected function saveAddLottery($data)
-    {
-        $model = new \app\admin\model\SpiderLottery;
-
-        //存放新的数据
-        $newAddData = [];
-        foreach ($data as $key => $value){
-            if(0 == $model->where('open_time', $value['open_time'])->where('category_id', $value['category_id'])->count()){
-                $newAddData[] = $value;
-            }else{
-                break;
-            }
-
-        }
-
-        if($model->saveAll($newAddData)){
-            return true;
-        }
-
-        return false;
-    }
-
-
-
-
-
-
-    /**
-     * 执行采集任务
-     * @param $rule_id 规则ID
-     * @param $model 数据源
-     * @return bool
-     */
-    protected function categoryNewsRule($rule_id, $model)
-    {
-        $pattern = $model->find($rule_id);
-        //dump($pattern);
-        $this->url = $pattern['url'];
-
-        if($this->curlGet() === false){
-            echo '获取网页出错了 url='.$this->url;
-            return false;
-        }
-
-        if($this->getOneContent($pattern['route']['block']) === false){
-            echo '获取区块内容出错了';
-            return false;
-        }
-
-        $data = [
-            'next_depth' => [], //最终页地址
-            'title_depth' => [], //标题
-        ];
-
-
-        if($result = $this->getAllContent($pattern['route']['depth']['url'])){
-            $data['next_depth'] = $result;
-        }
-
-        if($result = $this->getAllContent($pattern['route']['depth']['title'])){
-            $data['title_depth'] = $result;
-        }
-
-
-        $data = (array_merge_more(['source_url','title'],[$data['next_depth'],$data['title_depth']]));
-
-        //补充数据
-        foreach ($data as $key => &$value){
-            $value['source_url'] = $this->isSplicing($value['source_url']);
-            $value['index'] = md5($value['source_url']);//判断key值
-            $value['category_id'] = $pattern['category_id'];
-        }
-
-        $this->saveAddNews($data);
-
-    }
-
-    /**
-     * 保存数据
-     * @param $data
-     * @return bool
-     */
-    protected function saveAddNews($data)
-    {
-        $model = new \app\admin\model\SpiderNews;
-
-        //存放新的数据
-        $newAddData = [];
-        foreach ($data as $key => $value){
-            if(0 == $model->where('index', $value['index'])->count()){
-                $newAddData[] = $value;
-            }else{
-                break;
-            }
-        }
-
-        if($model->saveAll($newAddData)){
-            return true;
-        }
-
-        return false;
-
-    }
 }

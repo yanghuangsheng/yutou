@@ -80,11 +80,47 @@
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
                     lay-filter="layadmin-system-side-menu">
                     <li data-name="home" class="layui-nav-item layui-nav-itemed layui-this">
-                        <a href="javascript:;" lay-href="/admin/manage/console" lay-tips="主页" lay-direction="2">
+                        <a href="javascript:;" lay-href="{:url('Manage/console')}" data-name="console" lay-tips="主页" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
                             <cite>主页</cite>
                         </a>
                     </li>
+                    <li data-name="app" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="门户资讯" lay-direction="2">
+                            <i class="layui-icon layui-icon-template"></i>
+                            <cite>门户资讯</cite>
+                            <span class="layui-nav-more"></span></a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="portal-news">
+                                <a href="javascript:;">资讯<span class="layui-nav-more"></span></a>
+                                <dl class="layui-nav-child">
+                                    <dd data-name="portal-news-category"><a lay-href="{:url('PortalNewsCategory/index')}">资讯分类</a></dd>
+                                    <dd data-name="portal-news-list"><a lay-href="{:url('PortalNews/index')}">资讯管理</a></dd>
+                                </dl>
+                            </dd>
+                            <dd data-name="portal-news-comment">
+                                <a lay-href="{:url('PortalNewsComment/index')}">资讯评论</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="app" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="门户资讯" lay-direction="2">
+                            <i class="layui-icon layui-icon-template"></i>
+                            <cite>论坛管理</cite>
+                            <span class="layui-nav-more"></span></a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="forum-news">
+                                <a href="javascript:;">贴子<span class="layui-nav-more"></span></a>
+                                <dl class="layui-nav-child">
+                                    <dd data-name="forum-post-list"><a lay-href="{:url('ForumPost/index')}">帖子管理</a></dd>
+                                </dl>
+                            </dd>
+                            <dd data-name="forum-post-comment">
+                                <a lay-href="{:url('ForumPostComment/index')}">贴子评论</a>
+                            </dd>
+                        </dl>
+                    </li>
+
                     <li data-name="app" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="采集器" lay-direction="2">
                             <i class="layui-icon layui-icon-app"></i>
@@ -95,17 +131,17 @@
                             <dd data-name="spider-news">
                                 <a href="javascript:;">资讯<span class="layui-nav-more"></span></a>
                                 <dl class="layui-nav-child">
-                                    <dd data-name="spider-news-category"><a lay-href="{:url('SpiderNewsCategory/index')}">分类</a></dd>
-                                    <dd data-name="spider-news-rule"><a lay-href="{:url('SpiderNewsRule/index')}">规则</a></dd>
-                                    <dd data-name="spider-news-list"><a lay-href="{:url('SpiderNews/index')}">资讯管理</a></dd>
+                                    <dd data-name="spider-news-category"><a lay-href="{:url('SpiderNewsCategory/index')}">采集资讯分类</a></dd>
+                                    <dd data-name="spider-news-rule"><a lay-href="{:url('SpiderNewsRule/index')}">资讯采集规则</a></dd>
+                                    <dd data-name="spider-news-list"><a lay-href="{:url('SpiderNews/index')}">采集资讯管理</a></dd>
                                 </dl>
                             </dd>
                             <dd data-name="spider-lottery">
                                 <a href="javascript:;">彩票<span class="layui-nav-more"></span></a>
                                 <dl class="layui-nav-child">
-                                    <dd data-name="spider-lottery-category"><a lay-href="{:url('SpiderLotteryCategory/index')}">分类</a></dd>
-                                    <dd data-name="spider-lottery-rule"><a lay-href="{:url('SpiderLotteryRule/index')}">规则</a></dd>
-                                    <dd data-name="spider-lottery-list"><a lay-href="{:url('SpiderLottery/index')}">开奖列表</a></dd>
+                                    <dd data-name="spider-lottery-category"><a lay-href="{:url('SpiderLotteryCategory/index')}">彩票分类</a></dd>
+                                    <dd data-name="spider-lottery-rule"><a lay-href="{:url('SpiderLotteryRule/index')}">彩票采集规则</a></dd>
+                                    <dd data-name="spider-lottery-list"><a lay-href="{:url('SpiderLottery/index')}">彩票开奖列表</a></dd>
                                 </dl>
                             </dd>
                         </dl>
@@ -174,8 +210,8 @@
             </div>
             <div class="layui-tab" lay-unauto="" lay-allowclose="true" lay-filter="layadmin-layout-tabs">
                 <ul class="layui-tab-title" id="LAY_app_tabsheader">
-                    <li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i
-                            class="layui-icon layui-icon-home"></i><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>
+                    <li lay-id="{:url('Manage/console')}" lay-attr="{:url('Manage/console')}" class="layui-this">
+                        <i class="layui-icon layui-icon-home"></i><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>
                     </li>
                 </ul>
             </div>
@@ -185,7 +221,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="/admin/manage/console" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="{:url('Manage/console')}" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 

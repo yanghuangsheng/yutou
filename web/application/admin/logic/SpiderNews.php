@@ -40,6 +40,29 @@ class SpiderNews extends Base
     }
 
     /**
+     * 转发
+     */
+    public function toRelay()
+    {
+        if($this->isAjax()){
+            $relay_id = $this->param('id');
+            $service = new oService;
+            $data = $service->collectionContent($relay_id);
+            if(isset($data['error'])){
+                $this->resultJson(-1, $data['error']);
+
+            }else{
+                if((new \app\admin\service\PortalNews)->toRelayAdd($data)){
+                    //更新转发状态
+                    $service->updateFieldByValue(['id'=>$relay_id, 'field'=>'status', 'value'=>1]);
+                    $this->resultJson(0, '转发成功');
+                }
+                $this->resultJson(-1, '转发失败');
+            }
+        }
+    }
+
+    /**
      * 获取数据列表
      */
     protected function getListJson()

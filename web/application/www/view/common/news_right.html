@@ -1,0 +1,24 @@
+<!--广告-->
+<div class="index-ad">
+    <img src="/static/www/test/u14.png">
+</div>
+<!--7天热门-->
+<div class="index-seven">
+    <h3>七天热门</h3>
+    <div class="seven-list">
+        <ul>
+            {volist name="data['seven_list']" id="seven"}
+            <li>
+                <div class="flex-align-start title">
+                    <i></i>
+                    <p><a href="{:url('news/item')}?id={$seven['id']}">{$seven['title']}</a></p>
+                </div>
+                <div class="flex-between item-info">
+                    <div class="author-name">{$seven['author']?:$seven['source_name']}</div>
+                    <div class="flex-align-center comment-num"><i></i><span>{$seven['comment_num']?:0}</span></div>
+                </div>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+</div>

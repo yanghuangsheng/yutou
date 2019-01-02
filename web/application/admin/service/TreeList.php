@@ -27,13 +27,34 @@ class TreeList
         $this->tree->icon = ['&nbsp;&nbsp;│', '&nbsp;&nbsp;├─', '&nbsp;&nbsp;└─'];
         $this->tree->nbsp = '&nbsp;&nbsp;';
         if($currentId) {
+            $idArr = array_column($data, 'parent_id');
             foreach ($data as $key=>$ro) {
-                $ro['selected'] = $ro['id'] == $currentId ? 'selected' : '';
+                if(is_array($currentId)){
+                    $ro['selected'] = in_array($ro['id'], $currentId)? 'selected="selected"' : '';
+                }else{
+                    $ro['selected'] = $ro['id'] == $currentId ? 'selected="selected"' : '';
+                }
+                if(isset($ro['parent_id'])){
+                    $ro['disabled'] = ($ro['parent_id'] == 0 && in_array($ro['id'],$idArr))?'disabled="disabled"':'';
+                }else{
+                    $ro['disabled'] = '';
+                }
+
                 $data[$key]     = $ro;
             }
-            !$tpl && $tpl = '<option value=\"{$id}\" {$selected}>{$spacer}{$name}</option>';
+            !$tpl && $tpl = '<option value=\"{$id}\" {$selected} {$disabled}>{$spacer}{$name}</option>';
         } else {
-            !$tpl && $tpl = '<option value=\"{$id}\">{$spacer}{$name}</option>';
+            $idArr = array_column($data, 'parent_id');
+            foreach ($data as $key=>$ro) {
+                if(isset($ro['parent_id'])){
+                    $ro['disabled'] = ($ro['parent_id'] == 0 && in_array($ro['id'],$idArr))?'disabled="disabled"':'';
+                }else{
+                    $ro['disabled'] = '';
+                }
+
+                $data[$key]     = $ro;
+            }
+            !$tpl && $tpl = '<option value=\"{$id}\" {$disabled}>{$spacer}{$name}</option>';
         }
         $this->tree->init($data);
         return $this->tree->getTree(0, $tpl);

@@ -1,0 +1,51 @@
+<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
+<link href="/static/www/js/extend/summernote/index.css" rel="stylesheet"/>
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+<script src="/static/www/js/extend/summernote/index.js"></script>
+<script src="/static/www/js/extend/summernote/lang/zh-CN.js"></script>
+<div id="publishForum-box">
+    <form>
+        <div class="text-center title">发布吐槽贴</div>
+        <div class="images-list">
+            <ul class="flex-start flex-align-center" style="margin:0px;">
+                <li class="box-hide">
+                    <img src="/static/www/test/news1.png">
+                    <input type="hidden" name="image_url[]" value="">
+                    <a href="javascript:void(0);" class="del"></a>
+                </li>
+            </ul>
+            <a href="javascript:void(0);" data-status="0" class="uploadImage-btn" id="uploadForumImg" data-url="{:url('User/uploadCoverImage')}">
+                <i></i>
+                <p>增加封面图</p>
+            </a>
+        </div>
+        <div class="post-title">
+            <input type="text" name="title" placeholder="请输入标题 (最多可输入50个字)" oninput="" onpropertychange="">
+        </div>
+        <div class="post-content" style="width:100%;">
+            <textarea name="content" id="summernote" class="box-hide" ></textarea>
+        </div>
+        <div>
+            <button type="button" class="submit" data-status="0">发布</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(function(){
+        var oThis = $('#summernote').summernote({
+            height: 200,
+            tabsize: 2,
+            lang: 'zh-CN',
+            //调用图片上传
+            callbacks: {
+                onImageUpload: function (files) {
+                    sendForumImage(oThis, files[0], '{:url("User/uploadContentImage")}');
+                }
+            },
+        });
+        $('#summernote').on('summernote.change', function() {
+            console.log('Editable area is focused');
+        });
+
+    });
+</script>

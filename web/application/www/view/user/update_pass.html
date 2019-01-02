@@ -1,0 +1,38 @@
+<div class="box-width box-center flex-between flex-align-stretch info-box">
+    <div class="info-box-l">
+        <div class="user-avatar">
+            <img src="{$user_data['avatar']['200']?:'/static/www/images/user_avatar.png'}" alt="">
+        </div>
+        <div class="flex-end nav">
+            <ul>
+                <li><a href="{:url('User/info')}">基本资料</a></li>
+                <li><a href="{:url('User/updatePass')}" class="active">修改密码</a></li>
+                <li><a href="{:url('User/bindPhone')}" >绑定手机</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="info-box-r">
+        <h3>修改密码</h3>
+        <div class="content-box" id="updatePasswordForm">
+            <ul>
+                <li class="flex-start flex-align-center flex-align-stretch">
+                    <div class="name">当前密码：</div>
+                    <div class="value"><input type="text" placeholder="当前的密码" name="this_password"></div>
+                </li>
+                <li class="flex-start flex-align-center flex-align-stretch">
+                    <div class="name">新的密码：</div>
+                    <div class="value"><input type="text" placeholder="新的密码" name="new_password"></div>
+                </li>
+                <li class="flex-start flex-align-center flex-align-stretch">
+                    <div class="name">确认密码：</div>
+                    <div class="value"><input type="text" placeholder="再次输入新密码" name="confirm_password"></div>
+                </li>
+                <li class="flex-align-center flex-align-stretch">
+                    <div class="name"></div>
+                    <div class="value btn"><button type="button">保存</button></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

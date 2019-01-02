@@ -13,7 +13,7 @@ use app\admin\logic\SpiderLottery as SpiderLotteryLogic;
 class SpiderLottery extends Base
 {
     /**
-     * 采集规则列表
+     * 彩票列表
      * @param SpiderLotteryLogic $logic
      * @return mixed
      */

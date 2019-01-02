@@ -14,7 +14,7 @@ class SpiderNewsRule extends Common
     //初始化类
     public function __construct()
     {
-        $this->model = new \app\admin\model\SpiderNewsRule;
+        $this->model = new \app\common\model\SpiderNewsRule;
     }
 
     /**

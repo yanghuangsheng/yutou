@@ -1,0 +1,29 @@
+<div id="login-box" class="login-register-box">
+    <div class="title">鱼头网登录</div>
+    <div class="login-content">
+        <div class="tips">验证即登录，未注册则自动创建新账号</div>
+        <ul>
+            <li class="border phone">
+                <input type="text" name="phone" placeholder="手机号">
+                <span class="flex-center flex-align-center"><i></i></span>
+            </li>
+            <li class="flex-between flex-align-stretch verification">
+                <input type="text" name="code" placeholder="输入验证码">
+                <a href="javascript:void(0);" id="sendVerification" data-send="0" data-url="{:url('user/sendSms')}">验证码</a>
+            </li>
+            <li class="border">
+                <button id="login-register-btn">登陆</button>
+            </li>
+            <li class="quick-register">
+                <a href="{:url('user/register')}">快速注册</a>
+            </li>
+        </ul>
+        <div class="quick-list">
+            <span class="quick-title">第三方登录</span>
+            <ul class="flex-center flex-align-stretch">
+                <li><a href="javascript:void(0);" class="qq">QQ</a></li>
+                <li><a href="javascript:void(0);" class="wechat">微信</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

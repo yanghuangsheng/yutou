@@ -72,13 +72,14 @@
                         width: 330
                     },
                     {
+                        field: 'status_txt',
                         title: '转发',
                         width: 80,
-                        templet: function (d) {
-                            return (d.status == '1' ?
-                                '<span class="layui-badge layui-bg-green">已转</span> ' :
-                                '<span class="layui-badge layui-bg-gray">未转</span> ');
-                        }
+//                        templet: function (d) {
+//                            return (d.status == 1 ?
+//                                '<span class="layui-badge layui-bg-green">已转</span> ' :
+//                                '<span class="layui-badge layui-bg-gray">未转</span> ');
+//                        }
                     },
                     {
                         field: 'create_time',
@@ -103,13 +104,40 @@
         };
         table.render(tableOptions);
 
-        table.on("tool(LAY-list-table)", function (t) {
-            console.log(t);
-            var obj = t;
+        table.on("tool(LAY-list-table)", function (obj) {
             var data = obj.data;
             switch (obj.event)
             {
                 case 'toRelay':
+                    if(data.status == 1){
+                        layer.msg('不能重复转发', {
+                            icon: 0
+                        });
+                        return;
+                    }
+                    layer.confirm('确定转发吗？',{icon: 3, title:false}, function (index) {
+                        var loadIndex = layer.load(1);
+                        admin.req({
+                            url: '{:Url("SpiderNews/toRelay")}',
+                            data: {
+                                id: data.id
+                            },
+                            done: function (res) {
+                                if(res.code == 0){
+                                    obj.update({
+                                        status: 1,
+                                        status_txt: '<span class="layui-badge layui-bg-green">已转</span>'
+                                    });
+                                    layer.close(index);
+                                    layer.close(loadIndex);
+                                    return;
+                                }
+                                layer.msg(res.msg, {
+                                    icon: 0
+                                });
+                            }
+                        });
+                    });
 
                     break;
                 case 'look':

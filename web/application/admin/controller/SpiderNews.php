@@ -13,7 +13,7 @@ use app\admin\logic\SpiderNews as SpiderNewsLogic;
 class SpiderNews extends Base
 {
     /**
-     * 采集规则列表
+     * 新闻列表
      * @param SpiderNewsLogic $logic
      * @return mixed
      */
@@ -23,6 +23,16 @@ class SpiderNews extends Base
 
         $this->assign('data', $data);
         return $this->fetch();
+    }
+
+    /**
+     * 转发
+     * @param SpiderNewsLogic $logic
+     * @return mixed
+     */
+    public function toRelay(SpiderNewsLogic $logic)
+    {
+        return (new $logic)->toRelay();
     }
 
 

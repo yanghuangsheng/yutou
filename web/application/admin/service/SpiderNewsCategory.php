@@ -14,7 +14,7 @@ class SpiderNewsCategory extends Common
     //初始化类
     public function __construct()
     {
-        $this->model = new \app\admin\model\SpiderNewsCategory;
+        $this->model = new \app\common\model\SpiderNewsCategory;
     }
 
     /**

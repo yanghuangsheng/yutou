@@ -108,7 +108,14 @@ class Base
         return strtolower(Request::action());
     }
 
-    //返回数据
+    /**
+     * 输出Api
+     * @param $code
+     * @param $msg
+     * @param array $data
+     * @param int $json
+     * @return array
+     */
     public function resultJson($code, $msg, $data = [], $json = 1)
     {
         $returnData = ['code' => $code, 'msg' => $msg];
@@ -119,8 +126,17 @@ class Base
             $returnData['data'] = $data;
         }
 
-        if ($json) exit(json_encode($returnData));
+        if ($json) $this->json($returnData);
         return $returnData;
+    }
+
+    /**
+     * 返回json 以结束
+     * @param $data
+     */
+    public function json($data)
+    {
+        exit(json_encode($data));
     }
 
 }
