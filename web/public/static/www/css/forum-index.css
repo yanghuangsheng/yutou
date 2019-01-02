@@ -1,0 +1,251 @@
+.forum-box{
+
+}
+.forum-box {
+
+}
+
+.forum-box .forum-list{
+    margin-top:-40px;
+}
+.forum-box .forum-list .list-tab{
+    border-bottom: #e4e4e4 solid 1px;
+}
+.forum-box .forum-list .list-tab ul{
+    height: 55px;
+    margin-left: 5px;
+}
+.forum-box .forum-list .list-tab li{
+    line-height: 55px;
+    margin-left: 15px;
+}
+.forum-box .forum-list .list-tab li a{
+    display: block;
+    height: 100%;
+    font-size: 16px;
+    color: #0C0C0C;
+    font-weight: bolder;
+    position: relative;
+    padding:0px 8px;
+    text-align: center;
+    text-decoration:none;
+    box-sizing: content-box
+}
+.forum-box .forum-list .list-tab li a i{
+    display: none;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    height: 9px;
+    width: 100%;
+    background: url("../images/common.png") center bottom;
+}
+.forum-box .forum-list .list-tab li.child a i{
+    display: block;
+}
+
+
+.list-inline li{
+    margin-top: 20px;
+    border-bottom: #e4e4e4 solid 1px;
+}
+.list-inline .title{
+    font-size: 16px;
+    font-weight: bolder;
+    flex-grow: 1;
+}
+.list-inline .title a{
+    color: #0C0C0C;
+}
+.list-inline .read i,.list-inline .end-l i{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: url("../images/common.png") -150px -70px;
+}
+.list-inline .read{
+    margin-left: 40px;
+    margin-right: 10px;
+    color: #999999;
+}
+.list-inline .content {
+    margin-top: 10px;
+    font-size: 14px;
+}
+.list-inline .content-text a.look-all{
+    color: #169bd5;
+}
+.list-inline .content-text a.look-all i{
+    display: inline-block;
+    width: 15px;
+    height: 10px;
+    background: url("../images/common.png") -15px -215px;
+}
+.list-inline .content-images{
+    margin-top: 15px;
+}
+.list-inline .content-images p{
+    width: 30%;
+    max-height: 128px;
+    overflow: hidden;
+    line-height: 0px;
+    margin-right: 10px;
+}
+.list-inline .content-images p:last-child{
+    margin-right: 0px;
+}
+.list-inline .content-images p img{
+    width: 100%;
+}
+
+.list-inline .end{
+    padding: 8px 0px;
+}
+.list-inline .end-l .attr{
+    /*margin-right: 30px;*/
+    font-size: 12px;
+    font-weight: bolder;
+}
+.list-inline .end-l .attr a{
+    margin-right: 10px;
+}
+.list-inline .end-l .attr a:last-child{
+    margin-right: 0px;
+}
+.list-inline .end-l .fabulous{
+    background-color: rgb(255, 237, 166);
+    border-radius: 5px;
+    padding: 3px 10px;
+    color: #999999;
+}
+.list-inline .end-l .fabulous i{
+    background-position: 0px -190px;
+}
+.list-inline .end-l .comment i{
+    background-position: -25px -190px;
+}
+.list-inline .end-l .collection i{
+    background-position: -50px -190px;
+}
+
+.list-inline .share{
+    margin-left: 30px;
+}
+.list-inline .share-list{
+    margin-left: 8px;
+}
+.list-inline .share-list a{
+    margin: 0px 2px;
+}
+.list-inline .share-h i{
+    background-position: -75px -190px;
+}
+.list-inline .qq i{
+    background-position: -100px -190px;
+}
+.list-inline .wechat i{
+    background-position: -125px -190px;
+}
+.list-inline .more i{
+    background-position: -50px -70px;
+}
+
+.list-inline .end-r{
+    margin-right: 10px;
+}
+.list-inline .user-avatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.list-inline .user-avatar img{
+    width: 100%;
+    height: 100%;
+}
+
+
+.list-inline .user-name{
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+/*加载更多*/
+.forum-box .forum-list .load-more{
+    text-align: center;
+    margin-top: 30px;
+    border-bottom: #ffcc00 solid 3px;
+}
+.forum-box .forum-list .load-more .loading{
+    margin-bottom: 30px;
+}
+.forum-box .forum-list .load-more a{
+    display: block;
+    height: 55px;
+    line-height: 55px;
+    font-size: 18px;
+    color: #999999;
+    background-color: #f2f2f2;
+}
+
+
+.forum-box .forum-hot{
+    margin-top: 30px;
+    border-top: #ffcc00 solid 2px;
+}
+.forum-box .forum-hot h3{
+    font-size: 16px;
+    font-weight: bolder;
+    line-height: 55px;
+    text-align: center;
+    border-bottom: #cccccc dotted 1px;
+}
+.forum-box .forum-hot li{
+    padding:10px 0px;
+    color: #169bd5;
+    font-size: 14px;
+    border-bottom: #cccccc dotted 1px;
+}
+.forum-box .forum-hot li .inline-number{
+    display: inline-block;
+    color: #333333;
+}
+.forum-box .forum-hot li .inline-number span{
+    color: #999999;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

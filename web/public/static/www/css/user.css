@@ -1,0 +1,366 @@
+.user-head{
+    margin: 25px auto;
+    border: #e4e4e4 solid 1px;
+    border-radius: 5px;
+    position: relative;
+}
+.user-head .user-head-l{
+    width: 60%;
+    padding: 15px;
+}
+.user-head .user-head-r{
+    width: 40%;
+    padding: 15px;
+}
+
+.user-head .user-avatar{
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-left: 15px;
+}
+.user-head .user-avatar img{
+    width: 100%;
+}
+
+.user-head .user-attr{
+    margin-left: 35px;
+    flex-grow: 1;
+}
+.user-head .user-attr a{
+    font-size: 16px;
+    color: #0C0C0C;
+}
+.user-head .user-attr .attr-top {
+    height: 50%;
+    margin-top: 5px;
+}
+.user-head .user-attr .user-name{
+    font-size: 20px;
+    font-weight: bolder;
+}
+.user-head .my-attr{
+    margin-left: 20px;
+}
+.user-head .my-attr a{
+    margin: 0px 10px;
+}
+.user-head .my-attr i ,.user-head .edit i,.notice i{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: url("../images/common.png") -25px -225px;
+}
+.user-head .user-attr .fans i{
+    background-position: -50px -225px;
+}
+
+.user-head .attr-bottom a{
+    margin-right: 25px;
+    text-align: center;
+}
+.user-head .attr-bottom a:nth-child(2){
+    padding-right: 25px;
+    border-right: #e4e4e4 solid 1px;
+}
+.user-head .attr-bottom a p{
+    color: #8c8c8c;
+    font-size: 14px;
+}
+
+.user-head .edit{
+    position: absolute;
+    left: 8px;
+    top: 8px;
+}
+.user-head .edit i{
+    background-position: 0px -225px;
+}
+
+/*对外展示*/
+.user-head .user-head-l.my-home{
+    display: block;
+    width: 100%;
+    padding: 35px;
+}
+.user-head .user-head-l.my-home .user-avatar{
+    margin: 0px auto;
+    width: 200px;
+    height: 200px;
+}
+.user-head .user-head-l.my-home .user-attr{
+    margin-top: 25px;
+    margin-left: 0px;
+}
+.user-head .user-head-l.my-home .attr-bottom{
+    margin-top: 25px;
+}
+.user-head .edit.back i{
+    background-position: -125px -225px;
+}
+
+
+
+
+
+/*公告*/
+.notice{
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    height: 35px;
+}
+.notice .h{
+    margin-left: 8px;
+}
+.notice .list-content{
+    flex-grow: 1;
+}
+.notice i{
+    background-position: -75px -225px;
+}
+
+.notice .my-home i{
+    background-position: -100px -225px;
+}
+
+
+
+/*其他*/
+.tab-box{
+    min-height: 600px;
+    margin-top: 25px;
+    margin-bottom: 35px;
+    border: #e4e4e4 solid 1px;
+    border-radius: 5px;
+}
+.tab-box .tab-box-l{
+    width: 200px;
+    border-right: #e4e4e4 solid 1px;
+}
+.tab-box .tab-box-r{
+    flex-grow: 1;
+}
+.tab-box .tab-box-l li{
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+}
+.tab-box .tab-box-l a{
+    font-size: 16px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.tab-box .tab-box-l a i{
+    font-size: 16px;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 1px;
+    background-color: #e4e4e4;
+}
+.tab-box .tab-box-l a.active i{
+    height: 10px;
+    background: url("../images/common.png") center bottom;
+}
+
+
+/*基本资料*/
+.info-box{
+    margin-top: 35px;
+    padding: 25px 0px;
+    margin-bottom: 45px;
+    border-radius: 5px;
+    border: #e4e4e4 solid 1px;
+
+}
+.info-box .info-box-l{
+    padding-left: 50px;
+    width: 200px;
+}
+.info-box .info-box-r{
+    margin-left: 55px;
+    margin-right: 35px;
+    flex-grow: 1;
+}
+
+.info-box .info-box-l .user-avatar{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 50%;
+    position: relative;
+}
+.info-box .info-box-l .user-avatar img{
+    width: 100%;
+}
+.info-box .info-box-l .user-avatar .uploadAvatar{
+    display: none;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height:  50%;
+    background-color: rgba(0,0,0, 0.3);
+}
+.info-box .info-box-l .user-avatar .uploadAvatar i{
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    background: url("../images/common.png") right -35px;
+}
+.info-box .info-box-l .user-avatar:hover .uploadAvatar{
+    display: flex;
+}
+.info-box .info-box-l .nav{
+    padding-top: 40px;
+    min-height: 400px;
+    border-right: #e4e4e4 solid 1px;
+}
+.info-box .info-box-l .nav ul{
+    width: 150px;
+}
+.info-box .info-box-l .nav li{
+    height: 35px;
+    text-align: center;
+}
+.info-box .info-box-l .nav li a{
+    font-size: 14px;
+    color: #0C0C0C;
+}
+.info-box .info-box-l .nav li a.active{
+    color: #0066FF;
+}
+.info-box .info-box-r h3{
+    height: 35px;
+    font-size: 16px;
+    line-height: 35px;
+    text-indent: 2px;
+    margin-top: 45px;
+    border-bottom: #e4e4e4 solid 1px;
+}
+.info-box .content-box ul{
+    margin-top: 25px;
+}
+.info-box .content-box li{
+    margin-top: 15px;
+}
+.info-box .content-box li .name{
+    line-height: 37px;
+    font-size: 14px;
+    min-width: 40px;
+    padding-right: 10px;
+}
+.info-box .content-box li .value{
+    width: 380px;
+    border: #c9c9c9 solid 1px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.info-box .content-box li.verification .value{
+    width: 280px;
+}
+.info-box .content-box li.verification a{
+    width: 80px;
+    margin-left: 20px;
+    background-color: #0C0C0C;
+    color: #FFFFFF;
+    border-radius: 5px;
+    line-height: 37px;
+    text-align: center;
+}
+.info-box .content-box li .value input[type="text"], .info-box .content-box li .value textarea{
+    width: 100%;
+    height: 35px;
+    border: 0px;
+    text-indent: 10px;
+}
+.info-box .content-box li .value textarea{
+    height: 90px;
+}
+.info-box .content-box li .value button{
+    height: 37px;
+    width: 100%;
+    border: 0px;
+    text-align: center;
+    background-color: #169bd5;
+    color: #FFFFFF;
+}
+.info-box .content-box li .value.btn{
+    border-color: #169bd5;
+}
+.info-box .content-box li .value.radio{
+    border-color: #FFFFFF;
+}
+.info-box .content-box li .value.radio input{
+    margin-right: 10px;
+}
+.info-box .content-box li .value.radio label{
+    margin-left: 25px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

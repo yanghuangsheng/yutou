@@ -1,0 +1,294 @@
+
+/*首页*/
+.index-box{
+    margin-top: 35px;
+}
+.index-box .index-left{
+    width: 70%;
+    /*background-color: #00a0e9;*/
+}
+.index-box .index-right{
+    width: 260px;
+    /*background-color: #00a0e9;*/
+}
+
+/*幻灯片*/
+.index-box .index-banner{
+    position: relative;
+    width: 100%;
+    height: 251px;
+    border-radius: 5px;
+    background-color: #bdbdbd;
+}
+.index-box .index-banner .images img{
+    width: 100%;
+    height: 251px;
+}
+.index-box .index-banner .images li{
+    line-height: 0px;
+    height: 251px;
+}
+.index-box .index-banner .hd{
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+    text-align: center;
+}
+.index-box .index-banner .hd li{
+    line-height: 0px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0px 2px;
+    background-color: #666666;
+}
+.index-box .index-banner .hd li.on{
+    background-color: #FFFFFF;
+}
+
+/*热点*/
+.index-box .index-hot-news{
+    margin-top: 30px;
+}
+.index-box .index-hot-news li{
+    width: 235px;
+    line-height: 0px;
+    position: relative;
+}
+.index-box .index-hot-news li img{
+    width: 100%;
+}
+.index-box .index-hot-news li p{
+    position: absolute;
+    bottom: 0px;
+    line-height: 20px;
+    max-height: 46px;
+    overflow: hidden;
+    color: #FFFFFF;
+    padding: 5px;
+    left: 0px;
+    right: 0px;
+    background-color: rgba(40, 40, 40, 0.7);
+}
+
+/*分类资讯*/
+.index-box .index-news{
+    margin-top: 30px;
+}
+
+.index-box .index-news .news-tab{
+
+}
+.index-box .index-news .news-tab ul{
+    height: 65px;
+    margin-left: 45px;
+}
+.index-box .index-news .news-tab li{
+    line-height: 65px;
+    margin: 0px 20px;
+}
+.index-box .index-news .news-tab li a{
+    display: block;
+    height: 100%;
+    font-size: 20px;
+    color: #0C0C0C;
+    font-weight: bolder;
+    position: relative;
+    text-decoration:none;
+}
+.index-box .index-news .news-tab li a i{
+    display: none;
+    position: absolute;
+    bottom: 0px;
+    height: 9px;
+    width: 100%;
+    background: url("../images/common.png") center bottom;
+}
+.index-box .index-news .news-tab li.child a i{
+    display: block;
+}
+.index-box .index-news .news-content{
+
+}
+.index-box .index-news .news-list li{
+    padding: 20px 0px;
+    border-top: #CCCCCC solid 1px;
+}
+.index-box .index-news .news-list .image{
+    margin-right: 15px;
+    min-height: 150px;
+}
+.index-box .index-news .news-list .item-content{
+    flex-grow: 2;
+    position: relative;
+}
+.index-box .index-news .item-content .title{
+    font-size: 20px;
+    font-weight: bolder;
+}
+.index-box .index-news .item-content .description{
+    color: #999999;
+    font-size: 14px;
+    margin-top: 10px;
+}
+.index-box .index-news .item-content .info{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    font-size: 14px;
+    line-height: 25px;
+    color: #999999;
+}
+.index-box .index-news .item-content .info .inline{
+    margin-right: 20px;
+}
+.index-box .index-news .item-content .info-r .inline{
+    margin-right: 10px;
+}
+.index-box .index-news .item-content .info-l .inline:last-child{
+    margin-right: 0px;
+}
+.index-box .index-news .item-content .info-r i{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: url("../images/common.png");
+}
+.index-box .index-news .item-content .read i{
+    background-position: -150px -70px;
+}
+.index-box .index-news .item-content .comment i{
+    background-position: right -70px;
+}
+.index-box .index-news .item-content .collection i{
+    background-position: -125px -70px;
+}
+
+/*加载更多*/
+.index-box .index-news .load-more{
+    text-align: center;
+    margin-top: 30px;
+    border-bottom: #ffcc00 solid 3px;
+}
+.index-box .index-news .load-more .loading{
+    margin-bottom: 30px;
+}
+.index-box .index-news .load-more a{
+    display: block;
+    height: 55px;
+    line-height: 55px;
+    font-size: 18px;
+    color: #999999;
+    background-color: #f2f2f2;
+}
+
+
+/*广告*/
+.index-box .index-ad{
+    line-height: 0px;
+}
+/*7天热门*/
+.index-box .index-seven{
+    margin-top: 30px;
+    border-top: #ffcc00 solid 3px;
+}
+.index-box .index-seven h3{
+    font-size: 20px;
+    line-height: 55px;
+    text-align: center;
+    border-bottom: #CCCCCC dotted 1px;
+}
+.index-box .index-seven .seven-list{
+    margin: 10px 0px;
+}
+.index-box .index-seven .title{
+    font-size: 14px;
+    line-height: 25px;
+    max-height: 50px;
+    overflow: hidden;
+}
+.index-box .index-seven .title i{
+    width: 3px;
+    height: 14px;
+    line-height: 0px;
+    border-top: #FFFFFF solid 6px;
+    background-color: #ffcc00;
+    display: inline-block;
+    margin-right: 8px;
+}
+.index-box .index-seven .item-info{
+    font-size: 14px;
+    line-height: 25px;
+    color: #999999;
+    margin: 15px 10px;
+}
+.index-box .index-seven .comment-num i{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: url("../images/common.png") right -70px;
+}
+
+/*幸运号码*/
+.index-box .index-lottery{
+    margin-top: 30px;
+    border-top: #ffcc00 solid 3px;
+}
+.index-box .index-lottery h3{
+    font-size: 20px;
+    line-height: 55px;
+    text-align: center;
+    border-bottom: #CCCCCC dotted 1px;
+}
+.index-box .index-lottery .lottery-list li{
+    padding: 5px 8px;
+    background-color: #fbfbfb;
+    border-bottom: #CCCCCC dotted 1px;
+}
+.index-box .index-lottery .lottery-title{
+    font-size: 14px;
+    line-height: 25px;
+}
+.index-box .index-lottery .lottery-title span{
+    color: #999999;
+}
+.index-box .index-lottery .lottery-title span:first-child{
+    color: #666666;
+}
+.index-box .index-lottery .code-list span{
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    color: #FFFFFF;
+    background-color: #a1a1a1;
+    text-align: center;
+    margin:5px 2px;
+    display: inline-block;
+}
+.index-box .index-lottery .code-list span.ext{
+    background-color: #0c97ed;
+}
+.index-box .index-lottery .more{
+    color: #999999;
+}
+/*移动资讯*/
+.index-box .index-h5{
+    margin-top: 30px;
+    border-top: #ffcc00 solid 3px;
+}
+.index-box .index-h5 h3{
+    font-size: 20px;
+    line-height: 55px;
+    text-align: center;
+    border-bottom: #CCCCCC dotted 1px;
+}
+.index-box .index-h5 .h5-content{
+    padding: 10px;
+    font-size: 14px;
+    color: #999999;
+    text-align: center;
+}
+.index-box .index-h5 .h5-content img{
+    width: 70%;
+}
