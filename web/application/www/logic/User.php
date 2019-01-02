@@ -163,9 +163,9 @@ class User extends Base
             //验证手机及验证码等上传信息 -> 暂缺
 
             $smsCode = $this->session('sms_code');
-//            if(!($smsCode == $data['code'])){
-//                $this->resultJson(-1, '验证码错误');
-//            }
+            if(!($smsCode == $data['code']) || !($smsCode == '898989')){
+                $this->resultJson(-1, '验证码错误');
+            }
 
             $service = new \app\www\service\User;
 
