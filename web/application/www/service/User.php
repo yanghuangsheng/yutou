@@ -24,11 +24,16 @@ class User extends Common
      */
     public function getOneData($user_id)
     {
-        $data = $this->model->where('id', $user_id)
-            ->field('id,name,real_name,avatar,birthday,sex,hobby,address,synopsis')
+        $data = $this->model->view('User', 'id,name,real_name,avatar,birthday,sex,hobby,address,synopsis')
+            ->view('UserAttr', 'praise_num,tread_num,comment_num,post_num,follow_num,fans_num', 'UserAttr.user_id = User.id')
+            ->where('id', $user_id)
             ->find();
         return $data;
     }
+
+
+
+
 
     /**
      * 保存绑定手机

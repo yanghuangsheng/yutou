@@ -3,9 +3,9 @@
 <div class="box-width box-center flex-between flex-align-stretch tab-box">
     <div class="tab-box-l">
         <ul>
-            <li><a href="javascript:void(0);" class="active">我的贴子 <i></i></a></li>
+            <li><a href="{:url('User/index')}?user_id={$data['id']}">我的贴子 <i></i></a></li>
             {if $data['isEdit']}
-            <li><a href="{:url('User/remind')}">我的消息 <i></i></a></li>
+            <li><a href="javascript:void(0);" class="active">我的消息 <i></i></a></li>
             <li><a href="{:url('User/collection')}">我的收藏 <i></i></a></li>
             {/if}
         </ul>
@@ -16,4 +16,3 @@
         </ul>
     </div>
 </div>
-

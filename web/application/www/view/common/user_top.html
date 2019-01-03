@@ -1,0 +1,91 @@
+{if $data['isEdit']}
+<div class="flex-between flex-align-stretch box-width box-center user-head">
+    <div class="flex-between user-head-l">
+        <div class="user-avatar">
+            <img src="{$data['avatar']['100']?:'/static/www/images/user_avatar_100.png'}" alt="">
+        </div>
+        <div class="user-attr">
+            <div class="flex-start flex-align-center attr-top">
+                <div class="user-name">{$data['name']}</div>
+                <div class="flex-start flex-align-center my-attr">
+                    <a href="javascript:void(0);" class="flex-align-center follow"><i></i><span>{$data['follow_num']}</span></a>
+                    <a href="javascript:void(0);" class="flex-align-center fans"><i></i><span>{$data['fans_num']}</span></a>
+                </div>
+            </div>
+            <div class="flex-start flex-align-center attr-bottom">
+                <a href="javascript:void(0);">
+                    <span>{$data['follow_num']}</span>
+                    <p>关注数</p>
+                </a>
+                <a href="javascript:void(0);">
+                    <span>{$data['fans_num']}</span>
+                    <p>粉丝数</p>
+                </a>
+                <a href="javascript:void(0);">
+                    <span>{$data['post_num']}</span>
+                    <p>吐槽数</p>
+                </a>
+                <a href="javascript:void(0);">
+                    <span>{$data['comment_num']}</span>
+                    <p>评论数</p>
+                </a>
+                <a href="javascript:void(0);">
+                    <span>{$data['praise_num']}</span>
+                    <p>获赞数</p>
+                </a>
+            </div>
+        </div>
+        <a href="{:url('user/info')}" class="edit" id="edit-btn"><i></i></a>
+    </div>
+    <div class="user-head-r">
+        <!--活动-->
+    </div>
+</div>
+{else /}
+<!--对外展示-->
+<div class="flex-between flex-align-stretch box-width box-center user-head">
+    <div class="flex-between user-head-l my-home">
+        <div class="user-avatar">
+            <img src="{$data['avatar']['200']?:'/static/www/images/user_avatar.png'}" alt="">
+        </div>
+        <div class="user-attr">
+            <div class="flex-center flex-align-center attr-top">
+                <div class="user-name">{$data['name']}</div>
+            </div>
+            <div class="flex-center flex-align-center attr-bottom">
+                <a href="javascript:void(0);">
+                    <span>{$data['follow_num']}</span>
+                    <p>关注数</p>
+                </a>
+                <a href="javascript:void(0);">
+                    <span>{$data['fans_num']}</span>
+                    <p>粉丝数</p>
+                </a>
+                <a href="javascript:void(0);">
+                    <span>{$data['post_num']}</span>
+                    <p>吐槽数</p>
+                </a>
+                <a href="javascript:void(0);">
+                    <span>{$data['comment_num']}</span>
+                    <p>评论数</p>
+                </a>
+                <a href="javascript:void(0);">
+                    <span>{$data['praise_num']}</span>
+                    <p>获赞数</p>
+                </a>
+            </div>
+        </div>
+        <a href="javascript:void(0);" onclick="javascript:history.go(-1);" class="edit back" id="back-btn"><i></i></a>
+    </div>
+</div>
+{/if}
+
+<!--公告-->
+<div class="box-width box-center flex-start flex-align-center flex-align-stretch notice">
+    <div class="flex-align-center h my-home"><i></i></div>
+    <div class="list-content">
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+</div>

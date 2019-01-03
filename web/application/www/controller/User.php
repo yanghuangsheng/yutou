@@ -65,6 +65,7 @@ class User extends Base
     public function index($user_id)
     {
         $data = (new \app\www\logic\User)->oneUserinfo($user_id);
+        //print_r($data);
         $this->assign('data', $data);
 
         return $this->fetch();
@@ -76,6 +77,9 @@ class User extends Base
      */
     public function remind()
     {
+        $data = (new \app\www\logic\User)->myUserInfo();
+        $this->assign('data', $data);
+
         return $this->fetch();
     }
 
@@ -85,6 +89,9 @@ class User extends Base
      */
     public function collection()
     {
+        $data = (new \app\www\logic\User)->myUserInfo();
+        $this->assign('data', $data);
+
         return $this->fetch();
     }
 

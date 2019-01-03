@@ -54,6 +54,20 @@ class User extends Base
         return $data;
     }
 
+    /**
+     * 个人主页相关信息
+     * @return array|null|\PDOStatement|string|\think\Model
+     */
+    public function myUserInfo()
+    {
+        if(!isset($this->session('user')['id'])){
+            exception('页面不存在', 404);
+        }
+
+        return $this->oneUserInfo($this->session('user')['id']);
+    }
+
+
 
 
     /**
