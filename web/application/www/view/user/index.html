@@ -3,17 +3,76 @@
 <div class="box-width box-center flex-between flex-align-stretch tab-box">
     <div class="tab-box-l">
         <ul>
-            <li><a href="javascript:void(0);" class="active">我的贴子 <i></i></a></li>
             {if $data['isEdit']}
+            <li><a href="javascript:void(0);" class="active">我的贴子 <i></i></a></li>
             <li><a href="{:url('User/remind')}">我的消息 <i></i></a></li>
             <li><a href="{:url('User/collection')}">我的收藏 <i></i></a></li>
+            {else /}
+            <li><a href="javascript:void(0);" class="active">她的贴子 <i></i></a></li>
             {/if}
         </ul>
     </div>
-    <div class="tab-box-r">
-        <ul>
-            <li></li>
+    <!--.forum-box .forum-list .list-inline-->
+    <div class="tab-box-r forum-box user-forum" id="userForumContentBox">
+        <div class="forum-list" style="margin-top:10px;">
+        <ul class="list-inline" style="margin:20px">
+            {if $data['post_list']['count'] == 0}
+            <p style="text-align: center;font-size: 14px;background-color: #fafaf7; border-radius: 5px;">{$data['isEdit']?'你':'她'}还没有帖子哦</p>
+            {/if}
+            {volist name="data['post_list']['list']" id="value"}
+            <li>
+                <div class="flex-between flex-align-start h">
+                    <div class="title"><a href="{:url('Forum/item')}?id={$value['id']}" class="link">{$value['title']}</a></div>
+                    <div class="flex-start flex-align-center read"><i></i><span>{$value['browse_num']?:''}</span></div>
+                </div>
+                <div class="content">
+                    <div class="content-text">
+                        <a href="{:url('Forum/item')}?id={$value['id']}" class="description link">
+                            {$value['description']}
+                        </a>
+                        <a href="javascript:void(0);" class="look-all">阅读全文<i></i></a>
+                    </div>
+
+                    <div class="flex-between flex-start content-images" {if count($value['image_url']) == 0}style="display:none;"{/if}>
+                        {volist name="value['image_url']" id="img"}
+                        <p><a href="{:url('Forum/item')}?id={$value['id']}" class="link"><img src="{$img}" alt=""></a></p>
+                        {/volist}
+                    </div>
+                    <div class="box-hide content-all"></div>
+                </div>
+                <div class="end flex-between flex-align-center">
+                    <div class="end-l flex-start">
+                        <div class="flex-start flex-align-center attr">
+                            <a href="javascript:void(0);" class="flex-start flex-align-center fabulous"><i></i><span>{$value['praise_num']?:''}</span></a>
+                            <a href="javascript:void(0);" class="flex-start flex-align-center comment"><i></i><span>{$value['comment_num']?:''}</span></a>
+                            <a href="javascript:void(0);" class="flex-start flex-align-center collection"><i></i><span>{$value['collect_num']?:''}</span></a>
+                        </div>
+                        <div class="flex-start flex-align-center share">
+                            <div class="flex-align-center share-h"><i></i></div>
+                            <div class="flex-start flex-align-center share-list">
+                                <a href="javascript:void(0);" class="flex-align-center qq"><i></i></a>
+                                <a href="javascript:void(0);" class="flex-align-center wechat"><i></i></a>
+                                <a href="javascript:void(0);" class="flex-align-center more"><i></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="end-r flex-start flex-align-center">
+                        <!--<div class="user-avatar"><img src="{$value['user_avatar']['50']?:'/static/www/images/user_avatar_50.png'}"></div>-->
+                        <!--<span class="user-name">{$value['user_name']}</span>-->
+                    </div>
+                </div>
+            </li>
+            {/volist}
         </ul>
+        <!--加载更多-->
+        <div class="load-more user-forum {if $data['post_list']['count']<15} box-hide {/if}">
+            <!--加载动画-->
+            <div class="box-hide loading">
+                <img src="/static/www/images/loading-0.gif">
+            </div>
+            <a href="javascript:void(0);" class="loadUserForumBtn" data-start="{$data['post_list']['start_id']}" data-status="0" data-page="1">点击加载更多</a>
+        </div>
+        </div>
     </div>
 </div>
 

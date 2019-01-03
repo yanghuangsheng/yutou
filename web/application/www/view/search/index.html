@@ -1,0 +1,99 @@
+<div class="box-width box-center flex-between index-box">
+    <div class="index-left">
+        {if $data['news_list']['count'] == 0}
+        <div style="text-align: center;font-size: 14px;background-color: #fafaf7;border-radius: 5px;">
+            搜索不到相关的资讯
+        </div>
+        {else}
+        <div style="font-size: 18px;font-weight: 600;">
+            搜索到以下资讯......
+        </div>
+        <div class="index-news" style="margin-top:10px;">
+            <div class="news-content" id="searchContentBox">
+                <div class="news-list">
+                    <ul>
+                        {volist name="data['news_list']['list']" id="item"}
+                        <li class="flex-between flex-align-stretch inline">
+                            <div class="image">
+                                {if $item['image_url']}
+                                <a href="{:url('news/item')}?id={$item['id']}">
+                                    <img src="{$item['image_url']}" alt="">
+                                </a>
+                                {/if}
+                            </div>
+                            <div class="item-content">
+                                <p class="title"><a href="{:url('news/item')}?id={$item['id']}">{$item['title']}</a></p>
+                                <p class="description">{$item['description']}</p>
+                                <div class="flex-between info">
+                                    <div class="flex-start info-l">
+                                        <div class="inline author-name">{$item['author']?:$item['source_name']}</div>
+                                        <div class="inline date">{$item['published_time']}</div>
+                                    </div>
+                                    <div class="flex-start info-r">
+                                        <div class="inline flex-align-start read"><i></i> <span>{$item['browse_num']?:'0'}</span></div>
+                                        <div class="inline flex-align-center comment"><i></i> <span>{$item['comment_num']?:'0'}</span></div>
+                                        <div class="inline flex-align-center collection"><i></i> <span>{$item['collect_num']?:'0'}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </li>
+                        {/volist}
+                    </ul>
+
+                    <!--加载更多-->
+                    <div class="load-more {if $data['news_list']['count']<15} box-hide {/if}">
+                        <!--加载动画-->
+                        <div class="box-hide loading">
+                            <img src="/static/www/images/loading-0.gif">
+                        </div>
+                        <a href="javascript:void(0);" class="loadSearchBtn" data-start="{$data['news_list']['start_id']}" data-q="{$data['news_list']['q']}" data-status="0" data-page="1">点击加载资讯</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {/if}
+    </div>
+    <div class="index-right">
+        {include file="common/news_right" /}
+        <!--幸运号码-->
+        <div class="index-lottery">
+            <h3>幸运号码</h3>
+            <div class="lottery-list">
+                <ul>
+                    {volist name="data['lottery_list']" id="lott"}
+                    <li>
+                        <div class="flex-between lottery-title">
+                            <span>{$lott['name']}</span>
+                            <span>{$lott['no']}期</span>
+                        </div>
+                        <div class="flex-center code-list">
+                            {volist name="lott['open_code']" id="code"}
+                            <span>{$code}</span>
+                            {/volist}
+                            {volist name="lott['open_code_ext']" id="ext"}
+                            <span class="ext">{$ext}</span>
+                            {/volist}
+                        </div>
+                        <div class="flex-end more">
+                            <span class="details">详情</span>
+                        </div>
+                    </li>
+                    {/volist}
+
+                </ul>
+            </div>
+        </div>
+        <!--移动资讯-->
+        <div class="index-h5">
+            <h3>移动资讯</h3>
+            <div class="h5-content">
+                <p>
+                    <img src="/static/www/test/u344.jpg">
+                </p>
+                <p>打开手机浏览器，扫一扫看资讯</p>
+            </div>
+        </div>
+    </div>
+</div>

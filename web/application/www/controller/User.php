@@ -64,7 +64,12 @@ class User extends Base
      */
     public function index($user_id)
     {
-        $data = (new \app\www\logic\User)->oneUserinfo($user_id);
+        $user = new \app\www\logic\User;
+        $this->loadForumPostList($user);
+
+        $data = $user->oneUserinfo($user_id);
+        //用户帖子列表
+        $data['post_list'] = $user->userForumPost($data['id']);
         //print_r($data);
         $this->assign('data', $data);
 
@@ -175,5 +180,16 @@ class User extends Base
     protected function saveLogin()
     {
         return (new \app\www\logic\User)->login();
+    }
+
+    /**
+     * 用户帖子加载更多
+     * @param $user
+     */
+    protected function loadForumPostList($user)
+    {
+        if($this->isFormat('post_list')){
+            $user->formatUserForumPost();
+        }
     }
 }

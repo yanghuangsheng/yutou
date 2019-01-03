@@ -67,8 +67,44 @@ class User extends Base
         return $this->oneUserInfo($this->session('user')['id']);
     }
 
+    /**
+     * 获取用户和帖子
+     * @param $user_id
+     * @return mixed
+     */
+    public function userForumPost($user_id)
+    {
+        $service = new \app\www\service\ForumPost;
+        $param = $this->param();
+        isset($param['page']) || $param['page'] = 1;
+        $where = [
+            ['ForumPost.user_id','=', $user_id],
+        ];
+        isset($param['start_id']) && $where[] = ['ForumPost.id', '<=', $param['start_id']];
+        $data = $service->initWhere($where)->initLimit($param['page'])->getListData();
+        $data['start_id'] = $service->newsId();
+        $data['list'] = $data['list']->toArray();
+        foreach ($data['list'] as $key => &$value){
+            $value['description'] = clean_html($value['content'], 60);
+            $value['user_avatar'] = json_decode($value['user_avatar'], true);
 
+        }
+        return $data;
+    }
 
+    /**
+     * 加载更多帖子列表
+     */
+    public function formatUserForumPost()
+    {
+        if($this->isAjax()){
+            $userId = $this->param('user_id');
+            $data = $this->userForumPost($userId);
+
+            $this->resultJson(0, '', $data);
+
+        }
+    }
 
     /**
      * 修改用户信息

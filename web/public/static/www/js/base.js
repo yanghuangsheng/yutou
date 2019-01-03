@@ -7,6 +7,8 @@ $(function($) {
     newsItemJs();
     forumJs();
     forumItemJs();
+    searchJs();
+    userJs();
     
     /**
      * 发贴弹窗
@@ -269,6 +271,21 @@ $(function($) {
         }
     });
 
+    /**
+     * 搜索事件
+     */
+    $("#searchBtn").on('click', function () {
+        var oThis = $(this);
+        var qVal = oThis.parent().find('input[name="q"]').val();
+        var oUrl = oThis.data('url');
+
+        if(qVal){
+            qVal = encodeURIComponent(qVal);
+            window.location.href = oUrl + '?q=' + qVal;
+        }
+
+    });
+
 });
 
 /**
@@ -346,6 +363,64 @@ function indexJS(){
 
 }
 
+function searchJs() {
+    /**新闻加载**/
+    var loadList = $("#searchContentBox");
+    loadList.find('a.loadSearchBtn').on('click', function () {
+        var oThis = $(this);
+        var oPage = parseInt(oThis.data('page')) + 1;
+        var oQ = oThis.data('q');
+        var oStatus = oThis.data('status');
+        var oStartId = oThis.data('start');
+
+        var thisParent = oThis.parent().parent();
+
+        var cloneLiBox = thisParent.find('li').last();
+
+        if(oStatus == '1'){
+            return;
+        }
+        oThis.data('status', 1);
+        oThis.prev().show();
+
+        setTimeout(function(){
+            ajax( getHttpUrl(),{
+                'data': {page:oPage, start_id:oStartId, q:oQ, '_format_':'json'},
+                'type': 'GET',
+                'success': function (data) {
+                    //console.log(data);
+                    oThis.data('status', 0);
+                    oThis.data('page', oPage);
+                    oThis.prev().hide();
+                    if(data.code == 0){
+                        data = data.data;
+                        $.each(data, function (i, n) {
+                            thisParent.find('ul').append(cloneLiBox.clone());
+                            var oLi = thisParent.find('li').last();
+                            var oUrl = oLi.find('.image a').attr('href');
+                            var oId = oUrl.match(/\d+\b/);
+                            oUrl = oUrl.replace(oId, n.id);
+                            oLi.find('.image a').attr('href', oUrl);
+                            oLi.find('p.title a').attr('href', oUrl);
+                            oLi.find('.image img').attr('src', n.image_url);
+                            oLi.find('p.title a').html(n.title);
+                            oLi.find('p.description').html(n.description);
+                            oLi.find('p.author-name').html(n.author ? n.author : n.source_name);
+                            oLi.find('.read span').text(n.browse_num ? n.browse_num : '0');
+                            oLi.find('.comment span').text(n.comment_num ? n.comment_num : '0');
+                            oLi.find('.collection span').text(n.collect_num ? n.collect_num : '0');
+                        })
+                    }
+                },
+                'error': function () {
+
+                }
+
+            });
+        }, 1000);
+
+    })
+}
 
 /**
  * 新闻详情交互
@@ -689,6 +764,77 @@ function forumJs() {
     })
 }
 
+/**
+ * 用户交互
+ */
+function userJs() {
+    /**用户帖子加载**/
+    var loadForumList = $("#userForumContentBox");
+    loadForumList.find('a.loadUserForumBtn').on('click', function () {
+        var oThis = $(this);
+        var oPage = parseInt(oThis.data('page')) + 1;
+        var oStatus = oThis.data('status');
+        var oStartId = oThis.data('start');
+
+        var thisParent = oThis.parent().parent();
+
+        var cloneLiBox = thisParent.find('li').last();
+
+        if(oStatus == '1'){
+            return;
+        }
+        oThis.data('status', 1);
+        oThis.prev().show();
+
+        setTimeout(function(){
+            ajax( getHttpUrl(),{
+                'data': {page:oPage, start_id:oStartId,'_format_':'post_list'},
+                'type': 'GET',
+                'success': function (data) {
+                    //console.log(data);
+                    oThis.data('status', 0);
+                    oThis.data('page', oPage);
+                    oThis.prev().hide();
+                    if(data.code == 0){
+                        data = data.data;
+                        $.each(data, function (i, n) {
+                            thisParent.find('ul').append(cloneLiBox.clone());
+                            var oLi = thisParent.find('li').last();
+                            var oUrl = oLi.find('.title a').attr('href');
+                            var oId = oUrl.match(/\d+\b/);
+                            oUrl = oUrl.replace(oId, n.id);
+                            oLi.find('a.link').attr('href', oUrl);
+                            oLi.find('.title a').html(n.title);
+                            oLi.find('.read span').text(n.browse_num ? n.browse_num : '0');
+                            oLi.find('.content-images').html('');
+                            oLi.find('.description').html(n.description);
+                            $.each(n.image_url, function (i, d) {
+                                oLi.find('.content-images').append('<p>'+
+                                    '<a href="'+ oUrl +'" class="link">'+
+                                    '<img src="'+ d +'" alt="">'+
+                                    '</a>'+
+                                    '</p>');
+                            });
+
+                            oLi.find('.fabulous span').text(n.praise_num ? n.praise_num : '0');
+                            oLi.find('.comment span').text(n.comment_num ? n.comment_num : '0');
+                            oLi.find('.collection span').text(n.collect_num ? n.collect_num : '0');
+
+                            oLi.find('.user-avatar img').attr('src', n.user_avatar[50]);
+                            oLi.find('.user-name').text(n.user_name);
+
+                        })
+                    }
+                },
+                'error': function () {
+
+                }
+
+            });
+        }, 1000);
+
+    })
+}
 
 /**
  * 论坛详情交互

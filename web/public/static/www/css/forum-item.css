@@ -68,7 +68,7 @@
     font-weight: bolder;
 }
 .forum-box .forum-item .end-l .attr a{
-    margin-right: 10px;
+    margin-right: 20px;
 }
 .forum-box .forum-item .end-l .attr a:last-child{
     margin-right: 0px;
@@ -90,7 +90,7 @@
 }
 
 .forum-box .forum-item .share{
-    margin-left: 30px;
+    margin-left: 50px;
 }
 .forum-box .forum-item .share-list{
     margin-left: 8px;

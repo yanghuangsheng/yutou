@@ -32,6 +32,8 @@ class Common extends Base
         $this->order && $model = $model->order($this->order[0], $this->order[1]);
         //分页
         $this->limit && $model = $model->limit($this->limit);
+        //分组
+        $this->group && $model = $model->group($this->group);
 
         //查询请求
         $data['list'] = $model->select();
@@ -96,11 +98,12 @@ class Common extends Base
     /**
      * 获取新的一条数据，一个字段值
      * @param string $field
+     * @param array $map
      * @return mixed
      */
-    public function newsId($field = 'id'){
+    public function newsId($map = [], $field = 'id'){
 
-        return $this->model->order('id','desc')->value($field);
+        return $this->model->where($map)->order('id','desc')->value($field);
     }
 
     /**

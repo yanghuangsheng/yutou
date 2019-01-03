@@ -16,6 +16,7 @@ class Base
     protected $order = [];
     protected $limit = 0;
     protected $whereMap = [];
+    protected $group = '';
     protected $error = '';
 
     /**
@@ -38,6 +39,17 @@ class Base
 
         $this->limit = ($page - 1) * $listCount . ',' . $listCount;
 
+        return $this;
+    }
+
+    /**
+     * 设置分组
+     * @param $field 分组字段
+     * @return $this
+     */
+    public function initGroup($field)
+    {
+        $this->group = $field;
         return $this;
     }
 

@@ -28,6 +28,6 @@ class Base extends Controller
     //判断获取json
     protected function isFormat($text = 'json')
     {
-        return \think\facade\Request::get('_format_') == $text;
+        return \think\facade\Request::param('_format_') == $text;
     }
 }

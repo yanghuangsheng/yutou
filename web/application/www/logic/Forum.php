@@ -137,7 +137,7 @@ class Forum extends Base
         $data['collect'] = 0;
         //关注情况
         if(isset($this->session('user')['id'])){
-            $data['collect'] = (new \app\www\service\userFans)->checkFans($data['user_id'], $this->session('user')['id']);
+            $data['collect'] = (new \app\www\service\UserFans)->checkFans($data['user_id'], $this->session('user')['id']);
         }
 
         //更新浏览量
