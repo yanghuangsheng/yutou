@@ -63,7 +63,7 @@ class News extends Common
      */
     public function hotData($day = 7, $num = 15, $map = [])
     {
-        $newTime = $this->newsId('published_time');
+        $newTime = $this->newsId([], 'published_time');
         //发布时间最新的时间 7天前的时间
         $endTime = $newTime - $day * 24 * 360;
 
