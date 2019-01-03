@@ -257,13 +257,13 @@
             {if $data['related']['prev']}
             <div class="prev">
                 <p class="h">上一篇：</p>
-                <p class="title"><a href="{:url('News/item')}?={$data['related']['prev']['id']}">{$data['related']['prev']['title']}</a></p>
+                <p class="title"><a href="{:url('News/item')}?id={$data['related']['prev']['id']}">{$data['related']['prev']['title']}</a></p>
             </div>
             {/if}
             {if $data['related']['next']}
             <div class="next">
                 <p class="h">上一篇：</p>
-                <p class="title"><a href="{:url('News/item')}?={$data['related']['next']['id']}">{$data['related']['next']['title']}</a></p>
+                <p class="title"><a href="{:url('News/item')}?id={$data['related']['next']['id']}">{$data['related']['next']['title']}</a></p>
             </div>
             {/if}
         </div>
