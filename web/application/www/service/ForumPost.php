@@ -84,20 +84,24 @@ class ForumPost extends Common
     }
 
     /**
-     * 最近7天热门资讯
+     * 最近7天热门帖子
+     * @param int $day
      * @param int $num
+     * @param array $map
+     * @return mixed
      */
-    public function hotData($num = 7)
+    public function hotData($day = 7,$num = 15, $map = [])
     {
-        $newTime = $this->newsId('create_time');
+        $newTime = $this->newsId([],'create_time');
         //发布时间最新的时间 7天前的时间
-        $endTime = $newTime - $num * 24 * 360;
+        $endTime = $newTime - $day * 24 * 360;
 
         return $this->oneView()->where('ForumPost.create_time', '<=', $newTime)
-            ->where('ForumPost.create_time', '>=', $endTime)
+            //->where('ForumPost.create_time', '>=', $endTime)
             ->where('ForumPost.status', 1)
+            ->where($map)
             ->order('ForumPost.id', 'desc')
-            ->limit(15)->select();
+            ->limit($num)->select();
     }
 
     /**

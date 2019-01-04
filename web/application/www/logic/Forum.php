@@ -108,7 +108,7 @@ class Forum extends Base
      */
     public function sevenDayHotData()
     {
-        return (new ForumPost)->hotData();
+        return (new ForumPost)->hotData(30, 15, [['ForumPost.hot', '=', 1]]);
     }
 
     /**
