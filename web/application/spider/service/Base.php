@@ -24,6 +24,18 @@ class Base
         return $this->error;
     }
 
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+
+
     /**
      * 读取网页内容
      * @return bool
@@ -125,7 +137,8 @@ class Base
     public static function strToGBK($strText)
     {
         $encode = mb_detect_encoding($strText, array("ASCII","GB2312","GBK","UTF-8"));
-        if($encode == 'CP936'){
+
+        if($encode == 'CP936' || $encode == 'EUC-CN'){
             return mb_convert_encoding($strText, "UTF-8", "GBK");
         }
 
@@ -150,7 +163,11 @@ class Base
      */
     public function isSplicing($url)
     {
-        if(strpos($url,'http') === false && strpos($url,'https') === false && strpos($url,'//') === false){
+        if(strpos($url,'//') === 0){
+            return 'http:'.$url;
+        }
+
+        if(strpos($url,'http') === false && strpos($url,'https') === false){
             return $this->getHost().$url;
         }
 
