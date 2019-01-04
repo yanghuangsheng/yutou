@@ -168,6 +168,303 @@
 }
 
 
+/**收藏**/
+.tab-box .collect-tab{
+    margin: 0px 20px;
+    border-bottom: #CCCCCC solid 1px;
+}
+.tab-box .collect-tab ul{
+    height: 45px;
+    margin-left: 35px;
+}
+.tab-box .collect-tab li{
+    line-height: 45px;
+    margin: 0px 20px;
+}
+.tab-box .collect-tab li a{
+    display: block;
+    min-width: 50px;
+    height: 100%;
+    font-size: 16px;
+    color: #0C0C0C;
+    font-weight: bolder;
+    text-align: center;
+    position: relative;
+    text-decoration:none;
+}
+.tab-box .collect-tab li a i{
+    display: none;
+    position: absolute;
+    bottom: 0px;
+    height: 2px;
+    width: 100%;
+    background-color: #FFCC00;
+}
+.tab-box .collect-tab li.child a i{
+    display: block;
+}
+
+
+.tab-box .collect-content{
+
+}
+.tab-box .collect-content ul{
+    width: 760px;
+    margin: 0px 35px;
+}
+
+/*加载更多*/
+.tab-box .collect-content .load-more{
+    text-align: center;
+    margin-top: 30px;
+    border-bottom: #ffcc00 solid 0px;
+}
+.tab-box .collect-content .load-more .loading{
+    margin-bottom: 30px;
+}
+.tab-box .collect-content .load-more a{
+    display: block;
+    height: 45px;
+    line-height: 45px;
+    font-size: 14px;
+    color: #999999;
+    background-color: #f2f2f2;
+}
+
+/*收藏资讯*/
+.tab-box .collect-content .news-list li{
+    padding: 20px 80px 20px 0px;
+    border-bottom: #CCCCCC dashed 1px;
+}
+.tab-box .collect-content .news-list li:last-child{
+    border-bottom: 0px;
+}
+.tab-box .collect-content .news-list .image{
+    margin-right: 15px;
+    min-height: 150px;
+}
+.tab-box .collect-content .news-list .item-content{
+    flex-grow: 2;
+    position: relative;
+}
+.tab-box .collect-content .news-list .item-content a.delBtn{
+    position: absolute;
+    display: inline-block;
+    width:80px;
+    text-align: center;
+    top: 0px;
+    left:100%;
+    font-size: 14px;
+}
+.tab-box .collect-content .news-list .item-content .title{
+    font-size: 16px;
+    font-weight: bolder;
+}
+.tab-box .collect-content .news-list .item-content .description{
+    color: #999999;
+    font-size: 14px;
+    margin-top: 10px;
+}
+.tab-box .collect-content .news-list .item-content .info{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    font-size: 14px;
+    line-height: 25px;
+    color: #999999;
+}
+.tab-box .collect-content .news-list .item-content .info .inline{
+    margin-right: 20px;
+}
+.tab-box .collect-content .news-list .item-content .info-r .inline{
+    margin-right: 10px;
+}
+.tab-box .collect-content .news-list .item-content .info-l .inline:last-child{
+    margin-right: 0px;
+}
+.tab-box .collect-content .news-list .item-content .info-r i{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: url("../images/common.png");
+}
+.tab-box .collect-content .news-list .item-content .read i{
+    background-position: -150px -70px;
+}
+.tab-box .collect-content .news-list .item-content .comment i{
+    background-position: right -70px;
+}
+.tab-box .collect-content .news-list .item-content .collection i{
+    background-position: -125px -70px;
+}
+
+/*收藏帖子列表*/
+
+.tab-box .collect-content .post-list li{
+    position: relative;
+    padding: 20px 80px 0px 0px;
+    border-bottom: #e4e4e4 dashed 1px;
+}
+.tab-box .collect-content .post-list li:last-child{
+    /*border-bottom: 0px;*/
+}
+.tab-box .collect-content .post-list li a.delBtn{
+    position: absolute;
+    display: inline-block;
+    width:80px;
+    text-align: center;
+    top: 20px;
+    right: 0px;
+    font-size: 14px;
+}
+.tab-box .collect-content .post-list .title{
+    font-size: 16px;
+    font-weight: bolder;
+    flex-grow: 1;
+}
+.tab-box .collect-content .post-list .title a{
+    color: #0C0C0C;
+}
+.tab-box .collect-content .post-list .read i,.tab-box .collect-content .post-list .end-l i{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: url("../images/common.png") -150px -70px;
+}
+.tab-box .collect-content .post-list .read{
+    margin-left: 40px;
+    margin-right: 10px;
+    color: #999999;
+}
+.tab-box .collect-content .post-list .content {
+    margin-top: 10px;
+    font-size: 14px;
+}
+.tab-box .collect-content .post-list .content-text a.look-all{
+    color: #169bd5;
+}
+.tab-box .collect-content .post-list .content-text a.look-all i{
+    display: inline-block;
+    width: 15px;
+    height: 10px;
+    background: url("../images/common.png") -15px -215px;
+}
+.tab-box .collect-content .post-list .content-images{
+    margin-top: 15px;
+}
+.tab-box .collect-content .post-list .content-images p{
+    width: 30%;
+    max-height: 128px;
+    overflow: hidden;
+    line-height: 0px;
+    margin-right: 10px;
+}
+.tab-box .collect-content .post-list .content-images p:last-child{
+    margin-right: 0px;
+}
+.tab-box .collect-content .post-list .content-images p img{
+    width: 100%;
+}
+
+.tab-box .collect-content .post-list .end{
+    padding: 8px 0px;
+}
+.tab-box .collect-content .post-list .end-l .attr{
+    /*margin-right: 30px;*/
+    font-size: 12px;
+    font-weight: bolder;
+}
+.tab-box .collect-content .post-list .end-l .attr a{
+    margin-right: 20px;
+}
+.tab-box .collect-content .post-list .end-l .attr a:last-child{
+    margin-right: 0px;
+}
+.tab-box .collect-content .post-list .end-l .fabulous{
+    background-color: rgb(255, 237, 166);
+    border-radius: 5px;
+    padding: 3px 10px;
+    color: #999999;
+}
+.tab-box .collect-content .post-list .end-l .fabulous i{
+    background-position: 0px -190px;
+}
+.tab-box .collect-content .post-list .end-l .comment i{
+    background-position: -25px -190px;
+}
+.tab-box .collect-content .post-list .end-l .collection i{
+    background-position: -50px -190px;
+}
+
+.tab-box .collect-content .post-list .share{
+    margin-left: 40px;
+}
+.tab-box .collect-content .post-list .share-list{
+    margin-left: 8px;
+}
+.tab-box .collect-content .post-list .share-list a{
+    margin: 0px 2px;
+}
+.tab-box .collect-content .post-list .share-h i{
+    background-position: -75px -190px;
+}
+.tab-box .collect-content .post-list .qq i{
+    background-position: -100px -190px;
+}
+.tab-box .collect-content .post-list .wechat i{
+    background-position: -125px -190px;
+}
+.tab-box .collect-content .post-list .more i{
+    background-position: -50px -70px;
+}
+.tab-box .collect-content .post-list .date{
+    margin-left: 20px;
+    font-size: 14px;
+    color: #999999;
+}
+.tab-box .collect-content .post-list .end-r{
+    margin-right: 10px;
+}
+.tab-box .collect-content .post-list .user-avatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.tab-box .collect-content .post-list .user-avatar img{
+    width: 100%;
+    height: 100%;
+}
+
+
+.tab-box .collect-content .post-list .user-name{
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*基本资料*/
 .info-box{
     margin-top: 35px;

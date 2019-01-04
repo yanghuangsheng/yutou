@@ -359,6 +359,8 @@ function random_string($length = 8, $chars_range = 'alpha-number') {
 function friendlyDate($sTime,$type = 'mohu',$alt = 'false') {
     if (!$sTime)
         return '';
+    //如是不是时间戳
+    is_numeric($sTime) || $sTime = strtotime($sTime);
     //sTime=源时间，cTime=当前时间，dTime=时间差
     $cTime      =   time();
     $dTime      =   $cTime - $sTime;

@@ -202,7 +202,6 @@ class Forum extends Base
                 'id' => $param['id'],
                 'user_id' => $this->session('user')['id'],
                 'type' => 1
-
             ];
             $collect = new \app\www\service\UserCollection;
             if($collect->addCollect($data)){

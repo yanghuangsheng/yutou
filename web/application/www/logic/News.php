@@ -102,7 +102,7 @@ class News extends Base
     }
 
     /**
-     * 收藏新闻
+     * 收藏新闻 （弃用 点赞同时收藏）
      */
     public function collect()
     {
@@ -173,11 +173,23 @@ class News extends Base
     {
         if($this->isAjax() && $this->isPost() && $this->param('_format_') == 'praise'){
             $param = $this->param();
+            $userId = $this->session('user')['id'];
             $praise = new \app\www\service\PortalNewsPraise;
-            if(false == $praise->addUserPraise(['news_id'=>$param['id'], 'user_id'=>$this->session('user')['id']])){
+            if(false == $praise->addUserPraise(['news_id'=>$param['id'], 'user_id'=>$userId])){
                 $this->resultJson(-1, $praise->getError());
             }
-            if($data = (new \app\www\service\PortalNewsAttr)->saveNum($param, 'praise')){
+            $newsAttr = new \app\www\service\PortalNewsAttr;
+            if($data = $newsAttr->saveNum($param, 'praise')){
+                //同时收藏
+                $data = [
+                    'id' => $param['id'],
+                    'user_id' => $userId,
+                    'type' => 0
+                ];
+                (new \app\www\service\UserCollection)->addCollect($data);
+                $newsAttr->saveNum($param, 'collect');
+
+
                 $this->resultJson(0, '点赞成功');
             }
 

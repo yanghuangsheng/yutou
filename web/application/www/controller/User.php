@@ -94,7 +94,19 @@ class User extends Base
      */
     public function collection()
     {
-        $data = (new \app\www\logic\User)->myUserInfo();
+        $user = new \app\www\logic\User;
+        $this->loadCollectNewsList($user);
+        $this->loadCollectPostList($user);
+        $this->delCollection($user);
+
+
+        $data = $user->myUserInfo();
+        $data['collect'] = [
+            'news' => $user->collectNewsList($data['id']),
+            'post' => $user->collectPostList($data['id']),
+        ];
+
+        //print_r($data);
         $this->assign('data', $data);
 
         return $this->fetch();
@@ -190,6 +202,37 @@ class User extends Base
     {
         if($this->isFormat('post_list')){
             $user->formatUserForumPost();
+        }
+    }
+
+    /**
+     * 加载更多收藏新闻
+     * @param $user
+     */
+    protected function loadCollectNewsList($user){
+        if($this->isFormat('news_list')){
+            $user->formatCollectNewsList();
+        }
+    }
+
+    /**
+     * 加载更多收藏新闻
+     * @param $user
+     */
+    protected function loadCollectPostList($user){
+        if($this->isFormat('post_list')){
+            $user->formatCollectPostList();
+        }
+    }
+
+    /**
+     * 删除收藏
+     * @param $user
+     */
+    protected function delCollection($user)
+    {
+        if($this->isFormat('del_collect')){
+            $user->formatCollectDel();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace app\www\service;
 class Base
 {
     protected $model; //当前数据模型
+    protected $view = ''; //特殊模型
     protected $keyId = 'id'; //模型默订主键
     protected $order = [];
     protected $limit = 0;

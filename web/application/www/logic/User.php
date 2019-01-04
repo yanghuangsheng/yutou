@@ -107,6 +107,108 @@ class User extends Base
     }
 
     /**
+     * 收藏新闻列表
+     * @param $user_id
+     * @return mixed
+     */
+    public function collectNewsList($user_id){
+        $userCollect = new \app\www\service\UserCollection;
+        $param = $this->param();
+        isset($param['page']) || $param['page'] = 1;
+        $where = [
+            ['UserCollection.user_id','=', $user_id],
+        ];
+        isset($param['start_id']) && $where[] = ['UserCollection.id', '<=', $param['start_id']];
+        $data = $userCollect->newsView()->initWhere($where)->initLimit($param['page'])->getListData();
+        $data['start_id'] = $userCollect->newsId();
+
+        $data['list'] = $data['list']->toArray();
+        foreach ($data['list'] as $key => &$value){
+            $value['description'] = clean_html($value['description'], 60);
+            $value['create_time'] = friendlyDate($value['create_time']);
+        }
+
+        return $data;
+
+    }
+
+    /**
+     * 加载更多收藏新闻
+     */
+    public function formatCollectNewsList()
+    {
+        if($this->isAjax()){
+            $userId = $this->param('user_id');
+            $data = $this->collectNewsList($userId);
+
+            $this->resultJson(0, '', $data);
+
+        }
+    }
+
+    /**
+     * 收藏帖子列表
+     * @param $user_id
+     * @return mixed
+     */
+    public function collectPostList($user_id){
+        $userCollect = new \app\www\service\UserCollection;
+        $param = $this->param();
+        isset($param['page']) || $param['page'] = 1;
+        $where = [
+            ['UserCollection.user_id','=', $user_id],
+        ];
+        isset($param['start_id']) && $where[] = ['UserCollection.id', '<=', $param['start_id']];
+        $data = $userCollect->postView()->initWhere($where)->initLimit($param['page'])->getListData();
+        $data['start_id'] = $userCollect->newsId();
+        $data['list'] = $data['list']->toArray();
+        foreach ($data['list'] as $key => &$value){
+            $value['description'] = clean_html($value['content'], 60);
+            $value['user_avatar'] = json_decode($value['user_avatar'], true);
+            $value['image_url'] = json_decode($value['image_url'], true);
+            $value['create_time'] = friendlyDate($value['create_time']);
+
+        }
+        return $data;
+
+    }
+
+    /**
+     * 加载更多收藏帖子
+     */
+    public function formatCollectPostList()
+    {
+        if($this->isAjax()){
+            $userId = $this->param('user_id');
+            $data = $this->collectPostList($userId);
+
+            $this->resultJson(0, '', $data);
+        }
+    }
+
+    /**
+     * 删除收藏
+     */
+    public function formatCollectDel()
+    {
+        if($this->isAjax()) {
+            $id = $this->param('id');
+            $data = [
+                'id' => $id,
+                'user_id' => $this->session('user')['id'],
+            ];
+            $userCollect = new \app\www\service\UserCollection;
+            if($userCollect->checkDel($data)){
+                $this->resultJson(0, '删除成功');
+            }
+
+            $this->resultJson(0, '删除失败');
+        }
+    }
+
+
+
+    /**
      * 修改用户信息
      */
     public function saveInfo()

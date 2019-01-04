@@ -57,6 +57,7 @@ class News extends Common
 
     /**
      * 最近7天热门资讯
+     * @param int $day
      * @param int $num
      * @param array $map
      * @return mixed

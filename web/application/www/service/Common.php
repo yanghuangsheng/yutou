@@ -25,6 +25,10 @@ class Common extends Base
         else{
             $model = $this->model;
         }
+        if($this->view) {
+            $model = $this->view;
+            $this->view = '';
+        }
 
         //条件
         $this->whereMap && $model = $model->where($this->whereMap);

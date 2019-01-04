@@ -10,9 +10,114 @@
             {/if}
         </ul>
     </div>
-    <div class="tab-box-r">
-        <ul>
-            <li></li>
-        </ul>
+    <div class="tab-box-r" id="userCollectList">
+        <div class="collect-tab">
+            <ul class="flex-start flex-align-stretch">
+                <li class="child"><a href="javascript:void(0);">资讯<i></i></a></li>
+                <li><a href="javascript:void(0);">论坛<i></i></a></li>
+            </ul>
+        </div>
+        <div class="collect-content">
+            <div class="list-inline news-list">
+                <ul>
+                {volist name="data['collect']['news']['list']" id="item"}
+                <li class="flex-between flex-align-stretch inline">
+                    <div class="image">
+                        {if $item['image_url']}
+                        <a href="{:url('news/item')}?id={$item['news_id']}">
+                            <img src="{$item['image_url']}" alt="">
+                        </a>
+                        {/if}
+                    </div>
+                    <div class="item-content">
+                        <p class="title"><a href="{:url('news/item')}?id={$item['news_id']}">{$item['title']}</a></p>
+                        <p class="description">{$item['description']}</p>
+                        <div class="flex-between info">
+                            <div class="flex-start info-l">
+                                <!--<div class="inline author-name"></div>-->
+                                <div class="inline date">{$item['create_time']} 收藏</div>
+                            </div>
+                            <div class="flex-start info-r">
+                                <div class="inline flex-align-start read"><i></i> <span>{$item['browse_num']?:'0'}</span></div>
+                                <div class="inline flex-align-center comment"><i></i> <span>{$item['comment_num']?:'0'}</span></div>
+                                <div class="inline flex-align-center collection"><i></i> <span>{$item['collect_num']?:'0'}</span></div>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0);" data-id="{$item['id']}" data-type="news" class="delBtn">删除收藏</a>
+                    </div>
+                </li>
+                {/volist}
+                </ul>
+                <!--加载更多-->
+                <div class="load-more {if $data['collect']['news']['count']<15} box-hide {/if}">
+                    <!--加载动画-->
+                    <div class="box-hide loading">
+                        <img src="/static/www/images/loading-0.gif">
+                    </div>
+                    <a href="javascript:void(0);" class="loadCollectNewsBtn" data-user="{$data['id']}" data-start="{$data['collect']['news']['start_id']}" data-status="0" data-page="1">加载更多</a>
+                </div>
+            </div>
+            <div class="list-inline post-list box-hide">
+                <ul>
+                    {volist name="data['collect']['post']['list']" id="value"}
+                    <li>
+                        <div class="flex-between flex-align-start h">
+                            <div class="title"><a href="{:url('Forum/item')}?id={$value['id']}" class="link">{$value['title']}</a></div>
+                            <div class="flex-start flex-align-center read"><i></i><span>{$value['browse_num']?:''}</span></div>
+                        </div>
+                        <div class="content">
+                            <div class="content-text">
+                                <a href="{:url('Forum/item')}?id={$value['id']}" class="description link">
+                                    {$value['description']}
+                                </a>
+                                <a href="javascript:void(0);" class="look-all">阅读全文<i></i></a>
+                            </div>
+
+                            <div class="flex-between flex-start content-images" {if count($value['image_url']) == 0}style="display:none;"{/if}>
+                                {volist name="value['image_url']" id="img"}
+                                <p><a href="{:url('Forum/item')}?id={$value['id']}" class="link"><img src="{$img}" alt=""></a></p>
+                                {/volist}
+                            </div>
+                            <div class="box-hide content-all"></div>
+                        </div>
+                        <div class="end flex-between flex-align-center">
+                            <div class="end-l flex-start">
+                                <div class="flex-start flex-align-center attr">
+                                    <a href="javascript:void(0);" class="flex-start flex-align-center fabulous"><i></i><span>{$value['praise_num']?:''}</span></a>
+                                    <a href="javascript:void(0);" class="flex-start flex-align-center comment"><i></i><span>{$value['comment_num']?:''}</span></a>
+                                    <a href="javascript:void(0);" class="flex-start flex-align-center collection"><i></i><span>{$value['collect_num']?:''}</span></a>
+                                </div>
+                                <div class="flex-start flex-align-center share">
+                                    <div class="flex-align-center share-h"><i></i></div>
+                                    <div class="flex-start flex-align-center share-list">
+                                        <a href="javascript:void(0);" class="flex-align-center qq"><i></i></a>
+                                        <a href="javascript:void(0);" class="flex-align-center wechat"><i></i></a>
+                                        <a href="javascript:void(0);" class="flex-align-center more"><i></i></a>
+                                    </div>
+                                </div>
+                                <div class="flex-start flex-align-center date">
+                                    {$value['create_time']} 收藏
+                                </div>
+                            </div>
+                            <div class="end-r flex-start flex-align-center">
+                                <div class="user-avatar"><img src="{$value['user_avatar']['50']?:'/static/www/images/user_avatar_50.png'}"></div>
+                                <span class="user-name">{$value['user_name']}</span>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0);" data-id="{$value['id']}" data-type="post" class="delBtn">删除收藏</a>
+                    </li>
+                    {/volist}
+                </ul>
+                <!--加载更多-->
+                <div class="load-more {if $data['collect']['post']['count']<15} box-hide {/if}">
+                    <!--加载动画-->
+                    <div class="box-hide loading">
+                        <img src="/static/www/images/loading-0.gif">
+                    </div>
+                    <a href="javascript:void(0);" class="loadCollectPostBtn" data-user="{$data['id']}" data-start="{$data['collect']['post']['start_id']}" data-status="0" data-page="1">加载更多</a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

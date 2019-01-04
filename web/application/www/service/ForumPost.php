@@ -65,10 +65,6 @@ class ForumPost extends Common
             ->view('ForumPostAttr', 'browse_num,praise_num,collect_num,comment_num', 'ForumPostAttr.post_id = ForumPost.id', 'LEFT');
     }
 
-
-
-
-
     /**
      * 上一条 下一条
      * @param $id

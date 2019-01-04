@@ -822,6 +822,177 @@ function userJs() {
 
                             oLi.find('.user-avatar img').attr('src', n.user_avatar[50]);
                             oLi.find('.user-name').text(n.user_name);
+                        })
+                    }
+                },
+                'error': function () {
+
+                }
+
+            });
+        }, 1000);
+
+    });
+
+    /**我的收藏 tab**/
+    var userCollect = $("#userCollectList");
+    userCollect.find('.collect-tab li').on('click', function () {
+        var oThis = $(this);
+        var oIndex = oThis.index();
+        oThis.addClass('child');
+        oThis.siblings().removeClass('child');
+
+        userCollect.find('.collect-content .list-inline').eq(oIndex).show().siblings().hide();
+    });
+    /**删除帖子**/
+    userCollect.on('click', 'a.delBtn', function () {
+        var oThis = $(this);
+        var oType = oThis.data('type');
+        var oId = oThis.data('id');
+        var oStatus = oThis.data('status');
+        if(oStatus == '1'){
+            return;
+        }
+        layer.confirm('确定删除吗？',{icon: 3, title:false}, function (index) {
+            oThis.data('status', 1);
+            ajax(getHttpUrl(), {
+                'data': {id: oId, '_format_': 'del_collect'},
+                'type': 'GET',
+                'success': function (data) {
+                    oThis.data('status', 0);
+                    if (data.code == 0) {
+                        if (oType == 'news') {
+                            oThis.parent().parent().remove();
+                            layer.close(index);
+                            return;
+                        }
+                        oThis.parent().remove();
+                        layer.close(index);
+                        return;
+                    }
+                }
+            });
+        });
+
+
+    });
+    /**收藏新闻加载**/
+    userCollect.find('a.loadCollectNewsBtn').on('click', function () {
+        var oThis = $(this);
+        var oPage = parseInt(oThis.data('page')) + 1;
+        var oStatus = oThis.data('status');
+        var oStartId = oThis.data('start');
+        var oUser = oThis.data('user');
+
+        var thisParent = oThis.parent().parent();
+
+        var cloneLiBox = thisParent.find('li').last();
+
+        if(oStatus == '1'){
+            return;
+        }
+        oThis.data('status', 1);
+        oThis.prev().show();
+
+        setTimeout(function(){
+            ajax( getHttpUrl(),{
+                'data': {page:oPage, start_id:oStartId, user_id:oUser, '_format_':'news_list'},
+                'type': 'GET',
+                'success': function (data) {
+                    //console.log(data);
+                    oThis.data('status', 0);
+                    oThis.data('page', oPage);
+                    oThis.prev().hide();
+                    if(data.code == 0){
+                        data = data.data;
+                        $.each(data, function (i, n) {
+                            thisParent.find('ul').append(cloneLiBox.clone());
+                            var oLi = thisParent.find('li').last();
+                            var oUrl = oLi.find('.image a').attr('href');
+                            var oId = oUrl.match(/\d+\b/);
+                            oUrl = oUrl.replace(oId, n.id);
+                            oLi.find('.image a').attr('href', oUrl);
+                            oLi.find('p.title a').attr('href', oUrl);
+                            oLi.find('.image img').attr('src', n.image_url);
+                            oLi.find('p.title a').html(n.title);
+                            oLi.find('p.description').html(n.description);
+                            //oLi.find('p.author-name').html(n.author ? n.author : n.source_name);
+
+                            oLi.find('.date').text(n.create_time + ' 收藏');
+                            oLi.find('a.delBtn').attr('data-id', n.id);
+
+                            oLi.find('.read span').text(n.browse_num ? n.browse_num : '0');
+                            oLi.find('.comment span').text(n.comment_num ? n.comment_num : '0');
+                            oLi.find('.collection span').text(n.collect_num ? n.collect_num : '0');
+                        })
+                    }
+                },
+                'error': function () {
+
+                }
+
+            });
+        }, 1000);
+
+    });
+    /**
+     * 收藏帖子加载
+     */
+    userCollect.find('a.loadCollectPostBtn').on('click', function () {
+        var oThis = $(this);
+        var oPage = parseInt(oThis.data('page')) + 1;
+        var oStatus = oThis.data('status');
+        var oStartId = oThis.data('start');
+        var oUser = oThis.data('user');
+
+        var thisParent = oThis.parent().parent();
+
+        var cloneLiBox = thisParent.find('li').last();
+
+        if(oStatus == '1'){
+            return;
+        }
+        oThis.data('status', 1);
+        oThis.prev().show();
+
+        setTimeout(function(){
+            ajax( getHttpUrl(),{
+                'data': {page:oPage, start_id:oStartId,user_id:oUser,'_format_':'post_list'},
+                'type': 'GET',
+                'success': function (data) {
+                    //console.log(data);
+                    oThis.data('status', 0);
+                    oThis.data('page', oPage);
+                    oThis.prev().hide();
+                    if(data.code == 0){
+                        data = data.data;
+                        $.each(data, function (i, n) {
+                            thisParent.find('ul').append(cloneLiBox.clone());
+                            var oLi = thisParent.find('li').last();
+                            var oUrl = oLi.find('.title a').attr('href');
+                            var oId = oUrl.match(/\d+\b/);
+                            oUrl = oUrl.replace(oId, n.id);
+                            oLi.find('a.link').attr('href', oUrl);
+                            oLi.find('.title a').html(n.title);
+                            oLi.find('.read span').text(n.browse_num ? n.browse_num : '0');
+                            oLi.find('.content-images').html('');
+                            oLi.find('.description').html(n.description);
+                            $.each(n.image_url, function (i, d) {
+                                oLi.find('.content-images').append('<p>'+
+                                    '<a href="'+ oUrl +'" class="link">'+
+                                    '<img src="'+ d +'" alt="">'+
+                                    '</a>'+
+                                    '</p>');
+                            });
+
+                            oLi.find('.fabulous span').text(n.praise_num ? n.praise_num : '0');
+                            oLi.find('.comment span').text(n.comment_num ? n.comment_num : '0');
+                            oLi.find('.collection span').text(n.collect_num ? n.collect_num : '0');
+
+                            oLi.find('.date').text(n.create_time + ' 收藏');
+                            oLi.find('a.delBtn').attr('data-id', n.id);
+                            oLi.find('.user-avatar img').attr('src', n.user_avatar[50]);
+                            oLi.find('.user-name').text(n.user_name);
 
                         })
                     }
@@ -833,7 +1004,8 @@ function userJs() {
             });
         }, 1000);
 
-    })
+    });
+
 }
 
 /**
