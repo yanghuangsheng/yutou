@@ -153,7 +153,8 @@ function articleContent($content, $path)
  */
 function getFirstImg($obj,$defaultImg='') {
     if (isset ( $obj )) {
-        if (preg_match_all( '<img.*src=["](.*?)["].*?>', $obj, $regs )) { // 用正则表达式匹配出所有图片
+        $pattern = '/<img.*?src=[\'|"](.*?(?:[\.gif|\.jpg|\.png|\.jpeg|\.bmp]))[\'|"].*?[\/]?>/i';
+        if (preg_match_all( $pattern, $obj, $regs )) { // 用正则表达式匹配出所有图片
             return  $regs [1][0];//返回获取第一幅图像地址
         } else {
 
