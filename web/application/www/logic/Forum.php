@@ -8,7 +8,9 @@
 
 namespace app\www\logic;
 
+use app\common\model\ForumPostContent;
 use \app\www\service\ForumPost;
+use app\www\service\ForumPostComment;
 
 class Forum extends Base
 {
@@ -54,6 +56,25 @@ class Forum extends Base
 
             $this->resultJson(0, '', $data);
 
+        }
+    }
+
+    /**
+     * 用户信息
+     */
+    public function formatUser(){
+        if($this->isAjax()){
+            $userId = $this->param('id');
+            $data = (new \app\www\service\User)->getOneData($userId);
+            $data['synopsis'] ||  $data['synopsis'] = '她好懒，什么都没有留下 ...';
+
+            $data['is_fans'] = 0;
+
+            //是否已关注
+            if(isset($this->session('user')['id'])){
+                $data['is_fans'] = (new \app\www\service\UserFans)->checkFans($data['id'], $this->session('user')['id']);
+            }
+            $this->resultJson(0, '', $data);
         }
     }
 
@@ -147,6 +168,7 @@ class Forum extends Base
 
     }
 
+
     /**
      * 帖子评论
      * @return mixed
@@ -191,6 +213,21 @@ class Forum extends Base
     }
 
     /**
+     * 加载帖子详情
+     */
+    public function formatItem()
+    {
+        if($this->isAjax()){
+            $postId = $this->param('id');
+            $data = (new \app\www\service\ForumPostContent)->getField([['post_id', '=', $postId]], 'content');
+            //更新浏览量
+            (new \app\www\service\ForumPostAttr)->saveNum(['id'=>$postId], 'browse');
+
+            $this->resultJson(0, '', $data);
+        }
+    }
+
+    /**
      * 收藏帖子
      */
     public function collect()
@@ -217,12 +254,16 @@ class Forum extends Base
      */
     public function userFans()
     {
-        if($this->isAjax() && $this->isPost() && $this->param('_format_') == 'fans'){
+        if($this->isAjax() && $this->isPost()){
             $param = $this->param();
+            $oUserId = $this->session('user')['id'];
             $userFans = new \app\www\service\UserFans;
-            if(false == $userFans->addFans(['id'=>$param['user_id'], 'user_id'=>$this->session('user')['id']])){
-                $this->resultJson(-1, '关注失败');
+            if(false == $userFans->addFans(['id'=>$param['user_id'], 'user_id'=>$oUserId])){
+                $this->resultJson(-1, $userFans->getError()?$userFans->getError():'关注失败');
             }
+            $user = new \app\www\service\UserAttr;
+            $user->saveNum(['id'=>$param['user_id']], 'fans');
+            $user->saveNum(['id'=>$oUserId], 'follow');
             $this->resultJson(0, '关注成功');
 
         }
@@ -233,7 +274,7 @@ class Forum extends Base
      */
     public function formatPraise()
     {
-        if($this->isAjax() && $this->isPost() && $this->param('_format_') == 'praise'){
+        if($this->isAjax() && $this->isPost()){
             $param = $this->param();
             $praise = new \app\www\service\ForumPostPraise;
             if(false == $praise->addUserPraise(['post_id'=>$param['id'], 'user_id'=>$this->session('user')['id']])){
@@ -255,7 +296,7 @@ class Forum extends Base
      */
     public function formatComment()
     {
-        if($this->isAjax() && $this->isPost() && $this->param('_format_') == 'comment'){
+        if($this->isAjax() && $this->isPost()){
 
             $param = $this->param();
             //提交数据验证 -> 暂缺
@@ -281,7 +322,7 @@ class Forum extends Base
      */
     public function formatReplyComment()
     {
-        if($this->isAjax() && $this->isPost() && $this->param('_format_') == 'reply_comment') {
+        if($this->isAjax() && $this->isPost()) {
             $param = $this->param();
             //提交数据验证 -> 暂缺
 
@@ -302,7 +343,7 @@ class Forum extends Base
      */
     public function formatCommentPraise()
     {
-        if($this->isAjax() && $this->isPost() && $this->param('_format_') == 'comment_praise') {
+        if($this->isAjax() && $this->isPost()) {
             $param = $this->param();
             //提交数据验证 -> 暂缺
 
@@ -330,7 +371,7 @@ class Forum extends Base
      */
     public function formatCommentTread()
     {
-        if($this->isAjax() && $this->isPost() && $this->param('_format_') == 'comment_tread') {
+        if($this->isAjax() && $this->isPost()) {
             $param = $this->param();
             //提交数据验证 -> 暂缺
 

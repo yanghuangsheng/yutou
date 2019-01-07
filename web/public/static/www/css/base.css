@@ -633,6 +633,74 @@ body {font: 12px/1.5 'Hiragino Sans GB','Microsoft Yahei',tahoma,sans-serif;}
 }
 
 
+#showUserBox{
+    position: absolute;
+    min-width: 300px;
+    min-height:170px;
+    border-radius: 5px;
+    border:#e4e4e4 solid 1px;
+    background-color: #FFFFFF;
+}
+#showUserBox .user-box{
+    margin: 15px 10px 15px 8px;
+}
+#showUserBox .user-avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+#showUserBox .user-avatar img{
+    width: 50px;
+    height: 50px;
+}
+#showUserBox .user-name{
+    flex-grow: 1;
+    margin-left: 8px;
+}
+#showUserBox .user-name p.name{
+    margin-top: 8px;
+}
+#showUserBox .user-name p.name a{
+    font-size: 14px;
+    font-weight: 700;
+    color: #0C0C0C;
+}
+#showUserBox .user-name p.synopsis{
+    font-size: 12px;
+    color: #8c8c8c;
+}
+#showUserBox .content-box .inline{
+    margin: 0px 20px;
+}
+#showUserBox .content-box .inline p{
+    text-align: center;
+}
+#showUserBox .content-box .name{
+    font-size: 12px;
+    color: #8c8c8c;
+}
+#showUserBox .content-box .num{
+    font-size: 14px;
+    font-weight: 700;
+    color: #0C0C0C;
+    margin-top: 8px;
+}
+#showUserBox .followBtn{
+    margin:15px 20px;
+    background-color: #00a0e9;
+    color:#FFFFFF;
+    display: block;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 5px;
+}
+#showUserBox .followBtn.active{
+    background-color: #7a7a7a;
+}
+
+
 
 
 

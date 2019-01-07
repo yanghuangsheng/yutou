@@ -285,6 +285,81 @@ $(function($) {
         }
 
     });
+    /**
+     * 用户展示
+     */
+    var showUserOut;
+    $(".showUserInfo").hover(function () {
+        var oThis = $(this);
+        var offset = oThis.offset();
+        var oId = oThis.data('id');
+        var oHome = oThis.data('home');
+        clearTimeout(showUserOut);
+        $("#showUserBox").remove();
+        ajax(getHttpUrl(),{
+            'data': {'id':oId, '_format_':'show_user'},
+            'success': function (data) {
+                if(data.code == 0){
+                    var data = data.data;
+                    var active = '';
+                    var active_txt = '+关注';
+                    if(data.is_fans){
+                        active = 'active';
+                        active_txt = '已关注';
+                    }
+                    $('body').append('<div id="showUserBox">' +
+                        '<div class="flex-start flex-align-start user-box">' +
+                            '<div class="user-avatar"><a href="'+ oHome +'"><img src="'+ data.avatar[50] +'"></a></div>' +
+                            '<div class="user-name"><p class="name"><a href="'+ oHome +'">'+ data.name +'</a></p><p class="synopsis">'+ data.synopsis +'</p></div>' +
+                        '</div>' +
+                        '<div class="flex-center flex-align-center content-box">' +
+                            '<div class="inline"><p class="name">ta粉丝</p><p class="num">'+ data.fans_num +'</p></div>' +
+                            '<div class="inline"><p class="name">ta关注</p><p class="num">'+ data.follow_num +'</p></div>' +
+                        '</div>' +
+                        '<a class="followBtn '+ active +'" href="javascript:void(0);" data-status="'+ data.is_fans +'" data-id="'+ data.id +'">'+ active_txt +'</a>' +
+                        '</div>');
+                    $("#showUserBox").offset({top:offset.top + oThis.height() + 8, left:offset.left});
+                    $("#showUserBox").hover(function () {
+                        clearTimeout(showUserOut);
+                    },function () {
+                        showUserOut = setTimeout(function(){
+                            $("#showUserBox").remove();
+                        },2000);
+                    });
+                    //关注
+                    $("#showUserBox  a.followBtn").on('click', function () {
+                        var oThis = $(this);
+                        var oStatus = oThis.data('status');
+                        var oId = oThis.data('id');
+                        if(isLogin() == false || oStatus == '1'){
+                            return;
+                        }
+                        if(oId == isLogin(1).id){
+                            return;
+                        }
+                        oThis.data('status',1);
+                        ajax(getHttpUrl(), {
+                            'data': {'user_id':oId, '_format_':'fans'},
+                            'success': function (data) {
+                                if(data.code == 0){
+                                    oThis.text('已关注');
+                                    oThis.addClass('active');
+                                    return;
+                                }
+                                oThis.data('status',0);
+                            }
+                        })
+                    });
+                    return;
+                }
+            }
+        });
+    },function () {
+        showUserOut = setTimeout(function(){
+            $("#showUserBox").remove();
+        },1000);
+
+    });
 
 });
 
@@ -428,9 +503,6 @@ function searchJs() {
 function newsItemJs(){
     /**点赞**/
     $("#newsPraiseBtn").on('click', function () {
-        if(isLogin() == false){
-            return;
-        }
         var oThis = $(this);
         var oStatus = oThis.data('status');
         var oNum = oThis.find('.number').text();
@@ -731,6 +803,13 @@ function forumJs() {
                             var oUrl = oLi.find('.title a').attr('href');
                             var oId = oUrl.match(/\d+\b/);
                             oUrl = oUrl.replace(oId, n.id);
+
+                            oLi.find('.content-all').hide();
+                            oLi.find('.content-all').siblings().show();
+                            oLi.find('.content-body').html('');
+                            oLi.find('.content-all-end date').text('发布于 '+ n.create_time);
+                            oLi.find('.look-all').attr('data-id', n.id);
+
                             oLi.find('a.link').attr('href', oUrl);
                             oLi.find('.title a').html(n.title);
                             oLi.find('.read span').text(n.browse_num ? n.browse_num : '0');
@@ -761,6 +840,33 @@ function forumJs() {
             });
         }, 1000);
 
+    })
+
+    /**阅读全文**/
+    loadForumList.on('click', 'a.look-all', function () {
+        var oThis = $(this);
+        var postId = oThis.data('id');
+        var oParent = oThis.parent().parent().find('.content-all');
+        if(oParent.find('.content-body').html() == ''){
+            ajax(getHttpUrl(), {
+                'data': {id:postId, '_format_':'item'},
+                'type': 'GET',
+                'success': function (data) {
+                    if(data.code == 0){
+                        oParent.find('.content-body').html(data.data);
+                    }
+                }
+            });
+        }
+        oParent.toggle();
+        oParent.siblings().toggle();
+    });
+    /**收起全文**/
+    loadForumList.on('click', 'a.look-no', function () {
+        var oThis = $(this);
+        var oParent = oThis.parent().parent();
+        oParent.toggle();
+        oParent.siblings().toggle();
     })
 }
 

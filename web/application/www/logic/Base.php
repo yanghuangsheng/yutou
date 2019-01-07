@@ -140,7 +140,7 @@ class Base
     public function resultJson($code, $msg, $data = [], $json = 1)
     {
         $returnData = ['code' => $code, 'msg' => $msg];
-        if (array_key_exists('count', $data)) {
+        if (is_array($data) && array_key_exists('count', $data)) {
             $returnData['data'] = $data['list'];
             $returnData['count'] = $data['count'];
         } else {

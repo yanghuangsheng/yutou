@@ -19,6 +19,9 @@ class Forum extends Base
     {
         $logic = new Logic;
         $this->getFormatPost($logic);
+        $this->getFormatUser($logic);
+        $this->userFans($logic);
+        $this->getFormatItem($logic);
 
         $data['post_list'] = $this->postList($logic);
         $data['seven_list'] = $logic->sevenDayHotData();
@@ -67,13 +70,39 @@ class Forum extends Base
     }
 
     /**
+     * 展示用户个人信息
+     * @param $logic
+     * @return mixed
+     */
+    protected function getFormatUser($logic)
+    {
+        if($this->isFormat('show_user')){
+            return $logic->formatUser();
+        }
+    }
+
+    /**
      * 关注用户
      * @param $logic
      * @return mixed
      */
     protected function userFans($logic)
     {
-        return $logic->userFans();
+        if($this->isFormat('fans')) {
+            return $logic->userFans();
+        }
+    }
+
+    /**
+     * 加载帖子详情
+     * @param $logic
+     * @return mixed
+     */
+    protected function getFormatItem($logic)
+    {
+        if($this->isFormat('item')) {
+            return $logic->formatItem();
+        }
     }
 
     /**
@@ -116,7 +145,10 @@ class Forum extends Base
      */
     protected function praise($logic)
     {
-        return $logic->formatPraise();
+        if($this->isFormat('praise')){
+            return $logic->formatPraise();
+        }
+
     }
 
     /**
@@ -126,7 +158,9 @@ class Forum extends Base
      */
     protected function comment($logic)
     {
-        return $logic->formatComment();
+        if($this->isFormat('comment')) {
+            return $logic->formatComment();
+        }
     }
 
     /**
@@ -136,7 +170,9 @@ class Forum extends Base
      */
     protected function replyComment($logic)
     {
-        return $logic->formatReplyComment();
+        if($this->isFormat('reply_comment')) {
+            return $logic->formatReplyComment();
+        }
     }
 
     /**
@@ -146,7 +182,9 @@ class Forum extends Base
      */
     protected function commentPraise($logic)
     {
-        return $logic->formatCommentPraise();
+        if($this->isFormat('comment_praise')){
+            return $logic->formatCommentPraise();
+        }
     }
 
     /**
@@ -156,7 +194,9 @@ class Forum extends Base
      */
     protected function commentTread($logic)
     {
-        return $logic->formatCommentTread();
+        if($this->isFormat('comment_tread')){
+            return $logic->formatCommentTread();
+        }
     }
 
 }
