@@ -98,6 +98,8 @@ class User extends Base
         $this->loadCollectNewsList($user);
         $this->loadCollectPostList($user);
         $this->delCollection($user);
+        $this->getFormatUser($user);
+        $this->userFans($user);
 
 
         $data = $user->myUserInfo();
@@ -233,6 +235,30 @@ class User extends Base
     {
         if($this->isFormat('del_collect')){
             $user->formatCollectDel();
+        }
+    }
+
+    /**
+     * 展示用户个人信息
+     * @param $user
+     * @return mixed
+     */
+    protected function getFormatUser($user)
+    {
+        if($this->isFormat('show_user')){
+            return $user->formatUser();
+        }
+    }
+
+    /**
+     * 关注用户
+     * @param $user
+     * @return mixed
+     */
+    protected function userFans($user)
+    {
+        if($this->isFormat('fans')) {
+            return $user->userFans();
         }
     }
 }

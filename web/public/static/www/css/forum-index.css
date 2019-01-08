@@ -104,6 +104,9 @@
 .forum-box .forum-list .list-inline .content-body{
     margin:25px 0px;
 }
+.forum-box .forum-list .list-inline .content-body img{
+    max-width: 670px;
+}
 
 .forum-box .forum-list .list-inline .content-all a.look-no{
     color: #169bd5;

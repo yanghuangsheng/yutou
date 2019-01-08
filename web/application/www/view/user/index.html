@@ -14,7 +14,7 @@
     </div>
     <!--.forum-box .forum-list .list-inline-->
     <div class="tab-box-r forum-box user-forum" id="userForumContentBox">
-        <div class="forum-list" style="margin-top:10px;">
+        <div class="forum-list" style="margin:10px 25px;">
         <ul class="list-inline" style="margin:20px">
             {if $data['post_list']['count'] == 0}
             <p style="text-align: center;font-size: 14px;background-color: #fafaf7; border-radius: 5px;">{$data['isEdit']?'你':'她'}还没有帖子哦</p>
@@ -30,7 +30,7 @@
                         <a href="{:url('Forum/item')}?id={$value['id']}" class="description link">
                             {$value['description']}
                         </a>
-                        <a href="javascript:void(0);" class="look-all">阅读全文<i></i></a>
+                        <a href="javascript:void(0);" class="look-all" data-id="{$value['id']}" data-url="{:url('Forum/index')}">阅读全文<i></i></a>
                     </div>
 
                     <div class="flex-between flex-start content-images" {if count($value['image_url']) == 0}style="display:none;"{/if}>
@@ -38,7 +38,10 @@
                         <p><a href="{:url('Forum/item')}?id={$value['id']}" class="link"><img src="{$img}" alt=""></a></p>
                         {/volist}
                     </div>
-                    <div class="box-hide content-all"></div>
+                    <div class="box-hide content-all">
+                        <div class="content-body"></div>
+                        <div class="flex-between flex-align-center content-all-end"><span class="date">发布于 {$value['create_time']}</span><a href="javascript:void(0);" class="look-no">收起全文 <i></i></a></div>
+                    </div>
                 </div>
                 <div class="end flex-between flex-align-center">
                     <div class="end-l flex-start">

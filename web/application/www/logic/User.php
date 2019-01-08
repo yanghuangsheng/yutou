@@ -187,6 +187,45 @@ class User extends Base
     }
 
     /**
+     * 用户信息
+     */
+    public function formatUser(){
+        if($this->isAjax()){
+            $userId = $this->param('id');
+            $data = (new \app\www\service\User)->getOneData($userId);
+            $data['synopsis'] ||  $data['synopsis'] = '她好懒，什么都没有留下 ...';
+
+            $data['is_fans'] = 0;
+
+            //是否已关注
+            if(isset($this->session('user')['id'])){
+                $data['is_fans'] = (new \app\www\service\UserFans)->checkFans($data['id'], $this->session('user')['id']);
+            }
+            $this->resultJson(0, '', $data);
+        }
+    }
+
+    /**
+     * 关注用户
+     */
+    public function userFans()
+    {
+        if($this->isAjax() && $this->isPost()){
+            $param = $this->param();
+            $oUserId = $this->session('user')['id'];
+            $userFans = new \app\www\service\UserFans;
+            if(false == $userFans->addFans(['id'=>$param['user_id'], 'user_id'=>$oUserId])){
+                $this->resultJson(-1, $userFans->getError()?$userFans->getError():'关注失败');
+            }
+            $user = new \app\www\service\UserAttr;
+            $user->saveNum(['id'=>$param['user_id']], 'fans');
+            $user->saveNum(['id'=>$oUserId], 'follow');
+            $this->resultJson(0, '关注成功');
+
+        }
+    }
+
+    /**
      * 删除收藏
      */
     public function formatCollectDel()

@@ -830,6 +830,9 @@ function forumJs() {
                             oLi.find('.user-avatar img').attr('src', n.user_avatar[50]);
                             oLi.find('.user-name').text(n.user_name);
 
+                            oLi.find('.showUserInfo').attr('data-id', n.user_id);
+                            var homeUrl = oLi.find('.showUserInfo').attr('data-home');
+                            oLi.find('.showUserInfo').attr('data-home', homeUrl.replace(homeUrl.match(/\d+\b/),n.user_id));
                         })
                     }
                 },
@@ -909,6 +912,13 @@ function userJs() {
                             var oUrl = oLi.find('.title a').attr('href');
                             var oId = oUrl.match(/\d+\b/);
                             oUrl = oUrl.replace(oId, n.id);
+
+                            oLi.find('.content-all').hide();
+                            oLi.find('.content-all').siblings().show();
+                            oLi.find('.content-body').html('');
+                            oLi.find('.content-all-end date').text('发布于 '+ n.create_time);
+                            oLi.find('.look-all').attr('data-id', n.id);
+
                             oLi.find('a.link').attr('href', oUrl);
                             oLi.find('.title a').html(n.title);
                             oLi.find('.read span').text(n.browse_num ? n.browse_num : '0');
@@ -939,6 +949,35 @@ function userJs() {
         }, 1000);
 
     });
+
+    /**我的帖子阅读全文**/
+    loadForumList.on('click', 'a.look-all', function () {
+        var oThis = $(this);
+        var postId = oThis.data('id');
+        var oUrl = oThis.data('url');
+        var oParent = oThis.parent().parent().find('.content-all');
+        if(oParent.find('.content-body').html() == ''){
+            ajax(oUrl, {
+                'data': {id:postId, '_format_':'item'},
+                'type': 'GET',
+                'success': function (data) {
+                    if(data.code == 0){
+                        oParent.find('.content-body').html(data.data);
+                    }
+                }
+            });
+        }
+        oParent.toggle();
+        oParent.siblings().toggle();
+    });
+    /**我的帖子收起全文**/
+    loadForumList.on('click', 'a.look-no', function () {
+        var oThis = $(this);
+        var oParent = oThis.parent().parent();
+        oParent.toggle();
+        oParent.siblings().toggle();
+    });
+
 
     /**我的收藏 tab**/
     var userCollect = $("#userCollectList");
@@ -979,8 +1018,6 @@ function userJs() {
                 }
             });
         });
-
-
     });
     /**收藏新闻加载**/
     userCollect.find('a.loadCollectNewsBtn').on('click', function () {
@@ -1078,6 +1115,13 @@ function userJs() {
                             var oUrl = oLi.find('.title a').attr('href');
                             var oId = oUrl.match(/\d+\b/);
                             oUrl = oUrl.replace(oId, n.id);
+
+                            oLi.find('.content-all').hide();
+                            oLi.find('.content-all').siblings().show();
+                            oLi.find('.content-body').html('');
+                            oLi.find('.content-all-end date').text('发布于 '+ n.create_time);
+                            oLi.find('.look-all').attr('data-id', n.id);
+
                             oLi.find('a.link').attr('href', oUrl);
                             oLi.find('.title a').html(n.title);
                             oLi.find('.read span').text(n.browse_num ? n.browse_num : '0');
@@ -1100,6 +1144,10 @@ function userJs() {
                             oLi.find('.user-avatar img').attr('src', n.user_avatar[50]);
                             oLi.find('.user-name').text(n.user_name);
 
+                            oLi.find('.showUserInfo').attr('data-id', n.user_id);
+                            var homeUrl = oLi.find('.showUserInfo').attr('data-home');
+                            oLi.find('.showUserInfo').attr('data-home', homeUrl.replace(homeUrl.match(/\d+\b/),n.user_id));
+
                         })
                     }
                 },
@@ -1110,6 +1158,34 @@ function userJs() {
             });
         }, 1000);
 
+    });
+
+    /**收藏帖子阅读全文**/
+    userCollect.on('click', 'a.look-all', function () {
+        var oThis = $(this);
+        var postId = oThis.data('id');
+        var oUrl = oThis.data('url');
+        var oParent = oThis.parent().parent().find('.content-all');
+        if(oParent.find('.content-body').html() == ''){
+            ajax(oUrl, {
+                'data': {id:postId, '_format_':'item'},
+                'type': 'GET',
+                'success': function (data) {
+                    if(data.code == 0){
+                        oParent.find('.content-body').html(data.data);
+                    }
+                }
+            });
+        }
+        oParent.toggle();
+        oParent.siblings().toggle();
+    });
+    /**收藏帖子收起全文**/
+    userCollect.on('click', 'a.look-no', function () {
+        var oThis = $(this);
+        var oParent = oThis.parent().parent();
+        oParent.toggle();
+        oParent.siblings().toggle();
     });
 
 }
