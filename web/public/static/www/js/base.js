@@ -998,7 +998,7 @@ function userJs() {
         if(oStatus == '1'){
             return;
         }
-        layer.confirm('确定删除吗？',{icon: 3, title:false}, function (index) {
+        layer.confirm('确定删除吗？',{icon: 3, title:false, closeBtn:false}, function (index) {
             oThis.data('status', 1);
             ajax(getHttpUrl(), {
                 'data': {id: oId, '_format_': 'del_collect'},

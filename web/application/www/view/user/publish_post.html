@@ -14,7 +14,7 @@
                     <a href="javascript:void(0);" class="del"></a>
                 </li>
             </ul>
-            <a href="javascript:void(0);" data-status="0" class="uploadImage-btn" id="uploadForumImg" data-url="{:url('User/uploadCoverImage')}">
+            <a href="javascript:void(0);" data-status="0" class="uploadImage-btn" id="uploadForumImg" data-url="{:urls('User/uploadCoverImage')}">
                 <i></i>
                 <p>增加封面图</p>
             </a>
@@ -39,7 +39,7 @@
             //调用图片上传
             callbacks: {
                 onImageUpload: function (files) {
-                    sendForumImage(oThis, files[0], '{:url("User/uploadContentImage")}');
+                    sendForumImage(oThis, files[0], '{:urls("User/uploadContentImage")}');
                 }
             },
         });

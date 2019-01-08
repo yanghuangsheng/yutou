@@ -5,33 +5,33 @@
                 <div class="logo"><img src="/static/www/test/logo.png"> </div>
                 <ul class="flex-start">
                     <li><a href="/" {if $index == 'news' ||  $index == 'index'} class="child" {/if}>资讯</a></li>
-                    <li><a href="{:url('Forum/index')}" {if $index == 'forum'} class="child" {/if}>论坛</a></li>
+                    <li><a href="{:urls('Forum/index')}" {if $index == 'forum'} class="child" {/if}>论坛</a></li>
                 </ul>
             </div>
             <div class="search-box">
                 <input type="text" name="q" placeholder="搜索" value="">
-                <a href="javascript:void(0);" id="searchBtn" data-url="{:url('Search/index')}"></a>
+                <a href="javascript:void(0);" id="searchBtn" data-url="{:urls('Search/index')}"></a>
             </div>
         </div>
         <div class="head-user">
             {if $user_data}
                 <div class="flex-align-center user-box">
                     <div class="user-avatar">
-                        <a href="{:url('User/index')}?user_id={$user_data['id']}">
+                        <a href="{:urls('User/index')}?user_id={$user_data['id']}">
                             <img src="{$user_data['avatar']['100']?:'/static/www/images/user_avatar.png'}" id="headUserAvatarImage">
                         </a>
                     </div>
                     <!--<div class="user-name">-->
-                        <!--<a href="{:url('User/index')}">-->
+                        <!--<a href="{:urls('User/index')}">-->
                             <!--{$user_data['name']}-->
                         <!--</a>-->
                     <!--</div>-->
                     <div class="box-hide nav-list">
                         <ul>
-                            <li><a href="{:url('User/index')}?user_id={$user_data['id']}">我的帖子</a></li>
-                            <li><a href="{:url('User/remind')}">我的消息</a></li>
-                            <li><a href="{:url('User/info')}">个人资料</a></li>
-                            <li><a href="javascript:void(0);" id="logout-btn" data-url="{:url('User/logout')}">退出登陆</a></li>
+                            <li><a href="{:urls('User/index')}?user_id={$user_data['id']}">我的帖子</a></li>
+                            <li><a href="{:urls('User/remind')}">我的消息</a></li>
+                            <li><a href="{:urls('User/info')}">个人资料</a></li>
+                            <li><a href="javascript:void(0);" id="logout-btn" data-url="{:urls('User/logout')}">退出登陆</a></li>
                         </ul>
                     </div>
                 </div>

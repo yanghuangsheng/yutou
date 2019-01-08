@@ -421,4 +421,9 @@ function friendlyDate($sTime,$type = 'mohu',$alt = 'false') {
     }
 }
 
+function urls($path){
+    $url = url($path);
+    return str_replace(['/www','/index','.html'], '', $url);
+}
+
 

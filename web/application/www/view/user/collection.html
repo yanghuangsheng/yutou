@@ -3,9 +3,9 @@
 <div class="box-width box-center flex-between flex-align-stretch tab-box">
     <div class="tab-box-l">
         <ul>
-            <li><a href="{:url('User/index')}?user_id={$data['id']}">我的贴子 <i></i></a></li>
+            <li><a href="{:urls('User/index')}?user_id={$data['id']}">我的贴子 <i></i></a></li>
             {if $data['isEdit']}
-            <li><a href="{:url('User/remind')}">我的消息 <i></i></a></li>
+            <li><a href="{:urls('User/remind')}">我的消息 <i></i></a></li>
             <li><a href="javascript:void(0);" class="active">我的收藏 <i></i></a></li>
             {/if}
         </ul>
@@ -24,13 +24,13 @@
                 <li class="flex-between flex-align-stretch inline">
                     <div class="image">
                         {if $item['image_url']}
-                        <a href="{:url('news/item')}?id={$item['news_id']}">
+                        <a href="{:urls('news/item')}?id={$item['news_id']}">
                             <img src="{$item['image_url']}" alt="">
                         </a>
                         {/if}
                     </div>
                     <div class="item-content">
-                        <p class="title"><a href="{:url('news/item')}?id={$item['news_id']}">{$item['title']}</a></p>
+                        <p class="title"><a href="{:urls('news/item')}?id={$item['news_id']}">{$item['title']}</a></p>
                         <p class="description">{$item['description']}</p>
                         <div class="flex-between info">
                             <div class="flex-start info-l">
@@ -62,20 +62,20 @@
                     {volist name="data['collect']['post']['list']" id="value"}
                     <li>
                         <div class="flex-between flex-align-start h">
-                            <div class="title"><a href="{:url('Forum/item')}?id={$value['id']}" class="link">{$value['title']}</a></div>
+                            <div class="title"><a href="{:urls('Forum/item')}?id={$value['id']}" class="link">{$value['title']}</a></div>
                             <div class="flex-start flex-align-center read"><i></i><span>{$value['browse_num']?:''}</span></div>
                         </div>
                         <div class="content">
                             <div class="content-text">
-                                <a href="{:url('Forum/item')}?id={$value['id']}" class="description link">
+                                <a href="{:urls('Forum/item')}?id={$value['id']}" class="description link">
                                     {$value['description']}
                                 </a>
-                                <a href="javascript:void(0);" class="look-all" data-id="{$value['id']}" data-url="{:url('Forum/index')}">阅读全文<i></i></a>
+                                <a href="javascript:void(0);" class="look-all" data-id="{$value['id']}" data-url="{:urls('Forum/index')}">阅读全文<i></i></a>
                             </div>
 
                             <div class="flex-between flex-start content-images" {if count($value['image_url']) == 0}style="display:none;"{/if}>
                                 {volist name="value['image_url']" id="img"}
-                                <p><a href="{:url('Forum/item')}?id={$value['id']}" class="link"><img src="{$img}" alt=""></a></p>
+                                <p><a href="{:urls('Forum/item')}?id={$value['id']}" class="link"><img src="{$img}" alt=""></a></p>
                                 {/volist}
                             </div>
                             <div class="box-hide content-all">
@@ -102,7 +102,7 @@
                                     {$value['create_time']} 收藏
                                 </div>
                             </div>
-                            <div class="end-r flex-start flex-align-center showUserInfo" data-id="{$value['user_id']}" data-home="{:url('User/index')}?user_id={$value['user_id']}">
+                            <div class="end-r flex-start flex-align-center showUserInfo" data-id="{$value['user_id']}" data-home="{:urls('User/index')}?user_id={$value['user_id']}">
                                 <div class="user-avatar"><img src="{$value['user_avatar']['50']?:'/static/www/images/user_avatar_50.png'}"></div>
                                 <span class="user-name">{$value['user_name']}</span>
                             </div>
