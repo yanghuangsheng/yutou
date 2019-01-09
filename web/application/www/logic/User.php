@@ -187,6 +187,127 @@ class User extends Base
     }
 
     /**
+     * 消息列表
+     * @param $type 0系统 1互动
+     * @return mixed
+     */
+    public function messageList($type)
+    {
+        $message = new \app\www\service\SystemMessage;
+        $param = $this->param();
+
+        isset($param['page']) || $param['page'] = 1;
+        $userId = $this->session('user')['id'];
+        $where = [
+            ['SystemMessage.type', '=', $type],
+            ['SystemMessage.user_id', '=', $userId],
+        ];
+        isset($param['start_id']) && $where[] = ['SystemMessage.id', '<=', $param['start_id']];
+        $data = $message->initWhere($where)->initLimit($param['page'])->getListData();
+        $data['start_id'] = $message->newsId();
+        $data['tips_num'] = $message->tipsNum($userId, $type);
+        $data['list'] = $data['list']->toArray();
+        $forumPost = new \app\www\service\ForumPost;
+        $forumComment = new \app\www\service\ForumPostComment;
+        foreach ($data['list'] as $key => &$value){
+            if($value['type'] == 1){
+                $value['user_avatar'] = json_decode($value['user_avatar'], true);
+                $value['create_time'] = friendlyDate($value['create_time']);
+                if($value['o_type'] == 1){
+                    //回复帖子
+                    $value['link_txt'] = '回复了';
+                    $value['link_ext'] = '你的帖子';
+                    $postData = $forumPost->messageOne($value['o_id']);
+                    $value['parent']['post_id'] = $postData['post_id'];
+                    $value['parent']['title'] = $postData['title'];
+                }
+                elseif($value['o_type'] == 2){
+                    //回复评论
+                    $value['link_txt'] = '回复了';
+                    $value['link_ext'] = '你的评论';
+                    $commentData = $forumComment->messageOne($value['id']);
+                    $value['parent']['post_id'] = $commentData['post_id'];
+                    $value['parent']['content'] = $commentData['content'];
+                }
+                elseif($value['o_type'] == 3){
+                    //点赞帖子
+                    $value['link_txt'] = '点赞了';
+                    $value['link_ext'] = '你的帖子';
+                    $postData = $forumPost->messageOne($value['o_id']);
+                    $value['parent']['post_id'] = $postData['post_id'];
+                    $value['parent']['title'] = $postData['title'];
+                    $value['parent']['praise_num'] = $postData['praise_num'];
+                }
+                elseif($value['o_type'] == 4){
+                    //点赞评论
+                    $value['link_txt'] = '点赞了';
+                    $value['link_ext'] = '你的评论';
+                    $commentData = $forumComment->messageOne($value['id']);
+                    $value['parent']['post_id'] = $commentData['post_id'];
+                    $value['parent']['content'] = $commentData['content'];
+                    $value['parent']['praise_num'] = $commentData['praise_num'];
+                }
+                elseif($value['o_type'] == 5){
+                    //踩踏评论
+                    $value['link_txt'] = '踩了';
+                    $value['link_ext'] = '你的评论 对你表示不屑，并竖起了中指';
+                    $commentData = $forumComment->messageOne($value['id']);
+                    $value['parent']['post_id'] = $commentData['post_id'];
+                    $value['parent']['content'] = $commentData['content'];
+                    $value['parent']['tread_num'] = $commentData['tread_num'];
+                }
+            }
+        }
+        return $data;
+    }
+
+
+    /**
+     * 加载更多消息列表
+     */
+    public function formatMessageList($type)
+    {
+        if($this->isAjax()){
+            $data = $this->MessageList($type);
+
+            $this->resultJson(0, '', $data);
+        }
+    }
+
+    /**
+     * 标记系统已读信息
+     */
+    public function clearSystem()
+    {
+        if($this->isAjax()){
+            $startId = $this->param('start_id');
+            $userId = $this->session('user')['id'];
+            if((new \app\www\service\SystemMessage)->clearSystem($userId, $startId)){
+                $this->resultJson(0, '标记成功');
+            }
+
+            $this->resultJson(-1, '标记失败');
+        }
+    }
+
+    /**
+     * 标记互动已读信息
+     */
+    public function clearInteraction()
+    {
+        if($this->isAjax()){
+            $startId = $this->param('start_id');
+            $userId = $this->session('user')['id'];
+            if((new \app\www\service\SystemMessage)->clearInteraction($userId, $startId)){
+                $this->resultJson(0, '标记成功');
+            }
+
+            $this->resultJson(-1, '标记失败');
+        }
+    }
+
+
+    /**
      * 用户信息
      */
     public function formatUser(){

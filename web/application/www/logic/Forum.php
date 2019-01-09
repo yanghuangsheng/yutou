@@ -277,13 +277,21 @@ class Forum extends Base
         if($this->isAjax() && $this->isPost()){
             $param = $this->param();
             $praise = new \app\www\service\ForumPostPraise;
-            if(false == $praise->addUserPraise(['post_id'=>$param['id'], 'user_id'=>$this->session('user')['id']])){
+            //点赞用户ID
+            $click_userId = $this->session('user')['id'];
+            if(false == $praise->addUserPraise(['post_id'=>$param['id'], 'user_id'=>$click_userId])){
                 $this->resultJson(-1, $praise->getError());
             }
             if($data = (new \app\www\service\ForumPostAttr)->saveNum($param, 'praise')){
                 //更新评论用户的点赞数
                 $userId = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id');
                 (new \app\www\service\UserAttr)->saveNum(['id'=>$userId], 'praise');
+                //给点赞帖子的用户发送消息
+                $toData = [
+                    'o_id' => $param['id'], //帖子ID
+                    'o_user_id' => $click_userId,
+                ];
+                (new \app\www\service\SystemMessage)->toUser($userId, $toData, 3);
                 $this->resultJson(0, '点赞成功');
             }
 
@@ -309,6 +317,14 @@ class Forum extends Base
                 (new \app\www\service\ForumPostAttr)->saveNum($param, 'comment');
                 //更新评论用户的评论数
                 (new \app\www\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'comment');
+                //给帖子用户发送消息
+                $toId = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id');
+                $toData = [
+                    'o_id' => $param['id'], //帖子ID　
+                    'o_user_id' => $param['user_id'],
+                    'content' => str_replace("\n","<br/>",$param['content']),
+                ];
+                (new \app\www\service\SystemMessage)->toUser($toId, $toData, 1);
 
                 $this->resultJson(0, '评论成功');
             }
@@ -330,6 +346,14 @@ class Forum extends Base
             //用户ID
             $param['user_id'] = $this->session('user')['id'];
             if($comment->addReplyComment($param)){
+                //给回复评论的用户发送消息
+                $toId = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id');
+                $toData = [
+                    'o_id' => $param['reply_id'], //评论ID
+                    'o_user_id' => $param['user_id'],
+                    'content' => $param['content'],
+                ];
+                (new \app\www\service\SystemMessage)->toUser($toId, $toData, 2);
 
                 $this->resultJson(0, '评论成功');
             }
@@ -357,6 +381,12 @@ class Forum extends Base
                 //更新评论用户的点赞数
                 $userId = (new \app\www\service\ForumPostComment)->getField($param['id'], 'user_id');
                 (new \app\www\service\UserAttr)->saveNum(['id'=>$userId], 'praise');
+                //给点赞评论的用户发送消息
+                $toData = [
+                    'o_id' => $param['id'], //评论ID
+                    'o_user_id' => $param['user_id'],
+                ];
+                (new \app\www\service\SystemMessage)->toUser($userId, $toData, 4);
 
                 $this->resultJson(0, '点赞成功');
             }
@@ -381,9 +411,15 @@ class Forum extends Base
             $param['user_id'] = $this->session('user')['id'];
             if($praise->saveTread($param)){
                 (new \app\www\service\ForumPostCommentAttr)->saveNum(['id'=>$param['id']] ,'tread');
-                //更新评论用户的点赞数
+                //更新评论用户的踩踏数
                 $userId = (new \app\www\service\ForumPostComment)->getField($param['id'], 'user_id');
                 (new \app\www\service\UserAttr)->saveNum(['id'=>$userId], 'tread');
+                //给点赞评论的用户发送消息
+                $toData = [
+                    'o_id' => $param['id'], //评论ID
+                    'o_user_id' => $param['user_id'],
+                ];
+                (new \app\www\service\SystemMessage)->toUser($userId, $toData, 5);
 
                 $this->resultJson(0, '踩踏成功');
             }
@@ -391,8 +427,6 @@ class Forum extends Base
             $this->resultJson(-1, $praise->getError()?$praise->getError():'踩踏失败');
         }
     }
-
-
 
     /**
      * 获取最新的ID

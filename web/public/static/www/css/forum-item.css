@@ -40,11 +40,13 @@
 /*标题*/
 .forum-box .forum-item .title{
     text-align: center;
-    margin: 15px 30px;
+    margin: 35px 30px 15px 30px;
     font-size: 20px;
     font-weight: bolder;
 }
-
+.forum-box .forum-item .item-content img{
+    max-width: 720px;
+}
 /*发布时间*/
 .forum-box .forum-item .item-date{
     margin-top: 30px;

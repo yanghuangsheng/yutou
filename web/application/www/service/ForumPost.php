@@ -101,6 +101,18 @@ class ForumPost extends Common
     }
 
     /**
+     * 消息获取单条View
+     * @param $id
+     * @return array|null|\PDOStatement|string|\think\Model
+     */
+    public function messageOne($id)
+    {
+        return $this->model->view('ForumPost', 'title')
+            ->view('ForumPostAttr', 'post_id,browse_num,praise_num,collect_num,comment_num', 'ForumPostAttr.post_id = ForumPost.id', 'LEFT')
+            ->where('id', $id)->find();
+    }
+
+    /**
      * 查询上一条下一条View
      * @return $this
      */

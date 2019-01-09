@@ -10,9 +10,74 @@
             {/if}
         </ul>
     </div>
-    <div class="tab-box-r">
-        <ul>
-            <li></li>
-        </ul>
+    <div class="tab-box-r" id="userRemindBox">
+        <div class="flex-between flex-align-center remind-tab">
+            <ul class="flex-start flex-align-stretch">
+                <li class="child"><a href="javascript:void(0);">互动消息<i></i></a> {if $data['interaction_list']['tips_num']}<span class="num">{$data['interaction_list']['tips_num']??''}</span>{/if}</li>
+                <li id="clearSystemBtn" data-start="{$data['system_list']['start_id']}"><a href="javascript:void(0);">系统消息<i></i></a>{if $data['system_list']['tips_num']}<span class="num-tips"></span>{/if}</li>
+            </ul>
+        </div>
+        <div class="remind-content">
+            <div class="list-inline interaction-list">
+                <div class="interaction-check">
+                    <label class="flex-align-center" id="clearInteractionBtn" data-start="{$data['interaction_list']['start_id']}">
+                        <input type="checkbox" style="margin-top:2px;"> <span style="margin-left:5px;">一键标记已读</span>
+                    </label>
+                </div>
+                <ul>
+                    {volist name="data['interaction_list']['list']" id="value"}
+                    <li>
+                        <div class="flex-between flex-align-center">
+                            <div class="flex-start flex-align-center user-h-box"><i class="tips {if $value['status']} box-hide {/if}"></i><span class="user-avatar"><img src="{$value['user_avatar']['50']}"></span> <span class="user-name">{$value['user_name']}</span> <span class="link-txt">{$value['link_txt']}</span> <span class="link-ext">{$value['link_ext']}：</span></div>
+                            <div>
+                                <div class="flex-start flex-align-center praise" {if !isset($value['parent']['praise_num'])} style="display: none;" {/if}>
+                                    <i></i><span>{$value['parent']['praise_num']?:'0'}</span>
+                                </div>
+                                <div class="flex-start flex-align-center tread" {if !isset($value['parent']['tread_num'])} style="display: none;" {/if}>
+                                    <i></i><span>{$value['parent']['tread_num']?:'0'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-between flex-align-stretch">
+                            <div class="li-content-inline">
+                                <div class="parent-title {if !isset($value['parent']['title'])} box-hide {/if}">{$value['parent']['title']?:''}</div>
+                                <div class="parent-content {if !isset($value['parent']['content'])} box-hide {/if}"><span class="h-txt">你的评论：</span><span class="content-text">{$value['parent']['content']?:''}</span></div>
+                                <p class="user-content"><span class="user-content-body {if !isset($value['content'])} box-hide {/if}">{$value['content']?:''}</span> <a href="{:urls('Forum/item')}?id={$value['parent']['post_id']}" class="look-btn">查看回复</a> </p>
+                            </div>
+                            <div class="li-r">
+                                 <span class="date">{$value['create_time']}</span>
+                            </div>
+                        </div>
+                    </li>
+                    {/volist}
+                </ul>
+                <!--加载更多-->
+                <div class="load-more {if $data['interaction_list']['count']<=15} box-hide {/if}">
+                    <!--加载动画-->
+                    <div class="box-hide loading">
+                        <img src="/static/www/images/loading-0.gif">
+                    </div>
+                    <a href="javascript:void(0);" class="loadInteractionBtn" data-start="{$data['interaction_list']['start_id']}" data-status="0" data-page="1">加载更多</a>
+                </div>
+            </div>
+            <div class="list-inline system-list" style="display: none;">
+                <ul>
+                    {volist name="data['system_list']['list']" id="value"}
+                    <li>
+                        <div class="date">{$value['create_time']}</div>
+                        <div class="content">{$value['content']|raw}</div>
+                    </li>
+                    {/volist}
+                </ul>
+                <!--加载更多-->
+                <div class="load-more {if $data['system_list']['count']<=15} box-hide {/if}">
+                    <!--加载动画-->
+                    <div class="box-hide loading">
+                        <img src="/static/www/images/loading-0.gif">
+                    </div>
+                    <a href="javascript:void(0);" class="loadSystemBtn" data-start="{$data['system_list']['start_id']}" data-status="0" data-page="1">加载更多</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

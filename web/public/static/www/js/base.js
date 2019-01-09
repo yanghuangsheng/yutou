@@ -130,14 +130,15 @@ $(function($) {
         ajax(url, {
             'success': function (data) {
                 if(data.code == 0){
-                    parent.location.reload();
+                    //parent.location.reload();
+                    top.location='/';
                     return;
                 }
                 layer.msg(data.msg);
             }
 
         });
-    })
+    });
     
     /**
      * 发送验证码
@@ -1188,6 +1189,141 @@ function userJs() {
         oParent.siblings().toggle();
     });
 
+
+    /**我的消息 tab**/
+    var userRemind = $("#userRemindBox");
+    userRemind.find('.remind-tab li').on('click', function () {
+        var oThis = $(this);
+        var oIndex = oThis.index();
+        oThis.addClass('child');
+        oThis.siblings().removeClass('child');
+
+        userRemind.find('.remind-content .list-inline').eq(oIndex).show().siblings().hide();
+    });
+
+    /**标记系统信息已读事件**/
+    $("#clearSystemBtn").on('click', function () {
+        var oThis = $(this);
+        var startId = oThis.data('start');
+        ajax(getHttpUrl(), {
+            'data':{'start_id':startId, '_format_':'clear_system'},
+            'success': function (data) {
+                if(data.code == 0){
+                    oThis.find('span.num-tips').remove();
+                }
+            }
+        })
+    });
+    /**标记互动信息已读事件**/
+    $("#clearInteractionBtn").on('click', function () {
+        var oThis = $(this);
+        var startId = oThis.data('start');
+        ajax(getHttpUrl(), {
+            'data':{'start_id':startId, '_format_':'clear_interaction'},
+            'success': function (data) {
+                if(data.code == 0){
+                    $("#userRemindBox .remind-tab li:first-child").find('span.num').remove();
+                    $("#userRemindBox .interaction-list").find('i.tips').hide();
+                }
+            }
+        })
+    });
+    /**加载更多互动消息**/
+    userRemind.find('a.loadInteractionBtn').on('click', function () {
+        var oThis = $(this);
+        var oPage = parseInt(oThis.data('page')) + 1;
+        var oStatus = oThis.data('status');
+        var oStartId = oThis.data('start');
+
+        var thisParent = oThis.parent().parent();
+
+        var cloneLiBox = thisParent.find('li').last();
+
+        if(oStatus == '1'){
+            return;
+        }
+        oThis.data('status', 1);
+        oThis.prev().show();
+
+        setTimeout(function(){
+            ajax( getHttpUrl(), {
+                'data': {page: oPage, start_id: oStartId, '_format_': 'interaction_list'},
+                'type': 'GET',
+                'success': function (data) {
+                    //console.log(data);
+                    oThis.data('status', 0);
+                    oThis.data('page', oPage);
+                    oThis.prev().hide();
+                    if (data.code == 0) {
+                        data = data.data;
+                        $.each(data, function (i, n) {
+                            thisParent.find('ul').append(cloneLiBox.clone());
+                            var oLi = thisParent.find('li').last();
+                            if(n.status) {oLi.find('i.tips').hide();} else{oLi.find('i.tips').show();}
+                            oLi.find('.user-avatar img').attr('src', n.user_avatar['50']);
+                            oLi.find('.user-name').text(n.user_name);
+                            oLi.find('.link-txt').text(n.link_txt);
+                            oLi.find('.link-ext').html(n.link_ext);
+                            if(n.parent.praise_num){oLi.find('.praise').show().find('span').text(n.parent.praise_num);}else{oLi.find('.praise').hide().find('span').text('0');}
+                            if(n.parent.tread_num){oLi.find('.tread').show().find('span').text(n.parent.tread_num);}else{oLi.find('.tread').hide().find('span').text('0');}
+                            if(n.parent.title){oLi.find('.parent-title').show().text(n.parent.title);}else{oLi.find('.parent-title').hide().text('');}
+                            if(n.parent.content){oLi.find('.parent-content').show().find('span.content-text').text(n.parent.title);}else{oLi.find('.parent-content').hide().find('span.content-text').text('');}
+                            if(n.content){oLi.find('.user-content-body').show().html(n.content);}else{oLi.find('.user-content-body').hide().html('');}
+                            var lookUrl = oLi.find('a.look-btn').attr('href');
+                            var oId = lookUrl.match(/\d+\b/);
+                            lookUrl = lookUrl.replace(oId, n.parent.post_id);
+                            oLi.find('a.look-btn').attr('href', lookUrl);
+                            oLi.find('.date').text(n.create_time);
+                        });
+                    }
+                }
+            });
+        });
+
+    });
+    /**加载更多系统消息**/
+    userRemind.find('a.loadSystemBtn').on('click', function () {
+        var oThis = $(this);
+        var oPage = parseInt(oThis.data('page')) + 1;
+        var oStatus = oThis.data('status');
+        var oStartId = oThis.data('start');
+
+        var thisParent = oThis.parent().parent();
+
+        var cloneLiBox = thisParent.find('li').last();
+
+        if(oStatus == '1'){
+            return;
+        }
+        oThis.data('status', 1);
+        oThis.prev().show();
+
+        setTimeout(function(){
+            ajax( getHttpUrl(), {
+                'data': {page: oPage, start_id: oStartId, '_format_': 'system_list'},
+                'type': 'GET',
+                'success': function (data) {
+                    //console.log(data);
+                    oThis.data('status', 0);
+                    oThis.data('page', oPage);
+                    oThis.prev().hide();
+                    if (data.code == 0) {
+                        data = data.data;
+                        $.each(data, function (i, n) {
+                            //console.log(n);
+                            thisParent.find('ul').append(cloneLiBox.clone());
+                            var oLi = thisParent.find('li').last();
+                            oLi.find('.date').text(n.create_time);
+                            oLi.find('.content').html(n.content);
+
+
+                        });
+                    }
+                }
+            });
+        });
+
+    });
 }
 
 /**

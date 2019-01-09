@@ -32,6 +32,18 @@ class ForumPostComment extends Common
     }
 
     /**
+     * 消息获取单条View
+     * @param $id
+     * @return mixed
+     */
+    public function messageOne($id)
+    {
+        return $this->model->view('ForumPostComment', 'post_id,content')
+            ->view('ForumPostCommentAttr', ['praise_num','tread_num'], 'ForumPostCommentAttr.comment_id = ForumPostComment.id', 'LEFT')
+            ->where('id', $id)->find();
+    }
+
+    /**
      * 新增评论记录
      * @param $data
      * @return bool

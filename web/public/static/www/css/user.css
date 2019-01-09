@@ -187,7 +187,7 @@
     min-width: 50px;
     height: 100%;
     font-size: 16px;
-    color: #0C0C0C;
+    color: #666666;
     font-weight: bolder;
     text-align: center;
     position: relative;
@@ -200,6 +200,9 @@
     height: 2px;
     width: 100%;
     background-color: #FFCC00;
+}
+.tab-box .collect-tab li.child a{
+    color: #0C0C0C;
 }
 .tab-box .collect-tab li.child a i{
     display: block;
@@ -629,7 +632,185 @@
 
 
 
+/**消息**/
+.tab-box .remind-tab{
+    margin: 0px 20px;
+    border-bottom: #CCCCCC solid 1px;
+}
+.tab-box .remind-tab ul{
+    height: 45px;
+    margin-left: 35px;
+}
+.tab-box .remind-tab li{
+    line-height: 45px;
+    margin: 0px 20px;
+}
+.tab-box .remind-tab li a{
+    display: inline-block;
+    min-width: 50px;
+    height: 100%;
+    font-size: 16px;
+    color: #666666;
+    font-weight: bolder;
+    text-align: center;
+    position: relative;
+    text-decoration:none;
+}
+.tab-box .remind-tab li a i{
+    display: none;
+    position: absolute;
+    bottom: 0px;
+    height: 2px;
+    width: 100%;
+    background-color: #FFCC00;
+}
+.tab-box .remind-tab li.child a{
+    color: #0C0C0C;
+}
+.tab-box .remind-tab li.child a i{
+    display: block;
+}
 
+.tab-box .remind-tab li span.num{
+    display: inline-block;
+    padding: 3px 5px;
+    line-height: 10px;
+    border-radius: 50%;
+    background-color: red;
+    color: #FFFFFF;
+    margin-left: 5px;
+}
+
+.tab-box .remind-tab li span.num-tips{
+    display: inline-block;
+    padding: 3px 3px;
+    line-height: 0px;
+    border-radius: 50%;
+    background-color: red;
+    margin-left: 5px;
+}
+
+
+.tab-box .remind-content{
+
+}
+.tab-box .remind-content ul{
+    width: 760px;
+    margin: 0px 35px;
+}
+
+/*加载更多*/
+.tab-box .remind-content .load-more{
+    text-align: center;
+    margin-top: 30px;
+    border-bottom: #ffcc00 solid 0px;
+}
+.tab-box .remind-content .load-more .loading{
+    margin-bottom: 30px;
+}
+.tab-box .remind-content .load-more a{
+    display: block;
+    line-height: 45px;
+    font-size: 14px;
+    color: #999999;
+    background-color: #f2f2f2;
+}
+/**互动**/
+.tab-box .interaction-list{
+    position: relative;
+}
+.tab-box .interaction-list .interaction-check{
+    position: absolute;
+    right: 30px;
+    top: -30px;
+}
+.tab-box .interaction-list li{
+    padding: 15px 0px;
+    border-bottom:#e4e4e4 dashed 1px;
+}
+.tab-box .interaction-list .user-h-box{
+    height: 35px;
+    color: #7a7a7a;
+    font-size: 14px;
+}
+.tab-box .interaction-list .user-h-box i.tips{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: red;
+    margin-right: 8px;
+}
+.tab-box .interaction-list .user-h-box span{
+    margin-right: 10px;
+}
+.tab-box .interaction-list .user-h-box span.user-avatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.tab-box .interaction-list .user-h-box span.user-avatar img{
+    width: 100%;
+}
+.tab-box .interaction-list .user-h-box span.link-txt{
+    color: #0C0C0C;
+}
+.tab-box .interaction-list .praise i,.tab-box .interaction-list .tread i{
+    background: url("../images/common.png ") no-repeat -100px -70px;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
+.tab-box .interaction-list .tread i{
+    background-position: -75px -70px;
+}
+.tab-box .interaction-list .li-content-inline{
+    background-color: #fbfbfb;
+    padding: 15px;
+    flex-grow: 1;
+}
+.tab-box .interaction-list .parent-title, .tab-box .interaction-list .parent-content{
+    padding: 10px;
+    background-color: #f2f2f2;
+    font-size: 14px;
+}
+.tab-box .interaction-list .parent-title{
+    font-weight: bold;
+}
+.tab-box .interaction-list .parent-content span.h-txt{
+    font-weight: bold;
+}
+.tab-box .interaction-list .user-content {
+    margin-top: 15px;
+}
+.tab-box .interaction-list .user-content a.look-btn{
+    display: inline-block;
+    color: #00a2d4;
+    margin-left: 15px;
+}
+.tab-box .interaction-list .li-r{
+    position: relative;
+    min-width: 80px;
+}
+.tab-box .interaction-list .li-r .date{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+/**系统**/
+.tab-box .system-list li{
+    padding: 15px 0px;
+    border-bottom:#e4e4e4 dashed 1px;
+}
+.tab-box .system-list .date{
+    color: #666666;
+    font-size: 14px;
+}
+.tab-box .system-list .content{
+    margin-top: 10px;
+    padding-left: 15px;
+    font-size: 14px;
+}
 
 
 

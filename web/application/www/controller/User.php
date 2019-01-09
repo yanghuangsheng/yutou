@@ -82,9 +82,17 @@ class User extends Base
      */
     public function remind()
     {
-        $data = (new \app\www\logic\User)->myUserInfo();
-        $this->assign('data', $data);
+        $user = new \app\www\logic\User;
+        $this->loadInteractionList($user);
+        $this->loadSystemList($user);
+        $this->clearSystem($user);
+        $this->clearInteraction($user);
 
+        $data = $user->myUserInfo();
+        $data['system_list'] = $user->messageList(0);
+        $data['interaction_list'] = $user->messageList(1);
+        //print_r($data['system_list']);
+        $this->assign('data', $data);
         return $this->fetch();
     }
 
@@ -259,6 +267,54 @@ class User extends Base
     {
         if($this->isFormat('fans')) {
             return $user->userFans();
+        }
+    }
+
+    /**
+     * 标记系统信息已读
+     * @param $user
+     * @return mixed
+     */
+    protected function clearSystem($user)
+    {
+        if($this->isFormat('clear_system')){
+            return $user->clearSystem();
+        }
+    }
+
+    /**
+     * 标记互动信息已读
+     * @param $user
+     * @return mixed
+     */
+    protected function clearInteraction($user)
+    {
+        if($this->isFormat('clear_interaction')){
+            return $user->clearInteraction();
+        }
+    }
+
+    /**
+     * 加载互动消息
+     * @param $user
+     * @return mixed
+     */
+    protected function loadInteractionList($user)
+    {
+        if($this->isFormat('interaction_list')){
+            return $user->formatMessageList(1);
+        }
+    }
+
+    /**
+     * 加载第统消息
+     * @param $user
+     * @return mixed
+     */
+    protected function loadSystemList($user)
+    {
+        if($this->isFormat('system_list')){
+            return $user->formatMessageList(0);
         }
     }
 }
