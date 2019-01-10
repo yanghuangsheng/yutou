@@ -79,7 +79,7 @@ class User extends Common
      */
     public function saveLogin($phone, $param = [])
     {
-        $data = $this->model->where('phone', $phone)->field('id,name,avatar,last_login_time')->find();
+        $data = $this->getUserInfo('phone', $phone);
         if(!isset($data['id'])){
             //如果不存在，创建用户
             $data = [
@@ -87,21 +87,55 @@ class User extends Common
                 'phone' => $phone,
                 'last_login_time' => time(),
             ];
-            if($this->model->allowField(true)->data($data, true)->save()){
-                $data['id'] = $this->model['id'];
+            if($data['id'] = $this->createUser($data) ){
+                return $data;
             }
             else{
                 $this->error = '注册失败';
                 return false;
             }
-
-            return $data;
         }
         else{
             //记录当前登陆时间
-            $this->model->update(['id'=>$data['id'], 'last_login_time'=>time()]);
+            $this->updateLoginTime($data['id']);
             return $data->toArray();
         }
+    }
 
+    /**
+     * 获取用户信息
+     * @param $value
+     * @param string $name
+     * @return array|null|\PDOStatement|string|\think\Model
+     */
+    public function getUserInfo($value, $name = 'phone')
+    {
+        return $this->model->where($name, $value)->field('id,name,avatar,last_login_time')->find();
+    }
+
+    /**
+     * 创建新用户
+     * @param $data
+     * @return bool|mixed
+     */
+    public function createUser($data)
+    {
+        if($this->model->allowField(true)->data($data, true)->save()){
+            return $this->model['id'];
+        }
+        else{
+            $this->error = '注册失败';
+            return false;
+        }
+    }
+
+    /**
+     * 记录登陆时间
+     * @param $id
+     */
+    public function updateLoginTime($id)
+    {
+        //记录当前登陆时间
+        $this->model->update(['id'=>$id, 'last_login_time'=>time()]);
     }
 }

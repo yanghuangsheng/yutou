@@ -138,7 +138,7 @@ function articleContent($content, $path)
         foreach($match[1] as $k=>$vo) {
             $filename = $vo;
             $a = downloadFile(ltrim($filename, "//"),$path);
-            $new_url[$k] = ltrim($path, '.').'/'.$a;
+            $new_url[$k] = ltrim($a, '.');
         }
         $content = str_replace($match[1], $new_url, $content);
     }
@@ -200,23 +200,35 @@ function downloadFile($url,$path='',$filename='',$type=0){
     }
     //如果命名为空
     if($filename===""){
-        $filename=md5($img);
+        $filename = md5($img);
+    }elseif ($filename == 'date'){
+        $path.='/'.date('Ymd');
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+        $filename = md5($img);
     }
+
+
     //获取后缀名
     $ext=substr($url, strrpos($url, '.'));
     if($ext && strlen($ext)<5){
-        $filename.=$ext;
+        $filename .= $ext;
+    }
+    else{
+        $filename .= '.jpg';
     }
 
     //防止"/"没有添加
     $path=rtrim($path,"/")."/";
 
     //var_dump($path.$filename);die();
+    $resultName = $path.$filename;
     $fp2=@fopen($path.$filename,'a');
     fwrite($fp2,$img);
     fclose($fp2);
     //echo "finish";
-    return $filename;
+    return ltrim($resultName, '.');
 }
 
 
@@ -225,34 +237,38 @@ function downloadFile($url,$path='',$filename='',$type=0){
  * @param $url
  * @return mixed|string
  */
-function curlGet($url)
+function curlGet($url, $header = 1)
 {
-    $ip_long = [
-        ['607649792', '608174079'], //36.56.0.0-36.63.255.255
-        ['1038614528', '1039007743'], //61.232.0.0-61.237.255.255
-        ['1783627776', '1784676351'], //106.80.0.0-106.95.255.255
-        ['2035023872', '2035154943'], //121.76.0.0-121.77.255.255
-        ['2078801920', '2079064063'], //123.232.0.0-123.235.255.255
-        ['-1950089216', '-1948778497'], //139.196.0.0-139.215.255.255
-        ['-1425539072', '-1425014785'], //171.8.0.0-171.15.255.255
-        ['-1236271104', '-1235419137'], //182.80.0.0-182.92.255.255
-        ['-770113536', '-768606209'], //210.25.0.0-210.47.255.255
-        ['-569376768', '-564133889'], //222.16.0.0-222.95.255.255
-    ];
-    $rand_key = mt_rand(0, 9);
-    $ip = long2ip(mt_rand($ip_long[$rand_key][0], $ip_long[$rand_key][1]));
-    $header = ["Connection: Keep-Alive",
-        "Accept: text/html, application/xhtml+xml, */*",
-        "Pragma: no-cache",
-        "Accept-Language: zh-Hans-CN,zh-Hans;q=0.8,en-US;q=0.5,en;q=0.3",
-        "User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)",
-        'CLIENT-IP:'.$ip, 'X-FORWARDED-FOR:'.$ip];
+    if($header){
+        $ip_long = [
+            ['607649792', '608174079'], //36.56.0.0-36.63.255.255
+            ['1038614528', '1039007743'], //61.232.0.0-61.237.255.255
+            ['1783627776', '1784676351'], //106.80.0.0-106.95.255.255
+            ['2035023872', '2035154943'], //121.76.0.0-121.77.255.255
+            ['2078801920', '2079064063'], //123.232.0.0-123.235.255.255
+            ['-1950089216', '-1948778497'], //139.196.0.0-139.215.255.255
+            ['-1425539072', '-1425014785'], //171.8.0.0-171.15.255.255
+            ['-1236271104', '-1235419137'], //182.80.0.0-182.92.255.255
+            ['-770113536', '-768606209'], //210.25.0.0-210.47.255.255
+            ['-569376768', '-564133889'], //222.16.0.0-222.95.255.255
+        ];
+        $rand_key = mt_rand(0, 9);
+        $ip = long2ip(mt_rand($ip_long[$rand_key][0], $ip_long[$rand_key][1]));
+        $header = ["Connection: Keep-Alive",
+            "Accept: text/html, application/xhtml+xml, */*",
+            "Pragma: no-cache",
+            "Accept-Language: zh-Hans-CN,zh-Hans;q=0.8,en-US;q=0.5,en;q=0.3",
+            "User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)",
+            'CLIENT-IP:'.$ip, 'X-FORWARDED-FOR:'.$ip];
+    }
     $timeout = 30;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
+    if($header) {
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+    }
     curl_setopt($ch, CURLOPT_TIMEOUT,$timeout); //允许执行的最长秒数
     curl_setopt($ch, CURLOPT_TIMEOUT,$timeout);//最长等待时间
     $result = curl_exec($ch);

@@ -36,6 +36,27 @@ class User extends Base
     }
 
     /**
+     * 第三方授权登陆跳转
+     */
+    public function jump()
+    {
+        if($url = (new \app\www\logic\User)->authUrl()){
+            $this->redirect($url);
+        }
+    }
+
+    /**
+     * 第三访登陆回调
+     */
+    public function callback()
+    {
+        if((new \app\www\logic\User)->authCallback()){
+            $this->redirect('/');
+        }
+
+    }
+
+    /**
      * 安全退出
      * @return mixed
      */

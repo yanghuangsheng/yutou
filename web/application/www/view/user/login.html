@@ -21,9 +21,23 @@
         <div class="quick-list">
             <span class="quick-title">第三方登录</span>
             <ul class="flex-center flex-align-stretch">
-                <li><a href="javascript:void(0);" class="qq">QQ</a></li>
-                <li><a href="javascript:void(0);" class="wechat">微信</a></li>
+                <li><a href="javascript:void(0);" data-url="{:urls('User/jump')}?type=qq" data-type="top" class="qq">QQ</a></li>
+                <li><a href="javascript:void(0);" data-url="{:urls('User/jump')}?type=weixin" data-type="self" class="wechat">微信</a></li>
             </ul>
         </div>
     </div>
 </div>
+<script>
+    $(function($) {
+        $(".quick-list a").on('click', function () {
+            var oThis = $(this);
+            var oUrl = oThis.data('url');
+            if(oThis.data('type') == 'top'){
+                top.location = oUrl;
+                return;
+            }
+            self.location = oUrl;
+
+        });
+    })
+</script>

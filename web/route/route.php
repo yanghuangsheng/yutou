@@ -30,6 +30,10 @@ Route::rule('/user/login', 'www/User/login');
 Route::rule('/user/register', 'www/User/register');
 Route::rule('/user/logout', 'www/User/logout');
 
+Route::rule('/user/jump', 'www/User/jump');
+Route::rule('/user/callback', 'www/User/callback');
+
+
 Route::rule('/user', 'www/User/index');
 
 

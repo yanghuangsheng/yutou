@@ -485,17 +485,23 @@ class User extends Base
             $service = new \app\www\service\User;
 
             if($result = $service->saveLogin($data['mobile'], $data)){
-                $this->session('user', $result);
-                $this->cookie('user', json_encode($result));
-
+                $this->saveLoginStatus($result);
                 $this->resultJson(0, '登陆成功');
             }
 
 
             $this->resultJson(-1, $service->getError());
-
-
         }
+    }
+
+    /**
+     * 保存登陆状态
+     * @param $result
+     */
+    public function saveLoginStatus($result)
+    {
+        $this->session('user', $result);
+        $this->cookie('user', json_encode($result));
     }
 
     /**
@@ -508,5 +514,87 @@ class User extends Base
             $this->cookie('user', 'del');
             $this->resultJson(0, '安全登出成功');
         }
+    }
+
+    /**
+     * 第三方授权地址
+     */
+    public function authUrl()
+    {
+        if($authName = $this->param('type')){
+            $authClass = '\oauth\\'.ucwords($authName);
+            return (new $authClass)->getAuthURL();
+        }
+    }
+
+    /**
+     * 第三方授权回调
+     */
+    public function authCallback()
+    {
+        if($authName = $this->param('type')){
+
+            if($code = $this->param('code')){
+                $authName = ucwords($authName);
+                $authClass = '\oauth\\'.$authName;
+                $auth = new $authClass;
+                $auth->setParam('code', $code);
+                $data = $auth->getUserInfo();
+
+//                dump($data);
+//                exit();
+
+                $userBind = new \app\www\service\UserBind;
+                $user = new \app\www\service\User;
+
+                if($userBind->checkBind($data['open_id'], $this->authType($authName))){
+                    $userId = $userBind->getField([['open_id', '=', $data['open_id']]], 'user_id');
+                    $statusData = $user->getUserInfo($userId,'id');
+                }
+                else{
+                    if($data['id'] = $user->createUser($data)){
+                        $bindData = [
+                            'open_id'=>$data['open_id'],
+                            'union_id'=>$data['union_id'],
+                            'type'=>$this->authType($authName),
+                            'user_id' => $data['id'],
+                        ];
+                        if($userBind->save($bindData)){
+                            $statusData = [
+                                'id' => $data['id'],
+                                'name' => $data['name'],
+                                'avatar' => $data['avatar'],
+                            ];
+
+                        }
+                        else{
+                            //删除没用记录
+                            $user->delete($data['id']);
+                            return false;
+                        }
+
+                    }
+
+                }
+
+                $this->saveLoginStatus($statusData);
+                $user->updateLoginTime($statusData['id']);
+                return true;
+
+            }
+        }
+    }
+
+    /**
+     * 授权类型
+     * @param $name
+     * @return mixed|string
+     */
+    public function authType($name){
+        $data = [
+            'Weixin' => 1,
+            'Qq' => 2,
+        ];
+        return isset($data[$name])?$data[$name]:'';
     }
 }
