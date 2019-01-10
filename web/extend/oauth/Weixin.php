@@ -9,7 +9,7 @@
 namespace oauth;
 
 
-class WeiXin
+class Weixin
 {
     protected $AuthURL = 'https://open.weixin.qq.com/connect/qrconnect';
     protected $AccessTokenURL = 'https://api.weixin.qq.com/sns/oauth2/access_token';
