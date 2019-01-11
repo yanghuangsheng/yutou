@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 
 Route::rule('/','www/Index/index');
+Route::rule('/404','www/Error/index');
 Route::rule('/search','www/Search/index');
 Route::rule('/news/item', 'www/News/item');
 
