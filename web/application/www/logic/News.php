@@ -147,7 +147,7 @@ class News extends Base
             }
             $value['comment_list'] = $commentData;
         }
-        //print_r($data);
+
         return $data;
     }
 
