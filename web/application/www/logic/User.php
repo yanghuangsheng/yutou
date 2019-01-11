@@ -500,6 +500,13 @@ class User extends Base
      */
     public function saveLoginStatus($result)
     {
+        if(!isset($result['avatar']) || !$result['avatar']){
+            $result['avatar'] = [
+                '200' => '/static/www/images/user_avatar.png',
+                '100' => '/static/www/images/user_avatar_100.png',
+                '50' => '/static/www/images/user_avatar_50.png',
+            ];
+        }
         $this->session('user', $result);
         $this->cookie('user', json_encode($result));
     }

@@ -2,7 +2,7 @@
  * Created by YANG on 2018/12/19.
  */
 $(function($) {
-    //console.log(isLogin());
+    console.log(isLogin(1));
     indexJS();
     newsItemJs();
     forumJs();
