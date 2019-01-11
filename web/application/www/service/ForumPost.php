@@ -92,8 +92,8 @@ class ForumPost extends Common
         //发布时间最新的时间 7天前的时间
         $endTime = $newTime - $day * 24 * 360;
 
-        return $this->oneView()->where('ForumPost.create_time', '<=', $newTime)
-            //->where('ForumPost.create_time', '>=', $endTime)
+        return $this->oneView()
+            ->where('ForumPost.create_time', ['>=', $endTime], ['<=', $newTime], 'and')
             ->where('ForumPost.status', 1)
             ->where($map)
             ->order('ForumPost.id', 'desc')
