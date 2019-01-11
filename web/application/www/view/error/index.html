@@ -1,3 +1,27 @@
 <div class="flex-center flex-align-center" style="background-color: #f8f8f8;margin-bottom:-50px;">
-    <span id="errorImg" style="margin:100px 0px 150px 0px;"><img src="/static/www/images/404.jpg"></span>
+    <span id="errorImg" style="margin:100px 0px 150px 0px;position: relative;">
+        <img src="/static/www/images/404.jpg">
+        <a href="/" class="to-home"></a>
+        <a href="javascript:history.back(-1);" class="to-back"></a>
+    </span>
 </div>
+<style>
+    #errorImg a{
+        position: absolute;
+        display: inline-block;
+        bottom: 39px;
+        /*background-color: #00a0e9;*/
+    }
+    #errorImg a.to-home{
+        width: 65px;
+        height: 30px;
+        left: 228px;
+    }
+    #errorImg a.to-back{
+        width: 95px;
+        height: 30px;
+        left: 324px;
+    }
+
+
+</style>
