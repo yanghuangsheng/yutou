@@ -15,7 +15,7 @@ class Task extends Base
     {
         ignore_user_abort(true);
         set_time_limit(3600);
-        ob_end_clean();//清除之前的缓冲内容，这是必需的，如果之前的缓存不为空的话，里面可能有http头或者其它内容，导致后面的内容不能及时的输出
+        @ob_end_clean();//清除之前的缓冲内容，这是必需的，如果之前的缓存不为空的话，里面可能有http头或者其它内容，导致后面的内容不能及时的输出
         header("Connection: close");//告诉浏览器，连接关闭了，这样浏览器就不用等待服务器的响应
         header("HTTP/1.1 200 OK");
     }
@@ -47,6 +47,7 @@ class Task extends Base
                 $news->categoryNewsRule($value['id'], $ruleModel);
             }
         }
+
     }
 
     /**
@@ -68,6 +69,7 @@ class Task extends Base
                 $lottery->categoryLotteryRule($value['id'], $ruleModel);
             }
         }
+
 
     }
 
