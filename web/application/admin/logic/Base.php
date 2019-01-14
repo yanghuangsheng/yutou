@@ -72,6 +72,7 @@ class Base
      */
     public function session($name, $value = '')
     {
+        $name = 'yutou_admin' . $name;
         if ($value && $value == 'del') {
             return Session::delete($name);
         } else if ($value) {
@@ -79,6 +80,25 @@ class Base
         } else {
             return Session::get($name);
         }
+    }
+
+    /**
+     * cookie 操作
+     * @param $name
+     * @param $value
+     * @return mixed|void
+     */
+    public function cookie($name , $value = '')
+    {
+        $name = 'admin_' . $name;
+        if ($value && $value == 'del') {
+            return Cookie::delete($name);
+        }else if ($value){
+            return Cookie::forever($name, $value);
+        }else{
+            return Cookie::get($name);
+        }
+
     }
 
     /**

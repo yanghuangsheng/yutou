@@ -8,11 +8,11 @@
         <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
             <div class="layui-form-item">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
-                <input type="text" name="login" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
+                <input type="text" name="user_account" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
             </div>
             <div class="layui-form-item">
                 <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
-                <input type="password" name="pass" id="LAY-user-login-password" lay-verify="required" placeholder="密码" class="layui-input">
+                <input type="password" name="user_password" id="LAY-user-login-password" lay-verify="required" placeholder="密码" class="layui-input">
             </div>
             <!-- <div class="layui-form-item">
             <div class="layui-row">
@@ -58,7 +58,7 @@
         form.on('submit(LAY-user-login-submit)', function (obj) {
             //请求登入接口
             admin.req({
-                url: layui.setter.domain + 'admin/login/login',
+                url:  window.location.href,
                 data: obj.field,
                 done: function (res) {
                     //登入成功的提示与跳转
@@ -67,7 +67,7 @@
                         icon: 1,
                         time: 1000
                     }, function () {
-                        location.href = layui.setter.domain + 'admin/index/index'; //后台主页
+                        location.href = layui.setter.domain + 'admin/manage'; //后台主页
                     });
                 }
             });

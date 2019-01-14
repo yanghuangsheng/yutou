@@ -17,6 +17,9 @@ class Index extends Base
      */
     public function index()
     {
+        $this->login();
+        //echo md5Encryption('admin');
+
         $this->view->engine->layout('layout/main');
         return $this->fetch();
     }
@@ -25,9 +28,9 @@ class Index extends Base
     /**
      * 登陆处理
      */
-    public function login()
+    protected function login()
     {
-
+        return (new \app\admin\logic\Admin)->login();
     }
 
     /**
