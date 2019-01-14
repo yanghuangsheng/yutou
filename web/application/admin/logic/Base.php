@@ -9,6 +9,7 @@
 namespace app\admin\logic;
 
 use think\facade\Session;
+use think\facade\Cookie;
 use think\facade\Request;
 
 class Base

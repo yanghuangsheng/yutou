@@ -18,7 +18,7 @@
  * @param string $prefix 加密混淆字符串
  * @return string
  */
-function md5Encryption($text, $prefix = 'weChat@20180822')
+function md5Encryption($text, $prefix = 'yutou@20190114')
 {
     return md5($prefix . trim($text));
 }

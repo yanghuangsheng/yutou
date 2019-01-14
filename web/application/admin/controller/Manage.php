@@ -16,6 +16,8 @@ class Manage extends Base
      */
     public function index()
     {
+        $data['user'] = $this->userData;
+        $this->assign('data', $data);
         return $this->fetch();
     }
 

@@ -9,7 +9,9 @@
 namespace app\admin\controller;
 
 
-class Index extends Base
+use think\Controller;
+
+class Index extends Controller
 {
     /**
      * 后台登陆页
@@ -17,8 +19,8 @@ class Index extends Base
      */
     public function index()
     {
+        //echo md5Encryption('admin@123@321');
         $this->login();
-        //echo md5Encryption('admin');
 
         $this->view->engine->layout('layout/main');
         return $this->fetch();
@@ -38,6 +40,7 @@ class Index extends Base
      */
     public function logout()
     {
+        (new \app\admin\logic\Admin)->logout();
         return json(['code'=>0, 'msg'=>'', 'data'=>'']);
     }
 }

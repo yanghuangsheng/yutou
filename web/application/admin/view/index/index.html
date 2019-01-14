@@ -60,6 +60,7 @@
             admin.req({
                 url:  window.location.href,
                 data: obj.field,
+                type: 'Post',
                 done: function (res) {
                     //登入成功的提示与跳转
                     layer.msg('登入成功', {
@@ -67,7 +68,7 @@
                         icon: 1,
                         time: 1000
                     }, function () {
-                        location.href = layui.setter.domain + 'admin/manage'; //后台主页
+                        location.href = res.data.url; //后台主页
                     });
                 }
             });

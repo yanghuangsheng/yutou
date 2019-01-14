@@ -8,29 +8,29 @@
             <div class="flex-start flex-align-center attr-top">
                 <div class="user-name">{$data['name']}</div>
                 <div class="flex-start flex-align-center my-attr">
-                    <a href="javascript:void(0);" class="flex-align-center follow"><i></i><span>{$data['follow_num']}</span></a>
-                    <a href="javascript:void(0);" class="flex-align-center fans"><i></i><span>{$data['fans_num']}</span></a>
+                    <a href="javascript:void(0);" class="flex-align-center follow"><i></i><span>{$data['follow_num']?:'0'}</span></a>
+                    <a href="javascript:void(0);" class="flex-align-center fans"><i></i><span>{$data['fans_num']?:'0'}</span></a>
                 </div>
             </div>
             <div class="flex-start flex-align-center attr-bottom">
                 <a href="javascript:void(0);">
-                    <span>{$data['follow_num']}</span>
+                    <span>{$data['follow_num']?:'0'}</span>
                     <p>关注数</p>
                 </a>
                 <a href="javascript:void(0);">
-                    <span>{$data['fans_num']}</span>
+                    <span>{$data['fans_num']?:'0'}</span>
                     <p>粉丝数</p>
                 </a>
                 <a href="javascript:void(0);">
-                    <span>{$data['post_num']}</span>
+                    <span>{$data['post_num']?:'0'}</span>
                     <p>吐槽数</p>
                 </a>
                 <a href="javascript:void(0);">
-                    <span>{$data['comment_num']}</span>
+                    <span>{$data['comment_num']?:'0'}</span>
                     <p>评论数</p>
                 </a>
                 <a href="javascript:void(0);">
-                    <span>{$data['praise_num']}</span>
+                    <span>{$data['praise_num']?:'0'}</span>
                     <p>获赞数</p>
                 </a>
             </div>
@@ -54,23 +54,23 @@
             </div>
             <div class="flex-center flex-align-center attr-bottom">
                 <a href="javascript:void(0);">
-                    <span>{$data['follow_num']}</span>
+                    <span>{$data['follow_num']?:'0'}</span>
                     <p>关注数</p>
                 </a>
                 <a href="javascript:void(0);">
-                    <span>{$data['fans_num']}</span>
+                    <span>{$data['fans_num']?:'0'}</span>
                     <p>粉丝数</p>
                 </a>
                 <a href="javascript:void(0);">
-                    <span>{$data['post_num']}</span>
+                    <span>{$data['post_num']?:'0'}</span>
                     <p>吐槽数</p>
                 </a>
                 <a href="javascript:void(0);">
-                    <span>{$data['comment_num']}</span>
+                    <span>{$data['comment_num']?:'0'}</span>
                     <p>评论数</p>
                 </a>
                 <a href="javascript:void(0);">
-                    <span>{$data['praise_num']}</span>
+                    <span>{$data['praise_num']?:'0'}</span>
                     <p>获赞数</p>
                 </a>
             </div>

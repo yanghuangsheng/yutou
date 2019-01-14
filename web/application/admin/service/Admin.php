@@ -26,7 +26,7 @@ class Admin extends Base
     {
         return $this->model->where('user_account', $user_account)
             ->field('id,user_name,user_account,user_password,login_last_time')
-            ->find();
+            ->find()->toArray();
     }
 
     /**
