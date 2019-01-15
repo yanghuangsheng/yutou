@@ -50,13 +50,17 @@ class Common extends Base
      * @return mixed array
      */
     public function getOneData($whereMap)
-    {
-        //存在关联模型设置
-        if(method_exists($this, 'setWithOnView')){
-            $model = $this->setWithOnView();
+    {   //存在单条关联模型设置
+        if(method_exists($this, 'setOneWithOnView')){
+            $model = $this->setOneWithOnView();
         }
-        else{
-            $model = $this->model;
+        else {
+            //存在关联模型设置
+            if (method_exists($this, 'setWithOnView')) {
+                $model = $this->setWithOnView();
+            } else {
+                $model = $this->model;
+            }
         }
 
         //查询请求

@@ -25,6 +25,8 @@ Route::rule('/user/publishpost', 'www/User/publishPost');
 Route::rule('/user/sendsms', 'www/User/sendSms');
 Route::rule('/user/uploadcontentimage', 'www/User/uploadContentImage');
 Route::rule('/user/uploadavatarimage', 'www/User/uploadAvatarImage');
+Route::rule('/user/uploadcoverimage', 'www/User/uploadcoverimage');
+
 
 
 Route::rule('/user/login', 'www/User/login');

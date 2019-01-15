@@ -1,0 +1,163 @@
+<style>
+    html {
+        background-color: #ffffff;
+    }
+</style>
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="margin:3px;padding:20px;background-color: #fff;">
+    <div style="height:25px;"></div>
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-sm8 layui-col-xs6">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>广告内容信息 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">广告标题</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">广告链接</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">投放平台</label>
+                                <div class="layui-input-block" style="padding-left:15px;">
+                                    <input type="radio" name="type" value="1" title="PC">
+                                    <input type="radio" name="type" value="2" title="H5">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">投放时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="put_open_time" lay-verify="required" autocomplete="off" placeholder="开始时间" class="layui-input">
+                                </div>
+                                <div class="layui-input-inline" style="height:30px;width:auto;line-height:30px;text-align: center;">-</div>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="put_end_time" lay-verify="required" autocomplete="off" placeholder="结束时间" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">广告描述</label>
+                                <div class="layui-input-block">
+                                    <textarea name="description" placeholder="" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="layui-col-sm4 layui-col-xs6">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>位置信息 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">位置名称</label>
+                                <div class="layui-input-block">
+                                    <select name="ad_id" lay-verify="required" lay-filter="adId">
+                                        <option value="">选择位置</option>
+                                        {volist name="data['ad_list']['list']" id="ad"}
+                                            <option value="{$ad['id']}" data-width="{$ad['size']['width']}" data-height="{$ad['size']['height']}" data-num="{$ad['num']}">{$ad['name']}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">广告尺寸</label>
+                                <div class="layui-input-inline" style="width:50px;">
+                                    <input type="text" name="size[width]" placeholder="宽" class="layui-input" disabled="disabled">
+                                </div>
+                                <div class="layui-input-inline" style="width:10px;height:30px;line-height:30px;">x</div>
+                                <div class="layui-input-inline" style="width:50px;">
+                                    <input type="text" name="size[height]" placeholder="宽" class="layui-input" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">广告位数量</label>
+                                <div class="layui-input-inline" style="width:50px;">
+                                    <input type="text" name="num" placeholder="" class="layui-input" disabled="disabled">
+                                </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field sm">
+                    <legend>广告图 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box sm">
+                        <div class="layui-row">
+                            <div class="layui-form-item" style="text-align: center;">
+                                <img src="/static/admin/style/images/default-thumbnail.png" id="adImage" width="80%">
+                                <input type="hidden" name="image_url" value="" class="image_value">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <input type="hidden" name="id" value="">
+            <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
+        </div>
+    </div>
+</div>
+<script>
+    bodyD.use(['index','form','upload','laydate','formSelects'], function () {
+        var $ = layui.$,laydate = layui.laydate,form = layui.form;
+        //投放开始时间
+        laydate.render({
+            elem: 'input[name="put_open_time"]',
+            type: 'datetime',
+        });
+        //投放结束时间
+        laydate.render({
+            elem: 'input[name="put_end_time"]',
+            type: 'datetime',
+        });
+        //提示尺寸
+        form.on('select(adId)',function (data) {
+            var selectThis = $("select[name='ad_id']");
+            var width = selectThis.find("option:selected").data('width');
+            var height = selectThis.find("option:selected").data('height');
+            var num = selectThis.find("option:selected").data('num');
+
+            $("input[name=\"size[width]\"]").val(width);
+            $("input[name=\"size[height]\"]").val(height);
+            $("input[name=\"num\"]").val((num == undefined)?'':parseInt(num)+1);
+        });
+        uploadImages($('#upload-adImage'));
+        //上传图
+        function uploadImages(uploadName, label) {
+            var oUrl = '{:url("AdImages/uploadFile")}';
+            //上传头像
+            upload.render({
+                elem: uploadName
+                , url: oUrl
+                , accept: 'file' //普通文件
+                , exts: 'jpg|png|gif' //只允许上传压缩文件
+                , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    layer.load(); //上传loading
+                }
+                , done: function (res) {
+                    layer.closeAll('loading');
+                    var item = this.item;
+                    if(res.code == 0) {
+                        //console.log(label);
+                        if (label == undefined) {
+                            item.attr('src', res.data.file);
+                            item.siblings('input.image_value').val(res.data.file);
+                        }
+                        return false;
+                    }
+                    layer.msg(res.msg, {icon:0});
+                }
+                , error: function () {
+                    layer.msg('上传错误！', {icon: 0});
+                }
+            });
+        }
+    });
+</script>
