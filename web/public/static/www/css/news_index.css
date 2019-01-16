@@ -58,7 +58,7 @@
     left: 5px;
     margin-top: -20px;
     border-radius: 2px;
-    background: rgba(40, 40, 40, 0.7) url("../images/common.png") left -145px;
+    background: rgba(40, 40, 40, 0.7) url("../images/common.png?t=20190116") left -145px;
 }
 #indexBanner a.next{
     left: inherit;
