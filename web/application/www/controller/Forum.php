@@ -25,6 +25,8 @@ class Forum extends Base
 
         $data['post_list'] = $this->postList($logic);
         $data['seven_list'] = $logic->sevenDayHotData();
+        $data['ad_banner'] = $logic->getBanner(5);
+
         //print_r($data['seven_list']);
 
         $this->assign('data',$data);
@@ -51,6 +53,8 @@ class Forum extends Base
         //7天热门
         $data['seven_list'] = $logic->sevenDayHotData();
         $data['related'] = $logic->relatedData($logic);
+
+        $data['ad_banner'] = $logic->getBanner(6);
 
         $this->assign('data', $data);
 

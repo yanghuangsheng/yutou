@@ -75,4 +75,18 @@ class ForumPostComment extends Common
         ];
         return $this->save($updateData);
     }
+
+    /**
+     * 处理输出数据
+     * @param $data
+     */
+    protected function resetListData($data)
+    {
+        foreach ($data as $key => &$value){
+            $value['user_avatar'] = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
+            $value['reply_avatar'] = $value['reply_avatar'] ? json_decode($value['reply_avatar'],1) :userAvatar();
+
+        }
+        return $data;
+    }
 }

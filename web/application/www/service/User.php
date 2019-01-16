@@ -28,6 +28,8 @@ class User extends Common
             ->view('UserAttr', 'praise_num,tread_num,comment_num,post_num,follow_num,fans_num', 'UserAttr.user_id = User.id', 'LEFT')
             ->where('id', $user_id)
             ->find();
+        //补填没有头像的用户
+        $data['avatar'] || $data['avatar'] = userAvatar();
         return $data;
     }
 

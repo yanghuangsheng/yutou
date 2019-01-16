@@ -121,4 +121,17 @@ class ForumPost extends Common
         return $this->model->view('ForumPost', 'id,title,image_url,create_time')
             ->view('ForumPostAttr', 'browse_num,praise_num,collect_num,comment_num', 'ForumPostAttr.post_id = ForumPost.id', 'LEFT');
     }
+
+
+    /**
+     * 处理输出数据
+     * @param $data
+     */
+    protected function resetListData($data)
+    {
+        foreach ($data as $key => &$value){
+            $value['user_avatar'] = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
+        }
+        return $data;
+    }
 }

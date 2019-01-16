@@ -53,7 +53,7 @@ class AdImages extends Base
      * 上传广告图
      * @return mixed
      */
-    public function uploadImage()
+    public function uploadFile()
     {
         $upload = (new \app\admin\logic\Upload);
         $data = $upload->upFile('ad_images');
@@ -72,6 +72,7 @@ class AdImages extends Base
     public function edit(AdImagesLogic $logic)
     {
         $data = $logic->getEdit();
+
         $this->assign('data', $data);
         return $this->fetch();
     }

@@ -20,7 +20,9 @@ class AdImages extends Base
     {
         $this->getListJson();
 
-        return [];
+        $data['ad_list'] = (new \app\admin\service\Ad)->getListData();
+
+        return $data;
     }
 
     /**
@@ -90,7 +92,12 @@ class AdImages extends Base
         if($this->isAjax()){
             $param = $this->param();
             $service = new oService;
-            $data = $service->initLimit($param['page'], $param['limit'])->getListData();
+            $whereMap = [];
+            $param['ad_id'] && $whereMap[] = ['ad_id', '=', $param['ad_id']];
+            $param['status'] === '' || $whereMap[] = ['put_end_time', $param['status']?'>':'<', time()];
+            $param['title'] && $whereMap[] = ['title', 'like', '%' . $param['title'] . '%'];
+
+            $data = $service->initWhere($whereMap)->initLimit($param['page'], $param['limit'])->getListData();
             $this->resultJson(0, '获取成功', $data);
         }
     }

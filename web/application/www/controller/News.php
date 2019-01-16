@@ -31,7 +31,8 @@ class News extends Base
         //7天热门
         $data['seven_list'] = $logic->sevenDayHotData();
         $data['related'] = $logic->relatedData($logic);
-
+        //右侧广告
+        $data['ad_banner'] = $logic->getBanner(4);
         $this->assign('data', $data);
 
         return $this->fetch();

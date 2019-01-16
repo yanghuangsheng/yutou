@@ -86,7 +86,7 @@ class User extends Base
         $data['list'] = $data['list']->toArray();
         foreach ($data['list'] as $key => &$value){
             $value['description'] = clean_html($value['content'], 60);
-            $value['user_avatar'] = json_decode($value['user_avatar'], true);
+            //$value['user_avatar'] = json_decode($value['user_avatar'], true);
 
         }
         return $data;
@@ -164,7 +164,7 @@ class User extends Base
         $data['list'] = $data['list']->toArray();
         foreach ($data['list'] as $key => &$value){
             $value['description'] = clean_html($value['content'], 60);
-            $value['user_avatar'] = json_decode($value['user_avatar'], true);
+            //$value['user_avatar'] = json_decode($value['user_avatar'], true);
             $value['image_url'] = json_decode($value['image_url'], true);
             $value['create_time'] = friendlyDate($value['create_time']);
 
@@ -211,7 +211,7 @@ class User extends Base
         $forumComment = new \app\www\service\ForumPostComment;
         foreach ($data['list'] as $key => &$value){
             if($value['type'] == 1){
-                $value['user_avatar'] = json_decode($value['user_avatar'], true);
+                //$value['user_avatar'] = json_decode($value['user_avatar'], true);
                 $value['create_time'] = friendlyDate($value['create_time']);
                 if($value['o_type'] == 1){
                     //回复帖子
@@ -501,11 +501,8 @@ class User extends Base
     public function saveLoginStatus($result)
     {
         if(!isset($result['avatar']) || !$result['avatar']){
-            $result['avatar'] = [
-                '200' => '/static/www/images/user_avatar.png',
-                '100' => '/static/www/images/user_avatar_100.png',
-                '50' => '/static/www/images/user_avatar_50.png',
-            ];
+            //用户默认头像
+            $result['avatar'] = userAvatar();
         }
         $this->session('user', $result);
         $this->cookie('user', json_encode($result));

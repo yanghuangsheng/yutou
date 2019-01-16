@@ -72,10 +72,12 @@
         </div>
     </div>
     <div class="index-right">
+        {if $data['ad_banner']}
         <!--广告-->
         <div class="index-ad">
-            <img src="/static/www/test/u14.png">
+            <a href="{$data['ad_banner']['link_url']?:'javascript:void(0);'}"><img src="{$data['ad_banner']['image_url']}"></a>
         </div>
+        {/if}
         {include file="common/forum_right" /}
     </div>
 </div>

@@ -71,6 +71,27 @@ class News extends Base
     }
 
     /**
+     * 获取轮播
+     * @return array
+     */
+    public function getCarousel()
+    {
+        return (new \app\www\service\AdImages)->getCarousel(2);
+
+    }
+
+    /**
+     * 获取广告
+     * @param $ad_id
+     * @return array|mixed
+     */
+    public function getBanner($ad_id)
+    {
+        return (new \app\www\service\AdImages)->getBanner($ad_id);
+    }
+
+
+    /**
      * 上一篇 下一篇
      * @return mixed
      */
@@ -136,15 +157,15 @@ class News extends Base
             ->initWhere([['PortalNewsComment.news_id', '=', $newsId], ['PortalNewsComment.parent_id', '=', 0]])
             ->getListData();
         foreach ($data['list'] as $key => &$value){
-            $value['user_avatar'] = json_decode($value['user_avatar'], true);
+            //$value['user_avatar'] = json_decode($value['user_avatar'], true);
             $value['comment_list'] = $comment
                 ->initWhere([['PortalNewsComment.news_id', '=', $newsId], ['PortalNewsComment.parent_id', '=', $value['id']]])
                 ->getListData();
             $commentData = $value['comment_list'];
-            foreach ($commentData['list'] as $key1 => &$value1){
-                $value1['user_avatar'] = json_decode($value1['user_avatar'], true);
-                $value1['reply_avatar'] = json_decode($value1['reply_avatar'], true);
-            }
+//            foreach ($commentData['list'] as $key1 => &$value1){
+//                $value1['user_avatar'] = json_decode($value1['user_avatar'], true);
+//                $value1['reply_avatar'] = json_decode($value1['reply_avatar'], true);
+//            }
             $value['comment_list'] = $commentData;
         }
 

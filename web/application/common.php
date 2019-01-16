@@ -437,9 +437,58 @@ function friendlyDate($sTime,$type = 'mohu',$alt = 'false') {
     }
 }
 
-function urls($path){
+/**
+ * 美化前台URL
+ * @param $path
+ * @return mixed
+ */
+function urls($path)
+{
     $url = url($path);
     return str_replace(['/www','/index','.html'], '', $url);
+}
+
+/**
+ * 广告平台
+ * @param $key
+ * @return mixed
+ */
+function adType($key)
+{
+    $data = [
+        '1' => 'PC',
+        '2' => 'H5',
+    ];
+    return $data[$key];
+}
+
+/**
+ * 用户默认头像
+ * @return array
+ */
+function userAvatar()
+{
+    return [
+        '200' => '/static/www/images/user_avatar.png',
+        '100' => '/static/www/images/user_avatar_100.png',
+        '50' => '/static/www/images/user_avatar_50.png',
+    ];
+}
+
+/**
+ * 返回以指定$key为索引的新数组
+ * @param $data
+ * @param string $keys
+ * @return array
+ */
+function keyData($data, $keys = 'id')
+{
+    $resultData = [];
+    foreach ($data as $key => $value) {
+        $resultData[$value[$keys]] = $value;
+    }
+
+    return $resultData;
 }
 
 

@@ -15,36 +15,36 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">广告标题</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                                    <input type="text" name="title" value="{$data['title']}" lay-verify="required" autocomplete="off" placeholder="请输入标题" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">广告链接</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="link_url" autocomplete="off" placeholder="http://" class="layui-input">
+                                    <input type="text" name="link_url" value="{$data['link_url']}"  autocomplete="off" placeholder="http://" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">投放平台</label>
                                 <div class="layui-input-block" style="padding-left:15px;">
-                                    <input type="radio" name="type" value="1" title="PC">
-                                    <input type="radio" name="type" value="2" title="H5">
+                                    <input type="radio" name="type" value="1" title="PC" {if $data['type'] == 1} checked="checked" {/if}>
+                                    <input type="radio" name="type" value="2" title="H5" {if $data['type'] == 2} checked="checked" {/if}>
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">投放时间</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="put_open_time" lay-verify="required" autocomplete="off" placeholder="开始时间" class="layui-input">
+                                    <input type="text" name="put_open_time" value="{$data['put_open_time']}" lay-verify="required" autocomplete="off" placeholder="开始时间" class="layui-input">
                                 </div>
                                 <div class="layui-input-inline" style="height:30px;width:auto;line-height:30px;text-align: center;">-</div>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="put_end_time" lay-verify="required" autocomplete="off" placeholder="结束时间" class="layui-input">
+                                    <input type="text" name="put_end_time" value="{$data['put_end_time']}" lay-verify="required" autocomplete="off" placeholder="结束时间" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">广告描述</label>
                                 <div class="layui-input-block">
-                                    <textarea name="description" placeholder="" class="layui-textarea"></textarea>
+                                    <textarea name="description" placeholder="" class="layui-textarea">{$data['description']}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,8 @@
                                     <select name="ad_id" lay-verify="required" lay-filter="adId">
                                         <option value="">选择位置</option>
                                         {volist name="data['ad_list']['list']" id="ad"}
-                                            <option value="{$ad['id']}" data-width="{$ad['size']['width']}" data-height="{$ad['size']['height']}" data-num="{$ad['num']}">{$ad['name']}</option>
+                                        <option value="{$ad['id']}" data-width="{$ad['size']['width']}" data-height="{$ad['size']['height']}" data-num="{$ad['num']}"
+                                        {if $ad['id'] == $data['ad_id']} selected="" {/if}>{$ad['name']}</option>
                                         {/volist}
                                     </select>
                                 </div>
@@ -70,28 +71,28 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">广告尺寸</label>
                                 <div class="layui-input-inline" style="width:50px;">
-                                    <input type="text" name="size[width]" placeholder="宽" class="layui-input" disabled="disabled">
+                                    <input type="text" name="size[width]" value="{$data['size']['width']}" placeholder="宽" class="layui-input" disabled="disabled">
                                 </div>
                                 <div class="layui-input-inline" style="width:10px;height:30px;line-height:30px;">x</div>
                                 <div class="layui-input-inline" style="width:50px;">
-                                    <input type="text" name="size[height]" placeholder="宽" class="layui-input" disabled="disabled">
+                                    <input type="text" name="size[height]" value="{$data['size']['height']}" placeholder="宽" class="layui-input" disabled="disabled">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">广告数量</label>
                                 <div class="layui-input-inline" style="width:50px;">
-                                    <input type="text" name="num" placeholder="" class="layui-input" disabled="disabled">
+                                    <input type="text" name="num" value="{$data['num']}" placeholder="" class="layui-input" disabled="disabled">
                                 </div>
+                            </div>
                         </div>
-                    </div>
                 </fieldset>
                 <fieldset class="layui-elem-field sm">
                     <legend>广告图 <font color="#ccc"></font></legend>
                     <div class="layui-field-box sm">
                         <div class="layui-row">
                             <div class="layui-form-item" style="text-align: center;">
-                                <img src="/static/admin/style/images/default-thumbnail.png" id="upload-adImage" width="100%">
-                                <input type="hidden" name="image_url" value="" class="image_value">
+                                <img src="{$data['image_url']?:'/static/admin/style/images/default-thumbnail.png'}" id="upload-adImage" width="100%">
+                                <input type="hidden" name="image_url" value="{$data['image_url']}" class="image_value">
                             </div>
                         </div>
                     </div>
@@ -123,10 +124,14 @@
             var width = selectThis.find("option:selected").data('width');
             var height = selectThis.find("option:selected").data('height');
             var num = selectThis.find("option:selected").data('num');
+            var oAdId = '{$data['ad_id']}';
+            if(selectThis.find("option:selected").val() != oAdId){
+                num = parseInt(num)+1
+            }
 
             $("input[name=\"size[width]\"]").val(width);
             $("input[name=\"size[height]\"]").val(height);
-            $("input[name=\"num\"]").val((num == undefined)?'':parseInt(num)+1);
+            $("input[name=\"num\"]").val((num == undefined)?'':num);
         });
         uploadImages($('#upload-adImage'));
         //上传图

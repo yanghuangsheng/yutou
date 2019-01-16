@@ -9,9 +9,12 @@
             <div class="layui-tab-content">
                 <div class="layui-form" action="" id="LAY-article-form-search">
                     <div style="margin-bottom: 10px;">
-                        <div class="layui-input-inline" style="width: 200px;">
-                            <select name="category_id" lay-verify="">
+                        <div class="layui-input-inline" style="width: 150px;">
+                            <select name="ad_id" lay-verify="">
                                 <option value="">广告位</option>
+                                {volist name="data['ad_list']['list']" id="value"}
+                                    <option value="{$value['id']}">{$value['name']}</option>
+                                {/volist}
                             </select>
                         </div>
                         <div class="layui-input-inline" style="width: 100px;">
@@ -21,8 +24,10 @@
                                 <option value="0">已下架</option>
                             </select>
                         </div>
-                        <div class="layui-input-inline" style="width:100px;">
-                            <input type="text" name="title" placeholder="广告标题" value="" class="layui-input">
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 150px;">
+                                <input type="text" name="title" placeholder="广告标题" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                         <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
                     </div>
@@ -51,51 +56,61 @@
             elem: '#LAY-table',
             url: window.location.href,
             where: {
-                category_id: '',
+                ad_id: '',
                 status: '',
-                keyword: ''
+                title: ''
             },
             cols: [
                 [{
                     checkbox: true
                 },
                     {
-                        field: 'category_name',
-                        title: '分类',
-                        width: 200,
+                        field: 'name',
+                        title: '广告位',
+                        width: 120,
 
+                    },
+                    {
+                        field: 'type_txt',
+                        title: '平台',
+                        width: 60,
+                        align: 'center'
                     },
                     {
                         field: 'title',
                         title: '标题',
-                        minWidth: 200
+                        width: 150
                     },
                     {
-                        field: 'source_url',
-                        title: '来源地址',
-                        width: 330
+                        field: 'image_url',
+                        title: '广告图',
+                        width: 120
+                    },
+                    {
+                        field: 'link_url',
+                        title: '广告地址',
+                        minWidth: 330
                     },
                     {
                         field: 'status_txt',
                         title: '状态',
                         width: 80,
-                        align: 'center',
-
-//                        templet: function (d) {
-//                            return (d.status == '1' ?
-//                                '<span class="layui-badge layui-bg-green">已发布</span> ' :
-//                                '<span class="layui-badge layui-bg-gray">未发布</span> ');
-//                        }
+                        align: 'center'
                     },
                     {
-                        field: 'create_time',
-                        title: '发布时间',
+                        field: 'put_open_time',
+                        title: '投放开始时间',
+                        width: 180
+                    },
+                    {
+                        field: 'put_end_time',
+                        title: '投放结束时间',
                         width: 180
                     },
                     {
                         fixed: 'right',
                         title: '操作',
-                        width: 160,
+                        width: 120,
                         align: 'center',
                         toolbar: '#list-table-toolbar'
                     }
@@ -117,19 +132,18 @@
             switch (obj.event)
             {
                 case 'edit':
-                    var oUrl = "{:Url('PortalNews/edit',['id'=>'__id__'])}";
+                    var oUrl = "{:Url('AdImages/edit',['id'=>'__id__'])}";
                     oUrl = oUrl.replace('__id__', data.id);
                     layer.open({
                         type: 2,
-                        title: '编辑资讯',
+                        title: '编辑广告',
                         content: oUrl,
                         maxmin: true,
                         area: [($(window).width()*0.8)+'px', ($(window).height()*0.7)+'px'],
                         btn: ['确定', '取消'],
                         yes: function (index, layero) {
                             var iframeWindow = window['layui-layer-iframe' + index],
-                                submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit'),
-                                setContent = layero.find('iframe').contents().find('#getContent');
+                                submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit');
 
                             //监听提交
                             iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
@@ -144,17 +158,20 @@
                                             //console.log(res.code);
                                             if(res.code == 0){
 
-                                                if(data.field.status){
-                                                    obj.update({
-                                                        status: 1,
-                                                        status_txt: '<span class="layui-badge layui-bg-green">已发布</span>'
-                                                    });
+                                                if(data.field.put_end_time > getNowFormatDate()){
+                                                    var status_txt = '<span class="layui-badge layui-bg-green">上架中</span>';
                                                 }else{
-                                                    obj.update({
-                                                        status: 0,
-                                                        status_txt: '<span class="layui-badge layui-bg-gray">未发布</span>'
-                                                    });
+                                                    var status_txt = '<span class="layui-badge layui-bg-gray">已下架</span>';
                                                 }
+
+                                                obj.update({
+                                                    status_txt: status_txt,
+                                                    put_open_time: data.field.put_open_time,
+                                                    put_end_time: data.field.put_end_time,
+                                                    title: data.field.title,
+                                                    link_url: data.field.link_url,
+                                                    type_txt: data.type == '1'?'PC':'H5',
+                                                });
 
                                             }
 
@@ -164,7 +181,7 @@
                                     }
                                 });
                             });
-                            setContent.trigger('click');
+
                             submit.trigger('click');
                         }
                     });
@@ -178,7 +195,7 @@
                 case 'del':
                     layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function () {
                         admin.req({
-                            url: '{:Url("PortalNews/delete")}',
+                            url: '{:Url("AdImages/delete")}',
                             data: {
                                 id: data.id
                             },
@@ -280,6 +297,35 @@
             table.reload('LayTable', tableOptions);
             return false;
         });
+
+        function getNowFormatDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            var hours = date.getHours();
+            var minutes =  date.getMinutes();
+            var seconds = date.getSeconds();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            if (hours >= 0 && hours <= 9) {
+                hours = "0" + hours;
+            }
+            if (minutes >= 0 && minutes <= 9) {
+                minutes = "0" + minutes;
+            }
+            if (seconds >= 0 && seconds <= 9) {
+                seconds = "0" + seconds;
+            }
+            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + " " + hours + seperator2 + minutes + seperator2 + seconds;
+            return currentdate;
+        }
 
     });
 </script>

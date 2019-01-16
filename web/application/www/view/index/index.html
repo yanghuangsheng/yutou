@@ -1,19 +1,31 @@
 <div class="box-width box-center flex-between index-box">
     <div class="index-left">
         <!--幻灯片-->
-        <div class="index-banner">
+        <div class="index-banner" id="indexBanner">
             <div class="images">
                 <ul>
-                    <li><img src="/static/www/test/u12.png"></li>
+                    {volist name="data['ad_carousel']['list']" id="value"}
+                    <li><a href="{$value['link_url']?:'javascript:void(0);'}"><img src="{$value['image_url']}"></a></li>
+                    {/volist}
                 </ul>
             </div>
             <div class="hd">
                 <ul class="box-center flex-center">
-                    <li class="on"></li>
-                    <li></li>
                 </ul>
             </div>
+            <a class="prev" href="javascript:void(0);"></a>
+            <a class="next" href="javascript:void(0);"></a>
         </div>
+        <script src="/static/www/js/extend/superslide/index.js"></script>
+        <script type="text/javascript">
+            var indexBanner = $("#indexBanner");
+            if(indexBanner.find('.images li').length > 1){
+                indexBanner.find('.images li').each(function(i, n){
+                    indexBanner.find('.hd ul').append('<li></li>');
+                });
+                jQuery("#indexBanner").slide({mainCell:".images ul",effect:"leftLoop",vis:"auto",autoPlay:true,interTime:4000,easing:"easeInQuint"});
+            }
+        </script>
         <!--热点-->
         <div class="index-hot-news">
             <div class="list">

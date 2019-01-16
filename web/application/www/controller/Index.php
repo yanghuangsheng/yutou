@@ -21,7 +21,9 @@ class Index extends Base
         $data['seven_list'] = $logic->sevenDayHotData();
         $data['top_list'] = $logic->sevenDayTopData();
         $data['lottery_list'] = $logic->lotteryList();
-        //print_r($data['seven_list']);
+        $data['ad_carousel'] = $logic->getCarousel();
+        $data['ad_banner'] = $logic->getBanner(3);
+        //print_r($data['ad_image']);
         $this->assign('data',$data);
         return $this->fetch();
     }
