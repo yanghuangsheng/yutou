@@ -1,7 +1,7 @@
-@import "news_index.css";
-@import "news_item.css";
-@import "forum-index.css";
-@import "forum-item.css";
-@import "user.css";
+@import "news_index.css?t=20180116";
+@import "news_item.css?t=20180116";
+@import "forum-index.css?t=20180116";
+@import "forum-item.css?t=20180116";
+@import "user.css?t=20180116";
 
 
