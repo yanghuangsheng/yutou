@@ -777,7 +777,7 @@ function forumJs() {
     var loadForumList = $("#forumContentBox");
     loadForumList.find('a.loadForumBtn').on('click', function () {
         var oThis = $(this);
-        var oPage = parseInt(oThis.data('page')) + 0;
+        var oPage = parseInt(oThis.data('page')) + 1;
         var oStatus = oThis.data('status');
         var oStartId = oThis.data('start');
         var oType = oThis.data('type');
