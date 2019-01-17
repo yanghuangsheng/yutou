@@ -33,6 +33,8 @@ class News extends Base
         $data['related'] = $logic->relatedData($logic);
         //右侧广告
         $data['ad_banner'] = $logic->getBanner(4);
+
+        $this->init(['title'=>$data['item']['title']]);
         $this->assign('data', $data);
 
         return $this->fetch();

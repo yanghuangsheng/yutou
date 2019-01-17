@@ -9,7 +9,10 @@ $(function($) {
     forumItemJs();
     searchJs();
     userJs();
-    
+    /**
+     * 分享
+     */
+    $(".user-share").share();
     /**
      * 发贴弹窗
      */
@@ -1867,4 +1870,57 @@ $.fn.serializeObject = function(){
         }
         return data;
     },{});
+};
+
+$.fn.share = function (){
+    var oThis = $(this);
+    var oTitle = oThis.data('title');
+    var oLink = oThis.data('link');
+    oThis.on('click', 'a', function () {
+        var oType = $(this).data('type');
+        console.log(oType);
+        switch(oType)
+        {
+            case 'qq':
+                var _shareUrl = 'https://connect.qq.com/widget/shareqq/iframe_index.html?';
+                _shareUrl += 'url=' + encodeURIComponent(oLink||location.href);   //分享的链接
+                _shareUrl += '&title=' + encodeURIComponent(oTitle||document.title);     //分享的标题
+                winOpen(_shareUrl, 230+490, 512);
+                break;
+            case 'wechat':
+                if($('#qrcodeShow').length == 0){
+                    $('body').append('<div id="qrcodeShow" style="display: none;padding:15px;text-align: center;">' +
+                        '<div id="qrcodeShowImg"></div>' +
+                        '<div style="margin-top:15px;font-size: 14px;">微信扫一扫 右上角"..."分享</div></div>');
+                }else{
+                    $("#qrcodeShowImg").html('');
+                }
+                var qrcode = new QRCode('qrcodeShowImg', {
+                    text: oLink||location.href,
+                    width: 256,
+                    height: 256,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.L
+                });
+                layer.open({
+                    type: 1,
+                    shade: false,
+                    title: false, //不显示标题
+                    content: $('#qrcodeShow'),
+                    cancel: function(){}
+                });
+                break;
+            default: ;
+        }
+
+    });
+
+    //打开分享窗口
+    function winOpen(urlApi, iWidth, iHeight) {
+        var iTop = (window.screen.availHeight - 30 - iHeight) / 2;
+        //获得窗口的水平位置
+        var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
+        window.open(urlApi, '_blank', 'height='+iHeight+', width='+iWidth+',top = '+iTop+',left ='+iLeft+', toolbar=no,scrollbars=no,menubar=no,status=no');
+    }
 };

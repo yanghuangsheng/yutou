@@ -25,9 +25,28 @@ class Base extends Controller
         $this->assign('user_data', $data);
     }
 
-    //判断获取json
+    /**
+     * 判断获取json
+     * @param string $text
+     * @return bool
+     */
     protected function isFormat($text = 'json')
     {
         return \think\facade\Request::param('_format_') == $text;
+    }
+
+    /**
+     * 设置头部信息
+     * @param $data
+     */
+    protected function init($data)
+    {
+        $resultData = [
+            'title' => '',
+            'keywords' => '',
+            'description' => '',
+        ];
+
+        $this->assign('head', array_merge($resultData, $data));
     }
 }

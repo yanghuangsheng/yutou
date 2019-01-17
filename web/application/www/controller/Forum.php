@@ -28,7 +28,7 @@ class Forum extends Base
         $data['ad_banner'] = $logic->getBanner(5);
 
         //print_r($data['seven_list']);
-
+        $this->init(['title'=>'论坛']);
         $this->assign('data',$data);
         return $this->fetch();
     }
@@ -56,6 +56,7 @@ class Forum extends Base
 
         $data['ad_banner'] = $logic->getBanner(6);
 
+        $this->init(['title'=>$data['item']['title']]);
         $this->assign('data', $data);
 
         return $this->fetch();
