@@ -1884,7 +1884,7 @@ $.fn.share = function (){
         var aThis = $(this);
         var oType = aThis.data('type');
         var aTitle = aThis.parent().data('title');
-        var aLink = aThis.parent().data('title');
+        var aLink = aThis.parent().data('link');
         if(aTitle){
             oTitle = aTitle;
             oLink = aLink;
