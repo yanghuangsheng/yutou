@@ -9,10 +9,7 @@ $(function($) {
     forumItemJs();
     searchJs();
     userJs();
-    /**
-     * 分享
-     */
-    $(".user-share").share();
+
     /**
      * 发贴弹窗
      */
@@ -364,6 +361,11 @@ $(function($) {
         },1000);
 
     });
+
+    /**
+     * 分享
+     */
+    $(".user-share").share();
 
 });
 
@@ -775,7 +777,7 @@ function forumJs() {
     var loadForumList = $("#forumContentBox");
     loadForumList.find('a.loadForumBtn').on('click', function () {
         var oThis = $(this);
-        var oPage = parseInt(oThis.data('page')) + 1;
+        var oPage = parseInt(oThis.data('page')) + 0;
         var oStatus = oThis.data('status');
         var oStartId = oThis.data('start');
         var oType = oThis.data('type');
@@ -837,6 +839,8 @@ function forumJs() {
                             oLi.find('.showUserInfo').attr('data-id', n.user_id);
                             var homeUrl = oLi.find('.showUserInfo').attr('data-home');
                             oLi.find('.showUserInfo').attr('data-home', homeUrl.replace(homeUrl.match(/\d+\b/),n.user_id));
+
+                            oLi.find('.user-share').attr('data-tile',n.title).attr('data-link',oUrl).share();
                         })
                     }
                 },
@@ -1877,8 +1881,15 @@ $.fn.share = function (){
     var oTitle = oThis.data('title');
     var oLink = oThis.data('link');
     oThis.on('click', 'a', function () {
-        var oType = $(this).data('type');
-        console.log(oType);
+        var aThis = $(this);
+        var oType = aThis.data('type');
+        var aTitle = aThis.parent().data('title');
+        var aLink = aThis.parent().data('title');
+        if(aTitle){
+            oTitle = aTitle;
+            oLink = aLink;
+        }
+        //console.log(oType);
         switch(oType)
         {
             case 'qq':
