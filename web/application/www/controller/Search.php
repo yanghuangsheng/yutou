@@ -22,6 +22,7 @@ class Search extends Base
         $data['news_list'] = $this->getList($logic);
         $data['seven_list'] = $news->sevenDayHotData();
         $data['lottery_list'] = $news->lotteryList();
+        $data['ad_banner'] = $news->getBanner(3);
 
 
         $this->assign('data', $data);
