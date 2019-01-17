@@ -1887,7 +1887,7 @@ $.fn.share = function (){
         var aLink = aThis.parent().data('link');
         if(aTitle){
             oTitle = aTitle;
-            oLink = aLink;
+            oLink = 'http://' + document.domain +aLink;
         }
         //console.log(oType);
         switch(oType)
