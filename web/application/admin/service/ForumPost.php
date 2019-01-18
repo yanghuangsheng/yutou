@@ -68,4 +68,19 @@ class ForumPost extends Common
         $content->save(['content' => $data['content']], ['post_id' => $data['id']]);
 
     }
+
+    /**
+     * 处理输出数据
+     * @param $data
+     */
+    protected function resetListData($data)
+    {
+        foreach ($data as $key => &$value){
+            $value['status_txt'] = $value['status']?'<span class="layui-badge layui-bg-green">已发布</span>':'<span class="layui-badge layui-bg-gray">未发布</span>';
+            $value['hot_txt'] = $value['hot']?'<span class="layui-badge layui-bg-green">热门帖</span>':'<span class="layui-badge layui-bg-gray">未热门</span>';
+            $value['topic_txt'] = $value['topic']?'<span class="layui-badge layui-bg-green">话题帖</span>':'<span class="layui-badge layui-bg-gray">未话题</span>';
+        }
+
+        return $data;
+    }
 }

@@ -34,4 +34,14 @@ class PortalNewsComment extends Base
     {
         return (new $logic)->delete();
     }
+
+    /**
+     * 审核评论
+     * @param PortalNewsCommentLogic $logic
+     * @return mixed
+     */
+    public function check(PortalNewsCommentLogic $logic)
+    {
+        return (new $logic)->updateFieldByValue();
+    }
 }

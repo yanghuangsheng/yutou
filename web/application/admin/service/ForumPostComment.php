@@ -34,4 +34,17 @@ class ForumPostComment extends Common
     {
         return $this->model->with(['user', 'forumPost'])->order('id', 'desc');
     }
+
+    /**
+     * 处理输出数据
+     * @param $data
+     */
+    protected function resetListData($data)
+    {
+        foreach ($data as $key => &$value){
+            $value['status_txt'] = $value['status']?'<span class="layui-badge layui-bg-green">已审核</span>':'<span class="layui-badge layui-bg-gray">未审核</span>';
+        }
+
+        return $data;
+    }
 }

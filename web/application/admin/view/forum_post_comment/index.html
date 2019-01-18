@@ -24,6 +24,7 @@
 </div>
 
 <script type="text/html" id="list-table-toolbar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="check">审核</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
@@ -39,9 +40,7 @@
             elem: '#LAY-table',
             url: window.location.href,
             where: {
-                category_id: '',
-                status: '',
-                keyword: ''
+                status: ''
             },
             cols: [
                 [{
@@ -64,14 +63,15 @@
                         width: 200
                     },
                     {
+                        field: 'status_txt',
                         title: '状态',
                         width: 80,
                         align: 'center',
-                        templet: function (d) {
-                            return (d.status == '1' ?
-                                '<span class="layui-badge layui-bg-green">已审核</span> ' :
-                                '<span class="layui-badge layui-bg-gray">未审核</span> ');
-                        }
+//                        templet: function (d) {
+//                            return (d.status == '1' ?
+//                                '<span class="layui-badge layui-bg-green">已审核</span> ' :
+//                                '<span class="layui-badge layui-bg-gray">未审核</span> ');
+//                        }
                     },
                     {
                         field: 'create_time',
@@ -124,8 +124,35 @@
             var data = obj.data;
             switch (obj.event)
             {
-                case 'toRelay':
-
+                case 'check':
+                    var tips = data.status?'取消审核':'确定审核';
+                    layer.confirm('确定'+ tips +'吗？',{icon: 3, title:false}, function (index) {
+                        admin.req({
+                            url: '{:Url("ForumPostComment/check")}',
+                            data: {
+                                'id':data.id, 'field':'status', 'value':data.status?0:1
+                            },
+                            done: function (res) {
+                                layer.close(index);
+                                if(res.code == 0){
+                                    //成功
+                                    if(data.status){
+                                        obj.update({
+                                            status: 0,
+                                            status_txt: '<span class="layui-badge layui-bg-gray">未审核</span>'
+                                        });
+                                    }else{
+                                        obj.update({
+                                            status: 1,
+                                            status_txt: '<span class="layui-badge layui-bg-green">已审核</span>'
+                                        });
+                                    }
+                                    return false;
+                                }
+                                layer.msg('更新失败', {icon: 0});
+                            }
+                        });
+                    });
                     break;
                 case 'del':
                     layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function () {

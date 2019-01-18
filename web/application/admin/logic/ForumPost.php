@@ -46,9 +46,31 @@ class ForumPost extends Base
     {
         if($this->isAjax()){
             $param = $this->param();
+            $whereMap = [];
+            $param['status'] == '' || $whereMap[] = ['status', '=', $param['status']];
+            $param['type'] == 'hot' && $whereMap[] = ['hot', '=', 1];
+            $param['type'] == 'topic' && $whereMap[] = ['topic', '=', 1];
+            $param['title'] == '' || $whereMap[] = ['title', 'like', '%'.$param['title'].'%'];
+
             $service = new oService;
-            $data = $service->initLimit($param['page'], $param['limit'])->getListData();
+            $data = $service->initWhere($whereMap)->initLimit($param['page'], $param['limit'])->getListData();
             $this->resultJson(0, '获取成功', $data);
+        }
+    }
+
+    /**
+     * 更新某个字段
+     */
+    public function updateFieldByValue()
+    {
+        if($this->isAjax()){
+            $data = $this->param();
+
+            if((new oService)->updateFieldByValue($data)){
+                $this->resultJson(0, '更新成功');
+            }
+
+            $this->resultJson(-1, '更新失败');
         }
     }
 }

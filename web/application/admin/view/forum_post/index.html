@@ -9,10 +9,31 @@
                     <div style="margin-bottom: 10px;">
                         <div class="layui-input-inline" style="width: 100px;">
                             <select name="status" lay-verify="">
-                                <option value="">全部</option>
+                                <option value="">状态</option>
                                 <option value="1">已发布</option>
                                 <option value="0">未发布</option>
                             </select>
+                        </div>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <select name="type" lay-verify="">
+                                <option value="">类型</option>
+                                <option value="hot">热门帖</option>
+                                <option value="topic">话题帖</option>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <select name="num" lay-verify="">
+                                <option value="">热度</option>
+                                <option value="browse">浏览数</option>
+                                <option value="praise">点赞数</option>
+                                <option value="comment">评论数</option>
+                                <option value="collect">收藏数</option>
+                            </select>
+                        </div>
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 150px;">
+                                <input type="text" name="title" placeholder="关键字" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                         <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
                     </div>
@@ -24,6 +45,7 @@
 </div>
 
 <script type="text/html" id="list-table-toolbar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="look">查看</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
@@ -61,12 +83,10 @@
                     },
                     {
                         title: '状态',
-                        width: 80,
+                        width: 185,
                         align: 'center',
                         templet: function (d) {
-                            return (d.status == '1' ?
-                                '<span class="layui-badge layui-bg-green">已发布</span> ' :
-                                '<span class="layui-badge layui-bg-gray">未发布</span> ');
+                            return d.status_txt + ' ' + d.hot_txt + ' ' + d.topic_txt;
                         }
                     },
                     {
@@ -102,8 +122,7 @@
 
                     break;
                 case 'look':
-                    window.open(
-                        data.source_url,
+                    window.open('{:urls("www/forum/item")}?id=' + data.id,
                         '_blank', 'toolbar=no,scrollbars=no,menubar=no,status=no');
                     return false;
                     break;

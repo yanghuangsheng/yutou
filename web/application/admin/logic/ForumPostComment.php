@@ -46,7 +46,7 @@ class ForumPostComment extends Base
     public function updateFieldByValue()
     {
         if($this->isAjax()){
-            $data = $this->param('id');
+            $data = $this->param();
 
             if((new oService)->updateFieldByValue($data)){
                 $this->resultJson(0, '更新成功');
@@ -63,8 +63,11 @@ class ForumPostComment extends Base
     {
         if($this->isAjax()){
             $param = $this->param();
+            $whereMap = [];
+            $param['status'] == '' || $whereMap[] = ['status', '=', $param['status']];
+
             $service = new oService;
-            $data = $service->initLimit($param['page'], $param['limit'])->getListData();
+            $data = $service->initWhere($whereMap)->initLimit($param['page'], $param['limit'])->getListData();
             $this->resultJson(0, '获取成功', $data);
         }
     }

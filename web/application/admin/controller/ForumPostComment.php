@@ -32,4 +32,13 @@ class ForumPostComment extends Base
     {
         return (new logic)->delete();
     }
+
+    /**
+     * 审核评论
+     * @return mixed
+     */
+    public function check()
+    {
+        return (new logic)->updateFieldByValue();
+    }
 }

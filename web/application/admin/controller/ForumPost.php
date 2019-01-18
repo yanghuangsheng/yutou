@@ -32,4 +32,12 @@ class ForumPost extends Base
     {
         return (new logic)->delete();
     }
+
+    /**
+     * 设置热门
+     */
+    public function setHot()
+    {
+        return (new logic)->updateFieldByValue();
+    }
 }
