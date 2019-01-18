@@ -627,7 +627,7 @@ function newsItemJs(){
         var replyBox = '<div class="flex-between flex-align-stretch flex-align-center" id="reply-comment-post">' +
                 '<div class="flex-between flex-align-stretch flex-align-center input">' +
                     '<input type="text" name="content" placeholder="回复：'+ replyUserName +'">' +
-                    '<a href="javascript:void(0);" class="flex-center flex-align-center expr"><i></i></a>' +
+                    '<a href="javascript:void(0);" class="flex-center flex-align-center expr"><i class="b-img"></i></a>' +
                 '</div>' +
                 '<div class="submit">' +
                     '<a href="javascript:void(0);" data-status="0" data-parent="'+ parentId +'" data-reply="'+ replyUserid +'"  data-reply-name="'+ replyUserName +'">发布</a>' +
@@ -1502,7 +1502,7 @@ function forumItemJs(){
         var replyBox = '<div class="flex-between flex-align-stretch flex-align-center" id="reply-comment-post">' +
             '<div class="flex-between flex-align-stretch flex-align-center input">' +
             '<input type="text" name="content" placeholder="回复：'+ replyUserName +'">' +
-            '<a href="javascript:void(0);" class="flex-center flex-align-center expr"><i></i></a>' +
+            '<a href="javascript:void(0);" class="flex-center flex-align-center expr"><i class="b-img"></i></a>' +
             '</div>' +
             '<div class="submit">' +
             '<a href="javascript:void(0);" data-status="0" data-parent="'+ parentId +'" data-reply="'+ replyUserid +'"  data-reply-name="'+ replyUserName +'">发布</a>' +
@@ -1878,26 +1878,50 @@ $.fn.serializeObject = function(){
 
 $.fn.share = function (){
     var oThis = $(this);
-    var oTitle = oThis.data('title');
-    var oLink = oThis.data('link');
+    var options = {};
+    options['title'] = oThis.data('title');
+    options['url'] = oThis.data('link');
+    options['pic'] = oThis.data('img');
+
+    var api = {};
+    api['sina'] = 'http://service.weibo.com/share/share.php?url={url}&title={title}&pic={pic}&searchPic=false';
+    api['qq'] = 'https://connect.qq.com/widget/shareqq/iframe_index.html?url={url}&showcount=0&desc={content}&summary=&title={title}&pics={pic}&style=203&width=19&height=22';
+    api['douban'] = 'http://www.douban.com/share/service?href={url}&name={title}&text={content}&image={pic}';
+
+    var defaults = {
+        url: window.location.href,
+        title: document.title,
+        content: '',
+        pic: ''
+    };
+
     oThis.on('click', 'a', function () {
         var aThis = $(this);
         var oType = aThis.data('type');
         var aTitle = aThis.parent().data('title');
         var aLink = aThis.parent().data('link');
+        var aImg = aThis.parent().data('img');
         if(aTitle){
-            oTitle = aTitle;
-            oLink = 'http://' + document.domain +aLink;
+            options['title'] = aTitle;
+            options['url'] = 'http://' + document.domain + aLink;
+            options['pic'] = aImg;
         }
         //console.log(oType);
         switch(oType)
         {
-            case 'qq':
-                var _shareUrl = 'https://connect.qq.com/widget/shareqq/iframe_index.html?';
-                _shareUrl += 'url=' + encodeURIComponent(oLink||location.href);   //分享的链接
-                _shareUrl += '&title=' + encodeURIComponent(oTitle||document.title);     //分享的标题
+            case 'sina':
+                var _shareUrl = replaceAPI(api['sina']);
                 winOpen(_shareUrl, 230+490, 512);
                 break;
+            case 'douban':
+                var _shareUrl = replaceAPI(api['douban']);
+                winOpen(_shareUrl, 230+490, 512);
+                break;
+            case 'qq':
+                var _shareUrl = replaceAPI(api['qq']);
+                commonWindow(_shareUrl, 230+490, 512);
+                break;
+
             case 'wechat':
                 if($('#qrcodeShow').length == 0){
                     $('body').append('<div id="qrcodeShow" style="display: none;padding:15px;text-align: center;">' +
@@ -1907,7 +1931,7 @@ $.fn.share = function (){
                     $("#qrcodeShowImg").html('');
                 }
                 var qrcode = new QRCode('qrcodeShowImg', {
-                    text: oLink||location.href,
+                    text: options['url'],
                     width: 256,
                     height: 256,
                     colorDark: '#000000',
@@ -1916,9 +1940,10 @@ $.fn.share = function (){
                 });
                 layer.open({
                     type: 1,
-                    shade: false,
+                    //shade: true,
                     title: false, //不显示标题
                     content: $('#qrcodeShow'),
+                    scrollbar: false,
                     cancel: function(){}
                 });
                 break;
@@ -1934,4 +1959,24 @@ $.fn.share = function (){
         var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
         window.open(urlApi, '_blank', 'height='+iHeight+', width='+iWidth+',top = '+iTop+',left ='+iLeft+', toolbar=no,scrollbars=no,menubar=no,status=no');
     }
+
+    function replaceAPI (api) {
+        resultOptions();
+        api = api.replace('{url}', encodeURIComponent(options.url));
+        api = api.replace('{title}', encodeURIComponent(options.title));
+        api = api.replace('{content}', encodeURIComponent(options.content));
+        api = api.replace('{pic}', encodeURIComponent(options.pic));
+
+        return api;
+    }
+
+    function resultOptions() {
+        $.each(['url','title','content','pic'], function (i,n) {
+            if(!options[n]){
+                options[n] = defaults[n];
+            }
+        });
+    }
+
+
 };

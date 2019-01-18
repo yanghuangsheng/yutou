@@ -18,13 +18,15 @@
             <div class="flex-between item-copyright">
                 <div class="copyright-txt">本文经授权发布，不代表鱼头网立场。如若转载请联系原作者</div>
                 <ul class="flex-start flex-align-center scan user-share">
-                    <li><a href="javascript:void(0);" class="qq" data-type="qq">qq</a></li>
-                    <li><a href="javascript:void(0);" class="wechat" data-type="wechat">微信</a></li>
+                    <li><a href="javascript:void(0);" class="b-img qq" data-type="qq">qq</a></li>
+                    <li><a href="javascript:void(0);" class="b-img wechat" data-type="wechat">微信</a></li>
+                    <li><a href="javascript:void(0);" class="b-img sina" data-type="sina">微博</a></li>
+                    <li><a href="javascript:void(0);" class="b-img douban" data-type="douban">豆瓣</a></li>
                 </ul>
             </div>
         </div>
         <div class="flex-center flex-align-center news-item-post">
-            <a href="javascript:void(0);" class="flex-center" id="newsPraiseBtn" data-status="0"><i></i><span class="number">{$data['item']['praise_num']?:''}</span></a>
+            <a href="javascript:void(0);" class="flex-center" id="newsPraiseBtn" data-status="0"><i class="b-img"></i><span class="number">{$data['item']['praise_num']?:''}</span></a>
         </div>
         <div class="news-item-comment-post">
             <div class="flex-align-start h"><i></i><h3>参与评论</h3></div>
@@ -76,15 +78,15 @@
                                 <div class="flex-start comment-attr">
                                     <!--赞-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="" data-id="" data-status="0">
-                                        <i class="top"></i><span class="num"></span>
+                                        <i class="b-img top"></i><span class="num"></span>
                                     </a>
                                     <!--踏-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-tread" data-user="" data-id="" data-status="0">
-                                        <i class="tread"></i><span class="num">0</span>
+                                        <i class="b-img tread"></i><span class="num">0</span>
                                     </a>
                                     <!--更多 举报-->
                                     <a href="javascript:void(0);" class="flex-align-center inline">
-                                        <i class="more"></i>
+                                        <i class="b-img more"></i>
                                     </a>
                                 </div>
                             </div>
@@ -110,15 +112,15 @@
                                 <div class="flex-start comment-attr">
                                     <!--赞-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="" data-id="" data-status="0">
-                                        <i class="top"></i><span class="num"></span>
+                                        <i class="b-img top"></i><span class="num"></span>
                                     </a>
                                     <!--踏-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-tread hide-btn" data-user="" data-id="" data-status="0">
-                                        <i class="tread"></i><span class="num"></span>
+                                        <i class="b-img tread"></i><span class="num"></span>
                                     </a>
                                     <!--更多 举报-->
                                     <a href="javascript:void(0);" class="flex-align-center inline hide-btn">
-                                        <i class="more"></i>
+                                        <i class="b-img more"></i>
                                     </a>
                                 </div>
                             </div>
@@ -145,15 +147,15 @@
                                 <div class="flex-start comment-attr">
                                     <!--赞-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="{$value['user_id']}" data-id="{$value['id']}" data-status="0">
-                                        <i class="top"></i><span class="num">{$value['praise_num']?:''}</span>
+                                        <i class="b-img top"></i><span class="num">{$value['praise_num']?:''}</span>
                                     </a>
                                     <!--踏-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-tread" data-user="{$value['user_id']}" data-id="{$value['id']}" data-status="0">
-                                        <i class="tread"></i><span class="num">{$value['tread_num']?:''}</span>
+                                        <i class="b-img tread"></i><span class="num">{$value['tread_num']?:''}</span>
                                     </a>
                                     <!--更多 举报-->
                                     <a href="javascript:void(0);" class="flex-align-center inline">
-                                        <i class="more"></i>
+                                        <i class="b-img more"></i>
                                     </a>
                                 </div>
                             </div>
@@ -181,15 +183,15 @@
                                 <div class="flex-start comment-attr">
                                     <!--赞-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="" data-id="" data-status="0">
-                                        <i class="top"></i><span class="num"></span>
+                                        <i class="b-img top"></i><span class="num"></span>
                                     </a>
                                     <!--踏-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-tread hide-btn" data-user="" data-id="" data-status="0">
-                                        <i class="tread"></i><span class="num"></span>
+                                        <i class="b-img tread"></i><span class="num"></span>
                                     </a>
                                     <!--更多 举报-->
                                     <a href="javascript:void(0);" class="flex-align-center inline hide-btn">
-                                        <i class="more"></i>
+                                        <i class="b-img more"></i>
                                     </a>
                                 </div>
                             </div>
@@ -213,15 +215,15 @@
                                 <div class="flex-start comment-attr">
                                     <!--赞-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="{$reply['user_id']}" data-id="{$reply['id']}" data-status="0">
-                                        <i class="top"></i><span class="num">{$reply['praise_num']?:''}</span>
+                                        <i class="b-img top"></i><span class="num">{$reply['praise_num']?:''}</span>
                                     </a>
                                     <!--踏-->
                                     <a href="javascript:void(0);" class="flex-align-center inline comment-tread hide-btn" data-user="{$reply['user_id']}" data-id="{$reply['id']}" data-status="0">
-                                        <i class="tread"></i><span class="num">{$reply['tread_num']?:''}</span>
+                                        <i class="b-img tread"></i><span class="num">{$reply['tread_num']?:''}</span>
                                     </a>
                                     <!--更多 举报-->
                                     <a href="javascript:void(0);" class="flex-align-center inline hide-btn">
-                                        <i class="more"></i>
+                                        <i class="b-img more"></i>
                                     </a>
                                 </div>
                             </div>

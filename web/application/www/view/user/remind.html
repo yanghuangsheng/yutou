@@ -3,10 +3,10 @@
 <div class="box-width box-center flex-between flex-align-stretch tab-box">
     <div class="tab-box-l">
         <ul>
-            <li><a href="{:urls('User/index')}?user_id={$data['id']}">我的贴子 <i></i></a></li>
+            <li><a href="{:urls('User/index')}?user_id={$data['id']}">我的贴子 <i class="b-img"></i></a></li>
             {if $data['isEdit']}
-            <li><a href="javascript:void(0);" class="active">我的消息 <i></i></a></li>
-            <li><a href="{:urls('User/collection')}">我的收藏 <i></i></a></li>
+            <li><a href="javascript:void(0);" class="active">我的消息 <i class="b-img"></i></a></li>
+            <li><a href="{:urls('User/collection')}">我的收藏 <i class="b-img"></i></a></li>
             {/if}
         </ul>
     </div>
@@ -31,10 +31,10 @@
                             <div class="flex-start flex-align-center user-h-box"><i class="tips {if $value['status']} box-hide {/if}"></i><span class="user-avatar"><img src="{$value['user_avatar']['50']}"></span> <span class="user-name">{$value['user_name']}</span> <span class="link-txt">{$value['link_txt']}</span> <span class="link-ext">{$value['link_ext']}：</span></div>
                             <div>
                                 <div class="flex-start flex-align-center praise" {if !isset($value['parent']['praise_num'])} style="display: none;" {/if}>
-                                    <i></i><span>{$value['parent']['praise_num']?:'0'}</span>
+                                    <i class="b-img"></i><span>{$value['parent']['praise_num']?:'0'}</span>
                                 </div>
                                 <div class="flex-start flex-align-center tread" {if !isset($value['parent']['tread_num'])} style="display: none;" {/if}>
-                                    <i></i><span>{$value['parent']['tread_num']?:'0'}</span>
+                                    <i class="b-img"></i><span>{$value['parent']['tread_num']?:'0'}</span>
                                 </div>
                             </div>
                         </div>

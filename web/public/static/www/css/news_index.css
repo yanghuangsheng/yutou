@@ -58,7 +58,8 @@
     left: 5px;
     margin-top: -20px;
     border-radius: 2px;
-    background: rgba(40, 40, 40, 0.7) url("../images/common.png?t=20190116") left -145px;
+    background-color: rgba(40, 40, 40, 0.7);
+    background-position: left -145px;
 }
 #indexBanner a.next{
     left: inherit;
@@ -126,7 +127,7 @@
     bottom: 0px;
     height: 9px;
     width: 100%;
-    background: url("../images/common.png") center bottom;
+    background-position: center bottom;
 }
 .index-box .index-news .news-tab li.child a i{
     display: block;
@@ -176,7 +177,6 @@
     display: inline-block;
     width: 25px;
     height: 25px;
-    background: url("../images/common.png");
 }
 .index-box .index-news .item-content .read i{
     background-position: -150px -70px;
@@ -250,7 +250,7 @@
     display: inline-block;
     width: 25px;
     height: 25px;
-    background: url("../images/common.png") right -70px;
+    background-position: right -70px;
 }
 
 /*幸运号码*/

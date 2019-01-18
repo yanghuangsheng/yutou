@@ -50,7 +50,7 @@
     display: inline-block;
     width: 25px;
     height: 25px;
-    background: url("../images/common.png") -25px -225px;
+    background-position: -25px -225px;
 }
 .user-head .user-attr .fans i{
     background-position: -50px -225px;
@@ -162,10 +162,12 @@
     bottom: 0px;
     height: 1px;
     background-color: #e4e4e4;
+    background-position: center 0px;
 }
 .tab-box .tab-box-l a.active i{
     height: 10px;
-    background: url("../images/common.png") center bottom;
+    background-color: #FFFFFF;
+    background-position: center bottom;
 }
 
 
@@ -290,7 +292,6 @@
     display: inline-block;
     width: 25px;
     height: 25px;
-    background: url("../images/common.png");
 }
 .tab-box .collect-content .news-list .item-content .read i{
     background-position: -150px -70px;
@@ -333,7 +334,7 @@
     display: inline-block;
     width: 25px;
     height: 25px;
-    background: url("../images/common.png") -150px -70px;
+    background-position: -150px -70px;
 }
 .tab-box .collect-content .post-list .read{
     margin-left: 40px;
@@ -351,7 +352,7 @@
     display: inline-block;
     width: 15px;
     height: 10px;
-    background: url("../images/common.png") -15px -215px;
+    background-position: -15px -215px;
 }
 
 
@@ -383,7 +384,7 @@
     display: inline-block;
     width: 15px;
     height: 10px;
-    background: url("../images/common.png") 0px -215px;
+    background-position: 0px -215px;
 }
 .tab-box .collect-content .post-list .content-all-end .date{
     color: #7a7a7a;
@@ -537,7 +538,7 @@
     display: inline-block;
     width: 35px;
     height: 35px;
-    background: url("../images/common.png") right -35px;
+    background-position: right -35px;
 }
 .info-box .info-box-l .user-avatar:hover .uploadAvatar{
     display: flex;
@@ -756,7 +757,7 @@
     color: #0C0C0C;
 }
 .tab-box .interaction-list .praise i,.tab-box .interaction-list .tread i{
-    background: url("../images/common.png ") no-repeat -100px -70px;
+    background-position:-100px -70px;
     width: 25px;
     height: 25px;
     display: inline-block;

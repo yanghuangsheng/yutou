@@ -3,18 +3,18 @@
 <div class="box-width box-center flex-between flex-align-stretch tab-box">
     <div class="tab-box-l">
         <ul>
-            <li><a href="{:urls('User/index')}?user_id={$data['id']}">我的贴子 <i></i></a></li>
+            <li><a href="{:urls('User/index')}?user_id={$data['id']}">我的贴子 <i class="b-img"></i></a></li>
             {if $data['isEdit']}
-            <li><a href="{:urls('User/remind')}">我的消息 <i></i></a></li>
-            <li><a href="javascript:void(0);" class="active">我的收藏 <i></i></a></li>
+            <li><a href="{:urls('User/remind')}">我的消息 <i class="b-img"></i></a></li>
+            <li><a href="javascript:void(0);" class="active">我的收藏 <i class="b-img"></i></a></li>
             {/if}
         </ul>
     </div>
     <div class="tab-box-r" id="userCollectList">
         <div class="collect-tab">
             <ul class="flex-start flex-align-stretch">
-                <li class="child"><a href="javascript:void(0);">资讯<i></i></a></li>
-                <li><a href="javascript:void(0);">论坛<i></i></a></li>
+                <li class="child"><a href="javascript:void(0);">资讯<i class="b-img"></i></a></li>
+                <li><a href="javascript:void(0);">论坛<i class="b-img"></i></a></li>
             </ul>
         </div>
         <div class="collect-content">
@@ -38,9 +38,9 @@
                                 <div class="inline date">{$item['create_time']} 收藏</div>
                             </div>
                             <div class="flex-start info-r">
-                                <div class="inline flex-align-start read"><i></i> <span>{$item['browse_num']?:'0'}</span></div>
-                                <div class="inline flex-align-center comment"><i></i> <span>{$item['comment_num']?:'0'}</span></div>
-                                <div class="inline flex-align-center collection"><i></i> <span>{$item['collect_num']?:'0'}</span></div>
+                                <div class="inline flex-align-start read"><i class="b-img"></i> <span>{$item['browse_num']?:'0'}</span></div>
+                                <div class="inline flex-align-center comment"><i class="b-img"></i> <span>{$item['comment_num']?:'0'}</span></div>
+                                <div class="inline flex-align-center collection"><i class="b-img"></i> <span>{$item['collect_num']?:'0'}</span></div>
                             </div>
                         </div>
                         <a href="javascript:void(0);" data-id="{$item['id']}" data-type="news" class="delBtn">删除收藏</a>
@@ -70,7 +70,7 @@
                                 <a href="{:urls('Forum/item')}?id={$value['id']}" class="description link">
                                     {$value['description']}
                                 </a>
-                                <a href="javascript:void(0);" class="look-all" data-id="{$value['id']}" data-url="{:urls('Forum/index')}">阅读全文<i></i></a>
+                                <a href="javascript:void(0);" class="look-all" data-id="{$value['id']}" data-url="{:urls('Forum/index')}">阅读全文<i class="b-img"></i></a>
                             </div>
 
                             <div class="flex-between flex-start content-images" {if count($value['image_url']) == 0}style="display:none;"{/if}>
@@ -80,22 +80,24 @@
                             </div>
                             <div class="box-hide content-all">
                                 <div class="content-body"></div>
-                                <div class="flex-between flex-align-center content-all-end"><span class="date">发布于 {$value['create_time']}</span><a href="javascript:void(0);" class="look-no">收起全文 <i></i></a></div>
+                                <div class="flex-between flex-align-center content-all-end"><span class="date">发布于 {$value['create_time']}</span><a href="javascript:void(0);" class="look-no">收起全文 <i class="b-img"></i></a></div>
                             </div>
                         </div>
                         <div class="end flex-between flex-align-center">
                             <div class="end-l flex-start">
                                 <div class="flex-start flex-align-center attr">
-                                    <a href="javascript:void(0);" class="flex-start flex-align-center fabulous"><i></i><span>{$value['praise_num']?:''}</span></a>
-                                    <a href="javascript:void(0);" class="flex-start flex-align-center comment"><i></i><span>{$value['comment_num']?:''}</span></a>
-                                    <a href="javascript:void(0);" class="flex-start flex-align-center collection"><i></i><span>{$value['collect_num']?:''}</span></a>
+                                    <a href="javascript:void(0);" class="flex-start flex-align-center fabulous"><i class="b-img"></i><span>{$value['praise_num']?:''}</span></a>
+                                    <a href="javascript:void(0);" class="flex-start flex-align-center comment"><i class="b-img"></i><span>{$value['comment_num']?:''}</span></a>
+                                    <a href="javascript:void(0);" class="flex-start flex-align-center collection"><i class="b-img"></i><span>{$value['collect_num']?:''}</span></a>
                                 </div>
                                 <div class="flex-start flex-align-center share">
-                                    <div class="flex-align-center share-h"><i></i></div>
-                                    <div class="flex-start flex-align-center share-list">
-                                        <a href="javascript:void(0);" class="flex-align-center qq"><i></i></a>
-                                        <a href="javascript:void(0);" class="flex-align-center wechat"><i></i></a>
-                                        <a href="javascript:void(0);" class="flex-align-center more"><i></i></a>
+                                    <div class="flex-align-center share-h"><i class="b-img"></i></div>
+                                    <div class="flex-start flex-align-center share-list user-share">
+                                        <a href="javascript:void(0);" class="flex-align-center qq" data-type="qq"><i class="b-img"></i></a>
+                                        <a href="javascript:void(0);" class="flex-align-center wechat" data-type="wechat"><i class="b-img"></i></a>
+                                        <a href="javascript:void(0);" class="flex-align-center sina" data-type="sina"><i class="b-img"></i></a>
+                                        <a href="javascript:void(0);" class="flex-align-center douban" data-type="douban"><i class="b-img"></i></a>
+                                        <!--<a href="javascript:void(0);" class="flex-align-center more"><i class="b-img"></i></a>-->
                                     </div>
                                 </div>
                                 <div class="flex-start flex-align-center date">
