@@ -22,20 +22,37 @@
                             </select>
                         </div>
                         <div class="layui-input-inline" style="width: 100px;">
-                            <select name="num" lay-verify="">
+                            <select name="order" lay-verify="">
                                 <option value="">热度</option>
-                                <option value="browse">浏览数</option>
-                                <option value="praise">点赞数</option>
-                                <option value="comment">评论数</option>
-                                <option value="collect">收藏数</option>
+                                <option value="browse_num">浏览</option>
+                                <option value="praise_num">点赞</option>
+                                <option value="collect_num">收藏</option>
+                                <option value="comment_num">评论</option>
                             </select>
                         </div>
                         <div class="layui-inline clear-left">
                             <div class="layui-input-block" style="width: 150px;">
-                                <input type="text" name="title" placeholder="关键字" autocomplete="off" class="layui-input">
+                                <input type="text" name="open_time" placeholder="开始时间" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 150px;">
+                                <input type="text" name="end_time" placeholder="结束时间" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 150px;">
+                                <input type="text" name="title" placeholder="标题" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
+                    </div>
+                    <div class="article-btns layui-btn-group" style="margin-bottom:-20px;">
+                        <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="status" data-status="1">发布</button>
+                        <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="status" data-status="0">取消发布</button>
+                        <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="topic" data-status="1">话题</button>
+                        <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="topic" data-status="0">取消话题</button>
+                        <button class="layui-btn layui-btn-sm layui-bg-red" lay-submit="" data-events="del">删除</button>
                     </div>
                     <table class="layui-table" id="LAY-table" lay-filter="LAY-list-table"></table>
                 </div>
@@ -57,6 +74,17 @@
             table = layui.table,
             util = layui.util;
 
+        //发布开始时间
+        laydate.render({
+            elem: 'input[name="open_time"]',
+            type: 'datetime',
+        });
+        //发布结束时间
+        laydate.render({
+            elem: 'input[name="end_time"]',
+            type: 'datetime',
+        });
+
         //form.render();
         var tableOptions = {
             elem: '#LAY-table',
@@ -65,7 +93,9 @@
                 status: '',
                 title: '',
                 type: '',
-                num: ''
+                open_time: '',
+                end_time: '',
+                order: ''
 
             },
             cols: [
@@ -92,6 +122,30 @@
                         }
                     },
                     {
+                        field: 'browse_num',
+                        title: '浏览',
+                        width: 80,
+                        align: 'center',
+                    },
+                    {
+                        field: 'praise_num',
+                        title: '点赞',
+                        width: 80,
+                        align: 'center',
+                    },
+                    {
+                        field: 'collect_num',
+                        title: '收藏',
+                        width: 80,
+                        align: 'center',
+                    },
+                    {
+                        field: 'comment_num',
+                        title: '评论',
+                        width: 80,
+                        align: 'center',
+                    },
+                    {
                         field: 'create_time',
                         title: '发布时间',
                         width: 180
@@ -109,7 +163,7 @@
             page: true,
             limit: 15,
             limits: [15, 25, 35, 45, 55],
-            height: 'full-153',
+            height: 'full-180',
             done: function (res) {}
         };
         table.render(tableOptions);

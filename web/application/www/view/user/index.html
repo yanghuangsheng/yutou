@@ -46,16 +46,18 @@
                 <div class="end flex-between flex-align-center">
                     <div class="end-l flex-start">
                         <div class="flex-start flex-align-center attr">
-                            <a href="javascript:void(0);" class="flex-start flex-align-center fabulous"><i></i><span>{$value['praise_num']?:''}</span></a>
-                            <a href="javascript:void(0);" class="flex-start flex-align-center comment"><i></i><span>{$value['comment_num']?:''}</span></a>
-                            <a href="javascript:void(0);" class="flex-start flex-align-center collection"><i></i><span>{$value['collect_num']?:''}</span></a>
+                            <a href="javascript:void(0);" class="flex-start flex-align-center fabulous"><i class="b-img"></i><span>{$value['praise_num']?:''}</span></a>
+                            <a href="javascript:void(0);" class="flex-start flex-align-center comment"><i class="b-img"></i><span>{$value['comment_num']?:''}</span></a>
+                            <a href="javascript:void(0);" class="flex-start flex-align-center collection"><i class="b-img"></i><span>{$value['collect_num']?:''}</span></a>
                         </div>
                         <div class="flex-start flex-align-center share">
-                            <div class="flex-align-center share-h"><i></i></div>
-                            <div class="flex-start flex-align-center share-list">
-                                <a href="javascript:void(0);" class="flex-align-center qq"><i></i></a>
-                                <a href="javascript:void(0);" class="flex-align-center wechat"><i></i></a>
-                                <a href="javascript:void(0);" class="flex-align-center more"><i></i></a>
+                            <div class="flex-align-center share-h"><i class="b-img"></i></div>
+                            <div class="flex-start flex-align-center share-list user-share" data-title="{$value['title']} - 鱼头网" data-link="{:urls('Forum/item')}?id={$value['id']}">
+                                <a href="javascript:void(0);" class="flex-align-center qq" data-type="qq"><i class="b-img"></i></a>
+                                <a href="javascript:void(0);" class="flex-align-center wechat" data-type="wechat"><i class="b-img"></i></a>
+                                <a href="javascript:void(0);" class="flex-align-center sina" data-type="sina"><i class="b-img"></i></a>
+                                <a href="javascript:void(0);" class="flex-align-center douban" data-type="douban"><i class="b-img"></i></a>
+                                <!--<a href="javascript:void(0);" class="flex-align-center more"><i class="b-img"></i></a>-->
                             </div>
                         </div>
                     </div>

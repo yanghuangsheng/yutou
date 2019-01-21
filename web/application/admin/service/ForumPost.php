@@ -15,6 +15,7 @@ class ForumPost extends Common
     public function __construct()
     {
         $this->model = new \app\common\model\ForumPost;
+        $this->order = ['id', 'desc'];
     }
 
     /**
@@ -32,7 +33,9 @@ class ForumPost extends Common
      */
     protected function setWithOnView()
     {
-        return $this->model->with(['user'])->order('id', 'desc');
+        return $this->model->view('ForumPost', 'id,title,status,hot,topic,create_time')
+            ->view('ForumPostAttr', 'browse_num,praise_num,collect_num,comment_num', 'ForumPostAttr.post_id = ForumPost.id', 'LEFT')
+            ->view('User', ['name'=>'user_name'], 'User.id = ForumPost.user_id');
     }
 
     /**

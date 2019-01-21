@@ -19,8 +19,12 @@ class PortalNews extends Base
     public function getList()
     {
         $this->getListJson();
+        $categoryList = (new \app\admin\service\PortalNewsCategory)->getListData();
+        $data = [
+            'category_list' => (new \app\admin\service\TreeList)->toItems($categoryList['list']->toArray()),
+        ];
 
-        return [];
+        return $data;
     }
 
     /**
@@ -81,8 +85,26 @@ class PortalNews extends Base
     {
         if($this->isAjax()){
             $param = $this->param();
+            $order = false;//不改排序
+            $where = [];
+
+            $param['category_id'] == '' || $where[] = ['PortalNewsInCategory.category_id', '=', $param['category_id']];
+            $param['title'] == '' || $where[] = ['title', 'like', '%' . $param['title'] . '%'];
+            $param['status'] == '' || $where[] = ['PortalNews.status', '=', $param['status']];
+            if($param['open_time'] && $param['end_time']){
+                $where[] = ['published_time', ['<=', strtotime($param['end_time'])], ['>=', strtotime($param['open_time'])], 'and'];
+            }else{
+                $param['open_time'] && $where[] = ['published_time', '>=', strtotime($param['open_time'])];
+                $param['end_time'] &&  $where[] = ['published_time', '<=', strtotime($param['end_time'])];
+            }
+
+            $param['order'] == 'browse_num' && $order = ['browse_num', 'desc'];
+            $param['order'] == 'praise_num' && $order = ['praise_num', 'desc'];
+            $param['order'] == 'collect_num' && $order = ['collect_num', 'desc'];
+            $param['order'] == 'comment_num' && $order = ['comment_num', 'desc'];
+
             $service = new oService;
-            $data = $service->initLimit($param['page'], $param['limit'])->getListData();
+            $data = $service->initWhere($where)->initOrder($order)->initLimit($param['page'], $param['limit'])->getListData();
 
             $this->resultJson(0, '获取成功', $data);
         }
@@ -115,9 +137,10 @@ class PortalNews extends Base
             !isset($postData['hot']) && $postData['hot'] = 0;
             !isset($postData['top']) && $postData['top'] = 0;
             !isset($postData['recommended']) && $postData['recommended'] = 0;
-
-            if((new oService)->save($postData, 1)){
-                $this->resultJson(0, '更新成功');
+            $oService = new oService;
+            if($oService->save($postData, 1)){
+                $categoryTxt = $oService->newsCategory($postData['category_id']);
+                $this->resultJson(0, '更新成功',['category_name'=>$categoryTxt]);
             }else{
                 $this->resultJson(-1, '更新失败');
             }

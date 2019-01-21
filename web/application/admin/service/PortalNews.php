@@ -38,6 +38,27 @@ class PortalNews extends Common
     }
 
     /**
+     * 列表view
+     */
+    protected function setWithOnView()
+    {
+        return $this->model->view('PortalNews', 'id,title,category_id,status,hot,top,recommended,source_url,published_time')
+            ->view('PortalNewsInCategory', ['category_id'=>'o_category_id'], 'PortalNewsInCategory.news_id = PortalNews.id', 'LEFT')
+            ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT')
+            ->group('id');
+    }
+
+    /**
+     * 列表view
+     */
+    protected function setOneWithOnView()
+    {
+        return $this->model->view('PortalNews', '*')
+            ->view('PortalNewsInCategory', ['category_id'=>'o_category_id'], 'PortalNewsInCategory.news_id = PortalNews.id', 'LEFT')
+            ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT');
+    }
+
+    /**
      * 重置
      * @param $data
      * @return mixed
@@ -50,7 +71,25 @@ class PortalNews extends Common
             }else{
                 $value['status_txt'] = '<span class="layui-badge layui-bg-gray">未发布</span>';
             }
+            if($value['hot']){
+                $value['status_txt'] .= ' <span class="layui-badge layui-bg-green">已热门</span>';
+            }else{
+                $value['status_txt'] .= ' <span class="layui-badge layui-bg-gray">未热门</span>';
+            }
+            if($value['recommended']){
+                $value['status_txt'] .= ' <span class="layui-badge layui-bg-green">已推荐</span>';
+            }else{
+                $value['status_txt'] .= ' <span class="layui-badge layui-bg-gray">未推荐</span>';
+            }
+
             $value['category_name'] = $this->newsCategory($value['category_id']);
+            $value['published_txt'] = date('Y-m-d H:i:s', $value['published_time']);
+
+            $value['browse_num'] || $value['browse_num'] = 0;
+            $value['praise_num'] || $value['praise_num'] = 0;
+            $value['collect_num'] || $value['collect_num'] = 0;
+            $value['comment_num'] || $value['comment_num'] = 0;
+
         }
         return $data;
     }
@@ -60,7 +99,7 @@ class PortalNews extends Common
      * @param $category
      * @return array|string
      */
-    protected function newsCategory($category){
+    public function newsCategory($category){
         static $data = [];
         if(!$data){
             $data = (new \app\common\model\PortalNewsCategory)->column('name','id');
@@ -70,7 +109,7 @@ class PortalNews extends Common
         }
         $re = '';
         foreach (explode(',',$category) as $key => $value ){
-            $re .= '<span class="layui-badge layui-bg-green">'. $data[$value] .'</span>';
+            $re .= '<span class="layui-badge layui-bg-green">'. $data[$value] .'</span> ';
         }
 
         return $re;

@@ -46,14 +46,27 @@ class ForumPost extends Base
     {
         if($this->isAjax()){
             $param = $this->param();
-            $whereMap = [];
-            $param['status'] == '' || $whereMap[] = ['status', '=', $param['status']];
-            $param['type'] == 'hot' && $whereMap[] = ['hot', '=', 1];
-            $param['type'] == 'topic' && $whereMap[] = ['topic', '=', 1];
-            $param['title'] == '' || $whereMap[] = ['title', 'like', '%'.$param['title'].'%'];
+            $order = false;
+            $where = [];
+            $param['status'] == '' || $where[] = ['status', '=', $param['status']];
+            $param['type'] == 'hot' && $where[] = ['hot', '=', 1];
+            $param['type'] == 'topic' && $where[] = ['topic', '=', 1];
+            $param['title'] == '' || $where[] = ['title', 'like', '%'.$param['title'].'%'];
+
+            if($param['open_time'] && $param['end_time']){
+                $where[] = ['ForumPost.create_time', ['<=', strtotime($param['end_time'])], ['>=', strtotime($param['open_time'])], 'and'];
+            }else{
+                $param['open_time'] && $where[] = ['ForumPost.create_time', '>=', strtotime($param['open_time'])];
+                $param['end_time'] &&  $where[] = ['ForumPost.create_time', '<=', strtotime($param['end_time'])];
+            }
+
+            $param['order'] == 'browse_num' && $order = ['browse_num', 'desc'];
+            $param['order'] == 'praise_num' && $order = ['praise_num', 'desc'];
+            $param['order'] == 'collect_num' && $order = ['collect_num', 'desc'];
+            $param['order'] == 'comment_num' && $order = ['comment_num', 'desc'];
 
             $service = new oService;
-            $data = $service->initWhere($whereMap)->initLimit($param['page'], $param['limit'])->getListData();
+            $data = $service->initWhere($where)->initOrder($order)->initLimit($param['page'], $param['limit'])->getListData();
             $this->resultJson(0, '获取成功', $data);
         }
     }

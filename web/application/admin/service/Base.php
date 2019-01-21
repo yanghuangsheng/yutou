@@ -43,4 +43,15 @@ class Base
         return $this;
     }
 
+    /**
+     * 设置排序
+     * @param array $data
+     * @return $this
+     */
+    public function initOrder($data = [])
+    {
+        $data && $this->order = $data;
+        return $this;
+    }
+
 }
