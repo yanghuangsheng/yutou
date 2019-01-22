@@ -46,9 +46,25 @@ class UserCollection extends Common
             ->view('ForumPost', ['id'=>'post_id','title','image_url'], 'ForumPost.id = UserCollection.o_id')
             ->view('ForumPostContent', 'content', 'ForumPostContent.post_id = ForumPost.id')
             ->view('ForumPostAttr', 'browse_num,praise_num,collect_num,comment_num', 'ForumPostAttr.post_id = ForumPost.id', 'LEFT')
-            ->view('User', ['name'=>'user_name','avatar'=>'user_avatar'], 'User.id = ForumPost.user_id');
+            ->view('User', ['id'=>'post_user_id','name'=>'user_name','avatar'=>'user_avatar'], 'User.id = ForumPost.user_id');
 
         return $this;
+    }
+
+    /**
+     * 处理输出数据
+     * @param $data
+     */
+    protected function resetListData($data)
+    {
+        foreach ($data as $key => &$value)
+        {
+            if(isset($value['user_avatar'])){
+                $value['user_avatar'] = $value['user_avatar']?json_decode($value['user_avatar'],1):userAvatar();
+            }
+        }
+
+        return $data;
     }
 
     /**

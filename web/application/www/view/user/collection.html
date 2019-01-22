@@ -92,7 +92,7 @@
                                 </div>
                                 <div class="flex-start flex-align-center share">
                                     <div class="flex-align-center share-h"><i class="b-img"></i></div>
-                                    <div class="flex-start flex-align-center share-list user-share">
+                                    <div class="flex-start flex-align-center share-list user-share" data-title="{$value['title']} - 鱼头网" data-link="{:urls('Forum/item')}?id={$value['post_id']}">
                                         <a href="javascript:void(0);" class="flex-align-center qq" data-type="qq"><i class="b-img"></i></a>
                                         <a href="javascript:void(0);" class="flex-align-center wechat" data-type="wechat"><i class="b-img"></i></a>
                                         <a href="javascript:void(0);" class="flex-align-center sina" data-type="sina"><i class="b-img"></i></a>
@@ -104,7 +104,7 @@
                                     {$value['create_time']} 收藏
                                 </div>
                             </div>
-                            <div class="end-r flex-start flex-align-center showUserInfo" data-id="{$value['user_id']}" data-home="{:urls('User/index')}?user_id={$value['user_id']}">
+                            <div class="end-r flex-start flex-align-center showUserInfo" data-id="{$value['post_user_id']}" data-home="{:urls('User/index')}?user_id={$value['post_user_id']}">
                                 <div class="user-avatar"><img src="{$value['user_avatar']['50']?:'/static/www/images/user_avatar_50.png'}"></div>
                                 <span class="user-name">{$value['user_name']}</span>
                             </div>

@@ -92,6 +92,7 @@ class User extends Base
         //用户帖子列表
         $data['post_list'] = $user->userForumPost($data['id']);
         //print_r($data);
+        $this->init(['title'=>'【'.$data['name'].'】的个人中心']);
         $this->assign('data', $data);
 
         return $this->fetch();

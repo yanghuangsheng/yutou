@@ -169,6 +169,7 @@ class User extends Base
             $value['create_time'] = friendlyDate($value['create_time']);
 
         }
+        //print_r($data);
         return $data;
 
     }
