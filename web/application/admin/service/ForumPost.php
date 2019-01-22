@@ -45,7 +45,7 @@ class ForumPost extends Common
     protected function setDelete($id)
     {
         $oTime = time();
-        (new \app\common\model\ForumPostContent)->where('news_id', $id)->data(['delete_time' => $oTime])->save();
+        (new \app\common\model\ForumPostContent)->where('post_id', 'IN', $id)->data(['delete_time' => $oTime])->update();
     }
 
     /**

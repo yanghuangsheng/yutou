@@ -134,7 +134,7 @@ class PortalNews extends Common
     protected function setDelete($id)
     {
         $oTime = time();
-        (new \app\common\model\PortalNewsContent)->save(['delete_time' => $oTime], ['news_id'=>$id]);
+        (new \app\common\model\PortalNewsContent)->where('news_id', 'IN', $id)->data(['delete_time' => $oTime])->update();
     }
 
     /**

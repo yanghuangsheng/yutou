@@ -60,6 +60,16 @@ class PortalNews extends Base
     }
 
     /**
+     * 更新发布、热门、推荐
+     * @param PortalNewsLogic $logic
+     * @return mixed
+     */
+    public function update(PortalNewsLogic $logic)
+    {
+        return (new $logic)->updateFieldByValue();
+    }
+
+    /**
      * 上传缩略图
      * @param $type
      * @return mixed

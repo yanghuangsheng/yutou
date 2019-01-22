@@ -34,9 +34,9 @@ class ForumPost extends Base
     }
 
     /**
-     * 设置热门
+     * 更新发布、热门、推荐
      */
-    public function setHot()
+    public function update()
     {
         return (new logic)->updateFieldByValue();
     }

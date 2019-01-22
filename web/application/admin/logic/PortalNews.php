@@ -146,4 +146,20 @@ class PortalNews extends Base
             }
         }
     }
+
+    /**
+     * 更新某个字段
+     */
+    public function updateFieldByValue()
+    {
+        if($this->isAjax()){
+            $data = $this->param();
+
+            if((new oService)->updateFieldByValue($data)){
+                $this->resultJson(0, '更新成功');
+            }
+
+            $this->resultJson(-1, '更新失败');
+        }
+    }
 }

@@ -47,9 +47,11 @@
                         </div>
                         <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
                     </div>
-                    <div class="article-btns layui-btn-group" style="margin-bottom:-20px;">
+                    <div class="update-btns layui-btn-group" style="margin-bottom:-20px;">
                         <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="status" data-status="1">发布</button>
                         <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="status" data-status="0">取消发布</button>
+                        <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="hot" data-status="1">热门</button>
+                        <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="hot" data-status="0">取消热门</button>
                         <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="topic" data-status="1">话题</button>
                         <button class="layui-btn layui-btn-sm layui-bg-black" lay-submit="" data-events="update" data-type="topic" data-status="0">取消话题</button>
                         <button class="layui-btn layui-btn-sm layui-bg-red" lay-submit="" data-events="del">删除</button>
@@ -183,14 +185,20 @@
                     return false;
                     break;
                 case 'del':
-                    layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function () {
+                    layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
+                        layer.load(2);
                         admin.req({
                             url: '{:Url("ForumPost/delete")}',
                             data: {
                                 id: data.id
                             },
                             done: function (res) {
-                                obj.del();
+                                layer.closeAll('loading');
+                                if(res.code == 0){
+                                    obj.del();
+                                    layer.close(index);
+                                    return;
+                                }
                                 layer.msg(res.msg, {
                                     icon: 1
                                 });
@@ -203,10 +211,71 @@
 
         //事件处理
         var events = {
+            del: function () {
+                var checkedIds = events.getCheckedIds();
+                if (checkedIds === '') return layer.msg('未选中行');
+                layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
+                    layer.load(2);
+                    admin.req({
+                        url: '{:Url("ForumPost/delete")}',
+                        data: {
+                            id: checkedIds
+                        },
+                        done: function (res) {
+                            layer.closeAll('loading');
+                            if(res.code == 0){
+                                table.reload('LayTable');
+                                layer.close(index);
+                                return;
+                            }
 
+                            layer.msg('删除失败', {
+                                icon: 1
+                            });
+
+                        }
+                    });
+                });
+            },
+            update: function (oThis) {
+                var checkedIds = events.getCheckedIds();
+                if (checkedIds === '') return layer.msg('未选中行');
+
+                layer.load(2);
+                admin.req({
+                    url: '{:Url("ForumPost/update")}',
+                    data: {
+                        id: checkedIds,
+                        field: oThis.data('type'),
+                        value: oThis.data('status')
+                    },
+                    done: function (res) {
+                        layer.closeAll('loading');
+                        if(res.code == 0){
+                            table.reload('LayTable');
+                            return;
+                        }
+
+                        layer.msg(res.msg, {
+                            icon: 1
+                        });
+
+                    }
+                });
+
+            },
+            getCheckedIds: function () {
+                var checkStatus = table.checkStatus('LayTable'),
+                    data = checkStatus.data;
+                var cols = '';
+                for (var i = 0, len = data.length; i < len; i++) {
+                    cols += ',' + data[i]['id'];
+                }
+                return cols.substr(1);
+            }
         };
 
-        $('.layui-tab-title .layui-form-ctrl').on('click', function() {
+        $('.layui-tab-title .layui-form-ctrl, .update-btns .layui-btn').on('click', function() {
             var othis = $(this),
                 thisEvent = othis.data('events');
             events[thisEvent] && events[thisEvent].call(this, othis);

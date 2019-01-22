@@ -104,12 +104,20 @@ class Common extends Base
 
     /**
      * 单独更新字段
-     * @param $data array [id,field,value]
+     * @param $data
+     * @param string $key
      * @return bool
      */
-    public function updateFieldByValue($data)
+    public function updateFieldByValue($data, $key = 'id')
     {
-        if($this->model->update(['id'=>$data['id'], $data['field']=>$data['value']])){
+        $map = [];
+        if(is_array($data['id'])){
+            $map[] = [$key, 'IN', implode(',',$data['id'])];
+        }
+        else{
+            $map[] = [$key, 'IN', $data['id']];
+        }
+        if($this->model->where($map)->update([$data['field']=>$data['value']])){
             return true;
         }
 
