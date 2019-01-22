@@ -66,7 +66,7 @@ class News extends Common
     {
         $newTime = $this->newsId([], 'published_time');
         //发布时间最新的时间 7天前的时间
-        $endTime = $newTime - $day * 24 * 360;
+        $endTime = $newTime - $day * 24 * 3600;
 
         return $this->oneView()
             ->where('PortalNews.published_time', ['>=', $endTime], ['<=', $newTime], 'and')
