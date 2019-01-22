@@ -445,6 +445,12 @@
 .tab-box .collect-content .post-list .wechat i{
     background-position: -125px -190px;
 }
+.tab-box .collect-content .post-list .sina i{
+    background-position: -150px -190px;
+}
+.tab-box .collect-content .post-list .douban i{
+    background-position: -175px -190px;
+}
 .tab-box .collect-content .post-list .more i{
     background-position: -50px -70px;
 }
