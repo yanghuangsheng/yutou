@@ -189,11 +189,13 @@
 
                             //监听提交
                             iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                                layer.load(2);
                                 admin.req({
                                     url: oUrl,
                                     data: data.field,
                                     type: 'Post',
                                     done: function (res) {
+                                        layer.closeAll('loading');
                                         layer.msg(res.msg, {
                                             icon: 1
                                         }, function() {
@@ -246,9 +248,7 @@
                                     layer.close(index);
                                     return ;
                                 }
-                                layer.msg(res.msg, {
-                                    icon: 1
-                                });
+                                layer.msg(res.msg, {icon: 0});
                             }
                         });
                     });
@@ -274,17 +274,21 @@
 
                         //监听提交
                         iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                            layer.load(2);
                             admin.req({
                                 url: oUrl,
                                 data: data.field,
                                 type: 'Post',
                                 done: function (res) {
-                                    layer.msg(res.msg, {
-                                        icon: 1
-                                    }, function() {
-                                        location.reload(true);
-                                    });
-                                    layer.close(index); //关闭弹层
+                                    layer.closeAll('loading');
+                                    layer.close(index);//关闭当前窗口
+                                    if(res.code == 0){
+                                        table.reload('LayTable',{page:1});
+                                        return ;
+                                    }
+                                    layer.msg(res.msg, {icon:0});
+
+
                                 }
                             });
                         });

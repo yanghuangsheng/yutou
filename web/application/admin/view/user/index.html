@@ -128,7 +128,49 @@
             switch (obj.event)
             {
                 case 'edit':
+                    var oUrl = "{:Url('User/edit',['id'=>'__id__'])}";
+                    oUrl = oUrl.replace('__id__', data.id);
+                    layer.open({
+                        type: 2,
+                        title: '编辑资讯',
+                        content: oUrl,
+                        maxmin: true,
+                        area: [($(window).width()*0.8)+'px', ($(window).height()*0.7)+'px'],
+                        btn: ['确定', '取消'],
+                        yes: function (index, layero) {
+                            var iframeWindow = window['layui-layer-iframe' + index],
+                                submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit'),
+                                setContent = layero.find('iframe').contents().find('#getContent');
 
+                            //监听提交
+                            iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                                layer.load(2);
+                                admin.req({
+                                    url: oUrl,
+                                    data: data.field,
+                                    type: 'Post',
+                                    done: function (res) {
+                                        layer.closeAll('loading');
+                                        layer.msg(res.msg, {
+                                            icon: 1
+                                        }, function() {
+                                            //console.log(res.code);
+                                            if(res.code == 0){
+                                                obj.update({
+                                                    name: data.field.name,
+                                                    real_name: data.field.real_name,
+                                                    phone: data.field.phone,
+                                                    code: data.field.code,
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                            setContent.trigger('click');
+                            submit.trigger('click');
+                        }
+                    });
                     break;
                 case 'del':
                     layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
@@ -173,17 +215,20 @@
 
                         //监听提交
                         iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                            layer.load(2);
                             admin.req({
                                 url: oUrl,
                                 data: data.field,
                                 type: 'Post',
                                 done: function (res) {
-                                    layer.msg(res.msg, {
-                                        icon: 1
-                                    }, function() {
-                                        location.reload(true);
-                                    });
-                                    layer.close(index); //关闭弹层
+                                    layer.closeAll('loading');
+                                    layer.close(index);//关闭当前窗口
+                                    if(res.code == 0){
+                                        table.reload('LayTable',{page:1});
+                                        return ;
+                                    }
+                                    layer.msg(res.msg, {icon:0});
+
                                 }
                             });
                         });
@@ -211,9 +256,7 @@
                                 return;
                             }
 
-                            layer.msg('删除失败', {
-                                icon: 1
-                            });
+                            layer.msg('删除失败', {icon: 1});
 
                         }
                     });
@@ -238,9 +281,7 @@
                             return;
                         }
 
-                        layer.msg(res.msg, {
-                            icon: 1
-                        });
+                        layer.msg(res.msg, {icon: 1});
 
                     }
                 });

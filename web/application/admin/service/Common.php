@@ -72,6 +72,17 @@ class Common extends Base
     }
 
     /**
+     * 获取新的一条数据，一个字段值
+     * @param string $field
+     * @param array $map
+     * @return mixed
+     */
+    public function newsId($map = [], $field = 'id'){
+
+        return $this->model->where($map)->order('id','desc')->value($field);
+    }
+
+    /**
      * 获取某个字段值
      * @param $data 条件
      * @param $field 字段

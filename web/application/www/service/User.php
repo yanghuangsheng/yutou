@@ -85,7 +85,7 @@ class User extends Common
         if(!isset($data['id'])){
             //如果不存在，创建用户
             $data = [
-                'name' => 'yutou_' . random_string('4') . $this->newsId(),
+                'name' => 'yutou_' . random_string('4') . ($this->newsId()+1),
                 'phone' => $phone,
                 'last_login_time' => time(),
             ];

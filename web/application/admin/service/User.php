@@ -19,6 +19,15 @@ class User extends Common
     }
 
     /**
+     * 设置可更新字段
+     * @return array
+     */
+    public function setAllowField()
+    {
+        return true;
+    }
+
+    /**
      * 列表View
      * @return $this
      */
@@ -26,6 +35,15 @@ class User extends Common
     {
         return $this->model->view('User', 'id,name,phone,status,code,last_login_time,create_time')
             ->view('UserCapital', 'golds', 'UserCapital.user_id = User.id', 'LEFT');
+    }
+
+    /**
+     * 单条
+     * @return $this
+     */
+    protected function setOneWithOnView()
+    {
+        return $this->model->view('User', '*');
     }
 
     /**
@@ -40,4 +58,15 @@ class User extends Common
 
         return $data;
     }
+
+    /**
+     * 捡测手机号是否已注册
+     * @param $phone
+     * @return float|string
+     */
+    public function checkCount($phone)
+    {
+        return $this->model->where('phone', $phone)->count();
+    }
+
 }
