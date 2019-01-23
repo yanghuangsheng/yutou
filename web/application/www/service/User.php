@@ -81,7 +81,7 @@ class User extends Common
      */
     public function saveLogin($phone, $param = [])
     {
-        $data = $this->getUserInfo('phone', $phone);
+        $data = $this->getUserInfo($phone, 'phone');
         if(!isset($data['id'])){
             //如果不存在，创建用户
             $data = [
