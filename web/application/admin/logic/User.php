@@ -48,22 +48,15 @@ class User extends Base
             $param = $this->param();
             $order = false;
             $where = [];
-//            $param['status'] == '' || $where[] = ['status', '=', $param['status']];
-//            $param['type'] == 'hot' && $where[] = ['hot', '=', 1];
-//            $param['type'] == 'topic' && $where[] = ['topic', '=', 1];
-//            $param['title'] == '' || $where[] = ['title', 'like', '%'.$param['title'].'%'];
-//
-//            if($param['open_time'] && $param['end_time']){
-//                $where[] = ['ForumPost.create_time', ['<=', strtotime($param['end_time'])], ['>=', strtotime($param['open_time'])], 'and'];
-//            }else{
-//                $param['open_time'] && $where[] = ['ForumPost.create_time', '>=', strtotime($param['open_time'])];
-//                $param['end_time'] &&  $where[] = ['ForumPost.create_time', '<=', strtotime($param['end_time'])];
-//            }
-//
-//            $param['order'] == 'browse_num' && $order = ['browse_num', 'desc'];
-//            $param['order'] == 'praise_num' && $order = ['praise_num', 'desc'];
-//            $param['order'] == 'collect_num' && $order = ['collect_num', 'desc'];
-//            $param['order'] == 'comment_num' && $order = ['comment_num', 'desc'];
+            $param['status'] == '' || $where[] = ['status', '=', $param['status']];
+            if($param['phone']){
+                if(is_numeric($param['phone'])){
+                    $where[] = ['phone', '=', $param['phone']];
+                }
+                else{
+                    $where[] = ['name', '=', $param['phone']];
+                }
+            }
 
             $service = new oService;
             $data = $service->initWhere($where)->initOrder($order)->initLimit($param['page'], $param['limit'])->getListData();

@@ -25,6 +25,14 @@ class User extends Base
     }
 
     /**
+     * 新增
+     * @return mixed
+     */
+    public function add()
+    {
+        return $this->fetch();
+    }
+    /**
      * 删除
      * @return mixed
      */

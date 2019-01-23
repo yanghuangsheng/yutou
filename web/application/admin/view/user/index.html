@@ -3,7 +3,7 @@
         <div class="layui-tab layui-tab-brief">
             <ul class="layui-tab-title">
                 <li class="layui-this">用户列表</li>
-                <li class="layui-form-ctrl" data-events="add">添加用户</li>
+                <li class="layui-form-ctrl" data-events="add">添加新用户</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-form" action="" id="LAY-article-form-search">
@@ -17,7 +17,7 @@
                         </div>
                         <div class="layui-inline clear-left">
                             <div class="layui-input-block" style="width: 150px;">
-                                <input type="text" name="title" placeholder="呢称/手机" autocomplete="off" class="layui-input">
+                                <input type="text" name="phone" placeholder="呢称/手机" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
@@ -53,17 +53,18 @@
             url: window.location.href,
             where: {
                 status: '',
-                title: '',
-                type: '',
-                open_time: '',
-                end_time: '',
-                order: ''
-
+                phone: ''
             },
             cols: [
                 [{
                     checkbox: true
                 },
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        width: 100,
+
+                    },
                     {
                         field: 'name',
                         title: '用户',
@@ -78,14 +79,19 @@
                     {
                         field: 'golds',
                         title: '金币',
-                        width: 185,
+                        width: 100,
                         align: 'center'
                     },
                     {
                         field: 'status_txt',
                         title: '状态',
-                        width: 185,
+                        width: 80,
                         align: 'center'
+                    },
+                    {
+                        field: 'code',
+                        title: '固定码',
+                        width: 80
                     },
                     {
                         field: 'last_login_time',
@@ -151,10 +157,43 @@
 
         //事件处理
         var events = {
-            add: function (oThis) {
+            add: function (othis, id) {
+                var oUrl = "{:Url('User/add')}";
+                layer.open({
+                    type: 2,
+                    title: '添加新用户',
+                    content: oUrl,
+                    maxmin: true,
+                    area: [($(window).width()*0.8)+'px', ($(window).height()*0.7)+'px'],
+                    btn: ['保存', '取消'],
+                    yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe' + index],
+                            submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit')
+                        setContent = layero.find('iframe').contents().find('#getContent');
+
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                            admin.req({
+                                url: oUrl,
+                                data: data.field,
+                                type: 'Post',
+                                done: function (res) {
+                                    layer.msg(res.msg, {
+                                        icon: 1
+                                    }, function() {
+                                        location.reload(true);
+                                    });
+                                    layer.close(index); //关闭弹层
+                                }
+                            });
+                        });
+                        setContent.trigger('click');
+                        submit.trigger('click');
+                    }
+                });
 
             },
-            del: function () {
+            del: function (oThis) {
                 var checkedIds = events.getCheckedIds();
                 if (checkedIds === '') return layer.msg('未选中行');
                 layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
