@@ -50,16 +50,21 @@
             del: function (othis, id) {
                 var _tr = othis.parent().parent();
                 layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function () {
+                    layer.load(2);
                     admin.req({
                         url: '{:Url("SpiderLotteryCategory/delete")}',
                         data: {
                             id: id
                         },
                         done: function (res) {
-                            _tr.remove();
-                            layer.msg(res.msg, {
-                                icon: 1
-                            });
+                            layer.closeAll('loading');
+                            if(res.code == 0){
+                                _tr.remove();
+                                layer.close(index);
+                                return ;
+                            }
+
+                            layer.msg(res.msg, {icon: 0});
                         }
                     });
                 });
@@ -79,17 +84,18 @@
                             submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit');
                         //监听提交
                         iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                            layer.load(2);
                             admin.req({
                                 url: oUrl,
                                 data: data.field,
                                 type: 'Post',
                                 done: function (res) {
-                                    layer.msg(res.msg, {
-                                        icon: 1
-                                    }, function() {
+                                    layer.closeAll('loading');
+                                    if(res.code == 0){
+                                        layer.close(index); //关闭弹层
                                         location.reload(true);
-                                    });
-                                    layer.close(index); //关闭弹层
+                                    }
+                                    layer.msg(res.msg, {icon: 1});
                                 }
                             });
                         });
@@ -135,13 +141,17 @@
         };
 
         form.on('submit(article-category-sort)', function (data) {
+            layer.load(2);
             admin.req({
                 url: "{:Url('SpiderLotteryCategory/saveListOrders')}",
                 data: data.field,
                 done: function (res) {
-                    layer.msg(res.msg, {
-                        icon: 1
-                    });
+                    layer.closeAll('loading');
+                    if(res.code == 0){
+                        layer.msg(res.msg, {icon: 1});
+                        return ;
+                    }
+                    layer.msg(res.msg, {icon: 0});
                 }
             });
             return false;

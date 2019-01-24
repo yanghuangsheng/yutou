@@ -72,13 +72,15 @@
                         minWidth: 330
                     },
                     {
+                        field: 'status_txt',
                         title: '状态',
                         width: 80,
-                        templet: function (d) {
-                            return (d.status == '1' ?
-                                    '<span class="layui-badge layui-bg-green">开启</span> ' :
-                                    '<span class="layui-badge layui-bg-gray">关闭</span> ');
-                        }
+                        align: 'center',
+//                        templet: function (d) {
+//                            return (d.status == '1' ?
+//                                    '<span class="layui-badge layui-bg-green">开启</span> ' :
+//                                    '<span class="layui-badge layui-bg-gray">关闭</span> ');
+//                        }
                     },
                     {
                         field: 'create_time',
@@ -124,17 +126,24 @@
                                 submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit');
                             //监听提交
                             iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                                layer.load(2);
                                 admin.req({
                                     url: oUrl,
                                     data: data.field,
                                     type: 'Post',
                                     done: function (res) {
-                                        layer.msg(res.msg, {
-                                            icon: 1
-                                        }, function() {
-                                            //location.reload(true);
-                                        });
-                                        //layer.close(index); //关闭弹层
+                                        layer.closeAll('loading');
+                                        if(res.code == 0){
+                                            layer.close(index); //关闭弹层
+                                            obj.update({
+                                                status: (data.field.status=='1')?1:0,
+                                                status_txt: (data.field.status == '1')?'<span class="layui-badge layui-bg-green">开启</span>':'<span class="layui-badge layui-bg-gray">关闭</span>',
+                                                name: data.field.name,
+                                                api_url: data.field.api_url
+                                            });
+                                            return ;
+                                        }
+                                        layer.msg(res.msg, {icon: 0});
                                     }
                                 });
                             });
@@ -143,17 +152,21 @@
                     });
                     break;
                 case 'del':
-                    layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function () {
+                    layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
+                        layer.load(2);
                         admin.req({
                             url: '{:Url("SpiderLotteryRule/delete")}',
                             data: {
                                 id: data.id
                             },
                             done: function (res) {
-                                obj.del();
-                                layer.msg(res.msg, {
-                                    icon: 1
-                                });
+                                layer.closeAll('loading');
+                                if(res.code == 0){
+                                    obj.del();
+                                    layer.close(index);
+                                    return ;
+                                }
+                                layer.msg(res.msg, {icon: 0});
                             }
                         });
                     });
@@ -177,17 +190,20 @@
                             submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit');
                         //监听提交
                         iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                            layer.load(2);
                             admin.req({
                                 url: oUrl,
                                 data: data.field,
                                 type: 'Post',
                                 done: function (res) {
-                                    layer.msg(res.msg, {
-                                        icon: 1
-                                    }, function() {
-                                        location.reload(true);
-                                    });
-                                    layer.close(index); //关闭弹层
+                                    layer.closeAll('loading');
+                                    if(res.code == 0){
+                                        table.reload('LayTable',{page:1});
+                                        layer.close(index); //关闭弹层
+                                        return ;
+                                    }
+                                    layer.msg(res.msg, {icon: 0});
+
                                 }
                             });
                         });

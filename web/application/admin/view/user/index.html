@@ -151,19 +151,17 @@
                                     type: 'Post',
                                     done: function (res) {
                                         layer.closeAll('loading');
-                                        layer.msg(res.msg, {
-                                            icon: 1
-                                        }, function() {
-                                            //console.log(res.code);
-                                            if(res.code == 0){
-                                                obj.update({
-                                                    name: data.field.name,
-                                                    real_name: data.field.real_name,
-                                                    phone: data.field.phone,
-                                                    code: data.field.code,
-                                                });
-                                            }
-                                        });
+                                        if(res.code == 0){
+                                            layer.close(index);
+                                            obj.update({
+                                                name: data.field.name,
+                                                real_name: data.field.real_name,
+                                                phone: data.field.phone,
+                                                code: data.field.code,
+                                            });
+                                            return ;
+                                        }
+                                        layer.msg(res.msg, {icon: 0});
                                     }
                                 });
                             });
@@ -222,9 +220,9 @@
                                 type: 'Post',
                                 done: function (res) {
                                     layer.closeAll('loading');
-                                    layer.close(index);//关闭当前窗口
                                     if(res.code == 0){
                                         table.reload('LayTable',{page:1});
+                                        layer.close(index);//关闭当前窗口
                                         return ;
                                     }
                                     layer.msg(res.msg, {icon:0});
@@ -256,7 +254,7 @@
                                 return;
                             }
 
-                            layer.msg('删除失败', {icon: 1});
+                            layer.msg('删除失败', {icon: 0});
 
                         }
                     });

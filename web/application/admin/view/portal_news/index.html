@@ -196,29 +196,23 @@
                                     type: 'Post',
                                     done: function (res) {
                                         layer.closeAll('loading');
-                                        layer.msg(res.msg, {
-                                            icon: 1
-                                        }, function() {
-                                            //console.log(res.code);
-                                            if(res.code == 0){
-                                                var statusTxt = data.field.status?'<span class="layui-badge layui-bg-green">已发布</span>':'<span class="layui-badge layui-bg-gray">未发布</span>';
-                                                statusTxt += data.field.hot?' <span class="layui-badge layui-bg-green">已热门</span>':' <span class="layui-badge layui-bg-gray">未热门</span>';
-                                                statusTxt += data.field.recommended?' <span class="layui-badge layui-bg-green">已推荐</span>':' <span class="layui-badge layui-bg-gray">未推荐</span>';
+                                        if(res.code == 0){
+                                            var statusTxt = data.field.status?'<span class="layui-badge layui-bg-green">已发布</span>':'<span class="layui-badge layui-bg-gray">未发布</span>';
+                                            statusTxt += data.field.hot?' <span class="layui-badge layui-bg-green">已热门</span>':' <span class="layui-badge layui-bg-gray">未热门</span>';
+                                            statusTxt += data.field.recommended?' <span class="layui-badge layui-bg-green">已推荐</span>':' <span class="layui-badge layui-bg-gray">未推荐</span>';
 
-                                                obj.update({
-                                                    status: data.field.status?1:0,
-                                                    hot: data.field.hot?1:0,
-                                                    recommended: data.field.recommended?1:0,
-                                                    status_txt: statusTxt,
-                                                    category_name: res.data.category_name
+                                            obj.update({
+                                                status: data.field.status?1:0,
+                                                hot: data.field.hot?1:0,
+                                                recommended: data.field.recommended?1:0,
+                                                status_txt: statusTxt,
+                                                category_name: res.data.category_name
 
-                                                });
-
-                                            }
-
-                                            //location.reload(true);
-                                        });
-                                        //layer.close(index); //关闭弹层
+                                            });
+                                            layer.close(index);
+                                            return ;
+                                        }
+                                        layer.msg(res.msg, {icon:0});
                                     }
                                 });
                             });
@@ -281,14 +275,12 @@
                                 type: 'Post',
                                 done: function (res) {
                                     layer.closeAll('loading');
-                                    layer.close(index);//关闭当前窗口
                                     if(res.code == 0){
                                         table.reload('LayTable',{page:1});
+                                        layer.close(index);//关闭当前窗口
                                         return ;
                                     }
                                     layer.msg(res.msg, {icon:0});
-
-
                                 }
                             });
                         });
@@ -316,9 +308,7 @@
                                 return;
                             }
 
-                            layer.msg('删除失败', {
-                                icon: 1
-                            });
+                            layer.msg('删除失败', {icon: 0});
 
                         }
                     });
@@ -342,10 +332,7 @@
                             table.reload('LayTable');
                             return;
                         }
-
-                        layer.msg(res.msg, {
-                            icon: 1
-                        });
+                        layer.msg(res.msg, {icon: 0});
 
                     }
                 });

@@ -116,25 +116,23 @@
                         return;
                     }
                     layer.confirm('确定转发吗？',{icon: 3, title:false}, function (index) {
-                        var loadIndex = layer.load(1);
+                        layer.load(2);
                         admin.req({
                             url: '{:Url("SpiderNews/toRelay")}',
                             data: {
                                 id: data.id
                             },
                             done: function (res) {
+                                layer.closeAll('loading');
                                 if(res.code == 0){
                                     obj.update({
                                         status: 1,
                                         status_txt: '<span class="layui-badge layui-bg-green">已转</span>'
                                     });
                                     layer.close(index);
-                                    layer.close(loadIndex);
                                     return;
                                 }
-                                layer.msg(res.msg, {
-                                    icon: 0
-                                });
+                                layer.msg(res.msg, {icon: 0});
                             }
                         });
                     });
@@ -147,17 +145,21 @@
                     return false;
                     break;
                 case 'del':
-                    layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function () {
+                    layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
+                        layer.load(2);
                         admin.req({
                             url: '{:Url("SpiderNews/delete")}',
                             data: {
                                 id: data.id
                             },
                             done: function (res) {
-                                obj.del();
-                                layer.msg(res.msg, {
-                                    icon: 1
-                                });
+                                layer.closeAll('loading');
+                                if(res.code == 0){
+                                    obj.del();
+                                    layer.close(index);
+                                    return ;
+                                }
+                                layer.msg(res.msg, {icon: 0});
                             }
                         });
                     });

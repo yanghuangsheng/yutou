@@ -147,37 +147,34 @@
 
                             //监听提交
                             iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                                layer.load(2);
                                 admin.req({
                                     url: oUrl,
                                     data: data.field,
                                     type: 'Post',
                                     done: function (res) {
-                                        layer.msg(res.msg, {
-                                            icon: 1
-                                        }, function() {
-                                            //console.log(res.code);
-                                            if(res.code == 0){
+                                        layer.closeAll('loading');
+                                        if(res.code == 0){
 
-                                                if(data.field.put_end_time > getNowFormatDate()){
-                                                    var status_txt = '<span class="layui-badge layui-bg-green">上架中</span>';
-                                                }else{
-                                                    var status_txt = '<span class="layui-badge layui-bg-gray">已下架</span>';
-                                                }
-
-                                                obj.update({
-                                                    status_txt: status_txt,
-                                                    put_open_time: data.field.put_open_time,
-                                                    put_end_time: data.field.put_end_time,
-                                                    title: data.field.title,
-                                                    link_url: data.field.link_url,
-                                                    type_txt: data.type == '1'?'PC':'H5',
-                                                });
-
+                                            if(data.field.put_end_time > getNowFormatDate()){
+                                                var status_txt = '<span class="layui-badge layui-bg-green">上架中</span>';
+                                            }else{
+                                                var status_txt = '<span class="layui-badge layui-bg-gray">已下架</span>';
                                             }
 
-                                            //location.reload(true);
-                                        });
-                                        //layer.close(index); //关闭弹层
+                                            obj.update({
+                                                status_txt: status_txt,
+                                                put_open_time: data.field.put_open_time,
+                                                put_end_time: data.field.put_end_time,
+                                                title: data.field.title,
+                                                link_url: data.field.link_url,
+                                                type_txt: data.type == '1'?'PC':'H5',
+                                            });
+                                            layer.close(index);
+
+                                            return ;
+                                        }
+                                        layer.msg(res.msg, {icon:0});
                                     }
                                 });
                             });
@@ -193,17 +190,21 @@
                     return false;
                     break;
                 case 'del':
-                    layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function () {
+                    layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
+                        layer.load(2);
                         admin.req({
                             url: '{:Url("AdImages/delete")}',
                             data: {
                                 id: data.id
                             },
                             done: function (res) {
-                                obj.del();
-                                layer.msg(res.msg, {
-                                    icon: 1
-                                });
+                                layer.closeAll('loading');
+                                layer.close(index);
+                                if(res.code == 0){
+                                    obj.del();
+                                    return ;
+                                }
+                                layer.msg(res.msg, {icon: 0});
                             }
                         });
                     });
@@ -229,17 +230,19 @@
 
                         //监听提交
                         iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                            layer.load(2);
                             admin.req({
                                 url: oUrl,
                                 data: data.field,
                                 type: 'Post',
                                 done: function (res) {
-                                    layer.msg(res.msg, {
-                                        icon: 1
-                                    }, function() {
-                                        location.reload(true);
-                                    });
-                                    layer.close(index); //关闭弹层
+                                    layer.closeAll('loading');
+                                    layer.close(index);
+                                    if(res.code == 0){
+                                        table.reload('LayTable',{page:1});
+                                        return;
+                                    }
+                                    layer.msg(res.msg, {icon: 0});
                                 }
                             });
                         });
@@ -266,17 +269,20 @@
 
                         //监听提交
                         iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                            layer.load(2);
                             admin.req({
                                 url: oUrl,
                                 data: data.field,
                                 type: 'Post',
                                 done: function (res) {
-                                    layer.msg(res.msg, {
-                                        icon: 1
-                                    }, function() {
-                                        location.reload(true);
-                                    });
-                                    layer.close(index); //关闭弹层
+                                    layer.closeAll('loading');
+                                    if(res.code == 0){
+                                        layer.close(index); //关闭弹层
+                                        layer.msg(res.msg, {icon: 1});
+                                        return ;
+                                    }
+                                    layer.msg(res.msg, {icon: 0});
+
                                 }
                             });
                         });

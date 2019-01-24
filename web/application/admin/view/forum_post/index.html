@@ -199,9 +199,7 @@
                                     layer.close(index);
                                     return;
                                 }
-                                layer.msg(res.msg, {
-                                    icon: 1
-                                });
+                                layer.msg(res.msg, {icon: 1});
                             }
                         });
                     });
@@ -228,11 +226,7 @@
                                 layer.close(index);
                                 return;
                             }
-
-                            layer.msg('删除失败', {
-                                icon: 1
-                            });
-
+                            layer.msg('删除失败', {icon: 0});
                         }
                     });
                 });
@@ -240,7 +234,6 @@
             update: function (oThis) {
                 var checkedIds = events.getCheckedIds();
                 if (checkedIds === '') return layer.msg('未选中行');
-
                 layer.load(2);
                 admin.req({
                     url: '{:Url("ForumPost/update")}',
@@ -255,10 +248,7 @@
                             table.reload('LayTable');
                             return;
                         }
-
-                        layer.msg(res.msg, {
-                            icon: 1
-                        });
+                        layer.msg(res.msg, {icon: 0});
 
                     }
                 });

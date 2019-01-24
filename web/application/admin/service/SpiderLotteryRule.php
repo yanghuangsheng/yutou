@@ -35,6 +35,20 @@ class SpiderLotteryRule extends Common
     }
 
     /**
+     * 列表数据处理
+     * @param $data
+     */
+    protected function resetListData($data)
+    {
+        foreach ($data as $key => &$value)
+        {
+            $value['status_txt'] = $value['status']?'<span class="layui-badge layui-bg-green">开启</span>':'<span class="layui-badge layui-bg-gray">关闭</span>';
+        }
+
+        return $data;
+    }
+
+    /**
      * 关联模形
      * @return $this
      */
