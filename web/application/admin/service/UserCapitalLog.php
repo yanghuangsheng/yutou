@@ -44,6 +44,8 @@ class UserCapitalLog extends Common
      */
     public function giveGoldsLog($data)
     {
+        $operation = substr($data['pay'], 0, 1);
+        is_numeric($operation) && $data['pay'] = '+'.$data['pay'];
         if($this->save($data)){
             return true;
         }
