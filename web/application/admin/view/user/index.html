@@ -208,9 +208,7 @@
                     btn: ['保存', '取消'],
                     yes: function (index, layero) {
                         var iframeWindow = window['layui-layer-iframe' + index],
-                            submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit')
-                        setContent = layero.find('iframe').contents().find('#getContent');
-
+                            submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit');
                         //监听提交
                         iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
                             layer.load(2);

@@ -84,14 +84,38 @@ class Common extends Base
 
     /**
      * 获取某个字段值
-     * @param $data 条件
-     * @param $field 字段
+     * @param $data
+     * @param $field
      * @return mixed
      */
     public function getOneField($data,$field)
     {
         //查询
         return $this->model->where(is_array($data)?$data:[[$this->keyId, '=', $data]])->value($field);
+    }
+
+    /**
+     * 累加
+     * @param $where_map
+     * @param $field
+     * @param int $value
+     * @return mixed
+     */
+    public function updateInc($where_map, $field, $value = 1)
+    {
+        return $this->model->where($where_map[0], $where_map[1])->inc($field, $value)->update();
+    }
+
+    /**
+     * 累减
+     * @param $where_map
+     * @param $field
+     * @param int $value
+     * @return mixed
+     */
+    public function updateDec($where_map, $field, $value = 1)
+    {
+        return $this->model->where($where_map[0], $where_map[1])->dec($field, $value)->update();
     }
 
     /**

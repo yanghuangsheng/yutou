@@ -1,0 +1,200 @@
+<div class="layui-fluid" id="LAY-article">
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">交易列表</li>
+                <li class="layui-form-ctrl" data-events="give">赠送金币</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-form" action="" id="LAY-article-form-search">
+                    <div style="margin-bottom: 10px;">
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 150px;">
+                                <input type="text" name="phone" placeholder="呢称/手机" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
+                    </div>
+                    <table class="layui-table" id="LAY-table" lay-filter="LAY-list-table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="list-table-toolbar">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    bodyD.use(['index', 'form', 'table', 'util', 'laydate'], function () {
+        var $ = layui.$,
+            admin = layui.admin,
+            form = layui.form,
+            laydate = layui.laydate,
+            table = layui.table,
+            util = layui.util;
+
+        //form.render();
+        var tableOptions = {
+            elem: '#LAY-table',
+            url: window.location.href,
+            where: {
+                status: '',
+                phone: ''
+            },
+            cols: [
+                [{
+                    checkbox: true
+                },
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        width: 100,
+
+                    },
+                    {
+                        field: 'name',
+                        title: '用户',
+                        width: 150,
+                        templet: function (d) {
+                            return d.name + '(' + d.user_id + ')';
+                        }
+                    },
+                    {
+                        field: 'pay',
+                        title: '收入/支出',
+                        width: 100,
+                        align: 'center'
+                    },
+                    {
+                        field: 'residue',
+                        title: '总金币',
+                        width: 100,
+                        align: 'center'
+                    },
+                    {
+                        field: 'explain',
+                        title: '描述',
+                        minWidth: 200,
+                        align: 'left'
+                    },
+                    {
+                        field: 'create_time',
+                        title: '时间',
+                        width: 180
+                    },
+                    {
+                        fixed: 'right',
+                        title: '操作',
+                        width: 80,
+                        align: 'center',
+                        toolbar: '#list-table-toolbar'
+                    }
+                ]
+            ],
+            id: 'LayTable',
+            page: true,
+            limit: 15,
+            limits: [15, 25, 35, 45, 55],
+            height: 'full-153',
+            done: function (res) {}
+        };
+        table.render(tableOptions);
+
+        table.on("tool(LAY-list-table)", function (t) {
+            console.log(t);
+            var obj = t;
+            var data = obj.data;
+            switch (obj.event)
+            {
+                case 'del':
+                    layer.confirm('<font color="red">删除对用户的金币无影响</font> 确定要删除？',{icon: 3, title:false}, function (index) {
+                        layer.load(2);
+                        admin.req({
+                            url: '{:Url("UserCapitalLog/delete")}',
+                            data: {
+                                id: data.id
+                            },
+                            done: function (res) {
+                                layer.closeAll('loading');
+                                if(res.code == 0){
+                                    obj.del();
+                                    layer.close(index);
+                                    return;
+                                }
+                                layer.msg(res.msg, {
+                                    icon: 1
+                                });
+                            }
+                        });
+                    });
+                    break;
+            }
+        });
+
+        //事件处理
+        var events = {
+            give: function (othis, id) {
+                var oUrl = "{:Url('UserCapitalLog/give')}";
+                var wWidth = ($(window).width() < 650)? $(window).width()*0.8: 650;
+                var wHeight = ($(window).height() < 600)? $(window).height()*0.7: 600;
+                layer.open({
+                    type: 2,
+                    title: '赠送金币',
+                    content: oUrl,
+                    maxmin: true,
+                    area: [wWidth +'px', wHeight+'px'],
+                    btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe' + index],
+                            submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit');
+
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                            layer.load(2);
+                            admin.req({
+                                url: oUrl,
+                                data: data.field,
+                                type: 'Post',
+                                done: function (res) {
+                                    layer.closeAll('loading');
+                                    if(res.code == 0){
+                                        table.reload('LayTable',{page:1});
+                                        layer.close(index);//关闭当前窗口
+                                        return ;
+                                    }
+                                    layer.msg(res.msg, {icon:0});
+
+                                }
+                            });
+                        });
+                        submit.trigger('click');
+                    }
+                });
+
+            },
+            getCheckedIds: function () {
+                var checkStatus = table.checkStatus('LayTable'),
+                    data = checkStatus.data;
+                var cols = '';
+                for (var i = 0, len = data.length; i < len; i++) {
+                    cols += ',' + data[i]['id'];
+                }
+                return cols.substr(1);
+            }
+        };
+
+        $('.layui-tab-title .layui-form-ctrl, .update-btns .layui-btn').on('click', function() {
+            var othis = $(this),
+                thisEvent = othis.data('events');
+            events[thisEvent] && events[thisEvent].call(this, othis);
+        });
+
+        form.on('submit(search)', function (data) {
+            tableOptions.where = data.field;
+            table.reload('LayTable', tableOptions);
+            return false;
+        });
+
+    });
+</script>

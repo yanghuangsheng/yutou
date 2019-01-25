@@ -53,6 +53,7 @@ class User extends Common
     protected function resetListData($data)
     {
         foreach ($data as $key => &$value){
+            $value['golds'] || $value['golds'] = 0;
             $value['status_txt'] = $value['status']?'<span class="layui-badge layui-bg-gray">禁用</span>':'<span class="layui-badge layui-bg-green">正常</span>';
         }
 
@@ -61,12 +62,13 @@ class User extends Common
 
     /**
      * 捡测手机号是否已注册
-     * @param $phone
+     * @param $value
+     * @param string $field
      * @return float|string
      */
-    public function checkCount($phone)
+    public function checkCount($value, $field = 'phone')
     {
-        return $this->model->where('phone', $phone)->count();
+        return $this->model->where($field, $value)->count();
     }
 
 }

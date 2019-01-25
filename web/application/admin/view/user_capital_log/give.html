@@ -1,0 +1,81 @@
+<style>
+    html{
+        background-color: #FFFFFF;
+    }
+</style>
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="margin:3px;padding:20px;background-color: #fff;">
+    <div style="height:25px;"></div>
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-sm12 layui-col-xs12">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>赠送对像 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-input-inline" style="width:120px;">
+                                    <select name="type" lay-verify="required" lay-filter="typeClick">
+                                        <option value="phone">手机号码</option>
+                                        <option value="id">用户ID</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="type_value" lay-verify="required" autocomplete="off" placeholder="用户的手机号码" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="margin-top:-20px;">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-form-mid layui-word-aux"> <font color="red">谨慎操作，增送后无法恢复。</font></div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="layui-col-sm12 layui-col-xs12">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>赠送设置 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">金币数量</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="num" lay-verify="required" autocomplete="off" placeholder=" +/- 50" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="margin-top:-20px;">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-form-mid layui-word-aux">默认"+"， "+"：收入、赠送 ， "-"：为支出、扣除</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">描述</label>
+                                <div class="layui-input-block">
+                                    <textarea name="explain" placeholder="" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="hidden" name="id" value="">
+        <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
+    </div>
+</div>
+
+<script>
+    bodyD.use(['index','form','upload','laydate','formSelects'], function () {
+        var $ = layui.$,laydate = layui.laydate,form = layui.form,upload = layui.upload;
+
+        //选择类型
+        form.on('select(typeClick)',function (oThis) {
+            var oType = oThis.value;
+            var tips = '';
+            if(oType == 'phone') tips = '用户的手机号码';
+            if(oType == 'id') tips = '用户的ID';
+            $("input[name=\"type_value\"]").attr('placeholder', tips);
+        });
+    });
+</script>
