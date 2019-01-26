@@ -154,6 +154,20 @@
                         </dl>
                     </li>
                     <li data-name="app" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="消息管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-reply-fill"></i>
+                            <cite>消息管理</cite>
+                            <span class="layui-nav-more"></span></a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="user-list">
+                                <a lay-href="{:url('SystemMessageTask/index')}">消息推送</a>
+                            </dd>
+                            <dd data-name="user-list">
+                                <a lay-href="{:url('SystemBroadcastTemplate/index')}">广播模板</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li data-name="app" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="采集器" lay-direction="2">
                             <i class="layui-icon layui-icon-app"></i>
                             <cite>采集器</cite>
