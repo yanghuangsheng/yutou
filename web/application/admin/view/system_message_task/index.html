@@ -8,12 +8,14 @@
             <div class="layui-tab-content">
                 <div class="layui-form" action="" id="LAY-article-form-search">
                     <div style="margin-bottom: 10px;">
-                        <div class="layui-input-inline" style="width: 100px;">
-                            <select name="status" lay-verify="">
-                                <option value="">状态</option>
-                                <option value="1">已推送</option>
-                                <option value="0">未推送</option>
-                            </select>
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 100px;">
+                                <select name="status" lay-verify="">
+                                    <option value="">状态</option>
+                                    <option value="1">已推送</option>
+                                    <option value="0">未推送</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="layui-inline clear-left">
                             <div class="layui-input-block" style="width: 150px;">
@@ -106,7 +108,7 @@
             page: true,
             limit: 15,
             limits: [15, 25, 35, 45, 55],
-            height: 'full-153',
+            height: 'full-154',
             done: function (res) {}
         };
         table.render(tableOptions);
