@@ -1,0 +1,105 @@
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="margin:3px;padding:20px;background-color: #fff;">
+    <div style="height:25px;"></div>
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-sm12 layui-col-xs12">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>任务类型 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">发送类型</label>
+                                <div class="layui-input-inline" style="width:150px;">
+                                    <select name="type" lay-verify="" lay-filter="typeSelect">
+                                        <option value="0">全体消息</option>
+                                        <option value="1">私人消息</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">接收用户</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="user_id" autocomplete="off" placeholder="全体用户" class="layui-input" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="margin-top:-20px;">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-form-mid layui-word-aux">填写用户的ID，多个用空格分隔</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="layui-col-sm12 layui-col-xs12">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>发送内容 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">活动标题</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">链接地址</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="link" autocomplete="off" placeholder="http://" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">活动肉容</label>
+                                <div class="layui-input-block">
+                                    <textarea name="synopsis" lay-verify="required" placeholder="活动内容" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">发送时间</label>
+                                <div class="layui-input-inline" style="width:230px;padding-left:20px;">
+                                    <input type="radio" name="send" value="0" title="立即发送" lay-filter="send" checked="checked">
+                                    <input type="radio" name="send" value="1" title="定时发送" lay-filter="send">
+                                </div>
+                                <div class="layui-input-inline" style="width:150px;margin-left:-30px;">
+                                    <input type="text" name="send_time"  autocomplete="off" placeholder="" class="layui-input" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="hidden" name="id" value="">
+        <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
+    </div>
+</div>
+
+<script>
+    bodyD.use(['index','form','upload','laydate','formSelects'], function () {
+        var $ = layui.$, laydate = layui.laydate, form = layui.form, upload = layui.upload;
+
+        form.on('select(typeSelect)',function (data) {
+            var userInput = $("input[name=\"user_id\"]");
+            if(data.value == '0'){
+                userInput.val('').attr('placeholder','全体用户').removeAttr('lay-verify');
+                userInput.attr('disabled','disabled');
+            }else if(data.value == '1'){
+                userInput.val('').attr('placeholder','用户的ID').attr('lay-verify','required');
+                userInput.removeAttr('disabled');
+            }
+        });
+        form.on('radio(send)', function(data){
+            var timeInput = $('input[name="send_time"]');
+            if(data.value == '0'){
+                timeInput.val('').attr('disabled','disabled').attr('placeholder','立即发送').removeAttr('lay-verify');
+            }else if(data.value == '1'){
+                timeInput.val('').removeAttr('disabled').attr('lay-verify','required').attr('placeholder','填写定时时间');
+            }
+        });
+
+
+
+    });
+</script>

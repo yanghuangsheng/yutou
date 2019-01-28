@@ -50,41 +50,36 @@
                     {
                         field: 'id',
                         title: 'ID',
-                        width: 100,
+                        width: 80,
 
                     },
                     {
-                        field: 'type_txt',
-                        title: '消息类型',
-                        width: 120,
+                        field: 'name',
+                        title: '通知名称',
+                        width: 150,
 
                     },
                     {
-                        field: 'user_txt',
-                        title: '接收用户',
+                        field: 'trigger_type',
+                        title: '通知规则',
                         width: 200
                     },
                     {
-                        field: 'title',
-                        title: '消息标题',
+                        field: 'condition',
+                        title: '通知条件',
                         width: 200,
                         align: 'center'
                     },
                     {
                         field: 'content',
-                        title: '消息内容',
+                        title: '通知模板内容',
                         winWidth: 250
                     },
                     {
-                        field: 'status_txt',
-                        title: '状态',
+                        field: 'remarks',
+                        title: '备注',
                         width: 80,
                         align: 'center'
-                    },
-                    {
-                        field: 'send_time',
-                        title: '发送时间',
-                        width: 180
                     },
                     {
                         fixed: 'right',
@@ -111,11 +106,11 @@
             switch (obj.event)
             {
                 case 'edit':
-                    var oUrl = "{:Url('User/edit',['id'=>'__id__'])}";
+                    var oUrl = "{:Url('SystemBroadcastTemplate/edit',['id'=>'__id__'])}";
                     oUrl = oUrl.replace('__id__', data.id);
                     layer.open({
                         type: 2,
-                        title: '编辑资讯',
+                        title: '编辑模板',
                         content: oUrl,
                         maxmin: true,
                         area: [($(window).width()*0.8)+'px', ($(window).height()*0.7)+'px'],
@@ -123,7 +118,6 @@
                         yes: function (index, layero) {
                             var iframeWindow = window['layui-layer-iframe' + index],
                                 submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit'),
-                                setContent = layero.find('iframe').contents().find('#getContent');
 
                             //监听提交
                             iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
@@ -148,7 +142,6 @@
                                     }
                                 });
                             });
-                            setContent.trigger('click');
                             submit.trigger('click');
                         }
                     });
@@ -157,7 +150,7 @@
                     layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
                         layer.load(2);
                         admin.req({
-                            url: '{:Url("User/delete")}',
+                            url: '{:Url("SystemBroadcastTemplate/delete")}',
                             data: {
                                 id: data.id
                             },
@@ -181,10 +174,10 @@
         //事件处理
         var events = {
             add: function (othis, id) {
-                var oUrl = "{:Url('User/add')}";
+                var oUrl = "{:Url('SystemBroadcastTemplate/add')}";
                 layer.open({
                     type: 2,
-                    title: '添加新用户',
+                    title: '添加模板',
                     content: oUrl,
                     maxmin: true,
                     area: [($(window).width()*0.8)+'px', ($(window).height()*0.7)+'px'],
@@ -223,7 +216,7 @@
                 layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
                     layer.load(2);
                     admin.req({
-                        url: '{:Url("User/delete")}',
+                        url: '{:Url("SystemBroadcastTemplate/delete")}',
                         data: {
                             id: checkedIds
                         },
@@ -247,7 +240,7 @@
 
                 layer.load(2);
                 admin.req({
-                    url: '{:Url("User/update")}',
+                    url: '{:Url("SystemBroadcastTemplate/update")}',
                     data: {
                         id: checkedIds,
                         field: oThis.data('type'),

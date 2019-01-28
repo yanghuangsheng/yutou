@@ -24,7 +24,7 @@ class SystemMessageTask extends Base
     }
 
     /**
-     * 删除分类
+     * 删除
      */
     public function delete()
     {
@@ -37,6 +37,58 @@ class SystemMessageTask extends Base
                 $this->resultJson(-1, '删除失败');
             }
         }
+    }
+
+    /**
+     * 新增页面
+     */
+    public function getAdd()
+    {
+        $this->saveAdd();
+    }
+
+    /**
+     * 处理新增
+     */
+    protected function saveAdd()
+    {
+        if($this->isAjax()){
+            $postData = $this->param();
+            $service = (new oService);
+            if($service->save($postData)){
+                $this->toMessage($service);
+                $this->resultJson(0, '新增成功');
+            }else{
+                $this->resultJson(-1, '新增失败');
+            }
+        }
+    }
+
+    /**
+     * @param $data
+     */
+    protected function toMessage($data){
+        echo $data['id'];
+        $message = new \app\admin\service\SystemMessage;
+        $messageData = [];
+        if($data['type']){
+            //私人信息
+            $userId = trim($data['user_id']);
+            foreach (explode(',', $userId) as $key => $value){
+                $value = trim($value);
+                if(is_numeric($value)){
+                    $messageData[] = [
+                        'user_id' => $value,
+                        'type' => 0,
+                        'content' => $data['content']. $data['link']?' <a style="margin-left:15px;" href="'.$data['link'].'">查看</a>':'',
+                    ];
+                }
+            }
+        }else{
+            //全体信息
+
+        }
+
     }
 
     /**

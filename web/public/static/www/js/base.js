@@ -55,6 +55,7 @@ $(function($) {
         var oThis = $(this).parent();
         if($("#publishForum-box .images-list li").length == 1){
             oThis.hide();
+            oThis.addClass('box-hide');
             return;
         }
         oThis.remove();

@@ -25,7 +25,18 @@ class SystemMessageTask extends Base
     }
 
     /**
-     * 删除
+     * 增加任务
+     * @return mixed
+     */
+    public function add()
+    {
+        (new logic)->getAdd();
+
+        return $this->fetch();
+    }
+
+    /**
+     * 删除任务
      * @return mixed
      */
     public function delete()

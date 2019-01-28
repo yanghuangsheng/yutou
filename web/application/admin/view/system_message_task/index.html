@@ -120,14 +120,16 @@
             switch (obj.event)
             {
                 case 'edit':
-                    var oUrl = "{:Url('User/edit',['id'=>'__id__'])}";
+                    var oUrl = "{:Url('SystemMessageTask/edit',['id'=>'__id__'])}";
                     oUrl = oUrl.replace('__id__', data.id);
+                    var wWidth = ($(window).width() < 750)? $(window).width()*0.8: 750;
+                    var wHeight = ($(window).height() < 670)? $(window).height()*0.9: 670;
                     layer.open({
                         type: 2,
                         title: '编辑资讯',
                         content: oUrl,
                         maxmin: true,
-                        area: [($(window).width()*0.8)+'px', ($(window).height()*0.7)+'px'],
+                        area: [wWidth+'px', wHeight+'px'],
                         btn: ['确定', '取消'],
                         yes: function (index, layero) {
                             var iframeWindow = window['layui-layer-iframe' + index],
@@ -166,7 +168,7 @@
                     layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
                         layer.load(2);
                         admin.req({
-                            url: '{:Url("User/delete")}',
+                            url: '{:Url("SystemMessageTask/delete")}',
                             data: {
                                 id: data.id
                             },
@@ -190,13 +192,15 @@
         //事件处理
         var events = {
             add: function (othis, id) {
-                var oUrl = "{:Url('User/add')}";
+                var oUrl = "{:Url('SystemMessageTask/add')}";
+                var wWidth = ($(window).width() < 750)? $(window).width()*0.8: 750;
+                var wHeight = ($(window).height() < 670)? $(window).height()*0.9: 670;
                 layer.open({
                     type: 2,
-                    title: '添加新用户',
+                    title: '添加任务',
                     content: oUrl,
                     maxmin: true,
-                    area: [($(window).width()*0.8)+'px', ($(window).height()*0.7)+'px'],
+                    area: [wWidth+'px', wHeight+'px'],
                     btn: ['保存', '取消'],
                     yes: function (index, layero) {
                         var iframeWindow = window['layui-layer-iframe' + index],
@@ -220,7 +224,6 @@
                                 }
                             });
                         });
-                        setContent.trigger('click');
                         submit.trigger('click');
                     }
                 });
@@ -232,7 +235,7 @@
                 layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
                     layer.load(2);
                     admin.req({
-                        url: '{:Url("User/delete")}',
+                        url: '{:Url("SystemMessageTask/delete")}',
                         data: {
                             id: checkedIds
                         },
@@ -256,7 +259,7 @@
 
                 layer.load(2);
                 admin.req({
-                    url: '{:Url("User/update")}',
+                    url: '{:Url("SystemMessageTask/update")}',
                     data: {
                         id: checkedIds,
                         field: oThis.data('type'),
