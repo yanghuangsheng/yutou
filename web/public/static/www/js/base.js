@@ -1774,7 +1774,7 @@ function uploadFile(btn, obj){
         'url': '',
         'size': 2,
         'files': 'files',
-        'ext': 'jpg,png,gif,ico',
+        'ext': 'jpg,jpeg,png,gif,ico',
         'repeat' : false,
         'ctrl': false,
         'FilesAdded': function (up, files) {
