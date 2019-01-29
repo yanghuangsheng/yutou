@@ -284,14 +284,15 @@ function curlGet($url, $header = 1)
 }
 
 /**
- * 生成缩略图
  * @param $image_url
  * @param $path
  * @param int $width
  * @param int $height
+ * @param int $thumb
+ * @param int $thumb_type  1:缩略图等比例缩放 2:缩略图缩放后填充 3:缩略图居中裁剪 4:缩略图左上角裁剪 5:缩略图右下角裁剪 6:缩略图固定尺寸缩放
  * @return string
  */
-function resultThumb($image_url , $path, $width = 200, $height = 200, $thumb = 1){
+function resultThumb($image_url , $path, $width = 200, $height = 200, $thumb = 1, $thumb_type = 3){
     if($image_url){
         $image = \think\Image::open('.'.$image_url);
         if($thumb == 0 && $image->width() < $width){
@@ -319,7 +320,7 @@ function resultThumb($image_url , $path, $width = 200, $height = 200, $thumb = 1
             $thumb_file = $path .'/'. md5($image_url).'_thumb'.$defaultExt;
         }
 
-        if($image->thumb($width,$height,\think\Image::THUMB_CENTER)->save($thumb_file)){
+        if($image->thumb($width,$height,$thumb_type)->save($thumb_file)){
             return ltrim($thumb_file, '.');
         }
 

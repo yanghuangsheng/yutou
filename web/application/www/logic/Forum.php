@@ -116,7 +116,7 @@ class Forum extends Base
         }
         else{
             //压缩图片
-            resultThumb($data['file'], 'no', $size[0], $size[1], 0);
+            resultThumb($data['file'], 'no', $size[0], $size[1], 0, ($path == 'cover')?3:1);
             $this->resultJson(0, '上传成功', ['image_url'=> $data['file'], 'tmp_name'=> $data['tmp_name']]);
         }
     }

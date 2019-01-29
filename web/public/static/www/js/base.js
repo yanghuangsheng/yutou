@@ -1772,7 +1772,7 @@ function uploadFile(btn, obj){
     var oThis =  $('#' + btn);
     var obj_defaults = {
         'url': '',
-        'size': 1,
+        'size': 2,
         'files': 'files',
         'ext': 'jpg,png,gif,ico',
         'repeat' : false,
