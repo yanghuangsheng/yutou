@@ -31,7 +31,10 @@
     $(function($) {
         $(".quick-list a").on('click', function () {
             var oThis = $(this);
+            var topUrl = parent.location.href;
             var oUrl = oThis.data('url');
+            oUrl += '&top_url=' + encodeURIComponent(topUrl);
+            //return;
             if(oThis.data('type') == 'top'){
                 top.location = oUrl;
                 return;

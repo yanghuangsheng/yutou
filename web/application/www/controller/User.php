@@ -50,8 +50,12 @@ class User extends Base
      */
     public function callback()
     {
-        if((new \app\www\logic\User)->authCallback()){
-            $this->redirect('/');
+        if($url = (new \app\www\logic\User)->authCallback()){
+            if(is_bool($url)){
+                $url = '/';
+            }
+            //exit ('<script language=JavaScript> top.location.href = ' .$url. '; </script>');
+            $this->redirect($url);
         }
 
     }

@@ -23,14 +23,16 @@ class QQ
         'app_secret' => '054a4664754e19c6ae4ee8b89b54e2ec',
         'response_type' => 'code',
         'scope' => 'get_user_info',
-        'callback' => 'http://www.bh3721.com/user/callback?type=qq',
+        'callback' => 'http://www.bh3721.com/user/callback?type=qq&jump=',
     ];
 
     /**
      * 拼接授权请求地址
+     * @param $param
      * @return string
      */
-    public function getAuthURL() {
+    public function getAuthURL($param) {
+        $this->config['callback'] .=  isset($param['top_url'])? $param['top_url']:'';
         //Oauth 标准参数
         $params = array(
             'response_type' => $this->config['response_type'],

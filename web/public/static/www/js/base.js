@@ -46,6 +46,7 @@ $(function($) {
             oLi.show();
             oLi.removeClass('box-hide');
             imageList.find('li.box-hide').remove();
+            sortNum($('#publishForum-box .images-list li'));
         }
     });
     /**
@@ -59,6 +60,7 @@ $(function($) {
             return;
         }
         oThis.remove();
+        sortNum($('#publishForum-box .images-list li'));
     });
     /**
      * 发布帖子
@@ -71,7 +73,7 @@ $(function($) {
         var content = $('#summernote').summernote('code');
         //oForm.find('textarea').val(content);
         var data = oForm.serializeObject();
-        console.log(data);
+        //console.log(data);
         if(oStatus == '1'){
             return;
         }
@@ -1858,18 +1860,33 @@ function sendForumImage(summernote, file, loadUrl) {
 function telMatch(input) {
     var regex = /^((\+)?86|((\+)?86)?)0?1[3458]\d{9}$|^(((0\d2|0\d{2})[- ]?)?\d{8}|((0\d3|0\d{3})[- ]?)?\d{7})(-\d{3})?$/;
     if (input.match(regex)) {
-        console.log('true');
+        //console.log('true');
         return true;
     } else {
-        console.log('false');
+        //console.log('false');
         return false;
     }
 }
-
+/**
+ * 重新排序
+ * @param oThis
+ */
+function sortNum(oThis) {
+    oThis.each(function (i, n) {
+        $(this).find("input.input-image").each(function () {
+            var tName = $(this).attr('name');
+            var reText = tName.match(/\d+\b/);
+            var oName = tName.replace(reText, i);
+            //console.log(tName+' == '+reText+' => '+i+' =='+oName);
+            $(this).attr('name', oName);
+        });
+    });
+}
 
 $.fn.serializeObject = function(){
     var hasOwnProperty = Object.prototype.hasOwnProperty;
     return this.serializeArray().reduce(function(data,pair){
+        //console.log(pair);
         if(!hasOwnProperty.call(data,pair.name)){
             data[pair.name]=pair.value;
         }
@@ -1978,6 +1995,5 @@ $.fn.share = function (){
             }
         });
     }
-
 
 };

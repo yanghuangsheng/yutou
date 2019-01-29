@@ -526,9 +526,10 @@ class User extends Base
      */
     public function authUrl()
     {
-        if($authName = $this->param('type')){
+        $param = $this->param();
+        if($authName = $param['type']){
             $authClass = '\oauth\\'.ucwords($authName);
-            return (new $authClass)->getAuthURL();
+            return (new $authClass)->getAuthURL($param);
         }
     }
 
@@ -537,9 +538,12 @@ class User extends Base
      */
     public function authCallback()
     {
-        if($authName = $this->param('type')){
+        $param = $this->param();
+//        print_r($param);
+//        exit();
+        if($authName = $param['type']){
 
-            if($code = $this->param('code')){
+            if($code = $param['code']){
                 $authName = ucwords($authName);
                 $authClass = '\oauth\\'.$authName;
                 $auth = new $authClass;
@@ -584,7 +588,7 @@ class User extends Base
 
                 $this->saveLoginStatus($statusData);
                 $user->updateLoginTime($statusData['id']);
-                return true;
+                return $param['jump']?$param['jump']:true;
 
             }
         }

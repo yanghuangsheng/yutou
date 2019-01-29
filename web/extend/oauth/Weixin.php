@@ -23,14 +23,16 @@ class Weixin
         'app_secret' => '91bfe189c0dbe8e42679bd34e12a6d5a',
         'response_type' => 'code',
         'scope' => 'snsapi_login',
-        'callback' => 'http://www.bh3721.com/user/callback?type=weixin',
+        'callback' => 'http://www.bh3721.com/user/callback?type=weixin&jump=',
     ];
 
     /**
      * 拼接授权请求地址
+     * @param $param
      * @return string
      */
-    public function getAuthURL() {
+    public function getAuthURL($param) {
+        $this->config['callback'] .= isset($param['top_url'])? $param['top_url']:'';
         //Oauth 标准参数
         $params = [
             'appid'         => $this->config['app_key'],
