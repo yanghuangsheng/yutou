@@ -163,9 +163,10 @@ class Common extends Base
      * 更新与新增
      * @param $postData array 要更新的数据
      * @param int $isUpdate 0新增 1更新
+     * @param int $result
      * @return bool
      */
-    public function save($postData, $isUpdate = 0)
+    public function save($postData, $isUpdate = 0, $result = 0)
     {
 
         //如果设置可更新字段
@@ -177,7 +178,7 @@ class Common extends Base
                 if(method_exists($this, 'setSaveUpdate')){
                     $this->setSaveUpdate($postData);
                 }
-                return true;
+                return $result?$this->model:true;
             }
 
         } else {
@@ -187,7 +188,7 @@ class Common extends Base
                 if(method_exists($this, 'setSaveAdd')){
                     $this->setSaveAdd($this->model);
                 }
-                return true;
+                return $result?$this->model:true;
             }
 
         }

@@ -24,6 +24,26 @@ class SystemBroadcastTemplate extends Base
     }
 
     /**
+     * 新增页面
+     */
+    public function getAdd()
+    {
+        $this->saveAdd();
+    }
+
+    /**
+     * 编辑页面
+     */
+    public function getEdit()
+    {
+        $this->saveEdit();
+        $edit_id = $this->param('id');
+        $data = (new oService)->getOneData($edit_id);
+
+        return $data;
+    }
+
+    /**
      * 删除分类
      */
     public function delete()
@@ -40,6 +60,40 @@ class SystemBroadcastTemplate extends Base
     }
 
     /**
+     * 处理新增
+     */
+    protected function saveAdd()
+    {
+        if($this->isAjax()){
+            $paramData = $this->param();
+            $service = (new oService);
+            if($obj = $service->save($paramData, 0)){
+
+                $this->resultJson(0, '新增成功');
+            }else{
+                $this->resultJson(-1, '新增失败');
+            }
+        }
+    }
+
+    /**
+     * 处理编辑
+     */
+    protected function saveEdit()
+    {
+        if($this->isAjax()){
+            $paramData = $this->param();
+            $service = (new oService);
+            if($obj = $service->save($paramData, 1)){
+                $this->resultJson(0, '更新成功');
+            }else{
+                $this->resultJson(-1, '更新失败');
+            }
+        }
+    }
+
+
+    /**
      * 获取数据列表
      */
     protected function getListJson()
@@ -48,15 +102,8 @@ class SystemBroadcastTemplate extends Base
             $param = $this->param();
             $order = false;
             $where = [];
-//            $param['status'] == '' || $where[] = ['status', '=', $param['status']];
-//            if($param['phone']){
-//                if(is_numeric($param['phone'])){
-//                    $where[] = ['phone', '=', $param['phone']];
-//                }
-//                else{
-//                    $where[] = ['name', '=', $param['phone']];
-//                }
-//            }
+            $param['trigger_type'] == '' || $where[] = ['trigger_type', '=', $param['trigger_type']];
+
 
             $service = new oService;
             $data = $service->initWhere($where)->initOrder($order)->initLimit($param['page'], $param['limit'])->getListData();

@@ -26,4 +26,19 @@ class SystemBroadcastTemplate extends Common
     {
         return true;
     }
+
+    //trigger_type_txt
+    /**
+     * 处理返回数据
+     * @param $data
+     */
+    protected function resetListData($data)
+    {
+        foreach ($data as $key => &$value){
+            $value['trigger_type_txt'] = $value['trigger_type']?'论坛':'资讯';
+            $value['condition_txt'] = $value['condition']?$value['condition']:'发布时触发';
+        }
+
+        return $data;
+    }
 }

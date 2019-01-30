@@ -25,6 +25,27 @@ class SystemBroadcastTemplate extends Base
     }
 
     /**
+     * 增加
+     */
+    public function add()
+    {
+        (new logic)->getAdd();
+
+        return $this->fetch();
+    }
+
+    /**
+     * 编辑
+     */
+    public function edit()
+    {
+        $data = (new logic)->getEdit();
+
+        $this->assign('data', $data);
+        return $this->fetch();
+    }
+
+    /**
      * 删除
      * @return mixed
      */

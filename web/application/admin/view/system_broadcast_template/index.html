@@ -7,14 +7,18 @@
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-form" action="" id="LAY-article-form-search">
-                    <!--<div style="margin-bottom: 10px;">-->
-                        <!--<div class="layui-inline clear-left">-->
-                            <!--<div class="layui-input-block" style="width: 150px;">-->
-                                <!--<input type="text" name="title" placeholder="消息标题" autocomplete="off" class="layui-input">-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>-->
-                    <!--</div>-->
+                    <div style="margin-bottom: 10px;">
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 100px;">
+                                <select name="trigger_type" lay-verify="">
+                                    <option value="">类型</option>
+                                    <option value="0">资讯</option>
+                                    <option value="1">论坛</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
+                    </div>
                     <table class="layui-table" id="LAY-table" lay-filter="LAY-list-table"></table>
                 </div>
             </div>
@@ -40,8 +44,7 @@
             elem: '#LAY-table',
             url: window.location.href,
             where: {
-                status: '',
-                phone: ''
+                trigger_type: '',
             },
             cols: [
                 [{
@@ -60,13 +63,14 @@
 
                     },
                     {
-                        field: 'trigger_type',
-                        title: '通知规则',
-                        width: 200
+                        field: 'trigger_type_txt',
+                        title: '广播类',
+                        width: 80,
+                        align: 'center'
                     },
                     {
-                        field: 'condition',
-                        title: '通知条件',
+                        field: 'condition_txt',
+                        title: '规则条件',
                         width: 200,
                         align: 'center'
                     },
@@ -100,24 +104,26 @@
         table.render(tableOptions);
 
         table.on("tool(LAY-list-table)", function (t) {
-            console.log(t);
+            //console.log(t);
             var obj = t;
             var data = obj.data;
             switch (obj.event)
             {
                 case 'edit':
                     var oUrl = "{:Url('SystemBroadcastTemplate/edit',['id'=>'__id__'])}";
+                    var wWidth = ($(window).width() < 750)? $(window).width()*0.8: 750;
+                    var wHeight = ($(window).height() < 660)? $(window).height()*0.9: 660;
                     oUrl = oUrl.replace('__id__', data.id);
                     layer.open({
                         type: 2,
                         title: '编辑模板',
                         content: oUrl,
                         maxmin: true,
-                        area: [($(window).width()*0.8)+'px', ($(window).height()*0.7)+'px'],
+                        area: [wWidth+'px', wHeight+'px'],
                         btn: ['确定', '取消'],
                         yes: function (index, layero) {
                             var iframeWindow = window['layui-layer-iframe' + index],
-                                submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit'),
+                                submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit');
 
                             //监听提交
                             iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
@@ -132,9 +138,10 @@
                                             layer.close(index);
                                             obj.update({
                                                 name: data.field.name,
-                                                real_name: data.field.real_name,
-                                                phone: data.field.phone,
-                                                code: data.field.code,
+                                                trigger_type_txt: (data.field.trigger_type == '1')?'论坛':'资讯',
+                                                condition_txt: (data.field.trigger_field == 'put')?'发布时触发':data.field.condition,
+                                                content: data.field.content,
+                                                remarks: data.field.remarks,
                                             });
                                             return ;
                                         }
@@ -175,12 +182,14 @@
         var events = {
             add: function (othis, id) {
                 var oUrl = "{:Url('SystemBroadcastTemplate/add')}";
+                var wWidth = ($(window).width() < 750)? $(window).width()*0.8: 750;
+                var wHeight = ($(window).height() < 660)? $(window).height()*0.9: 660;
                 layer.open({
                     type: 2,
                     title: '添加模板',
                     content: oUrl,
                     maxmin: true,
-                    area: [($(window).width()*0.8)+'px', ($(window).height()*0.7)+'px'],
+                    area: [wWidth+'px', wHeight+'px'],
                     btn: ['保存', '取消'],
                     yes: function (index, layero) {
                         var iframeWindow = window['layui-layer-iframe' + index],
@@ -204,7 +213,6 @@
                                 }
                             });
                         });
-                        setContent.trigger('click');
                         submit.trigger('click');
                     }
                 });

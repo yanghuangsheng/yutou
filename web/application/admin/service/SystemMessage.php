@@ -34,6 +34,7 @@ class SystemMessage extends Common
      */
     public function saveToMessage($data)
     {
-        return $this->model->saveAll($data);
+        //return $this->model->data($data)->limit(100)->insertAll();
+        return \think\Db::name('systemMessage')->data($data)->limit(100)->insertAll();
     }
 }

@@ -26,4 +26,20 @@ class SystemMessageTask extends Common
     {
         return true;
     }
+
+    /**
+     * 处理返回数据
+     * @param $data
+     */
+    protected function resetListData($data)
+    {
+        foreach ($data as $key => &$value){
+            $value['type_txt'] = $value['type']?'私人消息':'全体消息';
+            $value['user_txt'] = $value['user_id']?$value['user_id']:'全体用户';
+            $value['send_txt'] = $value['send']?'<span class="layui-badge layui-bg-green">是</span>':'<span class="layui-badge layui-bg-gray">否</span>';
+            $value['status_txt'] = $value['status']?'<span class="layui-badge layui-bg-green">已推送</span>':'<span class="layui-badge layui-bg-gray">未推送</span>';
+        }
+
+        return $data;
+    }
 }

@@ -11,15 +11,15 @@
                                 <label class="layui-form-label">发送类型</label>
                                 <div class="layui-input-inline" style="width:150px;">
                                     <select name="type" lay-verify="" lay-filter="typeSelect">
-                                        <option value="0">全体消息</option>
-                                        <option value="1">私人消息</option>
+                                        <option value="0" {if $data['type']==0} selected="selected" {/if}>全体消息</option>
+                                        <option value="1" {if $data['type']==1} selected="selected" {/if}>私人消息</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">接收用户</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="user_id" autocomplete="off" placeholder="全体用户" class="layui-input" disabled="disabled">
+                                    <input type="text" name="user_id" value="{$data['user_id']}" autocomplete="off" placeholder="全体用户" class="layui-input" {if $data['type']==0} disabled="disabled" {else} lay-verify="required" {/if}>
                                 </div>
                             </div>
                             <div class="layui-form-item" style="margin-top:-20px;">
@@ -39,29 +39,29 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">活动标题</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                                    <input type="text" name="title" value="{$data['title']}" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">链接地址</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="link" autocomplete="off" placeholder="http://" class="layui-input">
+                                    <input type="text" name="link" value="{$data['link']}" autocomplete="off" placeholder="http://" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">活动肉容</label>
                                 <div class="layui-input-block">
-                                    <textarea name="content" lay-verify="required" placeholder="活动内容" class="layui-textarea"></textarea>
+                                    <textarea name="content" lay-verify="required" placeholder="活动内容" class="layui-textarea">{$data['content']}</textarea>
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">发送时间</label>
                                 <div class="layui-input-inline" style="width:230px;padding-left:20px;">
-                                    <input type="radio" name="send" value="0" title="立即发送" lay-filter="send" checked="checked">
-                                    <input type="radio" name="send" value="1" title="定时发送" lay-filter="send">
+                                    <input type="radio" name="send" value="0" title="立即发送" lay-filter="send" {if $data['send']==0} checked="checked" {/if}>
+                                    <input type="radio" name="send" value="1" title="定时发送" lay-filter="send" {if $data['send']==1} checked="checked" {/if}>
                                 </div>
                                 <div class="layui-input-inline" style="width:150px;margin-left:-30px;">
-                                    <input type="text" name="send_time"  autocomplete="off" placeholder="" class="layui-input" disabled="disabled">
+                                    <input type="text" name="send_time" value="{$data['send_time']}" autocomplete="off" placeholder="" class="layui-input" {if $data['send']==0} disabled="disabled" {/if}>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,8 @@
         </div>
     </div>
     <div class="layui-form-item layui-hide">
-        <input type="hidden" name="id" value="">
+        <input type="hidden" name="id" value="{$data['id']}">
+        <input type="hidden" name="status" value="{$data['status']}">
         <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
     </div>
 </div>
@@ -79,6 +80,7 @@
 <script>
     bodyD.use(['index','form','upload','laydate','formSelects'], function () {
         var $ = layui.$, laydate = layui.laydate, form = layui.form, upload = layui.upload;
+
         //定时时间
         laydate.render({
             elem: 'input[name="send_time"]',
@@ -103,8 +105,6 @@
                 timeInput.val('').removeAttr('disabled').attr('lay-verify','required').attr('placeholder','填写定时时间');
             }
         });
-
-
 
     });
 </script>

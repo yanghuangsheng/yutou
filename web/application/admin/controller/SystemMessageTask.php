@@ -36,6 +36,18 @@ class SystemMessageTask extends Base
     }
 
     /**
+     * 编辑任务
+     * @return mixed
+     */
+    public function edit()
+    {
+        $data = (new logic)->getEdit();
+
+        $this->assign('data', $data);
+        return $this->fetch();
+    }
+
+    /**
      * 删除任务
      * @return mixed
      */

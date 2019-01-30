@@ -1,0 +1,99 @@
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="margin:3px;padding:20px;background-color: #fff;">
+    <div style="height:25px;"></div>
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-sm12 layui-col-xs12">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>广播类型 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">规则</label>
+                                <div class="layui-input-inline" style="width:80px;">
+                                    <select name="trigger_type" lay-verify="required">
+                                        <option value="0" {if $data['trigger_type'] == 0} selected="selected" {/if}>资讯</option>
+                                        <option value="1" {if $data['trigger_type'] == 1} selected="selected" {/if}>论坛</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-inline" style="width:150px;">
+                                    <select name="trigger_field" lay-verify="required" lay-filter="typeSelect">
+                                        <option value="">选择规则</option>
+                                        <option value="put" {if $data['trigger_field'] == 'put'} selected="selected" {/if}>发布时</option>
+                                        <option value="comment_num" {if $data['trigger_field'] == 'comment_num'} selected="selected" {/if}>评论数</option>
+                                        <option value="praise_num" {if $data['trigger_field'] == 'praise_num'} selected="selected" {/if}>点赞数</option>
+                                        <option value="collect_num" {if $data['trigger_field'] == 'collect_num'} selected="selected" {/if}>收藏数</option>
+                                        <option value="browse_num" {if $data['trigger_field'] == 'browse_num'} selected="selected" {/if}>浏览数</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">条件</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="condition" value="{$data['condition']?:''}" autocomplete="off" placeholder="{if $data['trigger_field'] == 'put'} 发布时触发 {else} 输入数字 {/if}" class="layui-input" {if $data['trigger_field'] == 'put'} disabled="disabled" {/if}>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="margin-top:-20px;">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-form-mid layui-word-aux">当满足条件时就会触发广播</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="layui-col-sm12 layui-col-xs12">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>模板内容 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">模板名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" value="{$data['name']}" lay-verify="required" autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">模板内容</label>
+                                <div class="layui-input-block">
+                                    <textarea name="content" lay-verify="required" placeholder="" class="layui-textarea">{$data['content']}</textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="margin-top:-10px;">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-form-mid layui-word-aux">用户呢称变量：{#userName} <font color="#a52a2a" style="margin-left:15px;">只有论坛发布规则效</font></div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="remarks" value="{$data['remarks']}" autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="hidden" name="id" value="{$data['id']}">
+        <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
+    </div>
+</div>
+
+<script>
+    bodyD.use(['index','form','upload','laydate','formSelects'], function () {
+        var $ = layui.$, laydate = layui.laydate, form = layui.form, upload = layui.upload;
+
+        form.on('select(typeSelect)',function (data) {
+            var userInput = $("input[name=\"condition\"]");
+            if(data.value == 'put'){
+                userInput.val('').attr('placeholder','发布时触发').removeAttr('lay-verify');
+                userInput.attr('disabled','disabled');
+            }else{
+                userInput.val('').attr('placeholder','输入数字').attr('lay-verify','required');
+                userInput.removeAttr('disabled');
+            }
+        });
+
+    });
+</script>

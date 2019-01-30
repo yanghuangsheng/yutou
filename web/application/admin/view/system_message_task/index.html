@@ -50,7 +50,7 @@
             url: window.location.href,
             where: {
                 status: '',
-                phone: ''
+                title: ''
             },
             cols: [
                 [{
@@ -76,8 +76,7 @@
                     {
                         field: 'title',
                         title: '消息标题',
-                        width: 200,
-                        align: 'center'
+                        width: 200
                     },
                     {
                         field: 'content',
@@ -91,9 +90,15 @@
                         align: 'center'
                     },
                     {
+                        field: 'send_txt',
+                        title: '定时',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
                         field: 'send_time',
-                        title: '发送时间',
-                        width: 180
+                        title: '推送/定时时间',
+                        width: 160
                     },
                     {
                         fixed: 'right',
@@ -114,7 +119,7 @@
         table.render(tableOptions);
 
         table.on("tool(LAY-list-table)", function (t) {
-            console.log(t);
+            //console.log(t);
             var obj = t;
             var data = obj.data;
             switch (obj.event)
@@ -126,7 +131,7 @@
                     var wHeight = ($(window).height() < 670)? $(window).height()*0.9: 670;
                     layer.open({
                         type: 2,
-                        title: '编辑资讯',
+                        title: '编辑任务',
                         content: oUrl,
                         maxmin: true,
                         area: [wWidth+'px', wHeight+'px'],
@@ -148,10 +153,14 @@
                                         if(res.code == 0){
                                             layer.close(index);
                                             obj.update({
-                                                name: data.field.name,
-                                                real_name: data.field.real_name,
-                                                phone: data.field.phone,
-                                                code: data.field.code,
+                                                type_txt: (data.field.type == '0')?'全体消息':'私人消息',
+                                                user_txt: (data.field.type == '0')?'全体用户':data.field.user_id,
+                                                title: data.field.title,
+                                                content: data.field.content,
+                                                send_time: res.data.send_time?res.data.send_time:data.field.send_time,
+                                                send_txt: (data.field.send == '0')?'<span class="layui-badge layui-bg-gray">否</span>':'<span class="layui-badge layui-bg-green">是</span>',
+                                                status_txt: (data.field.send == '0')?'<span class="layui-badge layui-bg-green">已推送</span>':'<span class="layui-badge layui-bg-gray">未推送</span>',
+                                                status: (data.field.send == '0')?1:0
                                             });
                                             return ;
                                         }
