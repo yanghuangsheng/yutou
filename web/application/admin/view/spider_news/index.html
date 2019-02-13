@@ -109,12 +109,12 @@
             switch (obj.event)
             {
                 case 'toRelay':
-                    if(data.status == 1){
-                        layer.msg('不能重复转发', {
-                            icon: 0
-                        });
-                        return;
-                    }
+//                    if(data.status == 1){
+//                        layer.msg('不能重复转发', {
+//                            icon: 0
+//                        });
+//                        return;
+//                    }
                     layer.confirm('确定转发吗？',{icon: 3, title:false}, function (index) {
                         layer.load(2);
                         admin.req({

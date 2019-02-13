@@ -52,7 +52,13 @@ class SpiderNews extends Base
                 $this->resultJson(-1, $data['error']);
 
             }else{
-                if((new \app\admin\service\PortalNews)->toRelayAdd($data)){
+                $portalNews = new \app\admin\service\PortalNews;
+                $newsId = $portalNews->getOneField([['source_url', '=', $data['source_url']]], 'id');
+                if($newsId){
+                    $portalNews->save(['id'=>$newsId,'content'=>$data['content'], 'image_url'=>$data['image_url']],1);
+                    $this->resultJson(0, '更新成功');
+                }
+                if($portalNews->toRelayAdd($data)){
                     //更新转发状态
                     $service->updateFieldByValue(['id'=>$relay_id, 'field'=>'status', 'value'=>1]);
                     $this->resultJson(0, '转发成功');
@@ -69,8 +75,12 @@ class SpiderNews extends Base
     {
         if($this->isAjax()){
             $param = $this->param();
+            $where = [];
+
+            $param['status'] == '' || $where[] = ['status', '=', $param['status']];
             $service = new oService;
-            $data = $service->initLimit($param['page'], $param['limit'])->getListData();
+
+            $data = $service->initWhere($where)->initLimit($param['page'], $param['limit'])->getListData();
             $this->resultJson(0, '获取成功', $data);
         }
     }

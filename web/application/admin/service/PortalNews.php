@@ -169,13 +169,16 @@ class PortalNews extends Common
         $content = new \app\common\model\PortalNewsContent;
         $content->save(['content' => $data['content']], ['news_id' => $data['id']]);
 
-        $InCategory = new \app\common\model\PortalNewsInCategory;
-        $addData = [];
-        foreach (explode(',',$data['category_id']) as $key => $value) {
-            $addData[] = ['news_id' => $data['id'], 'category_id' => $value];
+        if(isset($data['category_id'])){
+            $InCategory = new \app\common\model\PortalNewsInCategory;
+            $addData = [];
+            foreach (explode(',',$data['category_id']) as $key => $value) {
+                $addData[] = ['news_id' => $data['id'], 'category_id' => $value];
+            }
+            $InCategory->where('news_id', $data['id'])->delete();
+            $InCategory->saveAll($addData);
         }
-        $InCategory->where('news_id', $data['id'])->delete();
-        $InCategory->saveAll($addData);
+
     }
 
 }
