@@ -41,6 +41,18 @@ class ForumPost extends Common
     }
 
     /**
+     * 额外更新
+     * @param $data
+     */
+    protected function setSaveUpdate($data)
+    {
+        $content = new \app\common\model\ForumPostContent;
+        $content->save(['content' => $data['content']], ['post_id' => $data['id']]);
+    }
+
+
+
+    /**
      * 查询列表View
      * @return $this
      */
@@ -110,6 +122,25 @@ class ForumPost extends Common
         return $this->model->view('ForumPost', 'title')
             ->view('ForumPostAttr', 'post_id,browse_num,praise_num,collect_num,comment_num', 'ForumPostAttr.post_id = ForumPost.id', 'LEFT')
             ->where('id', $id)->find();
+    }
+
+    /**
+     * 用户删除帖子
+     * @param $data
+     * @return bool
+     */
+    public function checkDel($data)
+    {
+        $userId = $this->getField($data['id'], 'user_id');
+        if(!($userId == $data['user_id'])){
+            $this->error = '没权删除该帖子';
+            return false;
+        }
+        if($this->delete($data['id'])){
+            return true;
+        }
+        $this->error = '删除失败';
+        return false;
     }
 
     /**

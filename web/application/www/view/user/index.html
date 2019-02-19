@@ -20,7 +20,7 @@
             <p style="text-align: center;font-size: 14px;background-color: #fafaf7; border-radius: 5px;">{$data['isEdit']?'你':'她'}还没有帖子哦</p>
             {/if}
             {volist name="data['post_list']['list']" id="value"}
-            <li>
+            <li class="forum-list-inline">
                 <div class="flex-between flex-align-start h">
                     <div class="title"><a href="{:urls('Forum/item')}?id={$value['id']}" class="link">{$value['title']}</a></div>
                     <div class="flex-start flex-align-center read"><i class="b-img"></i><span>{$value['browse_num']?:''}</span></div>
@@ -66,6 +66,12 @@
                         <!--<span class="user-name">{$value['user_name']}</span>-->
                     </div>
                 </div>
+                {if $data['isEdit']}
+                <div class="edit-box">
+                    <a href="javascript:void(0);" data-id="{$value['id']}" data-status="0" class="delBtn">删除</a>
+                    <a href="javascript:void(0);" data-id="{$value['id']}" data-status="0" class="editBtn">编辑</a>
+                </div>
+                {/if}
             </li>
             {/volist}
         </ul>
@@ -80,4 +86,6 @@
         </div>
     </div>
 </div>
+
+{include file="layout/publish_forum" /}
 

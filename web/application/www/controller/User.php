@@ -75,9 +75,11 @@ class User extends Base
      */
     public function publishPost()
     {
-        (new \app\www\logic\Forum)->pubPost();
+        $data = (new \app\www\logic\Forum)->pubPost();
 
         $this->view->engine->layout('layout/not');
+        $this->assign('data', $data);
+        //print_r($data);
         return $this->fetch();
     }
 
@@ -91,6 +93,7 @@ class User extends Base
     {
         $user = new \app\www\logic\User;
         $this->loadForumPostList($user);
+        $this->delForumPost($user);
 
         $data = $user->oneUserinfo($user_id);
         //用户帖子列表
@@ -240,6 +243,18 @@ class User extends Base
             $user->formatUserForumPost();
         }
     }
+
+    /**
+     * 删除用户帖子
+     * @param $user
+     */
+    protected function delForumPost($user)
+    {
+        if($this->isFormat('del_post')){
+            $user->formatForumPostDel();
+        }
+    }
+
 
     /**
      * 加载更多收藏新闻

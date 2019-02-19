@@ -91,13 +91,28 @@ class Forum extends Base
             //用户ID
             $param['user_id'] = $this->session('user')['id'];
             $param['status'] = 1;
-            if($forum->save($param)){
-                (new \app\www\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'post');
-                $this->resultJson(0, '发布成功');
+            if($param['id']){
+                if($forum->save($param, 1)){
+                    $this->resultJson(0, '保存成功');
+                }
+                $this->resultJson(-1, $forum->getError()?$forum->getError():'保存失败');
+            }else{
+                if($forum->save($param)){
+                    (new \app\www\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'post');
+                    $this->resultJson(0, '发布成功');
+                }
+                $this->resultJson(-1, $forum->getError()?$forum->getError():'发布失败');
             }
 
-            $this->resultJson(-1, $forum->getError()?$forum->getError():'发布失败');
+
         }
+        $id = $this->param('id');
+        $data = [];
+        if($id){
+            $forum = new ForumPost;
+            $data = $forum->getOneData($id);
+        }
+        return $data;
     }
 
 

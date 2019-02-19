@@ -348,6 +348,27 @@ class User extends Base
     }
 
     /**
+     * 用户删除帖子
+     */
+    public function formatForumPostDel()
+    {
+        if($this->isAjax()){
+            $id = $this->param('id');
+            $data = [
+                'id' => $id,
+                'user_id' => $this->session('user')['id'],
+            ];
+            $forumPost = new \app\www\service\ForumPost;
+
+            if($forumPost->checkDel($data)){
+                $this->resultJson(0, '删除成功');
+            }
+
+            $this->resultJson(0, '删除失败');
+        }
+    }
+
+    /**
      * 删除收藏
      */
     public function formatCollectDel()

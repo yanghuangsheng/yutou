@@ -53,11 +53,11 @@ class SpiderNews extends Base
 
             }else{
                 $portalNews = new \app\admin\service\PortalNews;
-                $newsId = $portalNews->getOneField([['source_url', '=', $data['source_url']]], 'id');
-                if($newsId){
-                    $portalNews->save(['id'=>$newsId,'content'=>$data['content'], 'image_url'=>$data['image_url']],1);
-                    $this->resultJson(0, '更新成功');
-                }
+//                $newsId = $portalNews->getOneField([['source_url', '=', $data['source_url']]], 'id');
+//                if($newsId){
+//                    $portalNews->save(['id'=>$newsId,'content'=>$data['content'], 'image_url'=>$data['image_url']],1);
+//                    $this->resultJson(0, '更新成功');
+//                }
                 if($portalNews->toRelayAdd($data)){
                     //更新转发状态
                     $service->updateFieldByValue(['id'=>$relay_id, 'field'=>'status', 'value'=>1]);

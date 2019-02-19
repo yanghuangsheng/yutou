@@ -60,9 +60,9 @@ class SpiderNews extends Common
     public function collectionContent($id)
     {
         $spiderData = $this->model->field('rule_id,source_url,status')->get($id);
-//        if($spiderData['status']){
-//            return ['error' => '该资讯已转发'];
-//        }
+        if($spiderData['status']){
+            return ['error' => '该资讯已转发'];
+        }
 
         $pattern = (new \app\common\model\SpiderNewsRule)->field('name,content')->get($spiderData['rule_id']);
 

@@ -94,14 +94,16 @@ $(function($) {
         }
         data._format_ = 'pub_post';
         oThis.data('status', 1);
+        layer.load(2);
         ajax(self.location.href, {
             'data': data,
             'success': function (data) {
-                oThis.data('status', 0)
+                oThis.data('status', 0);
                 if(data.code == 0){
                     parent.location.reload();
                     return;
                 }
+                layer.closeAll('loading');
                 layer.msg(data.msg);
             }
 
@@ -947,9 +949,13 @@ function userJs() {
                             oLi.find('.comment span').text(n.comment_num ? n.comment_num : '0');
                             oLi.find('.collection span').text(n.collect_num ? n.collect_num : '0');
 
+                            oLi.find('a.delBtn').attr('data-id', n.id).attr('data-status',0);
+                            oLi.find('a.editBtn').attr('data-id', n.id).attr('data-status',0);
+
                             oLi.find('.user-avatar img').attr('src', n.user_avatar[50]);
                             oLi.find('.user-name').text(n.user_name);
-                        })
+
+                        });
                     }
                 },
                 'error': function () {
@@ -987,6 +993,41 @@ function userJs() {
         var oParent = oThis.parent().parent();
         oParent.toggle();
         oParent.siblings().toggle();
+    });
+
+    /**删除我的帖子**/
+    loadForumList.on('click', 'a.delBtn', function () {
+        var oThis = $(this);
+        var oId = oThis.data('id');
+        var oStatus = oThis.data('status');
+        if(oStatus == '1'){
+            return;
+        }
+        layer.confirm('确定删除吗？',{icon: 3, title:false, closeBtn:false}, function (index) {
+            oThis.data('status', 1);
+            ajax(getHttpUrl(), {
+                'data': {id: oId, '_format_': 'del_post'},
+                'type': 'GET',
+                'success': function (data) {
+                    oThis.data('status', 0);
+                    if (data.code == 0) {
+                        oThis.parent().parent().remove();
+                        layer.close(index);
+                        return;
+                    }
+                }
+            });
+        });
+    });
+
+    /**编辑我的帖子**/
+    loadForumList.on('click', 'a.editBtn', function () {
+        var oThis = $(this);
+        var oId = oThis.data('id');
+        var oStatus = oThis.data('status');
+
+        commonWindow('/user/publishpost?id=' + oId, 740, 600);
+
     });
 
 

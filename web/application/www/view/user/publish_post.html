@@ -5,14 +5,25 @@
 <script src="/static/www/js/extend/summernote/lang/zh-CN.js"></script>
 <div id="publishForum-box">
     <form>
-        <div class="text-center title">发布吐槽贴</div>
+        <div class="text-center title">{if (isset($data['id']))} 编辑吐槽贴 {else /} 发布吐槽贴 {/if}</div>
         <div class="images-list">
             <ul class="flex-start flex-align-center" style="margin:0px;">
-                <li class="box-hide">
-                    <img src="/static/www/test/news1.png">
-                    <input type="hidden" name="image_url[0]" value="" class="input-image">
-                    <a href="javascript:void(0);" class="b-img del"></a>
-                </li>
+
+                {if(isset($data['image_url']))}
+                    {volist name="$data['image_url']" id="value"}
+                    <li>
+                        <img src="{$value}">
+                        <input type="hidden" name="image_url[{$key}]" value="{$value}" class="input-image">
+                        <a href="javascript:void(0);" class="b-img del"></a>
+                    </li>
+                    {/volist}
+                {else /}
+                    <li class="box-hide">
+                        <img src="/static/www/test/news1.png">
+                        <input type="hidden" name="image_url[0]" value="" class="input-image">
+                        <a href="javascript:void(0);" class="b-img del"></a>
+                    </li>
+                {/if}
             </ul>
             <a href="javascript:void(0);" data-status="0" class="uploadImage-btn" id="uploadForumImg" data-url="{:urls('User/uploadCoverImage')}">
                 <i class="b-img"></i>
@@ -20,14 +31,15 @@
             </a>
         </div>
         <div class="post-title">
-            <input type="text" name="title" placeholder="请输入标题 (最多可输入50个字)" oninput="" onpropertychange="">
+            <input type="text" name="title" value="{$data['title']?:''}" placeholder="请输入标题 (最多可输入50个字)" oninput="" onpropertychange="">
         </div>
         <div class="post-content" style="width:100%;">
-            <textarea name="content" id="summernote" class="box-hide" ></textarea>
+            <textarea name="content" id="summernote" class="box-hide" >{$data['content']?:''}</textarea>
         </div>
         <div>
-            <button type="button" class="submit" data-status="0">发布</button>
+            <button type="button" class="submit" data-status="0">{if (isset($data['id']))} 保存 {else /} 发布 {/if}</button>
         </div>
+        <input type="hidden" name="id" value="{$data['id']?:''}">
     </form>
 </div>
 <script>
