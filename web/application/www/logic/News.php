@@ -50,7 +50,7 @@ class News extends Base
      */
     public function sevenDayTopData()
     {
-        return (new newsService)->hotData(30, 3, [['PortalNews.top','=',1]]);
+        return (new newsService)->hotData(30, 3, [['PortalNews.recommended','=',1]]);
     }
 
     /**
