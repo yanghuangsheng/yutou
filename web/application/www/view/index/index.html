@@ -99,10 +99,10 @@
     <div class="index-right">
         {include file="common/news_right" /}
         <!--幸运号码-->
-        <div class="index-lottery">
+        <div class="index-lottery" id="indexLottery">
             <h3>幸运号码</h3>
-            <div class="lottery-list">
-                <ul>
+            <div class="lottery-list lottery-scroll-box" id="lottery-scroll-list">
+                <ul class="lottery-scroll-content">
                     {volist name="data['lottery_list']" id="lott"}
                     <li>
                         <div class="flex-between lottery-title">
@@ -118,13 +118,35 @@
                             {/volist}
                         </div>
                         <div class="flex-end more">
-                            <span class="details">详情</span>
+                            <a href="javascript:void(0);" class="details" data-id="{$lott['id']}">详情</a>
                         </div>
                     </li>
                     {/volist}
-
+                    {volist name="data['lottery_list']" id="lott"}
+                    <li>
+                        <div class="flex-between lottery-title">
+                            <span>{$lott['name']}</span>
+                            <span>{$lott['no']}期</span>
+                        </div>
+                        <div class="flex-center code-list">
+                            {volist name="lott['open_code']" id="code"}
+                            <span>{$code}</span>
+                            {/volist}
+                            {volist name="lott['open_code_ext']" id="ext"}
+                            <span class="ext">{$ext}</span>
+                            {/volist}
+                        </div>
+                        <div class="flex-end more">
+                            <a href="javascript:void(0);" class="details" data-id="{$lott['id']}">详情</a>
+                        </div>
+                    </li>
+                    {/volist}
                 </ul>
+                <div class="scroll_bar">
+                    <div class="scroll_slider"></div>
+                </div>
             </div>
+
         </div>
         <!--移动资讯-->
         <div class="index-h5">

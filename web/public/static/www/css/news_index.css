@@ -275,6 +275,7 @@
 }
 .index-box .index-lottery .lottery-title span{
     color: #999999;
+    font-size: 12px;
 }
 .index-box .index-lottery .lottery-title span:first-child{
     color: #666666;
@@ -296,6 +297,76 @@
 .index-box .index-lottery .more{
     color: #999999;
 }
+
+.lottery-scroll-box{
+    height: 570px;
+    position: relative;
+
+}
+.lottery-scroll-box .lottery-scroll-content{
+    height: 100%;
+    overflow: hidden;
+}
+
+/* 滚动条 */
+.lottery-scroll-box .scroll_bar {
+    position: absolute;
+    top:0;
+    right:0;
+    width: 5px;
+    height: 100%;
+    display: none;
+    /*background-color: #e4e4e4;*/
+}
+/* 滚动块 */
+.lottery-scroll-box .scroll_slider {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 3px;
+    height: 48px;
+    background-color: #525252;
+    border-radius: 0px;
+    opacity: .5
+}
+.lottery-scroll-box .scroll_slider:hover{
+    opacity: 1
+}
+.lottery-scroll-box:hover .scroll_bar{
+    display: block;
+}
+.lottery-scroll-box .lottery-name{
+    position: absolute;
+    width: 100%;
+    top: -34px;
+    height: 35px;
+    text-align: center;
+}
+.lottery-scroll-box .lottery-name span{
+    font-size: 14px;
+    line-height: 30px;
+    height: 30px;
+    margin: 0px auto;
+    padding: 0px 15px;
+    background-color: #fcedb0;
+    color: #666666;
+    display: inline-block;
+}
+.lottery-scroll-box .lottery-name a.back{
+    position: absolute;
+    left: 2px;
+    line-height: 35px;
+    font-size: 12px;
+    display: inline-block;
+    padding:0px 5px;
+    color: #0c97ed;
+}
+#lottery-scroll-details .lottery-title span{
+    color: #999999;
+    font-size: 12px;
+}
+
+
 /*移动资讯*/
 .index-box .index-h5{
     margin-top: 30px;

@@ -16,6 +16,7 @@ class Index extends Base
     {
         $logic = new News;
         $this->getFormatNews($logic);
+        $logic->formatOneLotteryList();
 
         $data['news_list'] = $this->newsList($logic);
         $data['seven_list'] = $logic->sevenDayHotData();
@@ -23,7 +24,7 @@ class Index extends Base
         $data['lottery_list'] = $logic->lotteryList();
         $data['ad_carousel'] = $logic->getCarousel();
         $data['ad_banner'] = $logic->getBanner(3);
-        //print_r($data['ad_image']);
+//        print_r($data['lottery_list']);
         $this->assign('data',$data);
         return $this->fetch();
     }

@@ -50,4 +50,17 @@ class Lottery extends Common
 
         return $data;
     }
+
+    /**
+     * 获取彩票名称
+     * @param $id
+     * @return array
+     */
+    public function getLotteryName($id)
+    {
+        $data = ['id'=>$id];
+        $data['name'] = (new \app\common\model\SpiderLotteryCategory)->where('id', '=', $id)->value('name');
+
+        return $data;
+    }
 }

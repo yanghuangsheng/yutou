@@ -32,6 +32,8 @@ class Common extends Base
 
         //条件
         $this->whereMap && $model = $model->where($this->whereMap);
+        //字段
+        $this->field && $model = $model->field($this->field);
         //排序
         $this->order && $model = $model->order($this->order[0], $this->order[1]);
         //分页

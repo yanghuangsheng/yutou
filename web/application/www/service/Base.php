@@ -14,6 +14,7 @@ class Base
     protected $model; //当前数据模型
     protected $view = ''; //特殊模型
     protected $keyId = 'id'; //模型默订主键
+    protected $field = '';
     protected $order = [];
     protected $limit = 0;
     protected $whereMap = [];
@@ -44,6 +45,17 @@ class Base
     }
 
     /**
+     * 设置字段
+     * @param $field
+     * @return $this
+     */
+    public function initField($field)
+    {
+        $this->field = $field;
+        return $this;
+    }
+
+    /**
      * 设置分组
      * @param $field 分组字段
      * @return $this
@@ -63,6 +75,17 @@ class Base
     {
         $this->whereMap = $data;
 
+        return $this;
+    }
+
+    /**
+     * 设置排序
+     * @param array $data
+     * @return $this
+     */
+    public function initOrder($data = [])
+    {
+        $data && $this->order = $data;
         return $this;
     }
 

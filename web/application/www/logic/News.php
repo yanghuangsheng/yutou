@@ -188,6 +188,42 @@ class News extends Base
     }
 
     /**
+     * 彩票单条开奖列表
+     */
+    public function formatOneLotteryList()
+    {
+        if($this->isAjax() && $this->param('_format_') == 'one_lottery_list'){
+            $param = $this->param();
+            isset($param['page']) || $param['page'] = 1;
+
+            $service = new \app\www\service\Lottery;
+            $data = $service->getLotteryName($param['lottery_id']);
+            $data['start_id'] = isset($param['start_id'])?$param['start_id']:$service->newsId();
+            $where = [
+                ['category_id', '=', $param['lottery_id']]
+            ];
+            isset($param['start_id']) && $where[] = ['id', '<=', $param['start_id']];
+
+            $list = $service->initField('lottery_no,open_code')->initWhere($where)
+                ->initLimit($param['page'])->initOrder(['lottery_no', 'desc'])->getListData();
+            $data['list'] = $list['list']->toArray();
+
+            foreach ($data['list'] as $key => &$value)
+            {
+                $code = $value['open_code'];
+                $ext = '';
+                if(strpos($value['open_code'],'+') !== false){
+                    list($code,$ext) = explode('+', $value['open_code']);
+                }
+                $value['open_code'] = $code?explode(',', $code):[];
+                $value['open_code_ext'] = $ext?explode(',', $ext):[];
+            }
+
+            $this->resultJson(0, '', $data);
+        }
+    }
+
+    /**
      * 点赞
      */
     public function formatPraise()
