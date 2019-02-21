@@ -447,126 +447,126 @@ function indexJS(){
 
     });
 
-    new CusScrollBar({
-        contentSelector: '#lottery-scroll-list .lottery-scroll-content', //滚动内容区
-        barSelector: '#lottery-scroll-list .scroll_bar', //滚动条
-        sliderSelector: '#lottery-scroll-list .scroll_slider' //滚动滑块
-    });
+    if($('#lottery-scroll-list').length) {
+        new CusScrollBar({
+            contentSelector: '#lottery-scroll-list .lottery-scroll-content', //滚动内容区
+            barSelector: '#lottery-scroll-list .scroll_bar', //滚动条
+            sliderSelector: '#lottery-scroll-list .scroll_slider' //滚动滑块
+        });
 
-    /**幸运号码**/
-    $("#lottery-scroll-list a.details").on('click', function () {
-        var oThis = $(this);
-        var lotteryId = oThis.data('id');
+        /**幸运号码**/
+        $("#lottery-scroll-list a.details").on('click', function () {
+            var oThis = $(this);
+            var lotteryId = oThis.data('id');
 
-        $("#lottery-scroll-list").hide();
-        $('#indexLottery').append('<div class="lottery-list lottery-scroll-box" id="lottery-scroll-details" style="margin-top:35px;"' +
-            'data-id="", data-page="1" data-start="0">' +
-            '<div class="lottery-name">' +
+            $("#lottery-scroll-list").hide();
+            $('#indexLottery').append('<div class="lottery-list lottery-scroll-box" id="lottery-scroll-details" style="margin-top:35px;"' +
+                'data-id="", data-page="1" data-start="0">' +
+                '<div class="lottery-name">' +
                 '<span>开奖记录</span>' +
                 '<a href="javascript:void(0);" class="back">返回</a>' +
-            '</div>' +
-            '<ul class="lottery-scroll-content"></ul>' +
-            '<div class="scroll_bar">' +
+                '</div>' +
+                '<ul class="lottery-scroll-content"></ul>' +
+                '<div class="scroll_bar">' +
                 '<div class="scroll_slider"></div>' +
-            '</div>' +
-            '</div>');
+                '</div>' +
+                '</div>');
 
-        var detailsList = $("#lottery-scroll-details");
-        /**返回列表**/
-        detailsList.find("a.back").on('click', function () {
-            $("#lottery-scroll-list").show();
-            $("#lottery-scroll-details").remove();
-        });
+            var detailsList = $("#lottery-scroll-details");
+            /**返回列表**/
+            detailsList.find("a.back").on('click', function () {
+                $("#lottery-scroll-list").show();
+                $("#lottery-scroll-details").remove();
+            });
 
-        ajax( getHttpUrl(),{
-            'data': {page:1,'lottery_id':lotteryId, '_format_':'one_lottery_list'},
-            'type': 'GET',
-            'success': function (data) {
+            ajax(getHttpUrl(), {
+                'data': {page: 1, 'lottery_id': lotteryId, '_format_': 'one_lottery_list'},
+                'type': 'GET',
+                'success': function (data) {
 
-                if(data.code == 0){
-                    detailsList.data('id', lotteryId);
-                    detailsList.data('page',1);
-                    detailsList.data('start',data.data.start_id);
+                    if (data.code == 0) {
+                        detailsList.data('id', lotteryId);
+                        detailsList.data('page', 1);
+                        detailsList.data('start', data.data.start_id);
 
-                    detailsList.find('.lottery-name span').text(data.data.name);
-                    $.each(data.data.list, function (i, n) {
-                        var codeList = '';
-                        $.each(n.open_code, function (index_s, val_s) {
-                            codeList += '<span>'+ val_s +'</span>';
-                        });
-                        $.each(n.open_code_ext, function (index_s, val_s) {
-                            codeList += '<span class="ext">'+ val_s +'</span>';
-                        });
-                        var endHtml = '<li class="">' +
-                            '<div class="flex-between lottery-title">'+
-                            '<span>'+ n.lottery_no +'期</span>' +
-                        '</div>' +
-                        '<div class="flex-center code-list">' + codeList +
-                            '</div>'+
-                            '</li>';
-                        detailsList.find('ul').append(endHtml);
-                    });
-                    new CusScrollBar({
-                        contentSelector: '#lottery-scroll-details .lottery-scroll-content', //滚动内容区
-                        barSelector: '#lottery-scroll-details .scroll_bar', //滚动条
-                        sliderSelector: '#lottery-scroll-details .scroll_slider', //滚动滑块
-                        sliderEnd: function (_this) {
-                            var details = $('#lottery-scroll-details');
-                            var load_id = details.data('id');
-                            var load_page = parseInt(details.data('page'))+1;
-                            var load_start = details.data('start');
-
-                            ajax( getHttpUrl(), {
-                                'data': {
-                                    page: load_page,
-                                    'lottery_id': load_id,
-                                    'start_id': load_start,
-                                    '_format_': 'one_lottery_list'
-                                },
-                                'type': 'GET',
-                                'success': function (data) {
-                                    if (data.code == 0) {
-                                        details.data('page', load_page);
-                                        if(data.data.list.length){
-                                            $.each(data.data.list, function (i, n) {
-                                                var codeList = '';
-                                                $.each(n.open_code, function (index_s, val_s) {
-                                                    codeList += '<span>' + val_s + '</span>';
-                                                });
-                                                $.each(n.open_code_ext, function (index_s, val_s) {
-                                                    codeList += '<span class="ext">' + val_s + '</span>';
-                                                });
-                                                var endHtml = '<li class="">' +
-                                                    '<div class="flex-between lottery-title">' +
-                                                    '<span>' + n.lottery_no + '期</span>' +
-                                                    '</div>' +
-                                                    '<div class="flex-center code-list">' + codeList +
-                                                    '</div>' +
-                                                    '</li>';
-                                                details.find('ul').append(endHtml);
-                                            });
-                                            _this._initSliderHeight();
-                                            _this.$endStatus = 0;
-                                        }else{
-                                            _this.$endStatus = 1; //标记不要加载了
-                                        }
-
-                                    }
-                                }
+                        detailsList.find('.lottery-name span').text(data.data.name);
+                        $.each(data.data.list, function (i, n) {
+                            var codeList = '';
+                            $.each(n.open_code, function (index_s, val_s) {
+                                codeList += '<span>' + val_s + '</span>';
                             });
-                        }
-                    });
-                }
-            },
-            'error': function () {
+                            $.each(n.open_code_ext, function (index_s, val_s) {
+                                codeList += '<span class="ext">' + val_s + '</span>';
+                            });
+                            var endHtml = '<li class="">' +
+                                '<div class="flex-between lottery-title">' +
+                                '<span>' + n.lottery_no + '期</span>' +
+                                '</div>' +
+                                '<div class="flex-center code-list">' + codeList +
+                                '</div>' +
+                                '</li>';
+                            detailsList.find('ul').append(endHtml);
+                        });
+                        new CusScrollBar({
+                            contentSelector: '#lottery-scroll-details .lottery-scroll-content', //滚动内容区
+                            barSelector: '#lottery-scroll-details .scroll_bar', //滚动条
+                            sliderSelector: '#lottery-scroll-details .scroll_slider', //滚动滑块
+                            sliderEnd: function (_this) {
+                                var details = $('#lottery-scroll-details');
+                                var load_id = details.data('id');
+                                var load_page = parseInt(details.data('page')) + 1;
+                                var load_start = details.data('start');
 
-            }
+                                ajax(getHttpUrl(), {
+                                    'data': {
+                                        page: load_page,
+                                        'lottery_id': load_id,
+                                        'start_id': load_start,
+                                        '_format_': 'one_lottery_list'
+                                    },
+                                    'type': 'GET',
+                                    'success': function (data) {
+                                        if (data.code == 0) {
+                                            details.data('page', load_page);
+                                            if (data.data.list.length) {
+                                                $.each(data.data.list, function (i, n) {
+                                                    var codeList = '';
+                                                    $.each(n.open_code, function (index_s, val_s) {
+                                                        codeList += '<span>' + val_s + '</span>';
+                                                    });
+                                                    $.each(n.open_code_ext, function (index_s, val_s) {
+                                                        codeList += '<span class="ext">' + val_s + '</span>';
+                                                    });
+                                                    var endHtml = '<li class="">' +
+                                                        '<div class="flex-between lottery-title">' +
+                                                        '<span>' + n.lottery_no + '期</span>' +
+                                                        '</div>' +
+                                                        '<div class="flex-center code-list">' + codeList +
+                                                        '</div>' +
+                                                        '</li>';
+                                                    details.find('ul').append(endHtml);
+                                                });
+                                                _this._initSliderHeight();
+                                                _this.$endStatus = 0;
+                                            } else {
+                                                _this.$endStatus = 1; //标记不要加载了
+                                            }
+
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                },
+                'error': function () {
+
+                }
+
+            });
 
         });
-
-    });
-
-
+    }
 
 }
 
