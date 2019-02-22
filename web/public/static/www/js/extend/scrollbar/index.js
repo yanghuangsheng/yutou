@@ -166,7 +166,7 @@
             self.$cont.scrollTop(positonVal);
 
             var oEnd = self.$slider.height() + self.$slider.position().top;
-            var oBar = self.$bar.height();
+            var oBar = self.$bar.height() - 40;
             console.log(oEnd + '>=' + oBar);
             if(self.$endStatus == 0 && oEnd >= oBar){
                 self.$endStatus = 1;
