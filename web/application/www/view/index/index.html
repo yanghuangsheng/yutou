@@ -122,25 +122,6 @@
                         </div>
                     </li>
                     {/volist}
-                    {volist name="data['lottery_list']" id="lott"}
-                    <li>
-                        <div class="flex-between lottery-title">
-                            <span>{$lott['name']}</span>
-                            <span>{$lott['no']}期</span>
-                        </div>
-                        <div class="flex-center code-list">
-                            {volist name="lott['open_code']" id="code"}
-                            <span>{$code}</span>
-                            {/volist}
-                            {volist name="lott['open_code_ext']" id="ext"}
-                            <span class="ext">{$ext}</span>
-                            {/volist}
-                        </div>
-                        <div class="flex-end more">
-                            <a href="javascript:void(0);" class="details" data-id="{$lott['id']}">详情</a>
-                        </div>
-                    </li>
-                    {/volist}
                 </ul>
                 <div class="scroll_bar">
                     <div class="scroll_slider"></div>

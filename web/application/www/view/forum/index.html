@@ -37,9 +37,9 @@
                             <div class="end flex-between flex-align-center">
                                 <div class="end-l flex-start">
                                     <div class="flex-start flex-align-center attr">
-                                        <a href="javascript:void(0);" class="flex-start flex-align-center fabulous"><i class="b-img"></i><span>{$value['praise_num']?:''}</span></a>
-                                        <a href="javascript:void(0);" class="flex-start flex-align-center comment"><i class="b-img"></i><span>{$value['comment_num']?:''}</span></a>
-                                        <a href="javascript:void(0);" class="flex-start flex-align-center collection"><i class="b-img"></i><span>{$value['collect_num']?:''}</span></a>
+                                        <a href="javascript:void(0);" class="flex-start flex-align-center fabulous" data-id="{$value['id']}" data-status="0"><i class="b-img"></i><span class="number">{$value['praise_num']?:''}</span></a>
+                                        <a href="javascript:void(0);" class="flex-start flex-align-center comment" data-id="{$value['id']}" data-status="0"><i class="b-img"></i><span>{$value['comment_num']?:''}</span></a>
+                                        <a href="javascript:void(0);" class="flex-start flex-align-center collection" data-id="{$value['id']}" data-status="0"><i class="b-img"></i><span class="number">{$value['collect_num']?:''}</span></a>
                                     </div>
                                     <div class="flex-start flex-align-center share">
                                         <div class="flex-align-center share-h"><i class="b-img"></i></div>

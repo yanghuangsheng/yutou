@@ -977,7 +977,76 @@ function forumJs() {
             });
         }, 1000);
 
-    })
+    });
+
+    var itemUrl = '/forum/item';
+    /**点赞**/
+    loadForumList.on('click', 'a.fabulous', function () {
+        var oThis = $(this);
+        var oId = oThis.data('id');
+        var oStatus = oThis.data('status');
+        var oNum = oThis.find('.number').text();
+        oNum = oNum?parseInt(oNum):0;
+        if(isLogin() == false || oStatus == '1'){
+            return;
+        }
+        oThis.data('status', 1);
+
+        ajax( itemUrl + '?id=' + oId, {
+            'data': {'_format_':'praise'},
+            'success': function (data) {
+                oThis.data('status', 0);
+                if(data.code == 0){
+                    oThis.find('.number').text(oNum + 1);
+                    layer.tips('谢谢，你的点赞!!!', oThis, {
+                        tips: [1, '#0FA6D8'] //还可配置颜色
+                    });
+                    return;
+                }
+                layer.tips(data.msg, oThis, {
+                    tips: [1, '#0FA6D8'] //还可配置颜色
+                });
+            }
+        });
+
+
+    });
+    /**查看评论**/
+    loadForumList.on('click', 'a.comment', function () {
+        var oThis = $(this);
+        var oId = oThis.data('id');
+        var oStatus = oThis.data('status');
+
+
+    });
+    /**收藏**/
+    loadForumList.on('click', 'a.collection', function () {
+        var oThis = $(this);
+        var oId = oThis.data('id');
+        var oStatus = oThis.data('status');
+        var oNum = oThis.find('.number').text();
+        oNum = oNum?parseInt(oNum):0;
+        if(isLogin() == false || oStatus == '1'){
+            return;
+        }
+        ajax(itemUrl + '?id=' + oId, {
+            'data': {'id':oId, '_format_':'collect'},
+            'success': function (data) {
+                oThis.data('status', 0);
+                if(data.code == 0){
+                    oThis.find('.number').text(oNum + 1);
+                    // layer.tips(data.msg, oThis, {
+                    //     tips: [1, '#0FA6D8'] //还可配置颜色
+                    // });
+                    return;
+                }
+                layer.tips(data.msg, oThis, {
+                    tips: [1, '#0FA6D8'] //还可配置颜色
+                });
+            }
+        });
+
+    });
 
     /**阅读全文**/
     loadForumList.on('click', 'a.look-all', function () {
@@ -1525,9 +1594,7 @@ function forumItemJs(){
                 });
             }
 
-
         })
-
 
     });
     /**点赞**/
