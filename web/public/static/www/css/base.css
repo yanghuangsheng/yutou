@@ -11,7 +11,7 @@ a:hover { color: #5e5e5e; text-decoration: none; }
 :focus { outline: 0 none; }
 ul, li { list-style: none; }
 em { font-style: normal; }
-body {font: 12px/1.5 'Hiragino Sans GB','Microsoft Yahei',tahoma,sans-serif;}
+body {font: 12px/1.5 'Hiragino Sans GB','Microsoft Yahei',tahoma,sans-serif;min-width: 1068px;}
 
 .box-width{
     width: 1038px;
