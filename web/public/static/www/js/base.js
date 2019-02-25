@@ -1009,13 +1009,26 @@ function forumJs() {
             }
         });
 
-
     });
     /**查看评论**/
     loadForumList.on('click', 'a.comment', function () {
         var oThis = $(this);
         var oId = oThis.data('id');
         var oStatus = oThis.data('status');
+        var commentList = oThis.parent().parent().parent().siblings('.show-comment');
+        if(oStatus == '0'){
+            oThis.data('status',1);
+            oThis.addClass('active');
+            commentList.show();
+            //commentList.html('list');
+        }else{
+            oThis.data('status',0);
+            oThis.removeClass('active');
+            commentList.hide();
+            //commentList.html('');
+        }
+
+
 
 
     });
