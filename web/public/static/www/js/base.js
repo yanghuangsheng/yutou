@@ -1376,7 +1376,7 @@ function forumJs() {
         if(isLogin() == false || oStatus == '1'){
             return;
         }
-        ajax(itemUrl + '?id=' + oId, {
+        ajax(forumItemUrl + '?id=' + oId, {
             'data': {'id':oId, '_format_':'collect'},
             'success': function (data) {
                 oThis.data('status', 0);
