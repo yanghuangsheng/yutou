@@ -53,6 +53,16 @@ class Common extends Base
     }
 
     /**
+     * 单独获取数量
+     * @param array $whereMap
+     * @return mixed
+     */
+    public function getCount($whereMap = [])
+    {
+        return $this->model->where($whereMap)->count();
+    }
+
+    /**
      * 获取一条数据
      * @param $whereMap 查询的条件
      * @return mixed array

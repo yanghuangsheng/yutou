@@ -197,6 +197,8 @@ class Forum extends Base
             ->initWhere([['ForumPostComment.post_id', '=', $postId], ['ForumPostComment.parent_id', '=', 0]])
             ->initLimit($page)
             ->getListData();
+        $data['count_num'] = $data['count'];
+        $data['count'] = $comment->getCount([['post_id', '=', $postId]]);
         $data['start_id'] = $newStartId; //当前数据最新ID
         foreach ($data['list'] as $key => &$value){
             //$value['user_avatar'] = json_decode($value['user_avatar'], true);
@@ -382,6 +384,9 @@ class Forum extends Base
             //用户ID
             $param['user_id'] = $this->session('user')['id'];
             if($comment->addReplyComment($param)){
+                (new \app\www\service\ForumPostAttr)->saveNum($param, 'comment');
+                //更新评论用户的评论数
+                (new \app\www\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'comment');
                 //给回复评论的用户发送消息
                 $toId = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id');
                 $toData = [

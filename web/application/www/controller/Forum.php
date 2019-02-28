@@ -19,7 +19,6 @@ class Forum extends Base
     {
         $logic = new Logic;
 
-        //echo '@'.friendlyDate(1546176324, 'mohu').'@';
         $this->getFormatPost($logic);
         $this->getFormatUser($logic);
         $this->userFans($logic);
@@ -29,7 +28,6 @@ class Forum extends Base
         $data['seven_list'] = $logic->sevenDayHotData();
         $data['ad_banner'] = $logic->getBanner(5);
 
-        //print_r($data['seven_list']);
         $this->init(['title'=>'论坛']);
         $this->assign('data',$data);
         return $this->fetch();
