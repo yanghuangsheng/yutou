@@ -18,6 +18,8 @@ class Forum extends Base
     public function index()
     {
         $logic = new Logic;
+
+        //echo '@'.friendlyDate(1546176324, 'mohu').'@';
         $this->getFormatPost($logic);
         $this->getFormatUser($logic);
         $this->userFans($logic);
@@ -41,6 +43,7 @@ class Forum extends Base
         $logic = new Logic;
         $this->praise($logic);
         $this->comment($logic);
+        $this->formatCommentList($logic);
         $this->replyComment($logic);
         $this->commentPraise($logic);
         $this->commentTread($logic);
@@ -120,7 +123,7 @@ class Forum extends Base
 
 
     /**
-     * 新闻列表
+     * 帖子列表
      * @param $logic
      * @return array
      */
@@ -141,6 +144,18 @@ class Forum extends Base
     public function commentList($logic)
     {
         return $logic->getCommentList();
+    }
+
+    /**
+     * 加载评论
+     * @param $logic
+     * @return mixed
+     */
+    protected function formatCommentList($logic)
+    {
+        if($this->isFormat('format_comment')){
+            return $logic->formatCommentList();
+        }
     }
 
     /**

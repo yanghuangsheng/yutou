@@ -979,7 +979,7 @@ function forumJs() {
 
     });
 
-    var itemUrl = '/forum/item';
+    var forumItemUrl = '/forum/item';
     /**点赞**/
     loadForumList.on('click', 'a.fabulous', function () {
         var oThis = $(this);
@@ -992,7 +992,7 @@ function forumJs() {
         }
         oThis.data('status', 1);
 
-        ajax( itemUrl + '?id=' + oId, {
+        ajax( forumItemUrl + '?id=' + oId, {
             'data': {'_format_':'praise'},
             'success': function (data) {
                 oThis.data('status', 0);
@@ -1020,7 +1020,89 @@ function forumJs() {
             oThis.data('status',1);
             oThis.addClass('active');
             commentList.show();
-            //commentList.html('list');
+            ajax(forumItemUrl + '?id=' + oId, {
+                'data': {'id':oId, '_format_':'format_comment'},
+                'success': function (data) {
+                    if(data.code == 0){
+                        console.log(data);
+                        var commentData = '';
+                        $.each(data.data, function (i, n) {
+                            var replyData = '';
+                            $.each(n.comment_list.list, function (i1, n1) {
+                                replyData += '<li class="content-list-inline">' +
+                                    '<div class="flex-between comment-info">' +
+                                        '<div class="flex-start flex-align-center comment-user">' +
+                                            '<span class="user-avatar"><img src="'+ (n1.user_avatar[50]?n1.user_avatar[50]:'/static/www/images/user_avatar_50.png') +'"></span>' +
+                                            '<span class="user-name main">'+ n1.user_name +'</span>' +
+                                            '<span class="txt">回复</span>' +
+                                            '<span class="user-name reply-user-name">'+ n1.reply_name +'</span>' +
+                                            '<span class="to-day">'+ n1.date_time_txt +'</span>' +
+                                        '</div>' +
+                                        '<div class="flex-start comment-attr">' +
+                                            '<!--赞-->' +
+                                            '<a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="'+ n1.user_id +'" data-id="'+ n1.id +'" data-status="0" data-item="'+ oId +'">' +
+                                            '<i class="b-img top"></i><span class="num">'+ (n1.praise_num?n1.praise_num:'') +'</span>' +
+                                            '</a>' +
+                                            '<!--踏-->' +
+                                            '<a href="javascript:void(0);" class="flex-align-center inline comment-tread hide-btn" data-user="'+ n1.user_id +'" data-id="'+ n1.id +'" data-status="0" data-item="'+ oId +'">' +
+                                            '<i class="b-img tread"></i><span class="num">'+ (n1.tread_num?n1.tread_num:'') +'</span>' +
+                                            '</a>' +
+                                            '<!--更多 举报-->' +
+                                            '<a href="javascript:void(0);" class="flex-align-center inline hide-btn">' +
+                                            '<i class="b-img more"></i>' +
+                                            '</a>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<div class="comment-content">'+ n1.content +'</div>' +
+                                    '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ n1.user_id +'" data-reply-name="'+ n1.user_name +'" data-parent="'+ n.id +'" data-item="'+ oId +'">回复</a>' +
+                                    '</li>';
+                            });
+                            commentData += '<div class="comment-list-inline">' +
+                                '<ul class="comment-list content-main">' +
+                                    '<li class="content-list-inline">' +
+                                        '<div class="flex-between comment-info">' +
+                                            '<div class="flex-start flex-align-center comment-user">' +
+                                                '<span class="user-avatar"><img src="'+ (n.user_avatar[50]?n.user_avatar[50]:'/static/www/images/user_avatar_50.png') +'"></span>' +
+                                                '<span class="user-name">'+ n.user_name +'</span>' +
+                                                '<span class="to-day">'+ n.date_time_txt +'</span>' +
+                                            '</div>' +
+                                            '<div class="flex-start comment-attr">' +
+                                                '<!--赞-->' +
+                                                '<a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="'+ n.user_id +'" data-id="'+ n.id +'" data-status="0" data-item="'+ oId +'">' +
+                                                '<i class="b-img top"></i><span class="num">'+ (n.praise_num?n.praise_num:'') +'</span>' +
+                                                '</a>' +
+                                                '<!--踏-->' +
+                                                '<a href="javascript:void(0);" class="flex-align-center inline comment-tread" data-user="'+ n.user_id +'" data-id="'+ n.id +'" data-status="0" data-item="'+ oId +'">' +
+                                                '<i class="b-img tread"></i><span class="num">'+ (n.tread_num?n.tread_num:'') +'</span>' +
+                                                '</a>' +
+                                                '<!--更多 举报-->' +
+                                                '<a href="javascript:void(0);" class="flex-align-center inline">' +
+                                                '<i class="b-img more"></i>' +
+                                                '</a>' +
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div class="comment-content">'+ n.content +'</div>' +
+                                        '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ n.user_id +'" data-reply-name="'+ n.user_name +'" data-parent="'+ n.id +'" data-item="'+ oId +'">回复</a>' +
+                                    '</li>' +
+                                '</ul>' +
+                                '<!--回复的评论-->' +
+                                '<ul class="comment-list comment-reply-list" '+ (n.comment_list.count?'':'style="display: none;"') +'>'+ replyData +'</ul>' +
+                                '</div>';
+                        });
+
+                        // console.log(commentData);
+                        if(commentData == ''){
+                            commentData = '<div class="show-tips-msg" style="text-align: center;margin-top:10px;margin-bottom:10px;"><span>暂没有评论</span></div>';
+                        }
+                        var listData = '<div class="flex-start flex-align-center h comment-content-h"><span class="h-name">最新评论</span>（<span class="num">'+ data.count +'</span>条评论）</div>' +
+                            '<div class="comment-content-list">'+ commentData +'</div>';
+                        // console.log(listData);
+                        commentList.find('.show-comment-content').html(listData);
+                        return;
+                    }
+                }
+            });
+
         }else{
             oThis.data('status',0);
             oThis.removeClass('active');
@@ -1028,10 +1110,262 @@ function forumJs() {
             //commentList.html('');
         }
 
+    });
 
 
+    /**评论内容**/
+    $(".indexForumCommentTextBtn").on('focus', function () {
+        if(isLogin() == false){
+            return;
+        }
+    });
+    /**提交评论**/
+    $(".indexForumCommentSubmitBtn").on('click', function () {
+        if(isLogin() == false){
+            return;
+        }
+        var oThis = $(this);
+        var thisParent = oThis.parent().parent();
+        var oStatus = oThis.data('status');
+        var itemId = oThis.data('item');
+        var thisTextArea = thisParent.find('input[name="content"]');
+        var oContent =  thisTextArea.val();
+        if(oStatus == '1'){
+            return;
+        }
+        if(oContent == ''){
+            thisTextArea.focus();
+            return;
+        }
+        oThis.data('status', 1);
+        ajax( forumItemUrl + '?id=' + itemId,{
+            'data': {'content': oContent, '_format_':'comment'},
+            'success': function (data) {
+                oThis.data('status', 0);
+                if(data.code == 0){
+                    layer.msg('评论成功');
+                    thisTextArea.val('');
+                    var userData = isLogin(1);
+                    data = data.data;
+                    var inlineCommentData = '<div class="comment-list-inline">' +
+                        '<ul class="comment-list content-main">' +
+                        '<li class="content-list-inline">' +
+                        '<div class="flex-between comment-info">' +
+                        '<div class="flex-start flex-align-center comment-user">' +
+                        '<span class="user-avatar"><img src="'+ userData.avatar['50'] +'"></span>' +
+                        '<span class="user-name">'+ userData.name +'</span>' +
+                        '<span class="to-day">刚刚</span>' +
+                        '</div>' +
+                        '<div class="flex-start comment-attr">' +
+                        '<!--赞-->' +
+                        '<a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="'+ userData.id +'" data-id="'+ data.id +'" data-status="0" data-item="'+ itemId +'">' +
+                        '<i class="b-img top"></i><span class="num"></span>' +
+                        '</a>' +
+                        '<!--踏-->' +
+                        '<a href="javascript:void(0);" class="flex-align-center inline comment-tread" data-user="'+ userData.id +'" data-id="'+ data.id +'" data-status="0" data-item="'+ itemId +'">' +
+                        '<i class="b-img tread"></i><span class="num"></span>' +
+                        '</a>' +
+                        '<!--更多 举报-->' +
+                        '<a href="javascript:void(0);" class="flex-align-center inline">' +
+                        '<i class="b-img more"></i>' +
+                        '</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="comment-content">'+ oContent +'</div>' +
+                        '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ userData.id +'" data-reply-name="'+ userData.name +'" data-parent="0" data-item="'+ itemId +'">回复</a>' +
+                        '</li>' +
+                        '</ul>' +
+                        '<!--回复的评论-->' +
+                        '<ul class="comment-list comment-reply-list" style="display: none;"></ul>' +
+                        '</div>';
+
+                    var showCommentContent = thisParent.parent().parent().parent().find('.show-comment-content');
+
+                    if(showCommentContent.find('.show-tips-msg').length > 0){
+                        showCommentContent.find('.show-tips-msg').remove();
+                    }
+
+                    showCommentContent.find('.comment-content-list').prepend(inlineCommentData);
+                    var showNum = showCommentContent.find('.comment-content-h span.num');
+
+                    showNum.text(parseInt(showNum.text()?showNum.text():0) + 1);
+
+                }
+            }
+        });
 
     });
+
+    /**
+     * 回复窗块
+     */
+    $(".show-comment").on('click', 'a.comment-reply', function () {
+        if (isLogin() == false) {
+            return;
+        }
+        var oThis = $(this);
+        var replyUserid = oThis.data('reply');
+        var replyUserName = oThis.data('reply-name');
+        var parentId = oThis.data('parent');
+        var itemId = oThis.data('item');
+        var thisReplyComment = $('#reply-comment-post');
+        if (isLogin(1).id == replyUserid) {
+            layer.tips('不允许回复自己的哦！', oThis, {
+                tips: [1, '#0FA6D8'] //还可配置颜色
+            });
+            return;
+        }
+        var replyBox = '<div class="flex-between flex-align-stretch flex-align-center" id="reply-comment-post">' +
+            '<div class="flex-between flex-align-stretch flex-align-center input">' +
+            '<input type="text" name="content" placeholder="回复：' + replyUserName + '">' +
+            '<a href="javascript:void(0);" class="flex-center flex-align-center expr"><i class="b-img"></i></a>' +
+            '</div>' +
+            '<div class="submit">' +
+            '<a href="javascript:void(0);" data-status="0" data-parent="' + parentId + '" data-reply="' + replyUserid + '"  data-reply-name="' + replyUserName + '">发布</a>' +
+            '</div>' +
+            '</div>';
+        thisReplyComment.remove();
+        oThis.after(replyBox);
+
+        //提交回复
+        $("#reply-comment-post .submit a").on('click', function () {
+            if(isLogin() == false){
+                return;
+            }
+            var oThis = $(this);
+            var thisReplyContent = oThis.parent().parent().find('input[name="content"]');
+            var replyUserid = oThis.data('reply');
+            var replyUserName = oThis.data('reply-name');
+            var parentId = oThis.data('parent');
+            var oStatus = oThis.data('status');
+            var content = thisReplyContent.val();
+            if(oStatus == '1'){
+                return;
+            }
+            if(content == ''){
+                thisReplyContent.focus();
+                return;
+            }
+            oThis.data('status', 1);
+            ajax( forumItemUrl + '?id=' + itemId,{
+                'data': {'content':content, 'parent':parentId, 'reply_id':replyUserid,  '_format_':'reply_comment'},
+                'success': function (data) {
+                    oThis.data('status', 0);
+                    if (data.code == 0) {
+                        layer.msg('回复评论成功');
+                        var topThis = oThis.parent().parent().parent().parent().parent();
+                        $("#reply-comment-post").remove();
+                        //console.log(topThis.html());
+                        var oListBox = topThis.find('.comment-reply-list');
+                        var userData = isLogin(1);
+                        data = data.data;
+                        //console.log(oListBox.html());
+                        //return false;
+                        var replyData = '<li class="content-list-inline">' +
+                            '<div class="flex-between comment-info">' +
+                            '<div class="flex-start flex-align-center comment-user">' +
+                            '<span class="user-avatar"><img src="'+ userData.avatar[50] +'"></span>' +
+                            '<span class="user-name main">'+ userData.name +'</span>' +
+                            '<span class="txt">回复</span>' +
+                            '<span class="user-name reply-user-name">'+ replyUserName +'</span>' +
+                            '<span class="to-day">刚刚</span>' +
+                            '</div>' +
+                            '<div class="flex-start comment-attr">' +
+                            '<!--赞-->' +
+                            '<a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="'+ userData.id +'" data-id="" data-status="0" data-item="'+ itemId +'">' +
+                            '<i class="b-img top"></i><span class="num"></span>' +
+                            '</a>' +
+                            '<!--踏-->' +
+                            '<a href="javascript:void(0);" class="flex-align-center inline comment-tread hide-btn" data-user="'+ userData.id +'" data-id="" data-status="0" data-item="'+ itemId +'">' +
+                            '<i class="b-img tread"></i><span class="num"></span>' +
+                            '</a>' +
+                            '<!--更多 举报-->' +
+                            '<a href="javascript:void(0);" class="flex-align-center inline hide-btn">' +
+                            '<i class="b-img more"></i>' +
+                            '</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="comment-content">'+ content +'</div>' +
+                            '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ userData.id +'" data-reply-name="'+ userData.name +'" data-parent="'+ parentId +'" data-item="'+ itemId +'">回复</a>' +
+                            '</li>';
+                        //console.log(replyData);
+                        oListBox.prepend(replyData);
+                        oListBox.show();
+                    }
+                }
+
+            });
+        });
+
+    });
+
+    /**
+     * 评论赞
+     */
+    $(".show-comment-content").on('click', 'a.comment-praise', function () {
+        if(isLogin() == false){
+            return;
+        }
+        var oThis = $(this);
+        var oStatus = oThis.data('status');
+        var oComment = oThis.data('id');
+        var oUser = oThis.data('user');
+        var itemId = oThis.data('item');
+        var thisNum = oThis.find('.num');
+        var oNum = thisNum.text();
+        var userData = isLogin(1);
+        oNum = oNum?parseInt(oNum):0;
+        if(oUser == '' || userData.id == oUser || oStatus == '1'){
+            return ;
+        }
+
+        oThis.data('status', 1);
+        ajax( forumItemUrl + '?id=' + itemId, {
+            'data': {'id': oComment, '_format_': 'comment_praise'},
+            'success': function (data) {
+                oThis.data('status', 0);
+                if (data.code == 0) {
+                    thisNum.text(oNum + 1);
+                }
+            }
+        });
+
+    });
+
+    /**
+     * 评论踏
+     */
+    $(".show-comment-content").on('click', 'a.comment-tread', function () {
+        if(isLogin() == false){
+            return;
+        }
+        var oThis = $(this);
+        var oStatus = oThis.data('status');
+        var oComment = oThis.data('id');
+        var oUser = oThis.data('user');
+        var itemId = oThis.data('item');
+        var thisNum = oThis.find('.num');
+        var oNum = thisNum.text();
+        var userData = isLogin(1);
+        oNum = oNum?parseInt(oNum):0;
+        if(oUser == '' || userData.id == oUser || oStatus == '1'){
+            return ;
+        }
+
+        oThis.data('status', 1);
+        ajax( forumItemUrl + '?id=' + itemId, {
+            'data': {'id': oComment, '_format_': 'comment_tread'},
+            'success': function (data) {
+                oThis.data('status', 0);
+                if (data.code == 0) {
+                    thisNum.text(oNum + 1);
+                }
+            }
+        });
+
+    });
+
+
     /**收藏**/
     loadForumList.on('click', 'a.collection', function () {
         var oThis = $(this);
@@ -1784,7 +2118,7 @@ function forumItemJs(){
                         thisReplyContent.val('');
                         var topThis = oThis.parent().parent().parent().parent().parent();
                         $("#reply-comment-post").remove();
-                        console.log(topThis.html());
+                        //console.log(topThis.html());
                         var oListBox = topThis.find('.comment-reply-list');
                         var oInline = oListBox.find('li.content-list-inline').first();
 

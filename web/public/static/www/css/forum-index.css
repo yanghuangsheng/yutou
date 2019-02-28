@@ -45,7 +45,7 @@
 }
 
 
-.forum-box .forum-list .list-inline li{
+.forum-box .forum-list .list-inline li.li-inline{
     margin-top: 20px;
     border-bottom: #e4e4e4 solid 1px;
 }
@@ -215,15 +215,158 @@
     font-size: 14px;
 }
 .forum-box .forum-list .list-inline .show-comment{
+    position: relative;
     display: none;
     border: 3px solid #f2f2f2;
     box-shadow: 0px 5px 5px rgba(0,0,0,0.1);
-    min-height: 500px;
+    min-height: 141px;
     margin-bottom: 15px;
+}
+
+.forum-box .forum-list .list-inline .show-comment .h{
+    /*background-color: #f9f9f9;*/
+    color: #666666;
+    /*margin-left: 15px;*/
+    /*margin-right: 15px;*/
+    height: 40px;
+    border-bottom: 1px solid #f2f2f2;
+}
+.forum-box .forum-list .list-inline .show-comment .h .h-name{
+    font-size: 14px;
+    font-weight: 700;
+
+ }
+
+.forum-box .forum-list .list-inline .show-comment .show-comment-content{
+    margin: 0px 15px;
+}
+
+/*评论列表*/
+.forum-box .forum-list .list-inline .show-comment .comment-list-inline{
+    border-top: #F2F2F2 solid 1px;
+    padding-top: 15px;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-list-inline:first-child{
+    border-top: #F2F2F2 solid 0px;
+    margin-top: 0px;
+}
+
+.forum-box .forum-list .list-inline .show-comment li{
+    position: relative;
+}
+.forum-box .forum-list .list-inline .show-comment li a.comment-reply{
+    height: 25px;
+    font-size: 14px;
+    line-height: 25px;
+    color: #00a0e9;
+    margin-top: -25px;
+    right: 15px;
+    position: absolute;
+}
+.forum-box .forum-list .list-inline .show-comment li .hide-btn{
+    display: none;
+}
+.forum-box .forum-list .list-inline .show-comment li:hover a.comment-reply{
+    display: block;
+}
+.forum-box .forum-list .list-inline .show-comment li:hover .hide-btn{
+    display: flex;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-user span{
+    margin-right: 10px;
+}
+.forum-box .forum-list .list-inline .show-commentt .comment-user .user-avatar{
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-user .user-avatar img{
+    width: 100%;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-user .user-name{
+    font-size: 14px;
+    font-weight: bolder;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-user .txt{
+    font-size: 12px;
+    color: #bdbdbd;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-user .to-day{
+    font-size: 12px;
+    color: #bdbdbd;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-info .comment-attr{
+
+}
+
+.forum-box .forum-list .list-inline .show-comment .comment-info .comment-attr i{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-info .comment-attr .inline{
+    margin-right: 15px;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-info .comment-attr i.top{
+    background-position: -100px -70px;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-info .comment-attr i.tread{
+    background-position: -75px -70px;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-info .comment-attr i.more{
+    background-position: -50px -70px;
+}
+
+.forum-box .forum-list .list-inline .show-comment .comment-content{
+    margin-top: 4px;
+    margin-left: 40px;
+    margin-right: 80px;
+    font-size: 14px;
+    line-height: 30px;
+}
+.forum-box .forum-list .list-inline .show-comment .content-main .content-list-inline{
+    padding-bottom: 15px;
+}
+
+/*评论回复 重写样式*/
+.forum-box .forum-list .list-inline .show-comment .comment-reply-list{
+    margin-top: 0px;
+    margin-left: 40px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: #F2F2F2 solid 1px;
+    border-radius: 5px;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-reply-list li{
+    border-bottom: #F2F2F2 solid 1px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-reply-list li:first-child{
+    padding-top: 0px;
+}
+.forum-box .forum-list .list-inline .show-comment .comment-reply-list li:last-child{
+    border-bottom: #F2F2F2 solid 0px;
 }
 
 
 
+
+
+
+
+.forum-box .forum-list .list-inline .end-comment-post{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    border-top: 3px solid #f2f2f2;
+}
+.forum-box .forum-list .list-inline .end-comment-post .forum-item-comment-post{
+    margin: 20px 20px 20px 20px;
+}
 
 /*用户中心帖子列表*/
 .forum-box.user-forum .list-inline li:last-child{

@@ -380,11 +380,12 @@ function friendlyDate($sTime,$type = 'mohu',$alt = 'false') {
     //如是不是时间戳
     is_numeric($sTime) || $sTime = strtotime($sTime);
     //sTime=源时间，cTime=当前时间，dTime=时间差
-    $cTime      =   time();
-    $dTime      =   $cTime - $sTime;
-    $dDay       =   intval(date("z",$cTime)) - intval(date("z",$sTime));
-    //$dDay     =   intval($dTime/3600/24);
-    $dYear      =   intval(date("Y",$cTime)) - intval(date("Y",$sTime));
+    $cTime = time();
+    $dTime = $cTime - $sTime;
+    $dDay = intval(date("z",$cTime)) - intval(date("z",$sTime));
+    //$dDay = intval($dTime/3600/24);
+    $dYear = intval(date("Y",$cTime)) - intval(date("Y",$sTime));
+
     //normal：n秒前，n分钟前，n小时前，日期
     if($type=='normal'){
         if( $dTime < 60 ){
@@ -418,6 +419,7 @@ function friendlyDate($sTime,$type = 'mohu',$alt = 'false') {
         }elseif( $dDay > 30 ){
             return intval($dDay/30) . '个月前';
         }
+        return date("Y年m月d日 H:i",$sTime);
         //full: Y-m-d , H:i:s
     }elseif($type=='full'){
         return date("Y-m-d , H:i:s",$sTime);

@@ -12,7 +12,7 @@
                 <div class="list-inline {if $key} box-hide {/if}" >
                     <ul>
                         {volist name="list_data['list']" id="value"}
-                        <li>
+                        <li class="li-inline">
                             <div class="flex-between flex-align-start h">
                                 <div class="title"><a href="{:urls('Forum/item')}?id={$value['id']}" class="link">{$value['title']}</a></div>
                                 <div class="flex-start flex-align-center read"><i class="b-img"></i><span>{$value['browse_num']?:''}</span></div>
@@ -57,7 +57,28 @@
                                     <span class="user-name">{$value['user_name']}</span>
                                 </div>
                             </div>
-                            <div class="show-comment"></div>
+                            <div class="show-comment">
+                                <div class="show-comment-content">
+                                    <div class="load-tips-msg" style="text-align: center;margin-top:20px;margin-bottom:10px;">
+                                        <span style="background-color: #aeaeae;padding:5px 15px;border-radius: 5px; color:#FFF;">加载中...</span>
+                                    </div>
+                                </div>
+                                <div style="height:81px;"></div>
+                                <div class="end-comment-post">
+                                    <!--发布评论-->
+                                    <div class="forum-item-comment-post">
+                                        <div class="flex-between flex-align-stretch flex-align-center">
+                                            <div class="flex-between flex-align-stretch flex-align-center input">
+                                                <input type="text" name="content" placeholder="点击这里发布想法....." class="indexForumCommentTextBtn">
+                                                <a href="javascript:void(0);" class="flex-center flex-align-center expr"><i></i></a>
+                                            </div>
+                                            <div class="submit">
+                                                <a href="javascript:void(0);" class="indexForumCommentSubmitBtn" data-status="0" data-item="{$value['id']}">发布</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                         {/volist}
                     </ul>

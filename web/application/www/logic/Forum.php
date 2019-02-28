@@ -183,34 +183,55 @@ class Forum extends Base
 
     }
 
-
     /**
      * 帖子评论
+     * @param int $newStartId
      * @return mixed
      */
-    public function getCommentList()
+    public function getCommentList($newStartId = 0, $page = 1)
     {
         $postId = $this->param('id');
         $comment = new \app\www\service\ForumPostComment;
-        $newestId = $comment->newsId();
+        ($newStartId = 0) && $newStartId = $comment->newsId();
         $data = $comment
             ->initWhere([['ForumPostComment.post_id', '=', $postId], ['ForumPostComment.parent_id', '=', 0]])
+            ->initLimit($page)
             ->getListData();
+        $data['start_id'] = $newStartId; //当前数据最新ID
         foreach ($data['list'] as $key => &$value){
             //$value['user_avatar'] = json_decode($value['user_avatar'], true);
+            $value['date_time_txt'] = friendlyDate($value['date_time']);
             $value['comment_list'] = $comment
                 ->initWhere([['ForumPostComment.post_id', '=', $postId], ['ForumPostComment.parent_id', '=', $value['id']]])
                 ->getListData();
             $commentData = $value['comment_list'];
-//            foreach ($commentData['list'] as $key1 => &$value1){
+            foreach ($commentData['list'] as $key1 => &$value1){
+                $value1['date_time_txt'] = friendlyDate($value1['date_time']);
 //                $value1['user_avatar'] = json_decode($value1['user_avatar'], true);
 //                $value1['reply_avatar'] = json_decode($value1['reply_avatar'], true);
-//            }
+            }
             $value['comment_list'] = $commentData;
         }
         //print_r($data);
         return $data;
     }
+
+    /**
+     * 加载更多评论
+     */
+    public function formatCommentList()
+    {
+        if($this->isAjax()){
+            $startId = $this->param('start_id');
+            $page = $this->param('page');
+            $data = $this->getCommentList($startId?$startId:0,$page?$page:1);
+
+            $this->resultJson(0, '', $data);
+        }
+    }
+
+
+
 
     /**
      * 加载更多帖子
