@@ -45,6 +45,14 @@ class Common extends Base
         $data['list'] = $model->select();
         //总条数
         $data['count'] = $model->count();
+
+        $this->limit = '';
+        $this->field = '';
+        $this->whereMap = '';
+        $this->order = [];
+
+
+
         //存在处理数据设置
         method_exists($this, 'resetListData') && $data['list'] = $this->resetListData($data['list']);
 

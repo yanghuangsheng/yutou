@@ -192,12 +192,13 @@ class Forum extends Base
     {
         $postId = $this->param('id');
         $comment = new \app\www\service\ForumPostComment;
-        ($newStartId = 0) && $newStartId = $comment->newsId();
+        ($newStartId == 0) && $newStartId = $comment->newsId();
+        $page_num = 15;
         $data = $comment
             ->initWhere([['ForumPostComment.post_id', '=', $postId], ['ForumPostComment.parent_id', '=', 0]])
-            ->initLimit($page)
+            ->initLimit($page, $page_num)
             ->getListData();
-        $data['count_num'] = $data['count'];
+        $data['page_num'] = ceil($data['count']/$page_num);
         $data['count'] = $comment->getCount([['post_id', '=', $postId]]);
         $data['start_id'] = $newStartId; //当前数据最新ID
         foreach ($data['list'] as $key => &$value){

@@ -143,6 +143,8 @@ class Base
         if (is_array($data) && array_key_exists('count', $data)) {
             $returnData['data'] = $data['list'];
             $returnData['count'] = $data['count'];
+            isset($data['page_num']) && $returnData['page_num'] = $data['page_num'];
+            isset($data['start_id']) && $returnData['start_id'] = $data['start_id'];
         } else {
             $returnData['data'] = $data;
         }

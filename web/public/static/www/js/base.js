@@ -1010,6 +1010,17 @@ function forumJs() {
         });
 
     });
+
+    /**收起评论**/
+    loadForumList.on('click', 'a.close-comment-btn', function () {
+        var oThis = $(this);
+        var commentList = oThis.parent();
+        var aThis = commentList.prev().find('a.comment');
+        aThis.data('status',0);
+        aThis.removeClass('active');
+        commentList.hide();
+    });
+
     /**查看评论**/
     loadForumList.on('click', 'a.comment', function () {
         var oThis = $(this);
@@ -1020,8 +1031,19 @@ function forumJs() {
             oThis.data('status',1);
             oThis.addClass('active');
             commentList.show();
+
+            ajaxForumComment(1);
+
+        }else{
+            oThis.data('status',0);
+            oThis.removeClass('active');
+            commentList.hide();
+            //commentList.html('');
+        }
+
+        function ajaxForumComment(page) {
             ajax(forumItemUrl + '?id=' + oId, {
-                'data': {'id':oId, '_format_':'format_comment'},
+                'data': {'id':oId, page:page, '_format_':'format_comment'},
                 'success': function (data) {
                     if(data.code == 0){
                         console.log(data);
@@ -1031,27 +1053,27 @@ function forumJs() {
                             $.each(n.comment_list.list, function (i1, n1) {
                                 replyData += '<li class="content-list-inline">' +
                                     '<div class="flex-between comment-info">' +
-                                        '<div class="flex-start flex-align-center comment-user">' +
-                                            '<span class="user-avatar"><img src="'+ (n1.user_avatar[50]?n1.user_avatar[50]:'/static/www/images/user_avatar_50.png') +'"></span>' +
-                                            '<span class="user-name main">'+ n1.user_name +'</span>' +
-                                            '<span class="txt">回复</span>' +
-                                            '<span class="user-name reply-user-name">'+ n1.reply_name +'</span>' +
-                                            '<span class="to-day">'+ n1.date_time_txt +'</span>' +
-                                        '</div>' +
-                                        '<div class="flex-start comment-attr">' +
-                                            '<!--赞-->' +
-                                            '<a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="'+ n1.user_id +'" data-id="'+ n1.id +'" data-status="0" data-item="'+ oId +'">' +
-                                            '<i class="b-img top"></i><span class="num">'+ (n1.praise_num?n1.praise_num:'') +'</span>' +
-                                            '</a>' +
-                                            '<!--踏-->' +
-                                            '<a href="javascript:void(0);" class="flex-align-center inline comment-tread hide-btn" data-user="'+ n1.user_id +'" data-id="'+ n1.id +'" data-status="0" data-item="'+ oId +'">' +
-                                            '<i class="b-img tread"></i><span class="num">'+ (n1.tread_num?n1.tread_num:'') +'</span>' +
-                                            '</a>' +
-                                            '<!--更多 举报-->' +
-                                            '<a href="javascript:void(0);" class="flex-align-center inline hide-btn">' +
-                                            '<i class="b-img more"></i>' +
-                                            '</a>' +
-                                        '</div>' +
+                                    '<div class="flex-start flex-align-center comment-user">' +
+                                    '<span class="user-avatar"><img src="'+ (n1.user_avatar[50]?n1.user_avatar[50]:'/static/www/images/user_avatar_50.png') +'"></span>' +
+                                    '<span class="user-name main">'+ n1.user_name +'</span>' +
+                                    '<span class="txt">回复</span>' +
+                                    '<span class="user-name reply-user-name">'+ n1.reply_name +'</span>' +
+                                    '<span class="to-day">'+ n1.date_time_txt +'</span>' +
+                                    '</div>' +
+                                    '<div class="flex-start comment-attr">' +
+                                    '<!--赞-->' +
+                                    '<a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="'+ n1.user_id +'" data-id="'+ n1.id +'" data-status="0" data-item="'+ oId +'">' +
+                                    '<i class="b-img top"></i><span class="num">'+ (n1.praise_num?n1.praise_num:'') +'</span>' +
+                                    '</a>' +
+                                    '<!--踏-->' +
+                                    '<a href="javascript:void(0);" class="flex-align-center inline comment-tread hide-btn" data-user="'+ n1.user_id +'" data-id="'+ n1.id +'" data-status="0" data-item="'+ oId +'">' +
+                                    '<i class="b-img tread"></i><span class="num">'+ (n1.tread_num?n1.tread_num:'') +'</span>' +
+                                    '</a>' +
+                                    '<!--更多 举报-->' +
+                                    '<a href="javascript:void(0);" class="flex-align-center inline hide-btn">' +
+                                    '<i class="b-img more"></i>' +
+                                    '</a>' +
+                                    '</div>' +
                                     '</div>' +
                                     '<div class="comment-content">'+ n1.content +'</div>' +
                                     '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ n1.user_id +'" data-reply-name="'+ n1.user_name +'" data-parent="'+ n.id +'" data-item="'+ oId +'">回复</a>' +
@@ -1059,31 +1081,31 @@ function forumJs() {
                             });
                             commentData += '<div class="comment-list-inline">' +
                                 '<ul class="comment-list content-main">' +
-                                    '<li class="content-list-inline">' +
-                                        '<div class="flex-between comment-info">' +
-                                            '<div class="flex-start flex-align-center comment-user">' +
-                                                '<span class="user-avatar"><img src="'+ (n.user_avatar[50]?n.user_avatar[50]:'/static/www/images/user_avatar_50.png') +'"></span>' +
-                                                '<span class="user-name">'+ n.user_name +'</span>' +
-                                                '<span class="to-day">'+ n.date_time_txt +'</span>' +
-                                            '</div>' +
-                                            '<div class="flex-start comment-attr">' +
-                                                '<!--赞-->' +
-                                                '<a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="'+ n.user_id +'" data-id="'+ n.id +'" data-status="0" data-item="'+ oId +'">' +
-                                                '<i class="b-img top"></i><span class="num">'+ (n.praise_num?n.praise_num:'') +'</span>' +
-                                                '</a>' +
-                                                '<!--踏-->' +
-                                                '<a href="javascript:void(0);" class="flex-align-center inline comment-tread" data-user="'+ n.user_id +'" data-id="'+ n.id +'" data-status="0" data-item="'+ oId +'">' +
-                                                '<i class="b-img tread"></i><span class="num">'+ (n.tread_num?n.tread_num:'') +'</span>' +
-                                                '</a>' +
-                                                '<!--更多 举报-->' +
-                                                '<a href="javascript:void(0);" class="flex-align-center inline">' +
-                                                '<i class="b-img more"></i>' +
-                                                '</a>' +
-                                            '</div>' +
-                                        '</div>' +
-                                        '<div class="comment-content">'+ n.content +'</div>' +
-                                        '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ n.user_id +'" data-reply-name="'+ n.user_name +'" data-parent="'+ n.id +'" data-item="'+ oId +'">回复</a>' +
-                                    '</li>' +
+                                '<li class="content-list-inline">' +
+                                '<div class="flex-between comment-info">' +
+                                '<div class="flex-start flex-align-center comment-user">' +
+                                '<span class="user-avatar"><img src="'+ (n.user_avatar[50]?n.user_avatar[50]:'/static/www/images/user_avatar_50.png') +'"></span>' +
+                                '<span class="user-name">'+ n.user_name +'</span>' +
+                                '<span class="to-day">'+ n.date_time_txt +'</span>' +
+                                '</div>' +
+                                '<div class="flex-start comment-attr">' +
+                                '<!--赞-->' +
+                                '<a href="javascript:void(0);" class="flex-align-center inline comment-praise" data-user="'+ n.user_id +'" data-id="'+ n.id +'" data-status="0" data-item="'+ oId +'">' +
+                                '<i class="b-img top"></i><span class="num">'+ (n.praise_num?n.praise_num:'') +'</span>' +
+                                '</a>' +
+                                '<!--踏-->' +
+                                '<a href="javascript:void(0);" class="flex-align-center inline comment-tread" data-user="'+ n.user_id +'" data-id="'+ n.id +'" data-status="0" data-item="'+ oId +'">' +
+                                '<i class="b-img tread"></i><span class="num">'+ (n.tread_num?n.tread_num:'') +'</span>' +
+                                '</a>' +
+                                '<!--更多 举报-->' +
+                                '<a href="javascript:void(0);" class="flex-align-center inline">' +
+                                '<i class="b-img more"></i>' +
+                                '</a>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="comment-content">'+ n.content +'</div>' +
+                                '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ n.user_id +'" data-reply-name="'+ n.user_name +'" data-parent="'+ n.id +'" data-item="'+ oId +'">回复</a>' +
+                                '</li>' +
                                 '</ul>' +
                                 '<!--回复的评论-->' +
                                 '<ul class="comment-list comment-reply-list" '+ (n.comment_list.count?'':'style="display: none;"') +'>'+ replyData +'</ul>' +
@@ -1096,18 +1118,27 @@ function forumJs() {
                         }
                         var listData = '<div class="flex-start flex-align-center h comment-content-h"><span class="h-name">最新评论</span>（<span class="num">'+ data.count +'</span>条评论）</div>' +
                             '<div class="comment-content-list">'+ commentData +'</div>';
+                        var pageData = '';
+                        //页码
+                        if(data.page_num > 1){
+                            for (var i=1; i<=data.page_num; i++)
+                            {
+                                pageData += '<a href="javascript:void(0);" class="'+ ((i == page)?'active':'click') +'">'+ i +'</a> '
+                            }
+                            listData += '<div class="comment-page">'+ pageData +'</div>';
+                        }
                         // console.log(listData);
                         commentList.find('.show-comment-content').html(listData);
+
+                        commentList.find('.comment-page a.click').on('click', function () {
+                            var oPage = $(this).index()+1;
+                            ajaxForumComment(oPage);
+                        });
+
                         return;
                     }
                 }
             });
-
-        }else{
-            oThis.data('status',0);
-            oThis.removeClass('active');
-            commentList.hide();
-            //commentList.html('');
         }
 
     });
