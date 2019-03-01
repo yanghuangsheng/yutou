@@ -83,7 +83,6 @@ class User extends Base
         return $this->fetch();
     }
 
-
     /**
      * 用户主页
      * @param $user_id
@@ -100,6 +99,7 @@ class User extends Base
         $data['post_list'] = $user->userForumPost($data['id']);
         //print_r($data);
         $this->init(['title'=>'【'.$data['name'].'】的个人中心']);
+        $this->getBroadcast($user);
         $this->assign('data', $data);
 
         return $this->fetch();
@@ -121,6 +121,7 @@ class User extends Base
         $data['system_list'] = $user->messageList(0);
         $data['interaction_list'] = $user->messageList(1);
         //print_r($data['system_list']);
+        $this->getBroadcast($user);
         $this->assign('data', $data);
         return $this->fetch();
     }
@@ -146,6 +147,7 @@ class User extends Base
         ];
 
         //print_r($data);
+        $this->getBroadcast($user);
         $this->assign('data', $data);
 
         return $this->fetch();
@@ -357,5 +359,15 @@ class User extends Base
         if($this->isFormat('system_list')){
             return $user->formatMessageList(0);
         }
+    }
+
+    /**
+     * 广播
+     * @param $user
+     */
+    protected function getBroadcast($user)
+    {
+        $data = $user->getBroadcast();
+        $this->assign('broadcast', $data['list']);
     }
 }

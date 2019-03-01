@@ -40,6 +40,7 @@
     <div class="user-head-r">
         <!--活动-->
     </div>
+
 </div>
 {else /}
 <!--对外展示-->
@@ -83,9 +84,15 @@
 <!--公告-->
 <div class="box-width box-center flex-start flex-align-center flex-align-stretch notice">
     <div class="flex-align-center h my-home"><i class="b-img"></i></div>
-    <div class="list-content">
+    <div class="list-content" style="overflow: hidden;" id="marqueeBox">
         <ul>
-            <li></li>
+            {volist name="broadcast" id="value"}
+            <li>{$value['content']|raw}</li>
+            {/volist}
         </ul>
     </div>
 </div>
+
+<script>
+    $('#marqueeBox').kxbdMarquee({isEqual:false});
+</script>

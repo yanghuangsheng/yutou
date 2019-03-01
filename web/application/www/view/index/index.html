@@ -58,13 +58,13 @@
                         <li class="flex-between flex-align-stretch inline">
                             <div class="image">
                                 {if $item['image_url']}
-                                <a href="{:urls('news/item')}?id={$item['id']}">
+                                <a href="{:urls('news/item')}?id={$item['id']}" target="_blank">
                                     <img src="{$item['image_url']}" alt="">
                                 </a>
                                 {/if}
                             </div>
                             <div class="item-content">
-                                <p class="title"><a href="{:urls('news/item')}?id={$item['id']}">{$item['title']}</a></p>
+                                <p class="title"><a href="{:urls('news/item')}?id={$item['id']}" target="_blank">{$item['title']}</a></p>
                                 <p class="description">{$item['description']}</p>
                                 <div class="flex-between info">
                                     <div class="flex-start info-l">

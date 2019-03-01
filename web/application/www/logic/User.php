@@ -627,4 +627,13 @@ class User extends Base
         ];
         return isset($data[$name])?$data[$name]:'';
     }
+
+    /**
+     * 获取广播
+     * @return mixed
+     */
+    public function getBroadcast()
+    {
+        return (new \app\www\service\SystemBroadcast)->initField('content')->getListData();
+    }
 }

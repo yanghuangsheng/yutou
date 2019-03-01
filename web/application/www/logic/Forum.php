@@ -97,8 +97,9 @@ class Forum extends Base
                 }
                 $this->resultJson(-1, $forum->getError()?$forum->getError():'保存失败');
             }else{
-                if($forum->save($param)){
+                if($data = $forum->save($param, 0, 1)){
                     (new \app\www\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'post');
+                    (new \app\www\service\SystemBroadcast)->trigger(1, 'put', ['name'=>$this->session('user')['name'], 'id'=>$data['id'], 'title'=>$data['title'], 'num'=>0]);
                     $this->resultJson(0, '发布成功');
                 }
                 $this->resultJson(-1, $forum->getError()?$forum->getError():'发布失败');

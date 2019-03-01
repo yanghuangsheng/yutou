@@ -180,14 +180,14 @@ class Common extends Base
         return $this->model->where($where_map[0], $where_map[1])->dec($field, $value)->update();
     }
 
-
     /**
      * 更新与新增
-     * @param $postData array 要更新的数据
+     * @param $postData 要更新的数据
      * @param int $isUpdate 0新增 1更新
+     * @param $re
      * @return bool
      */
-    public function save($postData, $isUpdate = 0)
+    public function save($postData, $isUpdate = 0, $re = 0)
     {
 
         //如果设置可更新字段
@@ -209,7 +209,7 @@ class Common extends Base
                 if(method_exists($this, 'setSaveAdd')){
                     $this->setSaveAdd($this->model);
                 }
-                return true;
+                return $re?$this->model:true;
             }
 
         }
