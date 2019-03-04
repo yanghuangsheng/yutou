@@ -859,6 +859,10 @@
     line-height: 35px;
     padding: 0px 10px;
 }
+#marqueeBox li a:hover{
+    color: #aa5500;
+    text-decoration: underline;
+}
 
 
 
