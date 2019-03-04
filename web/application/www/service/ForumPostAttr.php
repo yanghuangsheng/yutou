@@ -29,7 +29,8 @@ class ForumPostAttr extends Common
         $field .= '_num';
         if($this->model->where('post_id', $data['id'])->count()){
 
-            return $this->updateInc(['post_id', $data['id']], $field);
+            return $this->updateInc(['post_id', $data['id']], $field)?
+                $this->getField([['post_id', '=', $data['id']]], $field):0;
         }
 
         $updateData = [
@@ -37,6 +38,6 @@ class ForumPostAttr extends Common
             $field => 1,
 
         ];
-        return $this->save($updateData);
+        return $this->save($updateData)?1:0;
     }
 }

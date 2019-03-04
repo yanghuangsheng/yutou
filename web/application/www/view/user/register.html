@@ -4,15 +4,15 @@
         <div class="tips">如手机号已经注册则自动登录</div>
         <ul>
             <li class="border phone">
-                <input type="text" placeholder="手机号">
-                <span class="flex-center flex-align-center"><i></i></span>
+                <input type="text" name="phone" placeholder="手机号">
+                <span class="flex-center flex-align-center"><i class="b-img"></i></span>
             </li>
             <li class="flex-between flex-align-stretch verification">
-                <input type="text" placeholder="输入验证码">
+                <input type="text" name="code" placeholder="输入验证码">
                 <a href="javascript:void(0);" id="sendVerification" data-send="0">验证码</a>
             </li>
             <li class="border">
-                <button>注册</button>
+                <button id="login-register-btn">注册</button>
             </li>
         </ul>
     </div>

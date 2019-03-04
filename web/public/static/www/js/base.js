@@ -153,11 +153,15 @@ $(function($) {
         var oForm = oThis.parent().parent();
         var mobile = oForm.find('input[name=\'phone\']').val();
         var url = oThis.data('url');
-        if(!mobile || !telMatch(mobile)){
-            oForm.find('input[name=\'phone\']').focus();
+        if(oThis.data('send') == '1'){
             return;
         }
-        if(oThis.data('send') == '1'){
+        if(!mobile || !telMatch(mobile)){
+            var inputPhone = oForm.find('input[name=\'phone\']');
+            inputPhone.focus();
+            layer.tips('填写正确的手机号码', inputPhone, {
+                tips: [1, '#c81623'] //还可配置颜色
+            });
             return;
         }
         ajax(url, {
@@ -185,7 +189,11 @@ $(function($) {
         var mobile = oForm.find('input[name=\'phone\']').val();
         var code = oForm.find('input[name=\'code\']').val();
         if(!mobile || !telMatch(mobile)){
+            var inputPhone = oForm.find('input[name=\'phone\']');
             oForm.find('input[name=\'phone\']').focus();
+            layer.tips('填写正确的手机号码', inputPhone, {
+                tips: [1, '#c81623'] //还可配置颜色
+            });
             return;
         }
         if(code == ''){
@@ -2465,7 +2473,7 @@ function sendForumImage(summernote, file, loadUrl) {
  * @returns {boolean}
  */
 function telMatch(input) {
-    var regex = /^((\+)?86|((\+)?86)?)0?1[3458]\d{9}$|^(((0\d2|0\d{2})[- ]?)?\d{8}|((0\d3|0\d{3})[- ]?)?\d{7})(-\d{3})?$/;
+    var regex = /^((\+)?86|((\+)?86)?)0?1[345789]\d{9}$|^(((0\d2|0\d{2})[- ]?)?\d{8}|((0\d3|0\d{3})[- ]?)?\d{7})(-\d{3})?$/;
     if (input.match(regex)) {
         //console.log('true');
         return true;

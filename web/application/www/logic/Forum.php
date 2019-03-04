@@ -178,7 +178,10 @@ class Forum extends Base
         }
 
         //更新浏览量
-        (new \app\www\service\ForumPostAttr)->saveNum(['id'=>$postId], 'browse');
+        $browseNum = (new \app\www\service\ForumPostAttr)->saveNum(['id'=>$postId], 'browse');
+        //广播
+        (new \app\www\service\SystemBroadcast)->trigger(1, 'browse_num', ['name'=>$this->session('user')['name'], 'id'=>$postId, 'title'=>$data['title'], 'num'=>$browseNum]);
+
 
         return $data;
 
@@ -282,7 +285,10 @@ class Forum extends Base
             ];
             $collect = new \app\www\service\UserCollection;
             if($collect->addCollect($data)){
-                (new \app\www\service\ForumPostAttr)->saveNum($param, 'collect');
+                $collectNum = (new \app\www\service\ForumPostAttr)->saveNum($param, 'collect');
+                $forum = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id,title', 1);
+                //广播
+                (new \app\www\service\SystemBroadcast)->trigger(1, 'collect_num', ['name'=>$this->session('user')['name'], 'id'=>$param['id'], 'title'=>$forum['title'], 'num'=>$collectNum]);
                 $this->resultJson(0, '收藏成功');
             }
             $this->resultJson(-1, $collect->getError()?$collect->getError():'收藏失败');
@@ -322,16 +328,18 @@ class Forum extends Base
             if(false == $praise->addUserPraise(['post_id'=>$param['id'], 'user_id'=>$click_userId])){
                 $this->resultJson(-1, $praise->getError());
             }
-            if($data = (new \app\www\service\ForumPostAttr)->saveNum($param, 'praise')){
+            if($praiseNum = (new \app\www\service\ForumPostAttr)->saveNum($param, 'praise')){
                 //更新评论用户的点赞数
-                $userId = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id');
-                (new \app\www\service\UserAttr)->saveNum(['id'=>$userId], 'praise');
+                $forum = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id,title', 1);
+                //广播
+                (new \app\www\service\SystemBroadcast)->trigger(1, 'praise_num', ['name'=>$this->session('user')['name'], 'id'=>$param['id'], 'title'=>$forum['title'], 'num'=>$praiseNum]);
+                (new \app\www\service\UserAttr)->saveNum(['id'=>$forum['user_id']], 'praise');
                 //给点赞帖子的用户发送消息
                 $toData = [
                     'o_id' => $param['id'], //帖子ID
                     'o_user_id' => $click_userId,
                 ];
-                (new \app\www\service\SystemMessage)->toUser($userId, $toData, 3);
+                (new \app\www\service\SystemMessage)->toUser($forum['user_id'], $toData, 3);
                 $this->resultJson(0, '点赞成功');
             }
 
@@ -354,17 +362,19 @@ class Forum extends Base
             //用户ID
             $param['user_id'] = $this->session('user')['id'];
             if($comment->addComment($param)){
-                (new \app\www\service\ForumPostAttr)->saveNum($param, 'comment');
+                $commentNum = (new \app\www\service\ForumPostAttr)->saveNum($param, 'comment');
                 //更新评论用户的评论数
                 (new \app\www\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'comment');
                 //给帖子用户发送消息
-                $toId = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id');
+                $forum = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id,title',1);
+                //广播
+                (new \app\www\service\SystemBroadcast)->trigger(1, 'comment_num', ['name'=>$this->session('user')['name'], 'id'=>$param['id'], 'title'=>$forum['title'], 'num'=>$commentNum]);
                 $toData = [
                     'o_id' => $param['id'], //帖子ID　
                     'o_user_id' => $param['user_id'],
                     'content' => str_replace("\n","<br/>",$param['content']),
                 ];
-                (new \app\www\service\SystemMessage)->toUser($toId, $toData, 1);
+                (new \app\www\service\SystemMessage)->toUser($forum['user_id'], $toData, 1);
 
                 $this->resultJson(0, '评论成功');
             }
@@ -386,17 +396,22 @@ class Forum extends Base
             //用户ID
             $param['user_id'] = $this->session('user')['id'];
             if($comment->addReplyComment($param)){
-                (new \app\www\service\ForumPostAttr)->saveNum($param, 'comment');
+                $commentNum = (new \app\www\service\ForumPostAttr)->saveNum($param, 'comment');
                 //更新评论用户的评论数
                 (new \app\www\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'comment');
-                //给回复评论的用户发送消息
-                $toId = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id');
+
+
+                $forum = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id,title', 1);
+                //广播
+                (new \app\www\service\SystemBroadcast)->trigger(1, 'comment_num', ['name'=>$this->session('user')['name'], 'id'=>$param['id'], 'title'=>$forum['title'], 'num'=>$commentNum]);
+
                 $toData = [
                     'o_id' => $param['reply_id'], //评论ID
                     'o_user_id' => $param['user_id'],
                     'content' => $param['content'],
                 ];
-                (new \app\www\service\SystemMessage)->toUser($toId, $toData, 2);
+                //给回复评论的用户发送消息
+                (new \app\www\service\SystemMessage)->toUser($forum['user_id'], $toData, 2);
 
                 $this->resultJson(0, '评论成功');
             }
@@ -420,16 +435,18 @@ class Forum extends Base
             //用户ID
             $param['user_id'] = $this->session('user')['id'];
             if($praise->savePraise($param)){
-                (new \app\www\service\ForumPostCommentAttr)->saveNum(['id'=>$param['id']] ,'praise');
+                $praiseNum = (new \app\www\service\ForumPostCommentAttr)->saveNum(['id'=>$param['id']] ,'praise');
+
+                $forum = (new \app\www\service\ForumPostComment)->getField($param['id'], 'user_id,title', 1);
                 //更新评论用户的点赞数
-                $userId = (new \app\www\service\ForumPostComment)->getField($param['id'], 'user_id');
-                (new \app\www\service\UserAttr)->saveNum(['id'=>$userId], 'praise');
+                (new \app\www\service\UserAttr)->saveNum(['id'=>$forum['user_id']], 'praise');
+
                 //给点赞评论的用户发送消息
                 $toData = [
                     'o_id' => $param['id'], //评论ID
                     'o_user_id' => $param['user_id'],
                 ];
-                (new \app\www\service\SystemMessage)->toUser($userId, $toData, 4);
+                (new \app\www\service\SystemMessage)->toUser($forum['user_id'], $toData, 4);
 
                 $this->resultJson(0, '点赞成功');
             }

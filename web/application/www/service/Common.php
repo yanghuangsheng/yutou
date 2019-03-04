@@ -131,15 +131,16 @@ class Common extends Base
     }
 
     /**
-     * 获取一字段值
+     * 获取一个或多个字段
      * @param $map
      * @param $field
+     * @param int $find
      * @return mixed
      */
-    public function getField($map ,$field)
+    public function getField($map ,$field, $find = 0)
     {
         is_array($map) || $map = [['id', '=', $map]];
-        return $this->model->where($map)->value($field);
+        return $find?$this->model->where($map)->field($field)->find():$this->model->where($map)->value($field);
     }
 
     /**
