@@ -17,7 +17,6 @@ class ForumPostAttr extends Common
         $this->model = new \app\common\model\ForumPostAttr;
     }
 
-
     /**
      * 更新数目
      * @param $data

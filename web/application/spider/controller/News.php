@@ -29,7 +29,7 @@ class News extends Base
         $this->b->setUrl($pattern['url']);
 
         if($this->b->curlGet() === false){
-            echo '获取网页出错了 url='.$this->getUrl();
+            echo '获取网页出错了 url='.$this->b->getUrl();
             return false;
         }
 
@@ -37,33 +37,36 @@ class News extends Base
             echo '获取区块内容出错了';
             return false;
         }
-        //echo $this->result;
+
         $data = [
             'next_depth' => [], //最终页地址
             'title_depth' => [], //标题
             'result' => [], //要存放的内容
         ];
 
-
+        if(!$pattern['route']['depth']['url']){
+            echo $this->b->getResult();
+            exit();
+        }
         if($result = $this->b->getAllContent($pattern['route']['depth']['url'])){
             $data['next_depth'] = $result;
         }
-
+        if(!$pattern['route']['depth']['title']){
+            print_r($data);
+            exit();
+        }
         if($result = $this->b->getAllContent($pattern['route']['depth']['title'])){
             $data['title_depth'] = $result;
         }
 
-        print_r($data);
-        dump(array_merge_more(['url','title'],[$data['next_depth'],$data['title_depth']]));
+
+        //dump(array_merge_more(['url','title'],[$data['next_depth'],$data['title_depth']]));
         //exit();
 
         $this->foreachGetItem($data, $pattern['content']);
 
-        print_r($data['result']);
+        print_r($data);
     }
-
-
-
 
     /**
      * 获取详情内容
@@ -75,7 +78,7 @@ class News extends Base
     {
         foreach ($data['next_depth'] as $key => $value){
             $value = $this->b->isSplicing($value);
-            //echo $value;
+            //exit($value);
             $item = [
                 'source_url' => $value,
             ];
@@ -88,14 +91,22 @@ class News extends Base
             }
 
             if($pattern['block'] && $this->b->getOneContent($pattern['block']) === false){
-                echo '获取区块内容出错了2';
-                return false;
+                echo '获取区块内容出错了2<br>';
+                echo $this->b->getResult();
+                exit();
             }else{
+                if(!$pattern['title']){
+                    echo $this->b->getResult();
+                    exit();
+                }
+
+
 
                 $pattern['title'] && $item['title'] = $this->b->getOneContentTo($pattern['title']);
                 $pattern['details'] && $item['details'] = $this->b->getOneContentTo($pattern['details']);
             }
 
+            //print_r($item);
 
 
             $data['result'][] = $item;

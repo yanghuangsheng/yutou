@@ -65,7 +65,6 @@ class Lottery extends Base
             }else{
                 break;
             }
-
         }
 
         if($model->saveAll($newAddData)){

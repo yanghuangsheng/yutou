@@ -34,6 +34,11 @@ class Base
         return $this->url;
     }
 
+    public function getResult()
+    {
+        return $this->result;
+    }
+
 
 
     /**
@@ -106,7 +111,6 @@ class Base
     public function getOneContentTo($pattern)
     {
         if(preg_match($pattern, $this->result, $data)){
-
             return $data[1];
         }
 
