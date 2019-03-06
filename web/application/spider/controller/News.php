@@ -82,7 +82,7 @@ class News extends Base
             $item = [
                 'source_url' => $value,
             ];
-
+            //echo $value;
             $this->b->setUrl($value);
 
             if($this->b->curlGet() === false){
@@ -97,7 +97,7 @@ class News extends Base
             }else{
                 if(!$pattern['title']){
                     echo $this->b->getResult();
-                    exit();
+                    exit('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
                 }
 
 

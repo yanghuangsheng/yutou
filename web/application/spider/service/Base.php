@@ -67,17 +67,20 @@ class Base
             "Accept-Language: zh-Hans-CN,zh-Hans;q=0.8,en-US;q=0.5,en;q=0.3",
             "User-Agent: Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)",
             'CLIENT-IP:'.$ip, 'X-FORWARDED-FOR:'.$ip];
-
+        $user_agent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";//模拟windows用户正常访问
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_REFERER, $this->getHost());//模拟来路
+        //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('X-FORWARDED-FOR:'.$this->Rand_IP(), 'CLIENT-IP:'.$this->Rand_IP()));
+        curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch,CURLOPT_TIMEOUT,30); //允许执行的最长秒数
         $result = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
+        //echo $result;
         if ($code != '404' && $result) {
             $this->result = $this->strToGBK($result);
             return true;
@@ -86,6 +89,18 @@ class Base
         return false;
     }
 
+    //随机IP
+    function Rand_IP(){
+
+        $ip2id= round(rand(600000, 2550000) / 10000); //第一种方法，直接生成
+        $ip3id= round(rand(600000, 2550000) / 10000);
+        $ip4id= round(rand(600000, 2550000) / 10000);
+        //下面是第二种方法，在以下数据中随机抽取
+        $arr_1 = array("218","218","66","66","218","218","60","60","202","204","66","66","66","59","61","60","222","221","66","59","60","60","66","218","218","62","63","64","66","66","122","211");
+         $randarr= mt_rand(0,count($arr_1)-1);
+         $ip1id = $arr_1[$randarr];
+         return $ip1id.".".$ip2id.".".$ip3id.".".$ip4id;
+    }
 
     /**
      * 匹配一条内容
