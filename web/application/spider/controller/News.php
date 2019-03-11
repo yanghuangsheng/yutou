@@ -60,7 +60,7 @@ class News extends Base
         }
 
 
-        //dump(array_merge_more(['url','title'],[$data['next_depth'],$data['title_depth']]));
+        dump(array_merge_more(['url','title'],[$data['next_depth'],$data['title_depth']]));
         //exit();
 
         $this->foreachGetItem($data, $pattern['content']);
@@ -92,12 +92,10 @@ class News extends Base
 
             if($pattern['block'] && $this->b->getOneContent($pattern['block']) === false){
                 echo '获取区块内容出错了2<br>';
-                echo $this->b->getResult();
-                exit();
+                exit($this->b->getResult());
             }else{
                 if(!$pattern['title']){
-                    echo $this->b->getResult();
-                    exit('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+                    exit($this->b->getResult());
                 }
 
 
@@ -106,7 +104,7 @@ class News extends Base
                 $pattern['details'] && $item['details'] = $this->b->getOneContentTo($pattern['details']);
             }
 
-            //print_r($item);
+            exit(print_r($item));
 
 
             $data['result'][] = $item;

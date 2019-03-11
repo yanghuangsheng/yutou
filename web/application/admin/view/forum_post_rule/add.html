@@ -1,0 +1,92 @@
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="margin:3px;padding:20px;background-color: #fff;">
+    <div style="height:25px;"></div>
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-sm12 layui-col-xs12">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>规则类型 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">类型</label>
+                                <div class="layui-input-inline" style="width:100px;">
+                                    <select name="trigger_type" lay-verify="required">
+                                        <option value=""></option>
+                                        <option value="hot">热门</option>
+                                        <option value="topic">话题</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="layui-col-sm12 layui-col-xs12">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>设置事件 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">事件</label>
+                                <div class="layui-input-inline" style="width:150px;">
+                                    <select name="trigger_field" lay-verify="required" lay-filter="typeSelect">
+                                        <option value="">选择规则</option>
+                                        <option value="browse_num">浏览数</option>
+                                        <option value="comment_num">评论数</option>
+                                        <option value="praise_num">点赞数</option>
+                                        <option value="collect_num">收藏数</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">条件</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="condition" autocomplete="off" placeholder="输入数字" class="layui-input" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="margin-top:-20px;">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-form-mid layui-word-aux">当满足条件时就会触发规则</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="remarks" autocomplete="off" placeholder="" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="hidden" name="id" value="">
+        <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
+    </div>
+</div>
+
+<script>
+    bodyD.use(['index','form','upload','laydate','formSelects'], function () {
+        var $ = layui.$, laydate = layui.laydate, form = layui.form, upload = layui.upload;
+
+        form.on('select(typeSelect)',function (data) {
+            var userInput = $("input[name=\"condition\"]");
+            if(data.value == 'put'){
+                userInput.val('').attr('placeholder','发布时触发').removeAttr('lay-verify');
+                userInput.attr('disabled','disabled');
+            }else{
+                userInput.val('').attr('placeholder','输入数字').attr('lay-verify','required');
+                userInput.removeAttr('disabled');
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,293 @@
+<div class="layui-fluid" id="LAY-article">
+    <div class="layui-card">
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">论坛规则</li>
+                <li class="layui-form-ctrl" data-events="add">添加规则</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-form" action="" id="LAY-article-form-search">
+                    <div style="margin-bottom: 10px;">
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 100px;">
+                                <select name="trigger_type" lay-verify="">
+                                    <option value="">类型</option>
+                                    <option value="hot">热门</option>
+                                    <option value="topic">话题</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 150px;">
+                                <input type="text" name="name" placeholder="规则名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
+                    </div>
+                    <table class="layui-table" id="LAY-table" lay-filter="LAY-list-table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="list-table-toolbar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    bodyD.use(['index', 'form', 'table', 'util', 'laydate'], function () {
+        var $ = layui.$,
+            admin = layui.admin,
+            form = layui.form,
+            laydate = layui.laydate,
+            table = layui.table,
+            util = layui.util;
+
+        //form.render();
+        var tableOptions = {
+            elem: '#LAY-table',
+            url: window.location.href,
+            where: {
+                trigger_type: '',
+                name: '',
+            },
+            cols: [
+                [{
+                    checkbox: true
+                },
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        width: 80,
+                    },
+                    {
+                        field: 'name',
+                        title: '规则名称',
+                        width: 150,
+                    },
+                    {
+                        field: 'trigger_field_txt',
+                        title: '事件',
+                        width: 80,
+                        align: 'center'
+                    },
+                    {
+                        field: 'condition',
+                        title: '规则条件',
+                        width: 200,
+                        align: 'center'
+                    },
+                    {
+                        field: 'remarks',
+                        title: '备注',
+                        minWidth: 80,
+                        align: 'left'
+                    },
+                    {
+                        fixed: 'right',
+                        title: '操作',
+                        width: 120,
+                        align: 'center',
+                        toolbar: '#list-table-toolbar'
+                    }
+                ]
+            ],
+            id: 'LayTable',
+            page: true,
+            limit: 15,
+            limits: [15, 25, 35, 45, 55],
+            height: 'full-154',
+            done: function (res) {}
+        };
+        table.render(tableOptions);
+
+        table.on("tool(LAY-list-table)", function (t) {
+            //console.log(t);
+            var obj = t;
+            var data = obj.data;
+            switch (obj.event)
+            {
+                case 'edit':
+                    var oUrl = "{:Url('ForumPostRule/edit',['id'=>'__id__'])}";
+                    var wWidth = ($(window).width() < 650)? $(window).width()*0.8: 650;
+                    var wHeight = ($(window).height() < 560)? $(window).height()*0.9: 560;
+                    oUrl = oUrl.replace('__id__', data.id);
+                    layer.open({
+                        type: 2,
+                        title: '编辑规则',
+                        content: oUrl,
+                        maxmin: true,
+                        area: [wWidth+'px', wHeight+'px'],
+                        btn: ['确定', '取消'],
+                        yes: function (index, layero) {
+                            var iframeWindow = window['layui-layer-iframe' + index],
+                                submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit');
+
+                            //监听提交
+                            iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                                layer.load(2);
+                                admin.req({
+                                    url: oUrl,
+                                    data: data.field,
+                                    type: 'Post',
+                                    done: function (res) {
+                                        layer.closeAll('loading');
+                                        if(res.code == 0){
+                                            layer.close(index);
+                                            obj.update({
+                                                name: data.field.name,
+                                                trigger_type_txt: (data.field.trigger_type == '1')?'论坛':'资讯',
+                                                condition_txt: (data.field.trigger_field == 'put')?'发布时触发':data.field.condition,
+                                                content: data.field.content,
+                                                remarks: data.field.remarks,
+                                            });
+                                            return ;
+                                        }
+                                        layer.msg(res.msg, {icon: 0});
+                                    }
+                                });
+                            });
+                            submit.trigger('click');
+                        }
+                    });
+                    break;
+                case 'del':
+                    layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
+                        layer.load(2);
+                        admin.req({
+                            url: '{:Url("ForumPostRule/delete")}',
+                            data: {
+                                id: data.id
+                            },
+                            done: function (res) {
+                                layer.closeAll('loading');
+                                if(res.code == 0){
+                                    obj.del();
+                                    layer.close(index);
+                                    return;
+                                }
+                                layer.msg(res.msg, {
+                                    icon: 1
+                                });
+                            }
+                        });
+                    });
+                    break;
+            }
+        });
+
+        //事件处理
+        var events = {
+            add: function (othis, id) {
+                var oUrl = "{:Url('ForumPostRule/add')}";
+                var wWidth = ($(window).width() < 650)? $(window).width()*0.8: 650;
+                var wHeight = ($(window).height() < 560)? $(window).height()*0.9: 560;
+                layer.open({
+                    type: 2,
+                    title: '添加规则',
+                    content: oUrl,
+                    maxmin: true,
+                    area: [wWidth+'px', wHeight+'px'],
+                    btn: ['保存', '取消'],
+                    yes: function (index, layero) {
+                        var iframeWindow = window['layui-layer-iframe' + index],
+                            submit = layero.find('iframe').contents().find('#layuiadmin-app-form-submit');
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(layuiadmin-app-form-submit)', function (data) {
+                            layer.load(2);
+                            admin.req({
+                                url: oUrl,
+                                data: data.field,
+                                type: 'Post',
+                                done: function (res) {
+                                    layer.closeAll('loading');
+                                    if(res.code == 0){
+                                        table.reload('LayTable',{page:1});
+                                        layer.close(index);//关闭当前窗口
+                                        return ;
+                                    }
+                                    layer.msg(res.msg, {icon:0});
+
+                                }
+                            });
+                        });
+                        submit.trigger('click');
+                    }
+                });
+
+            },
+            del: function (oThis) {
+                var checkedIds = events.getCheckedIds();
+                if (checkedIds === '') return layer.msg('未选中行');
+                layer.confirm('确定删除选中的数据吗？',{icon: 3, title:false}, function (index) {
+                    layer.load(2);
+                    admin.req({
+                        url: '{:Url("ForumPostRule/delete")}',
+                        data: {
+                            id: checkedIds
+                        },
+                        done: function (res) {
+                            layer.closeAll('loading');
+                            if(res.code == 0){
+                                table.reload('LayTable');
+                                layer.close(index);
+                                return;
+                            }
+
+                            layer.msg('删除失败', {icon: 0});
+
+                        }
+                    });
+                });
+            },
+            update: function (oThis) {
+                var checkedIds = events.getCheckedIds();
+                if (checkedIds === '') return layer.msg('未选中行');
+
+                layer.load(2);
+                admin.req({
+                    url: '{:Url("ForumPostRule/update")}',
+                    data: {
+                        id: checkedIds,
+                        field: oThis.data('type'),
+                        value: oThis.data('status')
+                    },
+                    done: function (res) {
+                        layer.closeAll('loading');
+                        if(res.code == 0){
+                            table.reload('LayTable');
+                            return;
+                        }
+
+                        layer.msg(res.msg, {icon: 1});
+
+                    }
+                });
+
+            },
+            getCheckedIds: function () {
+                var checkStatus = table.checkStatus('LayTable'),
+                    data = checkStatus.data;
+                var cols = '';
+                for (var i = 0, len = data.length; i < len; i++) {
+                    cols += ',' + data[i]['id'];
+                }
+                return cols.substr(1);
+            }
+        };
+
+        $('.layui-tab-title .layui-form-ctrl, .update-btns .layui-btn').on('click', function() {
+            var othis = $(this),
+                thisEvent = othis.data('events');
+            events[thisEvent] && events[thisEvent].call(this, othis);
+        });
+
+        form.on('submit(search)', function (data) {
+            tableOptions.where = data.field;
+            table.reload('LayTable', tableOptions);
+            return false;
+        });
+
+    });
+</script>
