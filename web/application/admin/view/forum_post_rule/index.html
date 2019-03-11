@@ -137,9 +137,7 @@
                                             layer.close(index);
                                             obj.update({
                                                 name: data.field.name,
-                                                trigger_type_txt: (data.field.trigger_type == '1')?'论坛':'资讯',
-                                                condition_txt: (data.field.trigger_field == 'put')?'发布时触发':data.field.condition,
-                                                content: data.field.content,
+                                                condition: data.field.condition,
                                                 remarks: data.field.remarks,
                                             });
                                             return ;
