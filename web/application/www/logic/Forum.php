@@ -181,7 +181,8 @@ class Forum extends Base
         $browseNum = (new \app\www\service\ForumPostAttr)->saveNum(['id'=>$postId], 'browse');
         //广播
         (new \app\www\service\SystemBroadcast)->trigger(1, 'browse_num', ['name'=>$this->session('user')['name'], 'id'=>$postId, 'title'=>$data['title'], 'num'=>$browseNum]);
-
+        //规则触发
+        $this->ruleTrigger('browse_num', ['id'=>$postId, 'num'=>$browseNum]);
 
         return $data;
 
@@ -289,6 +290,9 @@ class Forum extends Base
                 $forum = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id,title', 1);
                 //广播
                 (new \app\www\service\SystemBroadcast)->trigger(1, 'collect_num', ['name'=>$this->session('user')['name'], 'id'=>$param['id'], 'title'=>$forum['title'], 'num'=>$collectNum]);
+                //规则触发
+                $this->ruleTrigger('collect_num', ['id'=>$param['id'], 'num'=>$collectNum]);
+
                 $this->resultJson(0, '收藏成功');
             }
             $this->resultJson(-1, $collect->getError()?$collect->getError():'收藏失败');
@@ -331,9 +335,14 @@ class Forum extends Base
             if($praiseNum = (new \app\www\service\ForumPostAttr)->saveNum($param, 'praise')){
                 //更新评论用户的点赞数
                 $forum = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id,title', 1);
+                //增加用户点赞数
+                (new \app\www\service\UserAttr)->saveNum(['id'=>$forum['user_id']], 'praise');
+
                 //广播
                 (new \app\www\service\SystemBroadcast)->trigger(1, 'praise_num', ['name'=>$this->session('user')['name'], 'id'=>$param['id'], 'title'=>$forum['title'], 'num'=>$praiseNum]);
-                (new \app\www\service\UserAttr)->saveNum(['id'=>$forum['user_id']], 'praise');
+                //规则触发
+                $this->ruleTrigger('praise_num', ['id'=>$param['id'], 'num'=>$praiseNum]);
+
                 //给点赞帖子的用户发送消息
                 $toData = [
                     'o_id' => $param['id'], //帖子ID
@@ -369,6 +378,9 @@ class Forum extends Base
                 $forum = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id,title',1);
                 //广播
                 (new \app\www\service\SystemBroadcast)->trigger(1, 'comment_num', ['name'=>$this->session('user')['name'], 'id'=>$param['id'], 'title'=>$forum['title'], 'num'=>$commentNum]);
+                //规则触发
+                $this->ruleTrigger('comment_num', ['id'=>$param['id'], 'num'=>$commentNum]);
+
                 $toData = [
                     'o_id' => $param['id'], //帖子ID　
                     'o_user_id' => $param['user_id'],
@@ -397,6 +409,7 @@ class Forum extends Base
             $param['user_id'] = $this->session('user')['id'];
             if($comment->addReplyComment($param)){
                 $commentNum = (new \app\www\service\ForumPostAttr)->saveNum($param, 'comment');
+
                 //更新评论用户的评论数
                 (new \app\www\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'comment');
 
@@ -404,6 +417,8 @@ class Forum extends Base
                 $forum = (new \app\www\service\ForumPost)->getField($param['id'], 'user_id,title', 1);
                 //广播
                 (new \app\www\service\SystemBroadcast)->trigger(1, 'comment_num', ['name'=>$this->session('user')['name'], 'id'=>$param['id'], 'title'=>$forum['title'], 'num'=>$commentNum]);
+                //规则触发
+                $this->ruleTrigger('comment_num', ['id'=>$param['id'], 'num'=>$commentNum]);
 
                 $toData = [
                     'o_id' => $param['reply_id'], //评论ID
@@ -508,5 +523,15 @@ class Forum extends Base
     {
         return (new \app\www\service\AdImages)->getBanner($ad_id);
     }
+
+    /**
+     * 规则触发器
+     * @param $event 事件
+     * @param $dara ['id','num']
+     */
+    protected function ruleTrigger($event, $dara){
+        (new \app\www\service\ForumPostRule)->trigger($event, $dara);
+    }
+
 
 }

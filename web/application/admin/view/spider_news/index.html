@@ -10,6 +10,7 @@
                         <div class="layui-input-inline" style="width: 200px;">
                             <select name="category_id" lay-verify="">
                                 <option value="">分类</option>
+                                {$data['category_list']|raw}
                             </select>
                         </div>
                         <div class="layui-input-inline" style="width: 100px;">
@@ -18,6 +19,11 @@
                                 <option value="1">已转发</option>
                                 <option value="0">未转发</option>
                             </select>
+                        </div>
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 150px;">
+                                <input type="text" name="title" placeholder="新闻标题" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                         <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
                     </div>
@@ -49,7 +55,7 @@
             where: {
                 category_id: '',
                 status: '',
-                keyword: ''
+                title: ''
             },
             cols: [
                 [{

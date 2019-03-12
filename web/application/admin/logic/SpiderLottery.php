@@ -19,8 +19,11 @@ class SpiderLottery extends Base
     public function getList()
     {
         $this->getListJson();
-
-        return [];
+        $categoryList = (new \app\admin\service\SpiderLotteryCategory)->getListData();
+        $data = [
+            'category_list' => (new \app\admin\service\TreeList)->toItems($categoryList['list']->toArray()),
+        ];
+        return $data;
     }
 
     /**
@@ -46,8 +49,12 @@ class SpiderLottery extends Base
     {
         if($this->isAjax()){
             $param = $this->param();
+            $where = [];
+
+            $param['category_id'] == '' || $where[] = ['category_id', '=', $param['category_id']];
+            $param['lottery_no'] == '' || $where[] = ['lottery_no', '=', $param['lottery_no']];
             $service = new oService;
-            $data = $service->initLimit($param['page'], $param['limit'])->getListData();
+            $data = $service->initWhere($where)->initLimit($param['page'], $param['limit'])->getListData();
             $this->resultJson(0, '获取成功', $data);
         }
     }

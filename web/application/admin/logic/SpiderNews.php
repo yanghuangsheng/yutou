@@ -19,8 +19,12 @@ class SpiderNews extends Base
     public function getList()
     {
         $this->getListJson();
+        $categoryList = (new \app\admin\service\SpiderNewsCategory)->getListData();
+        $data = [
+            'category_list' => (new \app\admin\service\TreeList)->toItems($categoryList['list']->toArray()),
+        ];
 
-        return [];
+        return $data;
     }
 
     /**
@@ -77,7 +81,9 @@ class SpiderNews extends Base
             $param = $this->param();
             $where = [];
 
+            $param['category_id'] == '' || $where[] = ['category_id', '=', $param['category_id']];
             $param['status'] == '' || $where[] = ['status', '=', $param['status']];
+            $param['title'] == '' || $where[] = ['title', 'like', '%'.trim($param['title']).'%'];
             $service = new oService;
 
             $data = $service->initWhere($where)->initLimit($param['page'], $param['limit'])->getListData();

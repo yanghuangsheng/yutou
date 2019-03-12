@@ -29,7 +29,8 @@ class PortalNewsAttr extends Common
         $field .= '_num';
         if($this->model->where('news_id', $data['id'])->count()){
 
-            return $this->updateInc(['news_id', $data['id']], $field);
+            return $this->updateInc(['news_id', $data['id']], $field)?
+                $this->getField([['news_id', '=', $data['id']]], $field):0;
         }
 
         $updateData = [
@@ -37,7 +38,7 @@ class PortalNewsAttr extends Common
             $field => 1,
 
         ];
-        return $this->save($updateData);
+        return $this->save($updateData)?1:0;
     }
 
 

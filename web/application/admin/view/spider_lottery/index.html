@@ -9,8 +9,14 @@
                     <div style="margin-bottom: 10px;">
                         <div class="layui-input-inline" style="width: 200px;">
                             <select name="category_id" lay-verify="">
-                                <option value="">分类</option>
+                                <option value="">彩票</option>
+                                {$data['category_list']|raw}
                             </select>
+                        </div>
+                        <div class="layui-inline clear-left">
+                            <div class="layui-input-block" style="width: 150px;">
+                                <input type="text" name="lottery_no" placeholder="期号" autocomplete="off" class="layui-input">
+                            </div>
                         </div>
                         <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search">查询</button>
                     </div>
@@ -39,8 +45,7 @@
             url: window.location.href,
             where: {
                 category_id: '',
-                status: '',
-                keyword: ''
+                lottery_no: '',
             },
             cols: [
                 [{

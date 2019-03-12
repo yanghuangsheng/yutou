@@ -9,6 +9,7 @@
 namespace app\www\logic;
 
 use \app\www\service\News as newsService;
+use app\www\service\PortalNewsRule;
 
 class News extends Base
 {
@@ -116,7 +117,9 @@ class News extends Base
         $data = $service->getOneData($newsId);
 
         //更新浏览量
-        (new \app\www\service\PortalNewsAttr)->saveNum(['id'=>$newsId], 'browse');
+        $browseNum = (new \app\www\service\PortalNewsAttr)->saveNum(['id'=>$newsId], 'browse');
+        //规则触发
+        $this->ruleTrigger('browse_num', ['id'=>$newsId, 'num'=>$browseNum]);
 
         return $data;
 
@@ -230,21 +233,25 @@ class News extends Base
     {
         if($this->isAjax() && $this->isPost() && $this->param('_format_') == 'praise'){
             $param = $this->param();
+            $newsId = $param['id'];
             $userId = $this->session('user')['id'];
             $praise = new \app\www\service\PortalNewsPraise;
-            if(false == $praise->addUserPraise(['news_id'=>$param['id'], 'user_id'=>$userId])){
+            if(false == $praise->addUserPraise(['news_id'=>$newsId, 'user_id'=>$userId])){
                 $this->resultJson(-1, $praise->getError());
             }
             $newsAttr = new \app\www\service\PortalNewsAttr;
-            if($data = $newsAttr->saveNum($param, 'praise')){
+            if($praiseNum = $newsAttr->saveNum($param, 'praise')){
                 //同时收藏
                 $data = [
-                    'id' => $param['id'],
+                    'id' => $newsId,
                     'user_id' => $userId,
                     'type' => 0
                 ];
                 (new \app\www\service\UserCollection)->addCollect($data);
-                $newsAttr->saveNum($param, 'collect');
+                $collectNum = $newsAttr->saveNum($param, 'collect');
+                //规则触发
+                $this->ruleTrigger('praise_num', ['id'=>$newsId, 'num'=>$praiseNum]);
+                $this->ruleTrigger('collect_num', ['id'=>$newsId, 'num'=>$collectNum]);
 
 
                 $this->resultJson(0, '点赞成功');
@@ -269,7 +276,11 @@ class News extends Base
             //用户ID
             $param['user_id'] = $this->session('user')['id'];
             if($comment->addComment($param)){
-                (new \app\www\service\PortalNewsAttr)->saveNum($param, 'comment');
+                //累加新闻评论数
+                $commentNum = (new \app\www\service\PortalNewsAttr)->saveNum($param, 'comment');
+                //规则触发
+                $this->ruleTrigger('comment_num', ['id'=>$param['id'], 'num'=>$commentNum]);
+
                 //更新评论用户的评论数
                 (new \app\www\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'comment');
 
@@ -293,6 +304,10 @@ class News extends Base
             //用户ID
             $param['user_id'] = $this->session('user')['id'];
             if($comment->addReplyComment($param)){
+                //累加新闻评论数
+                $commentNum = (new \app\www\service\PortalNewsAttr)->saveNum($param, 'comment');
+                //规则触发
+                $this->ruleTrigger('comment_num', ['id'=>$param['id'], 'num'=>$commentNum]);
 
                 $this->resultJson(0, '评论成功');
             }
@@ -338,7 +353,6 @@ class News extends Base
             $param = $this->param();
             //提交数据验证 -> 暂缺
 
-
             $praise = new \app\www\service\PortalNewsCommentClick;
             //用户ID
             $param['user_id'] = $this->session('user')['id'];
@@ -368,6 +382,13 @@ class News extends Base
         return $service->newsId();
     }
 
-
+    /**
+     * 规则触发器
+     * @param $event 事件
+     * @param $dara ['id','num']
+     */
+    protected function ruleTrigger($event, $dara){
+        (new \app\www\service\PortalNewsRule)->trigger($event, $dara);
+    }
 
 }
