@@ -5,7 +5,7 @@
             <div class="images">
                 <ul>
                     {volist name="data['ad_carousel']['list']" id="value"}
-                    <li><a href="{$value['link_url']?:'javascript:void(0);'}"><img src="{$value['image_url']}"></a></li>
+                    <li><a href="{$value['link_url']?:'javascript:void(0);'}" target="_blank"><img src="{$value['image_url']}"></a></li>
                     {/volist}
                 </ul>
             </div>
@@ -22,7 +22,7 @@
                 <ul class="list">
                     {volist name="data['top_list']" id="top"}
                     <li>
-                        <a href="{:urls('news/item')}?id={$top['id']}">
+                        <a href="{:urls('news/item')}?id={$top['id']}" target="_blank">
                             <img src="{$top['image_url']}" alt="">
                             <p>{$top['title']}</p>
                         </a>
