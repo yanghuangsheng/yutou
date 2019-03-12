@@ -16,20 +16,10 @@
             <a class="b-img prev" href="javascript:void(0);"></a>
             <a class="b-img next" href="javascript:void(0);"></a>
         </div>
-        <script src="/static/www/js/extend/superslide/index.js"></script>
-        <script type="text/javascript">
-            var indexBanner = $("#indexBanner");
-            if(indexBanner.find('.images li').length > 1){
-                indexBanner.find('.images li').each(function(i, n){
-                    indexBanner.find('.hd ul').append('<li></li>');
-                });
-                jQuery("#indexBanner").slide({mainCell:".images ul",effect:"leftLoop",vis:"auto",autoPlay:true,interTime:4000,easing:"easeInQuint"});
-            }
-        </script>
         <!--热点-->
-        <div class="index-hot-news">
-            <div class="list">
-                <ul class="flex-between">
+        <div class="index-hot-news" id="index-hot-news">
+            <div class="box">
+                <ul class="list">
                     {volist name="data['top_list']" id="top"}
                     <li>
                         <a href="{:urls('news/item')}?id={$top['id']}">
@@ -39,8 +29,23 @@
                     </li>
                     {/volist}
                 </ul>
+                <a href="javascript:void(0);" class="b-img next"></a>
+                <a href="javascript:void(0);" class="b-img prev"></a>
             </div>
         </div>
+        <script src="/static/www/js/extend/superslide/index.js"></script>
+        <script type="text/javascript">
+            var indexBanner = $("#indexBanner");
+            if(indexBanner.find('.images li').length > 1){
+                indexBanner.find('.images li').each(function(i, n){
+                    indexBanner.find('.hd ul').append('<li></li>');
+                });
+                jQuery("#indexBanner").slide({mainCell:".images ul",effect:"leftLoop",vis:"auto",autoPlay:true,interTime:4000,easing:"easeInQuint"});
+            }
+            $('#index-hot-news').cxScroll({
+                direction: 'right'
+            });
+        </script>
         <!--分类新闻-->
         <div class="index-news" id="indexNewsList">
             <div class="news-tab">
