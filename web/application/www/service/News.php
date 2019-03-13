@@ -36,7 +36,7 @@ class News extends Common
      */
     protected function setOneWithOnView()
     {
-        return $this->model->view('PortalNews', 'id,title,image_url,published_time,description,author,source_name')
+        return $this->model->view('PortalNews', 'id,title,image_url,published_time,keywords,description,author,source_name')
             ->view('PortalNewsContent', 'content', 'PortalNewsContent.news_id = PortalNews.id')
             ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT');
     }

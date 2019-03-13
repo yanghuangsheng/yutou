@@ -10,6 +10,7 @@ namespace app\www\controller;
 
 
 use think\Controller;
+use think\facade\Config;
 
 class Base extends Controller
 {
@@ -22,6 +23,7 @@ class Base extends Controller
         $data = $user->getSessionUserInfo();
 
         $this->assign('index', $user->getController());
+        $this->assign('app_debug', Config::get('app_debug'));
         $this->assign('user_data', $data);
     }
 

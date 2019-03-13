@@ -34,7 +34,11 @@ class News extends Base
         //右侧广告
         $data['ad_banner'] = $logic->getBanner(4);
 
-        $this->init(['title'=>$data['item']['title']]);
+        $this->init([
+            'title'=>$data['item']['title'],
+            'keywords'=>$data['item']['keywords'],
+            'description'=>$data['item']['description']]
+        );
         $this->assign('data', $data);
 
         return $this->fetch();

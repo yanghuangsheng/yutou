@@ -60,6 +60,7 @@
         </div>
     </div>
 </div>
+{if !$app_debug}
 <script>
     (function(){
         var bp = document.createElement('script');
@@ -74,3 +75,4 @@
         s.parentNode.insertBefore(bp, s);
     })();
 </script>
+{/if}

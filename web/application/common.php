@@ -494,4 +494,27 @@ function keyData($data, $keys = 'id')
     return $resultData;
 }
 
+/**
+ * 百度收录推送
+ * @param $id
+ */
+function baiduSeoPush($id)
+{
+    $urls = array(
+        'http://www.bh3721.com/news/item?id='.$id
+    );
+    $api = 'http://data.zz.baidu.com/urls?site=www.bh3721.com&token=w32Y2dnsad84SEs4';
+    $ch = curl_init();
+    $options =  array(
+        CURLOPT_URL => $api,
+        CURLOPT_POST => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POSTFIELDS => implode("\n", $urls),
+        CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
+    );
+    curl_setopt_array($ch, $options);
+    curl_exec($ch);
+    curl_close($ch);
+}
+
 

@@ -9,6 +9,7 @@
 namespace app\admin\logic;
 
 use app\admin\service\PortalNews as oService;
+use think\facade\Config;
 
 class PortalNews extends Base
 {
@@ -117,7 +118,13 @@ class PortalNews extends Base
     {
         if($this->isAjax()){
             $postData = $this->post();
-            if((new oService)->save($postData)){
+            if($data = (new oService)->save($postData, 0, 1)){
+
+                if(Config::get('app_debug') == false){
+                    //百度SEO推送
+                    baiduSeoPush($data['id']);
+                }
+
                 $this->resultJson(0, '新增成功');
             }else{
                 $this->resultJson(-1, '新增失败');
@@ -140,6 +147,10 @@ class PortalNews extends Base
             $oService = new oService;
             if($oService->save($postData, 1)){
                 $categoryTxt = $oService->newsCategory($postData['category_id']);
+                if($postData['status'] && (Config::get('app_debug') == false)){
+                    //百度SEO推送
+                    baiduSeoPush($postData['id']);
+                }
                 $this->resultJson(0, '更新成功',['category_name'=>$categoryTxt]);
             }else{
                 $this->resultJson(-1, '更新失败');
