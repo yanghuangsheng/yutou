@@ -9,6 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
+//PC
 Route::rule('/','www/Index/index');
 Route::rule('/404','www/Error/index');
 Route::rule('/search','www/Search/index');
@@ -38,6 +39,12 @@ Route::rule('/user/callback', 'www/User/callback');
 
 
 Route::rule('/user', 'www/User/index');
+
+
+
+//API
+Route::get('api/:ver/news', 'api/:ver.news/index');
+Route::get('api/:ver/news', 'api/:ver.news/index');
 
 
 
