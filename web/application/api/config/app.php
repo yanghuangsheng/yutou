@@ -8,6 +8,7 @@ return [
     'exception_handle' => '\app\api\exception\ApiHandleException',
 
     'app' => [
+        'sign' => 'db19c86c58e083427dadedded42f73da', //md5('bh3721com@bh3721com@bh3721com')
         'aes_halt' => '1234567890abcdef1234567890abcdef',// 密码加密盐
         'aes_key' => 'e10adc3949ba59abbe56e057f20f883e',//aes 密钥 , 服务端和客户端必须保持一致
         'app_type' => [

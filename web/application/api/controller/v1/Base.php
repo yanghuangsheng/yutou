@@ -73,7 +73,7 @@ class Base extends Controller
     private function encrypt($str)
     {
 
-        $key = pack('H*', $this->app['aes_key']);  //md5('123456')
+        $key = pack('H*', $this->app['aes_key']);
         $iv   = pack('H*', $this->app['aes_halt']);
 
         $encrypted = openssl_encrypt($str, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $iv);
@@ -87,7 +87,7 @@ class Base extends Controller
      */
     private function decrypt($str)
     {
-        $key = pack('H*', $this->app['aes_key']);  //md5('123456')
+        $key = pack('H*', $this->app['aes_key']);
         $iv   = pack('H*', $this->app['aes_halt']);
 
         $deStr = base64_decode($str);
