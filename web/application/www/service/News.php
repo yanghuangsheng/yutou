@@ -25,6 +25,7 @@ class News extends Common
      */
     protected function setWithOnView()
     {
+        $this->order = ['published_time', 'desc'];
         return $this->model->view('PortalNews', 'id,title,image_url,published_time,description,author,source_name')
             ->view('PortalNewsInCategory', 'category_id', 'PortalNewsInCategory.news_id = PortalNews.id')
             ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT');
