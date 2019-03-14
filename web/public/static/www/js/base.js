@@ -440,6 +440,8 @@ function indexJS(){
                             oLi.find('p.title a').html(n.title);
                             oLi.find('p.description').html(n.description);
                             oLi.find('p.author-name').html(n.author ? n.author : n.source_name);
+                            oLi.find('.info .date').html(n.published_time);
+
                             oLi.find('.read span').text(n.browse_num ? n.browse_num : '0');
                             oLi.find('.comment span').text(n.comment_num ? n.comment_num : '0');
                             oLi.find('.collection span').text(n.collect_num ? n.collect_num : '0');
