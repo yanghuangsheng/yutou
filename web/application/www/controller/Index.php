@@ -35,9 +35,10 @@ class Index extends Base
      */
     protected function newsList($logic)
     {
+        $data['data'][] = $logic->getList(0); //最新
         $data['data'][] = $logic->getList(9); //竞技
         $data['data'][] = $logic->getList(10); //数字
-        $data['data'][] = $logic->getList(11); //其他
+        $data['data'][] = $logic->getList(11); //电竞
         $data['start_id'] =  $logic->getNewsId(); //用于获取下一页数据，预防有新数据重复出现
         return $data;
     }

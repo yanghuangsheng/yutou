@@ -28,8 +28,10 @@ class News extends Base
         $categoryList[] = $category_id;
         $where = [
             ['PortalNews.status', '=', 1],
-            ['PortalNewsInCategory.category_id', 'in', join(',', $categoryList)]
         ];
+
+        $category_id && $where[] = ['PortalNewsInCategory.category_id', 'in', join(',', $categoryList)];
+
         isset($param['start_id']) && $where[] = ['PortalNews.id', '<=', $param['start_id']];
 
         $data = $service->initWhere($where)->initLimit($param['page'])->getListData();

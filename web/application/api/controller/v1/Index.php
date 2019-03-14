@@ -14,6 +14,27 @@ class Index extends Base
     //轮播图
     public function banner()
     {
+        echo 'banner';
+    }
+
+    //广播
+    public function broadcast()
+    {
+        echo 'broadcast';
+
+    }
+
+    //热门资讯
+    public function hotNews()
+    {
+        echo 'hotNews';
+
+    }
+
+    //资讯栏目
+    public function newsColumn()
+    {
+        echo 'newsColumn';
 
     }
 }
