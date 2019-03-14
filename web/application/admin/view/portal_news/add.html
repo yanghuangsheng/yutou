@@ -181,7 +181,7 @@
                 elem: uploadName
                 , url: oUrl.replace('__type__', type)
                 , accept: 'file' //普通文件
-                , exts: 'jpg|png|gif' //只允许上传压缩文件
+                , exts: 'jpg|jpeg|png|gif' //只允许上传压缩文件
                 , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
                     layer.load(); //上传loading
                 }

@@ -27,6 +27,10 @@ class Base extends Controller
         parent::initialize();
         $this->app = Config::get('app');
         $this->headers = Request::header();
+        $str = $this->encrypt('After all, tomorrow is another day.');
+        echo $str."\n";
+        echo $this->decrypt($str)."\n";
+        $this->isAuth && $this->checkRequestAuth();
     }
 
     /**
@@ -36,14 +40,13 @@ class Base extends Controller
     protected function checkRequestAuth()
     {
         //基础参数校验
-        if(empty($this->headers['sign'])) {
+        if(empty($this->getHeaders('sign'))) {
             throw new ApiException('sign不存在', 400);
         }
         //客户端
-        if(!in_array($this->headers['app_type'], $this->app['app_type'])) {
+        if(!in_array($this->getHeaders('app-type'), $this->app['app_type'])) {
             throw new ApiException('app_type不合法', 400);
         }
-
     }
 
     /**
@@ -57,17 +60,29 @@ class Base extends Controller
     }
 
     /**
+     * 检查sign回密串
+     * @param $sign
+     */
+    private function checkSignPass($sign)
+    {
+
+    }
+
+    /**
      * 加密
      * @param $str
      * @return string
      */
     private function encrypt($str)
     {
-        $key = $this->app['aes_key'];
-        $iv = $this->app['aes_halt'];
 
-        $encrypted = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $str, MCRYPT_MODE_CBC, $iv);
-        return base64_encode($encrypted);
+        $key = pack('H*', $this->app['aes_key']);  //md5('123456')
+        $iv   = pack('H*', $this->app['aes_halt']);
+
+
+
+        $encrypted = openssl_encrypt($str, 'AES-128-CBC', $key, 0, $iv);
+        return $encrypted;
     }
 
     /**
@@ -77,11 +92,11 @@ class Base extends Controller
      */
     private function decrypt($str)
     {
-        $key = $this->app['aes_key'];
-        $iv = $this->app['aes_halt'];
+        $key = pack('H*', $this->app['aes_key']);  //md5('123456')
+        $iv   = pack('H*', $this->app['aes_halt']);
 
-        $deStr = base64_decode($str);
-        $deStr = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $deStr, MCRYPT_MODE_CBC, $iv);
+        $deStr = $str;
+        $deStr = openssl_decrypt($deStr, 'AES-128-CBC', $key, 0, $iv);
         return trim($deStr);
 
     }

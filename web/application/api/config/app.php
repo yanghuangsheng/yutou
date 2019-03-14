@@ -8,8 +8,8 @@ return [
     'exception_handle' => '\app\api\exception\ApiHandleException',
 
     'app' => [
-        'aes_halt' => '_#sing_ty',// 密码加密盐
-        'aes_key' => 'sgg45747ss223455',//aes 密钥 , 服务端和客户端必须保持一致
+        'aes_halt' => '1234567890abcdef1234567890abcdef',// 密码加密盐
+        'aes_key' => 'e10adc3949ba59abbe56e057f20f883e',//aes 密钥 , 服务端和客户端必须保持一致
         'app_type' => [
             'h5',
             'wechat',

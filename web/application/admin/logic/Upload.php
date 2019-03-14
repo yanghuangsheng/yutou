@@ -12,7 +12,7 @@ namespace app\admin\logic;
 class Upload extends Base
 {
     //上传文件
-    public function upFile($upCatalog, $fileName = 'file', $size = 1, $ext = 'jpg,png,gif')
+    public function upFile($upCatalog, $fileName = 'file', $size = 1, $ext = 'jpg,jpeg,png,gif')
     {
 
         $rootDirectory = './uploads/' . $upCatalog . '/';
