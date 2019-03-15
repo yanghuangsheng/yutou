@@ -27,6 +27,8 @@ class Base extends Controller
         parent::initialize();
         $this->app = Config::get('app');
         $this->headers = Request::header();
+//        echo $this->encrypt('sign=db19c86c58e083427dadedded42f73da&time=91827374847637');
+//        exit();
         $this->isAuth && $this->checkRequestAuth();
     }
 
@@ -41,8 +43,12 @@ class Base extends Controller
             throw new ApiException('sign不存在', 400);
         }
         //客户端
-        if(!in_array($this->getHeaders('app-type'), $this->app['app_type'])) {
+        if(!in_array($this->getHeaders('apptype'), $this->app['app_type'])) {
             throw new ApiException('app_type不合法', 400);
+        }
+        //检查sign
+        if(!$this->checkSignPass()){
+            throw new ApiException('sign不合法', 400);
         }
     }
 
@@ -57,12 +63,32 @@ class Base extends Controller
     }
 
     /**
-     * 检查sign回密串
-     * @param $sign
+     * 检查sign密串的有效性
+     * @return bool
      */
-    private function checkSignPass($sign)
+    private function checkSignPass()
     {
+        $deSign = $this->decrypt($this->headers['sign']);
 
+        if(empty($deSign)) {
+            return false;
+        }
+
+        parse_str($deSign, $parse);
+        if(empty($parse['sign']) || empty($parse['time'])){
+            return false;
+        }
+        //sign
+        if($this->app['sign'] != $parse['sign']){
+            return false;
+        }
+        //有效期
+        echo (time() - ceil($parse['time'] / 1000)).' > '.$this->app['sign_time']."\n";
+        if((time() - ceil($parse['time'] / 1000)) > $this->app['sign_time']){
+            return false;
+        }
+
+        return true;
     }
 
     /**

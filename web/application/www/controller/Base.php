@@ -40,13 +40,15 @@ class Base extends Controller
     /**
      * 设置头部信息
      * @param $data
+     * @param $index
      */
-    protected function init($data)
+    protected function init($data, $index = 0)
     {
         $resultData = [
             'title' => '',
             'keywords' => '',
             'description' => '',
+            'index' => $index,
         ];
 
         $this->assign('head', array_merge($resultData, $data));

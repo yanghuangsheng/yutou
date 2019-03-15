@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{if isset($head['title'])} {$head['title']} - {/if}鱼头网</title>
-    <meta name="Keywords" content="{$head['keywords']??''}，鱼头网">
-    <meta name="Description" content="{$head['description']??''}，鱼头网">
+    <title>{if $head['title']} {$head['title']} - {/if}鱼头网 -提供彩票、足球、电竞等竞猜资讯服务</title>
+    <meta name="Keywords" content="鱼头网,{$head['keywords']??''}">
+    <meta name="Description" content="{$head['description']??''}">
     {include file="layout/rel" /}
     <!--[if IE]>
     <script src="http://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
