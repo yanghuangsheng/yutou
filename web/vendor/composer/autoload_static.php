@@ -21,6 +21,10 @@ class ComposerStaticInita47b42d8edf905476c9a45ba9696213f
         array (
             'app\\' => 4,
         ),
+        'O' => 
+        array (
+            'OSS\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -39,6 +43,10 @@ class ComposerStaticInita47b42d8edf905476c9a45ba9696213f
         'app\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application',
+        ),
+        'OSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
         ),
     );
 

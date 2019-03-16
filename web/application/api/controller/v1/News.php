@@ -20,7 +20,8 @@ class News extends Base
     //新闻详情
     public function item()
     {
-        echo 'item';
+        return show(0,'3844');
+        //echo 'item';
 
     }
 

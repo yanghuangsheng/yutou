@@ -43,27 +43,34 @@ Route::rule('/user', 'www/User/index');
 
 
 //API
+Route::group('api', function () {
+    Route::get(':ver/index/banner', 'api/:ver.index/banner');
+    Route::get(':ver/index/broadcast', 'api/:ver.index/broadcast');
+    Route::get(':ver/index/hot_news', 'api/:ver.index/hotNews');
+    Route::get(':ver/index/news_column', 'api/:ver.index/newsColumn');
 
-Route::get('/api/:ver/index/banner', 'api/:ver.index/banner');
-Route::get('/api/:ver/index/broadcast', 'api/:ver.index/broadcast');
-Route::get('/api/:ver/index/hot_news', 'api/:ver.index/hotNews');
-Route::get('/api/:ver/index/news_column', 'api/:ver.index/newsColumn');
+    Route::get(':ver/news/list', 'api/:ver.news/index');
+    Route::get(':ver/news/item', 'api/:ver.news/item');
 
-Route::get('/api/:ver/news/list', 'api/:ver.news/index');
-Route::get('/api/:ver/news/item', 'api/:ver.news/item');
-Route::get('/api/:ver/news/comment', 'api/:ver.news/comment');
-Route::get('/api/:ver/news/add_comment', 'api/:ver.news/addComment');
+    Route::get(':ver/news/comment', 'api/:ver.news/comment');
+    Route::get(':ver/news/add_comment', 'api/:ver.news/addComment');
 
-Route::get('/api/:ver/forum/list', 'api/:ver.forum/index');
-Route::get('/api/:ver/forum/item', 'api/:ver.forum/item');
-Route::get('/api/:ver/forum/comment', 'api/:ver.forum/comment');
-Route::get('/api/:ver/forum/add_comment', 'api/:ver.forum/addComment');
+    Route::get(':ver/forum/list', 'api/:ver.forum/index');
+    Route::get(':ver/forum/item', 'api/:ver.forum/item');
+    Route::get(':ver/forum/comment', 'api/:ver.forum/comment');
+    Route::get(':ver/forum/add_comment', 'api/:ver.forum/addComment');
 
-Route::get('/api/:ver/search', 'api/:ver.search/index');
+    Route::get(':ver/search', 'api/:ver.search/index');
 
-Route::get('/api/:ver/login', 'api/:ver.login/index');
+    Route::get(':ver/login', 'api/:ver.login/index');
 
-Route::get('/api/:ver/time', 'api/:ver.time/index');
+    Route::get(':ver/time', 'api/:ver.time/index');
+})
+    ->header('Access-Control-Allow-Origin','*')
+    ->header('Access-Control-Allow-Credentials', 'true')
+    ->header('Access-Control-Allow-Headers','token,app-type,sign')
+    ->allowCrossDomain();
+
 
 
 
