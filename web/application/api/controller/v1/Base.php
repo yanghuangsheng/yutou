@@ -46,10 +46,10 @@ class Base extends Controller
         if(!in_array($this->getHeaders('app-type'), $this->app['app_type'])) {
             throw new ApiException('app_type不合法', 400);
         }
-//        //检查sign
-//        if(!$this->checkSignPass()){
-//            throw new ApiException('sign不合法', 400);
-//        }
+        //检查sign
+        if(!$this->checkSignPass()){
+            throw new ApiException('sign不合法', 400);
+        }
     }
 
     /**
@@ -83,12 +83,11 @@ class Base extends Controller
             return false;
         }
         //有效期
-        //echo (time() - ceil($parse['time'] / 1000)).' > '.$this->app['sign_time']."\n";
-//        if(Config::get('app_debug') === false){
-//            if((time() - ceil($parse['time'] / 1000)) > $this->app['sign_time']){
-//                return false;
-//            }
-//        }
+        if(Config::get('app_debug') === false){
+            if((time() - ceil($parse['time'] / 1000)) > $this->app['sign_time']){
+                return false;
+            }
+        }
 
         return true;
     }

@@ -526,7 +526,7 @@ function baiduSeoPush($id)
  * @param int $httpCode http状态码
  * @return array
  */
-function show($code, $message, $data=[], $httpCode=200) {
+function showResult($code, $message, $data=[], $httpCode=200) {
 
     $data = [
         'code' => $code,

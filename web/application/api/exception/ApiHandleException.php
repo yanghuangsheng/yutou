@@ -27,6 +27,6 @@ class ApiHandleException extends  Handle {
         if ($e instanceof ApiException) {
             $this->httpCode = $e->httpCode;
         }
-        return  show(0, $e->getMessage(), [], $this->httpCode);
+        return  showResult(0, $e->getMessage(), [], $this->httpCode);
     }
 }

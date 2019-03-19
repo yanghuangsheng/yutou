@@ -9,7 +9,6 @@
 namespace app\www\logic;
 
 use \app\www\service\News as newsService;
-use app\www\service\PortalNewsRule;
 
 class News extends Base
 {

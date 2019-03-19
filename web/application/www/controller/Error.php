@@ -13,6 +13,7 @@ class Error extends Base
 {
     public function index()
     {
+        $this->init(['title'=>404]);
         return $this->fetch();
     }
 }

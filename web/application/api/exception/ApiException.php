@@ -8,7 +8,6 @@
 
 namespace app\api\exception;
 
-
 use think\Exception;
 
 class ApiException extends Exception {
@@ -21,7 +20,7 @@ class ApiException extends Exception {
      * @param int $httpCode
      * @param int $code
      */
-    public function __construct($message = '', $httpCode = 0, $code = 0) {
+    public function __construct($message = '', $httpCode = 500, $code = -1) {
         $this->httpCode = $httpCode;
         $this->message = $message;
         $this->code = $code;

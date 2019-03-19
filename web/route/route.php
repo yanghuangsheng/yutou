@@ -44,6 +44,7 @@ Route::rule('/user', 'www/User/index');
 
 //API
 Route::group('api', function () {
+    Route::get(':ver/index/all', 'api/:ver.index/all');
     Route::get(':ver/index/banner', 'api/:ver.index/banner');
     Route::get(':ver/index/broadcast', 'api/:ver.index/broadcast');
     Route::get(':ver/index/hot_news', 'api/:ver.index/hotNews');
