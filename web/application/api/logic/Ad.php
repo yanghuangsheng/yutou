@@ -23,7 +23,7 @@ class Ad extends Base
         foreach ($data['list'] as $key => &$value){
             $value['image_url'] = $domain.$value['image_url'];
         }
-        return (new AdImages)->getCarousel(2);
+        return $data['list'];
 
     }
 
