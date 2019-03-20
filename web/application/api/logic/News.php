@@ -39,7 +39,7 @@ class News extends Base
         foreach ($data['list'] as $key => &$value){
             $value['image_url'] = $domain.$value['image_url'];
             $value['description'] = clean_html($value['description'], 60);
-            $value['published_time'] = date('Y-m-d H:i', $value['published_time']);
+            $value['published_time'] = friendlyDate($value['published_time']);
 
         }
         $data['category'] = $category_id;
