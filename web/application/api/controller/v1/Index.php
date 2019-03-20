@@ -52,10 +52,10 @@ class Index extends Base
     {
         $news = new news;
         $data = [
-            ['category_id'=>0, 'title'=>'最新文章'],
-            ['category_id'=>9, 'title'=>'竞彩大神'],
-            ['category_id'=>10, 'title'=>'数字彩讯'],
-            ['category_id'=>11, 'title'=>'电竞地带']
+            ['category_id'=>0, 'name'=>'最新文章'],
+            ['category_id'=>9, 'name'=>'竞彩大神'],
+            ['category_id'=>10, 'name'=>'数字彩讯'],
+            ['category_id'=>11, 'name'=>'电竞地带']
         ];
         $startId = $news->getNewsId();
         foreach ($data as $key => &$value){
@@ -63,6 +63,7 @@ class Index extends Base
             $value['list'] = $reData['list'];
             $value['count'] = $reData['count'];
             $value['start_id'] = $startId;
+            $value['page'] = 1;
         }
 
         return $data;

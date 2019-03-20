@@ -35,7 +35,9 @@ class News extends Base
         $data = $service->initWhere($where)->initLimit($param['page'])->getListData();
 
         $data['list'] = $data['list']->toArray();
+        $domain = $this->getDomain();
         foreach ($data['list'] as $key => &$value){
+            $value['image_url'] = $domain.$value['image_url'];
             $value['description'] = clean_html($value['description'], 60);
             $value['published_time'] = date('Y-m-d H:i', $value['published_time']);
 
@@ -43,6 +45,16 @@ class News extends Base
         $data['category'] = $category_id;
 
         return $data;
+    }
+
+    /**
+     * 加载更多
+     * @return mixed
+     */
+    public function loadList()
+    {
+        $categoryId = $this->param('category_id');
+        return $this->getList($categoryId);
     }
 
     /**

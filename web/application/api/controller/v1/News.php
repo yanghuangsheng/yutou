@@ -14,7 +14,9 @@ class News extends Base
     //新闻列表
     public function index()
     {
-        echo 'index';
+        $data = (new \app\api\logic\News)->loadList();
+
+        return showResult(0, '', $data['list']);
     }
 
     //新闻详情

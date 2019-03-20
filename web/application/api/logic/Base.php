@@ -130,6 +130,15 @@ class Base
     }
 
     /**
+     * 获取域名
+     * @return mixed
+     */
+    public function getDomain()
+    {
+        return Request::domain();
+    }
+
+    /**
      * 返回json 以结束
      * @param $data
      */
