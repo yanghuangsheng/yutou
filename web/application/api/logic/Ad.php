@@ -18,6 +18,11 @@ class Ad extends Base
      */
     public function getCarousel()
     {
+        $data = (new AdImages)->getCarousel(2);
+        $domain = $this->getDomain();
+        foreach ($data['list'] as $key => &$value){
+            $value['image_url'] = $domain.$value['image_url'];
+        }
         return (new AdImages)->getCarousel(2);
 
     }
