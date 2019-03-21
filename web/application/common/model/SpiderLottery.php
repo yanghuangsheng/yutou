@@ -9,11 +9,16 @@
 namespace app\common\model;
 
 
+use think\facade\Request;
+
 class SpiderLottery extends Base
 {
     public function getOpenTimeAttr($value)
-    {
-        return $value ? date('Y-m-d H:i:s', $value) : '';
+    {   $timeName = 'Y-m-d H:i:s';
+        if(Request::module() == 'api'){
+            $timeName = 'Y-m-d';
+        }
+        return $value ? date($timeName, $value) : '';
     }
 
     //关联分类

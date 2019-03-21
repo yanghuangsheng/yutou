@@ -45,10 +45,6 @@ Route::rule('/user', 'www/User/index');
 //API
 Route::group('api', function () {
     Route::get(':ver/index/all', 'api/:ver.index/all');
-    Route::get(':ver/index/banner', 'api/:ver.index/banner');
-    Route::get(':ver/index/broadcast', 'api/:ver.index/broadcast');
-    Route::get(':ver/index/hot_news', 'api/:ver.index/hotNews');
-    Route::get(':ver/index/news_column', 'api/:ver.index/newsColumn');
 
     Route::get(':ver/news/list', 'api/:ver.news/index');
     Route::get(':ver/news/item', 'api/:ver.news/item');
@@ -60,6 +56,9 @@ Route::group('api', function () {
     Route::get(':ver/forum/item', 'api/:ver.forum/item');
     Route::get(':ver/forum/comment', 'api/:ver.forum/comment');
     Route::get(':ver/forum/add_comment', 'api/:ver.forum/addComment');
+
+    Route::get(':ver/lottery/list', 'api/:ver.lottery/index');
+    Route::get(':ver/lottery/one_list', 'api/:ver.lottery/oneList');
 
     Route::get(':ver/search', 'api/:ver.search/index');
 
