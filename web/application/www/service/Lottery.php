@@ -24,6 +24,7 @@ class Lottery extends Common
     public function allList()
     {
         $data = (new \app\common\model\SpiderLotteryCategory)->where('parent_id', '>', 0)
+            ->where('status', '=', 1)
             ->field('id,name')->order('parent_id,id', 'asc')->select();
 
         foreach ($data as $key => &$value){
