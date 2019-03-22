@@ -11,27 +11,15 @@ namespace app\api\controller\v1;
 
 class Forum extends Base
 {
-    //帖子列表
+    //社区所有
     public function index()
     {
+        $forum = new \app\api\logic\Forum;
+        $data['data'][] = $forum->getList('hot'); //热门
+        $data['data'][] = $forum->getList('new'); //最新
+        $data['start_id'] =  $forum->getNewsId(); //用于获取下一页数据，预防有新数据重复出现
 
-    }
-
-    //帖子详情
-    public function item()
-    {
-
-    }
-
-    //评论列表
-    public function comment()
-    {
-
-    }
-
-    //增加评论
-    public function addComment()
-    {
+        return showResult(0, '', $data);
 
     }
 
