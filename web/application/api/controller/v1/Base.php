@@ -29,7 +29,7 @@ class Base extends Controller
         $this->headers = Request::header();
 //        echo $this->encrypt('sign=db19c86c58e083427dadedded42f73da&time=1552619980267');
 //        exit();
-        $this->isAuth && $this->checkRequestAuth();
+//        $this->isAuth && $this->checkRequestAuth();
     }
 
     /**

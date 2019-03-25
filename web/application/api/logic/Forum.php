@@ -51,15 +51,13 @@ class Forum extends Base
     /**
      * 加载更多帖子列表
      */
-    public function formatPost()
+    public function gitLoadList()
     {
-        if($this->isAjax()){
-            $type = $this->param('type');
-            $data = $this->getList($type);
+        $type = $this->param('type');
+        $data = $this->getList($type);
 
-            $this->resultJson(0, '', $data);
+        return $data;
 
-        }
     }
 
     /**

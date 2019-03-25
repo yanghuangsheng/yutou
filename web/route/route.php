@@ -53,6 +53,8 @@ Route::group('api', function () {
     Route::get(':ver/news/add_comment', 'api/:ver.news/addComment');
 
     Route::get(':ver/forum/all', 'api/:ver.forum/index');
+    Route::get(':ver/forum/list', 'api/:ver.forum/loadList');
+
     Route::get(':ver/forum/item', 'api/:ver.forum/item');
     Route::get(':ver/forum/comment', 'api/:ver.forum/comment');
     Route::get(':ver/forum/add_comment', 'api/:ver.forum/addComment');

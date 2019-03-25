@@ -23,5 +23,14 @@ class Forum extends Base
 
     }
 
+    //加载更多
+    public function loadList()
+    {
+        $forum = new \app\api\logic\Forum;
+        $data = $forum->gitLoadList();
+
+        return showResult(0, '', $data);
+    }
+
 
 }
