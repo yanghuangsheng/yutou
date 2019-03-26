@@ -98,11 +98,21 @@
                     </div>
                 </fieldset>
                 <fieldset class="layui-elem-field sm">
+                    <legend>定时任务 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <input type="checkbox" name="task" value="1" title="定时" lay-skin="primary" lay-filter="task">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field sm">
                     <legend>发布状态 <font color="#ccc"></font></legend>
                     <div class="layui-field-box">
                         <div class="layui-row">
                             <div class="layui-form-item">
-                                <input type="checkbox" name="status" value="1" title="发布" lay-skin="primary" checked="">
+                                <input type="checkbox" name="status" value="1" title="发布" lay-skin="primary" lay-filter="status" checked="">
                             </div>
                             <div class="layui-form-item">
                                 <input type="checkbox" name="hot" value="1" title="热门" lay-skin="primary">
@@ -145,6 +155,7 @@
 <script>
     bodyD.use(['index','form','upload','laydate','formSelects'], function () {
         var $ = layui.$,
+            form = layui.form,
             laydate = layui.laydate,
             upload = layui.upload,
             formSelects = layui.formSelects;
@@ -158,6 +169,19 @@
         });
         //上传缩略图
         uploadImages($('#upload-thumbnail'));
+        //监听定时任务
+        form.on('checkbox(task)', function(data){
+            if(data.elem.checked){
+                $("input[name=\"status\"]").prop("checked", false);
+                form.render();
+            }
+        });
+        form.on('checkbox(status)', function(data){
+            if(data.elem.checked){
+                $("input[name=\"task\"]").prop("checked", false);
+                form.render();
+            }
+        });
 
         var ue = UE.getEditor('content', {
             serverUrl: "{:url('PortalNews/upDetailsImages',['type'=>'content'])}",
