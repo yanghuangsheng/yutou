@@ -121,6 +121,7 @@ class User extends Base
         $data['system_list'] = $user->messageList(0);
         $data['interaction_list'] = $user->messageList(1);
         //print_r($data['system_list']);
+        $this->init(['title'=>'我的消息']);
         $this->getBroadcast($user);
         $this->assign('data', $data);
         return $this->fetch();
@@ -147,6 +148,7 @@ class User extends Base
         ];
 
         //print_r($data);
+        $this->init(['title'=>'我的收藏']);
         $this->getBroadcast($user);
         $this->assign('data', $data);
 
@@ -167,6 +169,8 @@ class User extends Base
         $data = $logic->readOneInfo();
         $this->assign('data', $data);
 
+        $this->init(['title'=>'基本信息']);
+
         return $this->fetch();
     }
 
@@ -184,6 +188,9 @@ class User extends Base
      */
     public function updatePass()
     {
+
+        $this->init(['title'=>'修改密码']);
+
         return $this->fetch();
     }
 
@@ -195,6 +202,7 @@ class User extends Base
     {
         (new \app\www\logic\User)->saveBindPhone();
 
+        $this->init(['title'=>'绑定手机']);
         return $this->fetch();
     }
 

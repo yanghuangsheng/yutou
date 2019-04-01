@@ -74,7 +74,7 @@ class Base
      */
     public function unId($prefix)
     {
-        return uniqid($prefix . '_', TRUE);
+        return md5(uniqid($prefix . '_', TRUE));
     }
 
     /**

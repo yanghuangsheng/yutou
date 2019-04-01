@@ -20,10 +20,10 @@ class User extends Base
             $data = $this->param();
             //验证手机及验证码等上传信息 -> 暂缺
 
-            $smsCode = $this->session('sms_code');
+            $smsCode = $this->cache($data['code_sign']);
             if(!($data['code'] == '898989')){
                 if(!($smsCode == $data['code'])){
-                    $this->resultJson(-1, '验证码错误');
+                    return showResult(-1, '验证码错误');
                 }
             }
 
@@ -32,7 +32,7 @@ class User extends Base
 
             if($result = $service->saveLogin($data['mobile'], $data)){
                 $this->saveLoginStatus($result);
-                $this->resultJson(0, '登陆成功');
+                return showResult(0, '登陆成功', ['login_sign'=>]);
             }
 
 
