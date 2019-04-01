@@ -8,9 +8,11 @@
 
 namespace app\api\logic;
 
+use think\facade\Cache;
 use think\facade\Session;
 use think\facade\Request;
 use think\facade\Cookie;
+
 
 class Base
 {
@@ -63,6 +65,31 @@ class Base
     public function param($name = '')
     {
         return $name?Request::param($name):Request::param();
+    }
+
+    /**
+     * 生成唯-ID
+     * @param $prefix
+     * @return string
+     */
+    public function unId($prefix)
+    {
+        return uniqid($prefix . '_', TRUE);
+    }
+
+    /**
+     * 缓存
+     * @param $name
+     * @param string $value
+     * @param int $time
+     * @return mixed
+     */
+    public function cache($name, $value = '', $time = 0)
+    {
+        if($value){
+            return Cache::set($name, $value, $time);
+        }
+        return Cache::get($name);
     }
 
     /**
@@ -146,4 +173,5 @@ class Base
     {
         exit(json_encode($data));
     }
+
 }

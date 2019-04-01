@@ -12,7 +12,6 @@ use app\www\service\Sms as SmsService;
 
 class Sms extends Base
 {
-
     /**
      * 发送验证码
      */
@@ -25,6 +24,7 @@ class Sms extends Base
             //生成和保存验证码
             $code = random_string(6, 'number');
             $this->session('sms_code', $code);
+
             //短信模板
             $content = '您的验证码是' . $code . '，在10分钟内输入有效。如非本人操作请忽略此短信。';
             $data = (new SmsService)->smsSend($data['mobile'], $content);

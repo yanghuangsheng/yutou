@@ -46,10 +46,10 @@ class Base extends Controller
         if(!in_array($this->getHeaders('app-type'), $this->app['app_type'])) {
             throw new ApiException('app_type不合法', 400);
         }
-        //检查sign
-        if(!$this->checkSignPass()){
-            throw new ApiException('sign不合法', 400);
-        }
+//        //检查sign
+//        if(!$this->checkSignPass()){
+//            throw new ApiException('sign不合法', 400);
+//        }
     }
 
     /**

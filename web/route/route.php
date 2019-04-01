@@ -64,7 +64,10 @@ Route::group('api', function () {
 
     Route::get(':ver/search', 'api/:ver.search/index');
 
-    Route::get(':ver/login', 'api/:ver.login/index');
+    Route::get(':ver/login', 'api/:ver.user/login');
+    Route::get(':ver/register', 'api/:ver.user/register');
+    Route::get(':ver/send_sms', 'api/:ver.user/sendSms');
+
 
     Route::get(':ver/time', 'api/:ver.time/index');
 })
