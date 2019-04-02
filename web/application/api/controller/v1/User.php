@@ -17,7 +17,7 @@ class User extends Base
      */
     public function login()
     {
-        $this->saveLogin();
+        return $this->saveLogin();
     }
 
     /**
@@ -26,7 +26,7 @@ class User extends Base
      */
     public function register()
     {
-        $this->saveLogin();
+        return $this->saveLogin();
     }
 
     /**
@@ -38,6 +38,15 @@ class User extends Base
 
         return $sms->send();
 
+    }
+
+    /**
+     * 处理登陆
+     * @return array
+     */
+    private function saveLogin()
+    {
+        return (new \app\api\logic\User)->login();
     }
 
 }

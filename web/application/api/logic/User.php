@@ -16,42 +16,49 @@ class User extends Base
      */
     public function login()
     {
-        if($this->isAjax()){
-            $data = $this->param();
-            //验证手机及验证码等上传信息 -> 暂缺
 
-            $smsCode = $this->cache($data['code_sign']);
-            if(!($data['code'] == '898989')){
-                if(!($smsCode == $data['code'])){
-                    return showResult(-1, '验证码错误');
-                }
+        $param = $this->param();
+        //验证手机及验证码等上传信息 -> 暂缺
+
+        $smsCode = $this->cache($param['code_sign']);
+        if(!($param['code'] == '898989')){
+            if(!($smsCode == $param['code'])){
+                return showResult(-1, '验证码错误');
             }
-
-
-            $service = new \app\www\service\User;
-
-            if($result = $service->saveLogin($data['mobile'], $data)){
-                $this->saveLoginStatus($result);
-                return showResult(0, '登陆成功', ['login_sign'=>]);
-            }
-
-
-            $this->resultJson(-1, $service->getError());
         }
+
+
+        $service = new \app\api\service\User;
+
+        if($result = $service->saveLogin($param['mobile'], $param)){
+            $result = $this->saveLoginStatus($this->unId('login_token'), $result);
+            return showResult(0, '登陆成功', $result);
+        }
+
+        return showResult(-1, $service->getError());
+
     }
 
     /**
      * 保存登陆状态
+     * @param $sign
      * @param $result
      */
-    public function saveLoginStatus($result)
+    public function saveLoginStatus($sign, $result)
     {
         if(!isset($result['avatar']) || !$result['avatar']){
             //用户默认头像
             $result['avatar'] = userAvatar();
         }
-        $this->session('user', $result);
-        $this->cookie('user', json_encode($result));
+
+        foreach ($result['avatar'] as $key => &$value){
+            $value = $this->getDomain() . $value;
+        }
+        $this->cache($sign, $result);
+
+        $result['token'] = $sign;
+
+        return $result;
     }
 
     /**

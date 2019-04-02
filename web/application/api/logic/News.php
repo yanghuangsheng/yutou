@@ -36,6 +36,7 @@ class News extends Base
 
         $data['list'] = $data['list']->toArray();
         $domain = $this->getDomain();
+
         foreach ($data['list'] as $key => &$value){
             $value['image_url'] = $domain.$value['image_url'];
             $value['description'] = clean_html($value['description'], 60);

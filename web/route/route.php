@@ -63,6 +63,7 @@ Route::group('api', function () {
     Route::get(':ver/lottery/one_list', 'api/:ver.lottery/oneList');
 
     Route::get(':ver/search', 'api/:ver.search/index');
+    Route::get(':ver/search/list', 'api/:ver.search/loadList');
 
     Route::get(':ver/login', 'api/:ver.user/login');
     Route::get(':ver/register', 'api/:ver.user/register');

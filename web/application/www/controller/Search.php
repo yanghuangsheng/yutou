@@ -26,6 +26,7 @@ class Search extends Base
 
 
         $this->assign('data', $data);
+        $this->init(['title'=>'搜索【' . $data['news_list']['q'] . '】']);
 
         return $this->fetch();
     }
