@@ -32,7 +32,7 @@ class Lottery extends Common
                 ->field('lottery_no,open_code,open_time')->find();
             if($lottery){
                 $value['lottery_no'] = $lottery['lottery_no'];
-                $value['week'] = getWeek($lottery['lottery_no']);
+                $value['week'] = getWeek($lottery['open_time']);
                 $code = $lottery['open_code'];
                 $ext = '';
                 if(strpos($lottery['open_code'],'+') !== false){
