@@ -42,7 +42,7 @@ class Lottery extends Base
 
             foreach ($data['list'] as $key => &$value)
             {
-                $value['week'] = getWeek($value['lottery_no']);
+                $value['week'] = getWeek($value['open_time']);
 
                 $code = $value['open_code'];
                 $ext = '';
