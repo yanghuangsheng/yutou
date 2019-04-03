@@ -103,7 +103,7 @@
                         <div class="comment-content">
                         </div>
                         <a href="javascript:void(0);" class="box-hide comment-reply"
-                           data-reply="" data-reply-name=""
+                           data-reply="" data-reply-user-id="" data-reply-name=""
                            data-parent="">回复</a>
 
                     </li>
@@ -137,7 +137,7 @@
                         <div class="comment-content">
                         </div>
                         <a href="javascript:void(0);" class="box-hide comment-reply"
-                           data-reply="" data-reply-name=""
+                           data-reply="" data-reply-user-id="" data-reply-name=""
                            data-parent="">回复</a>
                     </li>
                 </ul>
@@ -173,7 +173,7 @@
                             {$value['content']|raw}
                         </div>
                         <a href="javascript:void(0);" class="box-hide comment-reply"
-                           data-reply="{$value['user_id']}" data-reply-name="{$value['user_name']}"
+                           data-reply="{$value['id']}" data-reply-user-id="{$value['user_id']}" data-reply-name="{$value['user_name']}"
                            data-parent="{$value['id']}">回复</a>
 
                     </li>
@@ -208,7 +208,7 @@
                     <div class="comment-content">
                     </div>
                     <a href="javascript:void(0);" class="box-hide comment-reply"
-                       data-reply="" data-reply-name=""
+                       data-reply="" data-reply-user-id="" data-reply-name=""
                        data-parent="">回复</a>
                 </li>
                 {/if}
@@ -241,7 +241,7 @@
                         {$reply['content']}
                     </div>
                     <a href="javascript:void(0);" class="box-hide comment-reply"
-                       data-reply="{$reply['user_id']}" data-reply-name="{$reply['user_name']}"
+                       data-reply="{$reply['id']}" data-reply-user-id="{$reply['user_id']}" data-reply-name="{$reply['user_name']}"
                        data-parent="{$value['id']}">回复</a>
                 </li>
                 {/volist}

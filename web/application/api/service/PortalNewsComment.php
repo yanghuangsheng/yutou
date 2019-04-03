@@ -6,7 +6,7 @@
  * Time: 16:37
  */
 
-namespace app\www\service;
+namespace app\api\service;
 
 
 class PortalNewsComment extends Common
@@ -56,10 +56,9 @@ class PortalNewsComment extends Common
     {
         $updateData = [
             'news_id' => $data['id'],
-            'parent_id' => $data['parent'],  //父评论ID
-            'user_id' => $data['user_id'], //评论用户ID
-            'reply_id' => $data['reply_id'], //回复评论ID
-            'reply_user_id' => $data['reply_user_id'], //回复用户ID
+            'parent_id' => $data['parent'],
+            'user_id' => $data['user_id'],
+            'reply_id' => $data['reply_id'],
             'content' => $data['content'],
         ];
         return $this->save($updateData);

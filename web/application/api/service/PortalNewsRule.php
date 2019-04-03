@@ -2,19 +2,19 @@
 /**
  * Created by PhpStorm.
  * User: YANG
- * Date: 2019/3/11
- * Time: 17:27
+ * Date: 2019/3/12
+ * Time: 13:41
  */
 
-namespace app\www\service;
+namespace app\api\service;
 
 
-class ForumPostRule extends Common
+class PortalNewsRule extends Common
 {
     //初始化类
     public function __construct()
     {
-        $this->model = new \app\common\model\ForumPostRule;
+        $this->model = new \app\common\model\PortalNewsRule;
     }
 
     /**
@@ -24,16 +24,16 @@ class ForumPostRule extends Common
      */
     public function trigger($event, $data)
     {
-        $rule = new \app\common\model\ForumPostRule;
-        $forumPost = new \app\common\model\ForumPost;
+        $rule = new \app\common\model\PortalNewsRule;
+        $portalNews = new \app\common\model\PortalNews;
         $ruleData = $rule->where('trigger_field', '=', $event)->field('trigger_type,condition')->select();
         foreach ($ruleData as $key => $value){
 
             if($data['num'] == $value['condition']){
                 if($value['trigger_type'] == 'hot'){
-                    $forumPost->where('id', '=', $data['id'])->update(['hot'=>1]);
-                }elseif ($value['trigger_type'] == 'topic'){
-                    $forumPost->where('id', '=', $data['id'])->update(['topic'=>1]);
+                    $portalNews->where('id', '=', $data['id'])->update(['hot'=>1]);
+                }elseif ($value['trigger_type'] == 'recommend'){
+                    $portalNews->where('id', '=', $data['id'])->update(['recommend'=>1]);
                 }
             }
         }

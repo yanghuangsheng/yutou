@@ -27,7 +27,7 @@ class ForumPostComment extends Common
     {
         return $this->model->view('ForumPostComment', 'id,parent_id,user_id,post_id,reply_id,content,create_time as date_time')
             ->view('User', ['name'=>'user_name', 'avatar'=>'user_avatar'], 'User.id = ForumPostComment.user_id', 'LEFT')
-            ->view('User reply', ['name'=>'reply_name', 'avatar'=>'reply_avatar'], 'reply.id = ForumPostComment.reply_id', 'LEFT')
+            ->view('User reply', ['name'=>'reply_name', 'avatar'=>'reply_avatar'], 'reply.id = ForumPostComment.reply_user_id', 'LEFT')
             ->view('ForumPostCommentAttr', ['praise_num','tread_num'], 'ForumPostCommentAttr.comment_id = ForumPostComment.id', 'LEFT');
     }
 
@@ -67,10 +67,11 @@ class ForumPostComment extends Common
     public function addReplyComment($data)
     {
         $updateData = [
-            'post_id' => $data['id'],
-            'parent_id' => $data['parent'],
-            'user_id' => $data['user_id'],
-            'reply_id' => $data['reply_id'],
+            'post_id' => $data['id'], //帖子ID
+            'parent_id' => $data['parent'],  //父评论ID
+            'user_id' => $data['user_id'], //评论用户ID
+            'reply_id' => $data['reply_id'], //回复评论ID
+            'reply_user_id' => $data['reply_user_id'], //回复用户ID
             'content' => $data['content'],
         ];
         return $this->save($updateData);

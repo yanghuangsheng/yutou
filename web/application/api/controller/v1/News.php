@@ -22,8 +22,8 @@ class News extends Base
     //新闻详情
     public function item()
     {
-        return showResult(0,'3844');
-        //echo 'item';
+
+        return [];
     }
 
     //评论列表

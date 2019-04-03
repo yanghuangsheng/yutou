@@ -68,6 +68,48 @@ class News extends Base
     }
 
 
+
+    /**
+     * 获取新闻详情
+     * @return mixed
+     */
+    public function getItem()
+    {
+        $newsId = $this->param('id');
+
+        $service = new PortalNews;
+        $data = $service->getOneData($newsId);
+
+        //更新浏览量
+        $browseNum = (new \app\www\service\PortalNewsAttr)->saveNum(['id'=>$newsId], 'browse');
+        //规则触发
+        $this->ruleTrigger('browse_num', ['id'=>$newsId, 'num'=>$browseNum]);
+
+        return $data;
+
+    }
+
+    /**
+     * 新闻评论
+     * @return mixed
+     */
+    public function getCommentList()
+    {
+        $newsId = $this->param('id');
+        $comment = new \app\api\service\PortalNewsComment;
+        $satrtId = $comment->newsId();
+        $data = $comment
+            ->initWhere([['PortalNewsComment.news_id', '=', $newsId]])
+            ->getListData();
+
+
+        return $data['list'];
+    }
+
+
+
+
+
     /**
      * 获取最新的ID
      * @return mixed
@@ -77,5 +119,14 @@ class News extends Base
         $service = new PortalNews;
 
         return $service->newsId();
+    }
+
+    /**
+     * 规则触发器
+     * @param $event 事件
+     * @param $dara ['id','num']
+     */
+    protected function ruleTrigger($event, $dara){
+        (new \app\api\service\PortalNewsRule)->trigger($event, $dara);
     }
 }

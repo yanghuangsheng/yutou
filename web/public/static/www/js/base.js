@@ -750,11 +750,12 @@ function newsItemJs(){
             return;
         }
         var oThis = $(this);
-        var replyUserid = oThis.data('reply');
+        var replyUserId = oThis.data('reply-user-id');
         var replyUserName = oThis.data('reply-name');
+        var replyId = oThis.data('reply');
         var parentId = oThis.data('parent');
         var thisReplyComment = $('#reply-comment-post');
-        if(isLogin(1).id == replyUserid){
+        if(isLogin(1).id == replyUserId){
             layer.tips('不允许回复自己的哦！', oThis, {
                 tips: [1, '#0FA6D8'] //还可配置颜色
             });
@@ -766,7 +767,7 @@ function newsItemJs(){
                     '<a href="javascript:void(0);" class="flex-center flex-align-center expr"><i class="b-img"></i></a>' +
                 '</div>' +
                 '<div class="submit">' +
-                    '<a href="javascript:void(0);" data-status="0" data-parent="'+ parentId +'" data-reply="'+ replyUserid +'"  data-reply-name="'+ replyUserName +'">发布</a>' +
+                    '<a href="javascript:void(0);" data-status="0" data-parent="'+ parentId +'" data-reply="'+ replyId +'" data-reply-user-id="'+ replyUserId +'"   data-reply-name="'+ replyUserName +'">发布</a>' +
                 '</div>' +
             '</div>';
         thisReplyComment.remove();
@@ -778,8 +779,9 @@ function newsItemJs(){
             }
             var oThis = $(this);
             var thisReplyContent = oThis.parent().parent().find('input[name="content"]');
-            var replyUserid = oThis.data('reply');
+            var replyUserId = oThis.data('reply-user-id');
             var replyUserName = oThis.data('reply-name');
+            var replyId = oThis.data('reply');
             var parentId = oThis.data('parent');
             var oStatus = oThis.data('status');
             var content = thisReplyContent.val();
@@ -792,7 +794,7 @@ function newsItemJs(){
             }
             oThis.data('status', 1);
             ajax( getHttpUrl(),{
-                'data': {'content':content, 'parent':parentId, 'reply_id':replyUserid,  '_format_':'reply_comment'},
+                'data': {'content':content, 'parent':parentId, 'reply_id':replyId, 'reply_user_id': replyUserId, '_format_':'reply_comment'},
                 'success': function (data) {
                     oThis.data('status', 0);
                     if(data.code == 0){
@@ -815,7 +817,7 @@ function newsItemJs(){
                         oInline.find('.top-num').text('');
                         oInline.find('.tread-num').text('');
                         oInline.find('.comment-content').html(content);
-                        oInline.find('a.comment-reply').data('reply', userData.id);
+                        oInline.find('a.comment-reply').data('reply-user-id', userData.id);
                         oInline.find('a.comment-reply').data('reply-name', userData.name);
 
                         oInline.removeClass('box-hide');
@@ -1086,7 +1088,7 @@ function forumJs() {
                                     '</div>' +
                                     '</div>' +
                                     '<div class="comment-content">'+ n1.content +'</div>' +
-                                    '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ n1.user_id +'" data-reply-name="'+ n1.user_name +'" data-parent="'+ n.id +'" data-item="'+ oId +'">回复</a>' +
+                                    '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ n1.id +'" data-reply-user-id="'+ n1.user_id +'" data-reply-name="'+ n1.user_name +'" data-parent="'+ n.id +'" data-item="'+ oId +'">回复</a>' +
                                     '</li>';
                             });
                             commentData += '<div class="comment-list-inline">' +
@@ -1114,7 +1116,7 @@ function forumJs() {
                                 '</div>' +
                                 '</div>' +
                                 '<div class="comment-content">'+ n.content +'</div>' +
-                                '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ n.user_id +'" data-reply-name="'+ n.user_name +'" data-parent="'+ n.id +'" data-item="'+ oId +'">回复</a>' +
+                                '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ n.id +'" data-reply-user-id="'+ n.user_id +'" data-reply-name="'+ n.user_name +'" data-parent="'+ n.id +'" data-item="'+ oId +'">回复</a>' +
                                 '</li>' +
                                 '</ul>' +
                                 '<!--回复的评论-->' +
@@ -1213,7 +1215,7 @@ function forumJs() {
                         '</div>' +
                         '</div>' +
                         '<div class="comment-content">'+ oContent +'</div>' +
-                        '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ userData.id +'" data-reply-name="'+ userData.name +'" data-parent="0" data-item="'+ itemId +'">回复</a>' +
+                        '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="" data-reply-user-id="'+ userData.id +'" data-reply-name="'+ userData.name +'" data-parent="0" data-item="'+ itemId +'">回复</a>' +
                         '</li>' +
                         '</ul>' +
                         '<!--回复的评论-->' +
@@ -1245,12 +1247,13 @@ function forumJs() {
             return;
         }
         var oThis = $(this);
-        var replyUserid = oThis.data('reply');
+        var replyUserId = oThis.data('reply-user-id');
         var replyUserName = oThis.data('reply-name');
+        var replyId = oThis.data('reply');
         var parentId = oThis.data('parent');
         var itemId = oThis.data('item');
         var thisReplyComment = $('#reply-comment-post');
-        if (isLogin(1).id == replyUserid) {
+        if (isLogin(1).id == replyUserId) {
             layer.tips('不允许回复自己的哦！', oThis, {
                 tips: [1, '#0FA6D8'] //还可配置颜色
             });
@@ -1262,7 +1265,7 @@ function forumJs() {
             '<a href="javascript:void(0);" class="flex-center flex-align-center expr"><i class="b-img"></i></a>' +
             '</div>' +
             '<div class="submit">' +
-            '<a href="javascript:void(0);" data-status="0" data-parent="' + parentId + '" data-reply="' + replyUserid + '"  data-reply-name="' + replyUserName + '">发布</a>' +
+            '<a href="javascript:void(0);" data-status="0" data-parent="' + parentId + '" data-reply="' + replyId + '" data-reply-user-id="' + replyUserId + '" data-reply-name="' + replyUserName + '">发布</a>' +
             '</div>' +
             '</div>';
         thisReplyComment.remove();
@@ -1275,8 +1278,9 @@ function forumJs() {
             }
             var oThis = $(this);
             var thisReplyContent = oThis.parent().parent().find('input[name="content"]');
-            var replyUserid = oThis.data('reply');
+            var replyUserId = oThis.data('reply-user-id');
             var replyUserName = oThis.data('reply-name');
+            var replyId = oThis.data('reply');
             var parentId = oThis.data('parent');
             var oStatus = oThis.data('status');
             var content = thisReplyContent.val();
@@ -1289,7 +1293,7 @@ function forumJs() {
             }
             oThis.data('status', 1);
             ajax( forumItemUrl + '?id=' + itemId,{
-                'data': {'content':content, 'parent':parentId, 'reply_id':replyUserid,  '_format_':'reply_comment'},
+                'data': {'content': content, 'parent': parentId, 'reply_id': replyId, 'reply_user_id': replyUserId,  '_format_':'reply_comment'},
                 'success': function (data) {
                     oThis.data('status', 0);
                     if (data.code == 0) {
@@ -1327,7 +1331,7 @@ function forumJs() {
                             '</div>' +
                             '</div>' +
                             '<div class="comment-content">'+ content +'</div>' +
-                            '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="'+ userData.id +'" data-reply-name="'+ userData.name +'" data-parent="'+ parentId +'" data-item="'+ itemId +'">回复</a>' +
+                            '<a href="javascript:void(0);" class="box-hide comment-reply" data-reply="" data-reply-user-id="'+ userData.id +'" data-reply-name="'+ userData.name +'" data-parent="'+ parentId +'" data-item="'+ itemId +'">回复</a>' +
                             '</li>';
                         //console.log(replyData);
                         oListBox.prepend(replyData);
@@ -2081,7 +2085,7 @@ function forumItemJs(){
                     thisMain.find('.top-num').text('');
                     thisMain.find('.tread-num').text('');
                     thisMain.find('.comment-content').html(oContent);
-                    thisMain.find('a.comment-reply').data('reply', userData.id);
+                    thisMain.find('a.comment-reply').data('reply-user-id', userData.id);
                     thisMain.find('a.comment-reply').data('reply-name', userData.name);
 
 
@@ -2109,11 +2113,12 @@ function forumItemJs(){
             return;
         }
         var oThis = $(this);
-        var replyUserid = oThis.data('reply');
+        var replyUserId = oThis.data('reply-user-id');
         var replyUserName = oThis.data('reply-name');
+        var replyId = oThis.data('reply');
         var parentId = oThis.data('parent');
         var thisReplyComment = $('#reply-comment-post');
-        if(isLogin(1).id == replyUserid){
+        if(isLogin(1).id == replyUserId){
             layer.tips('不允许回复自己的哦！', oThis, {
                 tips: [1, '#0FA6D8'] //还可配置颜色
             });
@@ -2125,7 +2130,7 @@ function forumItemJs(){
             '<a href="javascript:void(0);" class="flex-center flex-align-center expr"><i class="b-img"></i></a>' +
             '</div>' +
             '<div class="submit">' +
-            '<a href="javascript:void(0);" data-status="0" data-parent="'+ parentId +'" data-reply="'+ replyUserid +'"  data-reply-name="'+ replyUserName +'">发布</a>' +
+            '<a href="javascript:void(0);" data-status="0" data-parent="'+ parentId +'" data-reply="'+ replyId +'"  data-reply-user-id="'+ replyUserId +'" data-reply-name="'+ replyUserName +'">发布</a>' +
             '</div>' +
             '</div>';
         thisReplyComment.remove();
@@ -2137,10 +2142,12 @@ function forumItemJs(){
             }
             var oThis = $(this);
             var thisReplyContent = oThis.parent().parent().find('input[name="content"]');
-            var replyUserid = oThis.data('reply');
+            var replyUserId = oThis.data('reply-user-id');
             var replyUserName = oThis.data('reply-name');
+            var replyId = oThis.data('reply');
             var parentId = oThis.data('parent');
             var oStatus = oThis.data('status');
+
             var content = thisReplyContent.val();
             if(oStatus == '1'){
                 return;
@@ -2151,7 +2158,7 @@ function forumItemJs(){
             }
             oThis.data('status', 1);
             ajax( getHttpUrl(),{
-                'data': {'content':content, 'parent':parentId, 'reply_id':replyUserid,  '_format_':'reply_comment'},
+                'data': {'content':content, 'parent':parentId, 'reply_id':replyId, 'reply_user_id':replyUserId, '_format_':'reply_comment'},
                 'success': function (data) {
                     oThis.data('status', 0);
                     if(data.code == 0){
@@ -2174,7 +2181,7 @@ function forumItemJs(){
                         oInline.find('.top-num').text('');
                         oInline.find('.tread-num').text('');
                         oInline.find('.comment-content').html(content);
-                        oInline.find('a.comment-reply').data('reply', userData.id);
+                        oInline.find('a.comment-reply').data('reply-user-id', userData.id);
                         oInline.find('a.comment-reply').data('reply-name', userData.name);
 
                         oInline.removeClass('box-hide');
