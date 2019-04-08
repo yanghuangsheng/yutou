@@ -79,6 +79,10 @@ class News extends Base
 
         $service = new PortalNews;
         $data = $service->getOneData($newsId);
+        $data['published_time_txt'] = date('Y-m-d H:i', $data['published_time']);
+        $data['content'] = $this->ruleImg($data['content']);
+
+
 
         //更新浏览量
         $browseNum = (new \app\www\service\PortalNewsAttr)->saveNum(['id'=>$newsId], 'browse');
@@ -97,18 +101,28 @@ class News extends Base
     {
         $newsId = $this->param('id');
         $comment = new \app\api\service\PortalNewsComment;
-        $satrtId = $comment->newsId();
         $data = $comment
             ->initWhere([['PortalNewsComment.news_id', '=', $newsId]])
             ->getListData();
 
+        $domain = $this->getDomain();
+        $data['list'] = $data['list']->toArray();
+        foreach ($data['list'] as $key => &$value){
+            foreach ($value['user_avatar'] as $keys => $values){
+                $value['user_avatar'][$keys] = $domain.$values;
+            }
+            foreach ($value['reply_avatar'] as $keys => $values){
+                $value['reply_avatar'][$keys] = $domain.$values;
+            }
+//            $value['user_avatar']['50'] = $domain.$value['user_avatar']['50'];
+//            $value['user_avatar']['100'] = $domain.$value['user_avatar']['100'];
+//            $value['user_avatar']['200'] = $domain.$value['user_avatar']['200'];
 
-        return $data['list'];
+        }
+
+        $data['start_id'] = $comment->newsId();
+        return $data;
     }
-
-
-
-
 
     /**
      * 获取最新的ID
@@ -128,5 +142,19 @@ class News extends Base
      */
     protected function ruleTrigger($event, $dara){
         (new \app\api\service\PortalNewsRule)->trigger($event, $dara);
+    }
+
+    /**
+     * 替换文章图片
+     * @param $content
+     * @return mixed
+     */
+    protected function ruleImg($content)
+    {
+        $domain = $this->getDomain();
+        $pregRule = "/<[img|IMG].*?src=[\'|\"]([\/uploads].*?(?:[\.jpg|\.jpeg|\.png|\.gif|\.bmp]))[\'|\"].*?[\/]?>/";
+        $content = preg_replace($pregRule, '<img src="'.$domain.'${1}" style="max-width:100%">', $content);
+        return $content;
+
     }
 }

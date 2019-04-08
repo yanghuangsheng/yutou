@@ -25,9 +25,10 @@ class PortalNewsComment extends Common
      */
     protected function setWithOnView()
     {
-        return $this->model->view('PortalNewsComment', 'id,parent_id,user_id,news_id,reply_id,content,create_time as date_time')
+        return $this->model->view('PortalNewsComment', 'id,parent_id,user_id,news_id,content,create_time as date_time')
             ->view('User', ['name'=>'user_name', 'avatar'=>'user_avatar'], 'User.id = PortalNewsComment.user_id', 'LEFT')
             ->view('User reply', ['name'=>'reply_name', 'avatar'=>'reply_avatar'], 'reply.id = PortalNewsComment.reply_user_id', 'LEFT')
+            ->view('PortalNewsComment replyComment', ['content'=>'reply_content'], 'replyComment.id = PortalNewsComment.reply_id', 'LEFT')
             ->view('PortalNewsCommentAttr', ['praise_num','tread_num'], 'PortalNewsCommentAttr.comment_id = PortalNewsComment.id', 'LEFT');
     }
 
