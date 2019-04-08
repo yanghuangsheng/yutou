@@ -74,7 +74,7 @@ class PortalNewsComment extends Common
         foreach ($data as $key => &$value){
             $value['user_avatar'] = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
             $value['reply_avatar'] = $value['reply_avatar'] ? json_decode($value['reply_avatar'],1) :userAvatar();
-            $value['date_time'] = getWeek($value['date_time']);
+            $value['date_time'] = friendlyDate($value['date_time']);
 
         }
 
