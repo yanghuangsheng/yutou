@@ -154,6 +154,8 @@ class News extends Base
         $domain = $this->getDomain();
         $pregRule = "/<[img|IMG].*?src=[\'|\"]([\/uploads].*?(?:[\.jpg|\.jpeg|\.png|\.gif|\.bmp]))[\'|\"].*?[\/]?>/";
         $content = preg_replace($pregRule, '<img src="'.$domain.'${1}" style="max-width:100%">', $content);
+        $pregRule = "/<[img|IMG].*?src=[\'|\"](.*?(?:[\.jpg|\.jpeg|\.png|\.gif|\.bmp]))[\'|\"].*?[\/]?>/";
+        $content = preg_replace($pregRule, '<img src="${1}" style="max-width:100%">', $content);
         return $content;
 
     }
