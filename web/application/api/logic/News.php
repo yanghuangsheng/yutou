@@ -114,9 +114,6 @@ class News extends Base
             foreach ($value['reply_avatar'] as $keys => $values){
                 $value['reply_avatar'][$keys] = $domain.$values;
             }
-//            $value['user_avatar']['50'] = $domain.$value['user_avatar']['50'];
-//            $value['user_avatar']['100'] = $domain.$value['user_avatar']['100'];
-//            $value['user_avatar']['200'] = $domain.$value['user_avatar']['200'];
 
         }
 
