@@ -3,6 +3,7 @@
   RewriteEngine On
 
   RewriteCond %{SERVER_PORT} !^443$
+  RewriteCond %{HTTP_HOST} ^[^.]+.bh3721.(com)$
   RewriteRule ^(.*)?$ https://%{SERVER_NAME}/$1 [L,R]
 
   RewriteCond %{REQUEST_FILENAME} !-d
