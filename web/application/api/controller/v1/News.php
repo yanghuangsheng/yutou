@@ -41,10 +41,13 @@ class News extends Base
 
     }
 
-    //增加评论
+    /**
+     * 评论
+     * @return array
+     */
     public function addComment()
     {
-        echo 'addComment';
+        return (new Logic)->commentAdd();
 
     }
 

@@ -122,6 +122,36 @@ class News extends Base
     }
 
     /**
+     * 评论新闻
+     */
+    public function commentAdd()
+    {
+
+        $this->checkToken();
+        $param = $this->param();
+        //提交数据验证 -> 暂缺
+
+
+        $comment = new \app\api\service\PortalNewsComment;
+        //用户ID
+        $param['user_id'] = $this->tokenData['id'];
+        if($comment->addComment($param)){
+            //累加新闻评论数
+            $commentNum = (new \app\api\service\PortalNewsAttr)->saveNum($param, 'comment');
+            //规则触发
+            $this->ruleTrigger('comment_num', ['id'=>$param['id'], 'num'=>$commentNum]);
+
+            //更新评论用户的评论数
+            (new \app\api\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'comment');
+
+
+            return showResult(0, '评论成功');
+        }
+
+        return showResult(-1, '评论失败');
+    }
+
+    /**
      * 获取最新的ID
      * @return mixed
      */

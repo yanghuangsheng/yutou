@@ -50,7 +50,7 @@ Route::group('api', function () {
     Route::get(':ver/news/item', 'api/:ver.news/item');
 
     Route::get(':ver/news/comment', 'api/:ver.news/comment');
-    Route::get(':ver/news/add_comment', 'api/:ver.news/addComment');
+    Route::post(':ver/news/add_comment', 'api/:ver.news/addComment');
 
     Route::get(':ver/forum/all', 'api/:ver.forum/index');
     Route::get(':ver/forum/list', 'api/:ver.forum/loadList');
@@ -74,7 +74,8 @@ Route::group('api', function () {
 })
     ->header('Access-Control-Allow-Origin','*')
     ->header('Access-Control-Allow-Credentials', 'true')
-    ->header('Access-Control-Allow-Headers','token,app-type,sign')
+    ->header('Access-Control-Allow-Methods', 'GET,POST')
+    ->header('Access-Control-Allow-Headers','token,app-type,content-type,sign')
     ->allowCrossDomain();
 
 
