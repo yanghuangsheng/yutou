@@ -8,13 +8,14 @@
 
 namespace app\api\controller\v1;
 
+use \app\api\logic\Forum as Logic;
 
 class Forum extends Base
 {
     //社区所有
     public function index()
     {
-        $forum = new \app\api\logic\Forum;
+        $forum = new Logic;
         $data['data'][] = $forum->getList('hot'); //热门
         $data['data'][] = $forum->getList('new'); //最新
         $data['start_id'] =  $forum->getNewsId(); //用于获取下一页数据，预防有新数据重复出现
@@ -26,11 +27,37 @@ class Forum extends Base
     //加载更多
     public function loadList()
     {
-        $forum = new \app\api\logic\Forum;
+        $forum = new Logic;
         $data = $forum->gitLoadList();
 
         return showResult(0, '', $data);
     }
+
+    //帖子详情
+    public function item()
+    {
+        $forum = new Logic;
+
+        $comment = $forum->getCommentList();
+
+        $data['item'] = $forum->getItem();
+        $data['start_id'] = $comment['start_id'];
+        $data['new_comment_list'] = $comment['list'];
+        $data['hot_comment_list'] = [];
+
+        return showResult(0, '', $data);
+    }
+
+    /**
+     * 评论
+     * @return array
+     */
+    public function addComment()
+    {
+        return (new Logic)->commentAdd();
+
+    }
+
 
 
 }

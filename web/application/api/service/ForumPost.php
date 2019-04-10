@@ -165,4 +165,13 @@ class ForumPost extends Common
         }
         return $data;
     }
+
+    protected function resetFindData($data)
+    {
+        $data['user_avatar'] = $data['user_avatar'] ? json_decode($data['user_avatar'],1) :userAvatar();
+//        dump($data);
+//        exit();
+
+        return $data;
+    }
 }

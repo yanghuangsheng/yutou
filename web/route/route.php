@@ -57,7 +57,7 @@ Route::group('api', function () {
 
     Route::get(':ver/forum/item', 'api/:ver.forum/item');
     Route::get(':ver/forum/comment', 'api/:ver.forum/comment');
-    Route::get(':ver/forum/add_comment', 'api/:ver.forum/addComment');
+    Route::post(':ver/forum/add_comment', 'api/:ver.forum/addComment');
 
     Route::get(':ver/lottery/list', 'api/:ver.lottery/index');
     Route::get(':ver/lottery/one_list', 'api/:ver.lottery/oneList');

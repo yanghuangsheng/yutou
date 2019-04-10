@@ -112,13 +112,15 @@ class News extends Base
      * 指定获取评论ID
      * @param $comment
      * @param $where
+     * @param $page
      * @return mixed
      */
-    public function getCommonCommentList($comment, $where)
+    public function getCommonCommentList($comment, $where, $page = 1)
     {
         $data = $comment
             //->initWhere([['PortalNewsComment.news_id', '=', $newsId]])
             ->initWhere($where)
+            ->initLimit($page)
             ->getListData();
 
         $domain = $this->getDomain();
