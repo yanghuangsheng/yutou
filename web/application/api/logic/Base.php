@@ -296,4 +296,20 @@ class Base
         exit(json_encode($data));
     }
 
+    /**
+     * 替换文章图片
+     * @param $content
+     * @return mixed
+     */
+    protected function ruleImg($content)
+    {
+        $domain = $this->getDomain();
+        $pregRule = "/<[img|IMG].*?src=[\'|\"]([\/uploads].*?(?:[\.jpg|\.jpeg|\.png|\.gif|\.bmp]))[\'|\"].*?[\/]?>/";
+        $contents = preg_replace($pregRule, '<img src="'.$domain.'${1}" style="max-width:100%">', $content);
+        $pregRule = "/<[img|IMG].*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/";
+        $contents = preg_replace($pregRule, '<img src="${1}" style="max-width:100%">', $contents);
+        return $contents;
+
+    }
+
 }

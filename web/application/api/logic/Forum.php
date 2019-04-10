@@ -72,6 +72,7 @@ class Forum extends Base
         $data = $service->getOneData($postId);
         $domain = $this->getDomain();
         $data['user_avatar'] = $domain . $data['user_avatar'][100];
+        $data['content'] = $this->ruleImg($data['content']);
 
         $data['collect'] = 0;
         //关注情况
