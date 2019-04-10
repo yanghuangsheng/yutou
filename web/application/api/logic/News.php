@@ -101,8 +101,24 @@ class News extends Base
     {
         $newsId = $this->param('id');
         $comment = new \app\api\service\PortalNewsComment;
+
+        $data = $this->getCommonCommentList($comment, [['PortalNewsComment.news_id', '=', $newsId]]);
+
+        $data['start_id'] = $comment->newsId();
+        return $data;
+    }
+
+    /**
+     * 指定获取评论ID
+     * @param $comment
+     * @param $where
+     * @return mixed
+     */
+    public function getCommonCommentList($comment, $where)
+    {
         $data = $comment
-            ->initWhere([['PortalNewsComment.news_id', '=', $newsId]])
+            //->initWhere([['PortalNewsComment.news_id', '=', $newsId]])
+            ->initWhere($where)
             ->getListData();
 
         $domain = $this->getDomain();
@@ -117,7 +133,6 @@ class News extends Base
 
         }
 
-        $data['start_id'] = $comment->newsId();
         return $data;
     }
 
@@ -135,17 +150,25 @@ class News extends Base
         $comment = new \app\api\service\PortalNewsComment;
         //用户ID
         $param['user_id'] = $this->tokenData['id'];
-        if($comment->addComment($param)){
+        if($result = $comment->addComment($param)){
+
             //累加新闻评论数
             $commentNum = (new \app\api\service\PortalNewsAttr)->saveNum($param, 'comment');
+
             //规则触发
             $this->ruleTrigger('comment_num', ['id'=>$param['id'], 'num'=>$commentNum]);
 
             //更新评论用户的评论数
             (new \app\api\service\UserAttr)->saveNum(['id'=>$param['user_id']], 'comment');
 
+            //返回评论内容
+            $where = [
+                ['PortalNewsComment.news_id', '=', $result['news_id']],
+                ['PortalNewsComment.id', '=', $result['id']]
+            ];
+            $data = $this->getCommonCommentList($comment, $where);
 
-            return showResult(0, '评论成功');
+            return showResult(0, '评论成功', $data['list']);
         }
 
         return showResult(-1, '评论失败');

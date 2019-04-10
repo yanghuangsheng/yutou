@@ -45,25 +45,15 @@ class PortalNewsComment extends Common
             'content' => str_replace("\n","<br/>",$data['content']),
         ];
 
-        return $this->save($updateData);
+        //回复相关
+        isset($data['parent_id']) && $updateData['parent_id'] = $data['parent_id'];
+        isset($data['reply_id']) && $updateData['reply_id'] = $data['reply_id'];
+        isset($data['reply_user_id']) && $updateData['reply_user_id'] = $data['reply_user_id'];
+
+
+        return $this->save($updateData, 0, 1);
     }
 
-    /**
-     * 新增评论回复
-     * @param $data
-     * @return bool
-     */
-    public function addReplyComment($data)
-    {
-        $updateData = [
-            'news_id' => $data['id'],
-            'parent_id' => $data['parent'],
-            'user_id' => $data['user_id'],
-            'reply_id' => $data['reply_id'],
-            'content' => $data['content'],
-        ];
-        return $this->save($updateData);
-    }
 
     /**
      * 处理输出数据

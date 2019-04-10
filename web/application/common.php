@@ -406,7 +406,9 @@ function friendlyDate($sTime,$type = 'mohu',$alt = 'false') {
             return date("Y-m-d H:i",$sTime);
         }
     }elseif($type=='mohu'){
-        if( $dTime < 60 ){
+        if( $dTime == 0){
+            return "刚刚";
+        }elseif($dTime < 60 ){
             return $dTime."秒前";
         }elseif( $dTime < 3600 ){
             return intval($dTime/60)."分钟前";
