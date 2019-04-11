@@ -72,7 +72,7 @@ class Upload extends Base
             'imageActionName' => 'uploadimage',
             'imageFieldName' => 'file',
             "imageCompressEnable" => true,
-            'imageAllowFiles' => ['.png', '.jpg','.gif'],
+            'imageAllowFiles' => ['.png', '.jpg', '.jpeg', '.gif'],
             'imageMaxSize' => 1024*1024*2,
             'imageUrlPrefix' => '',
 
@@ -98,7 +98,7 @@ class Upload extends Base
             "imageManagerListSize" => 20,
             "imageManagerUrlPrefix" => '',
             "imageManagerInsertAlign" => 'none',
-            "imageManagerAllowFiles" => ['.png', '.jpg', '.gif'],
+            "imageManagerAllowFiles" => ['.png', '.jpg', '.jpeg', '.gif'],
         ];
 
         $getData = $this->param();
