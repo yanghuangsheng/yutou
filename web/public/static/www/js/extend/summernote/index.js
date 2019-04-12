@@ -7691,7 +7691,8 @@
             [
                 //'link',
                 'picture', 'video']],
-        ['view', ['fullscreen',
+        ['view', [
+            //'fullscreen',
             //'codeview',
             //'help'
         ]]
@@ -7735,7 +7736,9 @@
       direction: null,
       tooltip: 'auto',
 
-      styleTags: ['p', 'blockquote', 'pre'],
+      styleTags: ['p', 'blockquote', 'pre'
+          //, 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+      ],
 
       fontNames: [
         'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
