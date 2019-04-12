@@ -9,7 +9,7 @@
 namespace app\api\service;
 
 
-class User extends Base
+class User extends Common
 {
     //初始化类
     public function __construct()
@@ -22,14 +22,27 @@ class User extends Base
      * @param $user_id
      * @return array|null|\PDOStatement|string|\think\Model
      */
-    public function getOneData($user_id)
+    public function getOneInfo($user_id)
     {
         $data = $this->model->view('User', 'id,name,real_name,avatar,birthday,sex,hobby,address,synopsis')
-            ->view('UserAttr', 'praise_num,tread_num,comment_num,post_num,follow_num,fans_num', 'UserAttr.user_id = User.id', 'LEFT')
             ->where('id', $user_id)
             ->find();
         //补填没有头像的用户
         $data['avatar'] || $data['avatar'] = userAvatar();
+        return $data;
+    }
+
+    /**
+     * 获取用户信息
+     * @param $user_id
+     * @return array|null|\PDOStatement|string|\think\Model
+     */
+    public function getOneArr($user_id)
+    {
+        $data = $this->model->view('UserAttr', 'praise_num,tread_num,comment_num,post_num,follow_num,fans_num')
+            ->where('user_id', $user_id)
+            ->find();
+
         return $data;
     }
 
@@ -70,6 +83,26 @@ class User extends Base
         }
 
         $this->error = '保存失败';
+        return false;
+    }
+
+    /**
+     * 更新用户信息 (以字段值更新)
+     * @param $data ['id', 'field', 'value']
+     * @return bool
+     */
+    public function saveOneInfo($data){
+        $saveData = [
+            'id' => $data[0],
+            'field' => $data[1],
+            'value' => $data[2]
+        ];
+        $result = $this->updateFieldByValue($saveData);
+        if($result){
+            return true;
+        }
+
+        $this->error = '修改失败';
         return false;
     }
 

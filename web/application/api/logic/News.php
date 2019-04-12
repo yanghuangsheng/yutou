@@ -109,6 +109,27 @@ class News extends Base
     }
 
     /**
+     * 加载更多评论
+     */
+    public function getMoreCommentList()
+    {
+        $param = $this->param();
+        //检测 $id $page $start_id 必须参数
+
+        $comment = new \app\api\service\PortalNewsComment;
+
+        $data = $this->getCommonCommentList(
+            $comment,
+            [['PortalNewsComment.news_id', '=', $param['id']], ['PortalNewsComment.id', '<=', $param['start_id']]],
+            $param['page']
+        );
+
+        return showResult(0, '', $data['list']);
+    }
+
+
+
+    /**
      * 指定获取评论ID
      * @param $comment
      * @param $where
@@ -141,7 +162,7 @@ class News extends Base
     /**
      * 评论新闻
      */
-    public function commentAdd()
+    public function addComment()
     {
 
         $this->checkToken();
@@ -174,6 +195,66 @@ class News extends Base
         }
 
         return showResult(-1, '评论失败');
+    }
+
+    /**
+     * 点赞新闻
+     * @return array
+     */
+    public function praiseNews()
+    {
+        $this->checkToken();
+
+        $param = $this->param();
+        $newsId = $param['id'];
+        $userId = $this->tokenData['id'];
+        $praise = new \app\api\service\PortalNewsPraise;
+        if(false == $praise->addUserPraise(['news_id'=>$newsId, 'user_id'=>$userId])){
+
+            return showResult(-1, $praise->getError());
+
+        }
+        $newsAttr = new \app\api\service\PortalNewsAttr;
+        if($praiseNum = $newsAttr->saveNum($param, 'praise')){
+            //同时收藏
+            $data = [
+                'id' => $newsId,
+                'user_id' => $userId,
+                'type' => 0
+            ];
+            (new \app\api\service\UserCollection)->addCollect($data);
+            $collectNum = $newsAttr->saveNum($param, 'collect');
+            //规则触发
+            $this->ruleTrigger('praise_num', ['id'=>$newsId, 'num'=>$praiseNum]);
+            $this->ruleTrigger('collect_num', ['id'=>$newsId, 'num'=>$collectNum]);
+
+            return showResult(0, '点赞成功');
+        }
+
+        return showResult(-1, '点赞失败');
+
+    }
+
+    /**
+     * 点赞评论
+     */
+    public function praiseComment()
+    {
+        $param = $this->param();
+        //提交数据验证 -> 暂缺
+
+        $praise = new \app\api\service\PortalNewsCommentClick;
+        //用户ID
+        $param['user_id'] = $this->tokenData['id'];
+        if($praise->savePraise($param)){
+            (new \app\api\service\PortalNewsCommentAttr)->saveNum(['id'=>$param['id']] ,'praise');
+            //更新评论用户的点赞数
+            $userId = (new \app\api\service\PortalNewsComment)->getField($param['id'], 'user_id');
+            (new \app\api\service\UserAttr)->saveNum(['id'=>$userId], 'praise');
+
+            return showResult(0, '点赞成功');
+        }
+        return showResult(-1, $praise->getError()?$praise->getError():'点赞失败');
     }
 
     /**

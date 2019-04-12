@@ -44,32 +44,43 @@ Route::rule('/user', 'www/User/index');
 
 //API
 Route::group('api', function () {
+    //主页
     Route::get(':ver/index/all', 'api/:ver.index/all');
-
-    Route::get(':ver/news/list', 'api/:ver.news/index');
+    Route::get(':ver/news/list', 'api/:ver.news/index'); //加载更多
+    //新闻详情
     Route::get(':ver/news/item', 'api/:ver.news/item');
-
-    Route::get(':ver/news/comment', 'api/:ver.news/comment');
-    Route::post(':ver/news/add_comment', 'api/:ver.news/addComment');
-
+    Route::post(':ver/news/praise', 'api/:ver.news/praise'); //点赞
+    Route::post(':ver/news/praise_comment', 'api/:ver.news/praiseComment'); //点赞评论
+    Route::get(':ver/news/more_comment', 'api/:ver.news/moreComment'); //加载更多评论
+    Route::post(':ver/news/submit_comment', 'api/:ver.news/submitComment'); //评论
+    //社区
     Route::get(':ver/forum/all', 'api/:ver.forum/index');
     Route::get(':ver/forum/list', 'api/:ver.forum/loadList');
-
+    //帖子详情
     Route::get(':ver/forum/item', 'api/:ver.forum/item');
-    Route::get(':ver/forum/comment', 'api/:ver.forum/comment');
-    Route::post(':ver/forum/add_comment', 'api/:ver.forum/addComment');
-
+    Route::post(':ver/forum/praise', 'api/:ver.forum/praise'); //点赞
+    Route::post(':ver/forum/praise_comment', 'api/:ver.forum/praiseComment'); //点赞
+    Route::get(':ver/forum/more_comment', 'api/:ver.forum/moreComment'); //加载更多评论
+    Route::post(':ver/forum/submit_comment', 'api/:ver.forum/submitComment'); //评论
+    //彩票
     Route::get(':ver/lottery/list', 'api/:ver.lottery/index');
     Route::get(':ver/lottery/one_list', 'api/:ver.lottery/oneList');
-
+    //搜索
     Route::get(':ver/search', 'api/:ver.search/index');
     Route::get(':ver/search/list', 'api/:ver.search/loadList');
 
+    //用户相关
+    Route::get(':ver/user/info', 'api/:ver.user/info'); //用户信息
+    Route::get(':ver/user/arr', 'api/:ver.user/arr'); //属性
+    Route::post(':ver/user/fans', 'apo/:ver.user/fans'); //关注用户
+    Route::post(':ver/user/bind_Phone', 'app/:ver.user/bindPhone'); //绑定手机
+
+    //登陆
     Route::get(':ver/login', 'api/:ver.user/login');
     Route::get(':ver/register', 'api/:ver.user/register');
     Route::get(':ver/send_sms', 'api/:ver.user/sendSms');
 
-
+    //获取时间
     Route::get(':ver/time', 'api/:ver.time/index');
 })
     ->header('Access-Control-Allow-Origin','*')

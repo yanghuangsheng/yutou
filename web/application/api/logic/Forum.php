@@ -109,6 +109,25 @@ class Forum extends Base
     }
 
     /**
+     * 加载更多评论
+     */
+    public function getMoreCommentList()
+    {
+        $param = $this->param();
+        //检测 $id $page $start_id 必须参数
+
+        $comment = new \app\api\service\ForumPostComment;
+
+        $data = $this->getCommonCommentList(
+            $comment,
+            [['ForumPostComment.post_id', '=', $param['id']], ['ForumPostComment.id', '<=', $param['start_id']]],
+            $param['page']
+        );
+
+        return showResult(0, '', $data['list']);
+    }
+
+    /**
      * 指定获取评论ID
      * @param $comment
      * @param $where
@@ -141,7 +160,7 @@ class Forum extends Base
     /**
      * 评论帖子
      */
-    public function commentAdd()
+    public function submitComment()
     {
 
         $this->checkToken();
@@ -191,6 +210,78 @@ class Forum extends Base
         }
 
         return showResult(-1, '评论失败');
+    }
+
+    /**
+     * 点赞帖子
+     */
+    public function praisePost()
+    {
+        $this->checkToken();
+        $param = $this->param();
+        //验证参数   暂缺
+
+        $praise = new \app\api\service\ForumPostPraise;
+        //点赞用户ID
+        $click_userId = $this->tokenData['id'];
+        if(false == $praise->addUserPraise(['post_id'=>$param['id'], 'user_id'=>$click_userId])){
+
+            return showResult(-1, $praise->getError());
+        }
+        if($praiseNum = (new \app\api\service\ForumPostAttr)->saveNum($param, 'praise')){
+            //更新评论用户的点赞数
+            $forum = (new \app\api\service\ForumPost)->getField($param['id'], 'user_id,title', 1);
+            //增加用户点赞数
+            (new \app\api\service\UserAttr)->saveNum(['id'=>$forum['user_id']], 'praise');
+
+            //广播
+            (new \app\api\service\SystemBroadcast)->trigger(1, 'praise_num',
+                ['name'=>$this->tokenData['name'], 'id'=>$param['id'], 'title'=>$forum['title'], 'num'=>$praiseNum]);
+            //规则触发
+            $this->ruleTrigger('praise_num', ['id'=>$param['id'], 'num'=>$praiseNum]);
+
+            //给点赞帖子的用户发送消息
+            $toData = [
+                'o_id' => $param['id'], //帖子ID
+                'o_user_id' => $click_userId,
+            ];
+            (new \app\api\service\SystemMessage)->toUser($forum['user_id'], $toData, 3);
+
+            return showResult(0, '点赞成功');
+        }
+
+        return showResult(-1, '点赞失败');
+    }
+
+    /**
+     * 点赞评论
+     */
+    public function praiseComment()
+    {
+        $param = $this->param();
+        //提交数据验证 -> 暂缺
+
+        $praise = new \app\api\service\ForumPostCommentClick;
+        //用户ID
+        $param['user_id'] = $this->tokenData['id'];
+        if($praise->savePraise($param)){
+            $praiseNum = (new \app\api\service\ForumPostCommentAttr)->saveNum(['id'=>$param['id']] ,'praise');
+
+            $forum = (new \app\api\service\ForumPostComment)->getField($param['id'], 'user_id,title', 1);
+            //更新评论用户的点赞数
+            (new \app\api\service\UserAttr)->saveNum(['id'=>$forum['user_id']], 'praise');
+
+            //给点赞评论的用户发送消息
+            $toData = [
+                'o_id' => $param['id'], //评论ID
+                'o_user_id' => $param['user_id'],
+            ];
+            (new \app\api\service\SystemMessage)->toUser($forum['user_id'], $toData, 4);
+
+            return showResult(0, '点赞成功');
+        }
+
+        return showResult(-1, $praise->getError()?$praise->getError():'点赞失败');
     }
 
     /**

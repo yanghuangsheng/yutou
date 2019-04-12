@@ -8,6 +8,7 @@
 
 namespace app\api\controller\v1;
 
+use \app\api\logic\User as Logic;
 
 class User extends Base
 {
@@ -37,8 +38,50 @@ class User extends Base
         $sms = new \app\api\logic\Sms;
 
         return $sms->send();
-
     }
+
+    /**
+     * 关注用户
+     */
+    public function fans()
+    {
+        return (new Logic)->fans();
+    }
+
+    /**
+     * 属性
+     */
+    public function arr()
+    {
+        return (new Logic)->arr();
+    }
+
+    /**
+     * 用户信息
+     * @return mixed
+     */
+    public function info()
+    {
+        return (new Logic)->info();
+    }
+
+    /**
+     * 绑定手机
+     */
+    public function bindPhone()
+    {
+        return (new Logic)->bindPhone();
+    }
+
+    /**
+     * 我的帖子
+     */
+    public function collection()
+    {
+        return (new Logic)->collection();
+    }
+
+
 
     /**
      * 处理登陆
@@ -46,7 +89,6 @@ class User extends Base
      */
     private function saveLogin()
     {
-        return (new \app\api\logic\User)->login();
+        return (new Logic)->login();
     }
-
 }

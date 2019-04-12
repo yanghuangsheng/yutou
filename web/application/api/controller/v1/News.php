@@ -34,21 +34,43 @@ class News extends Base
         return showResult(0, '', $data);
     }
 
-    //评论列表
-    public function comment()
-    {
-        echo 'comment';
 
+    /**
+     * 加载更多
+     * @return array
+     */
+    public function moreComment()
+    {
+        return (new Logic)->getMoreCommentList();
     }
 
     /**
      * 评论
      * @return array
      */
-    public function addComment()
+    public function submitComment()
     {
-        return (new Logic)->commentAdd();
+        return (new Logic)->addComment();
 
     }
+
+    /**
+     * 点赞新闻
+     * @return mixed
+     */
+    public function praise()
+    {
+        return (new Logic)->praiseNews();
+    }
+
+    /**
+     * 点赞评论
+     * @return array
+     */
+    public function praiseComment()
+    {
+        return (new Logic)->praiseComment();
+    }
+
 
 }

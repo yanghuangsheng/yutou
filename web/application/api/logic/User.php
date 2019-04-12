@@ -40,6 +40,93 @@ class User extends Base
     }
 
     /**
+     * 关注用户
+     */
+    public function fans()
+    {
+        $this->checkToken();
+
+        $param = $this->param();
+        $oUserId = $this->tokenData['id'];
+        $userFans = new \app\api\service\UserFans;
+        if(false == $userFans->addFans(['id'=>$param['user_id'], 'user_id'=>$oUserId])){
+
+            return showResult(-1, $userFans->getError()?$userFans->getError():'关注失败');
+        }
+        $user = new \app\api\service\UserAttr;
+        $user->saveNum(['id'=>$param['user_id']], 'fans');
+        $user->saveNum(['id'=>$oUserId], 'follow');
+
+        return showResult(0, '关注成功');
+    }
+
+    /**
+     * 属性
+     */
+    public function arr()
+    {
+
+        $param = $this->param();
+        //参数验证  暂缺
+
+        $service = new \app\api\service\User;
+
+        $data = $service->getOneArr($param['user_id']);
+
+        return showResult(0, '', $data);
+    }
+
+    /**
+     * 用户信息
+     */
+    public function info()
+    {
+        $param = $this->param();
+        //参数验证  暂缺
+
+        $service = new \app\api\service\User;
+
+        $data = $service->getOneInfo($param['user_id']);
+
+        return showResult(0, '', $data);
+    }
+
+    /**
+     * 绑定手机
+     */
+    public function bindPhone()
+    {
+        $this->checkToken();
+        $userId = $this->tokenData['id'];
+        $param = $this->param();
+        //参数验证 暂缺
+
+        $smsCode = $this->cache($param['code_sign']);
+        if(!($smsCode == $param['code'])){
+
+            return showResult(-1, '验证码错误');
+        }
+
+        $service = new \app\api\service\User;
+        if($service->saveBindPhone($param['mobile'], $userId)){
+
+            return showResult(0, '绑定成功');
+        }
+
+        return showResult(-1, $service->getError());
+    }
+
+    /**
+     * 我的收藏
+     */
+    public function collection()
+    {
+
+    }
+
+
+
+    /**
      * 保存登陆状态
      * @param $sign
      * @param $result
