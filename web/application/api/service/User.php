@@ -88,7 +88,11 @@ class User extends Common
 
     /**
      * 更新用户信息 (以字段值更新)
-     * @param $data ['id', 'field', 'value']
+     * @param $data ['id', 'name', 'value']
+     */
+    /**
+     * 更新用户信息 (以字段值更新)
+     * @param $data ['id', 'name', 'value']
      * @return bool
      */
     public function saveOneInfo($data){
