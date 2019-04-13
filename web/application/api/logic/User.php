@@ -87,9 +87,7 @@ class User extends Base
         $service = new \app\api\service\User;
 
         $data = $service->getOneInfo($param['user_id'])->toArray();
-        foreach ($data['avatar'] as $key => &$value){
-            $value = $this->getDomain() . $value;
-        }
+        $data['avatar'] = $this->getDomain() . $data['avatar'][100];
 
         return showResult(0, '', $data);
     }
