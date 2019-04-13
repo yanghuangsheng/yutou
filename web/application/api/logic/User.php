@@ -20,8 +20,8 @@ class User extends Base
         $param = $this->param();
         //验证手机及验证码等上传信息 -> 暂缺
 
-        $smsCode = $this->cache($param['code_sign']);
         if(!($param['code'] == '898989')){
+            $smsCode = $this->cache($param['code_sign']);
             if(!($smsCode == $param['code'])){
                 return showResult(-1, '验证码错误');
             }
@@ -133,7 +133,62 @@ class User extends Base
 
     }
 
+    /**
+     * 处理上传头像 200*200 100*100 50*50
+     */
+    public function uploadAvatarImage()
+    {
+        $this->checkToken();
 
+        $upload = new \app\api\service\Upload;
+        $data = $upload->upFile('user_avatar');
+
+        //"error" => "0", "pic" => $pic_url, "name" => $pic_name
+        if (isset($data['error'])) {
+            return showResult(-1, $data['error']);
+        }
+        else{
+            //缩略图
+            $avatarImg = [
+                '200' => resultThumb($data['file'], 'avatar', 200, 200),
+                '100' => resultThumb($data['file'], 'avatar', 100, 100),
+                '50' => resultThumb($data['file'], 'avatar', 50, 50),
+            ];
+
+            $updateData = ['id'=> $this->tokenData['id'], 'field'=>'avatar', 'value'=>$avatarImg];
+            if((new \app\api\service\User)->updateFieldByValue($updateData) == false){
+                return showResult(-1, '上传失败');
+            }
+
+            $domain = $this->getDomain();
+            foreach ($avatarImg as $key => &$value){
+                $value = $domain . $value;
+            }
+
+            return showResult(0, '上传成功', ['image_url'=> $avatarImg, 'tmp_name'=> $data['tmp_name']]);
+        }
+
+
+    }
+
+    /**
+     * 更新用户信息
+     */
+    public function updateInfo()
+    {
+        $this->checkToken();
+        $userId = $this->tokenData['id'];
+        $param = $this->param();
+        //参数验证 暂缺
+
+        $user = new \app\api\service\User;
+        if($user->saveOneInfo([$userId, $param['field'], $param['value']])){
+            return showResult(0, '更新成功');
+        }
+
+        return showResult(-1, $user->getError());
+
+    }
 
     /**
      * 保存登陆状态

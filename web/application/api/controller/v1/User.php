@@ -66,6 +66,23 @@ class User extends Base
     }
 
     /**
+     * 更新用户信息
+     * @return mixed
+     */
+    public function setInfo()
+    {
+        return (new Logic)->updateInfo();
+    }
+
+    /**
+     * 上传头像
+     */
+    public function uploadAvatar()
+    {
+        return (new Logic)->uploadAvatarImage();
+    }
+
+    /**
      * 绑定手机
      */
     public function bindPhone()

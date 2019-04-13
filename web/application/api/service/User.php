@@ -89,10 +89,6 @@ class User extends Common
     /**
      * 更新用户信息 (以字段值更新)
      * @param $data ['id', 'name', 'value']
-     */
-    /**
-     * 更新用户信息 (以字段值更新)
-     * @param $data ['id', 'name', 'value']
      * @return bool
      */
     public function saveOneInfo($data){
@@ -106,7 +102,7 @@ class User extends Common
             return true;
         }
 
-        $this->error = '修改失败';
+        $this->error = '更新失败';
         return false;
     }
 

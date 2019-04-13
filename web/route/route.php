@@ -76,6 +76,8 @@ Route::group('api', function () {
     Route::get(':ver/user/arr', 'api/:ver.user/arr'); //属性
     Route::post(':ver/user/fans', 'api/:ver.user/fans'); //关注用户
     Route::post(':ver/user/bind_phone', 'api/:ver.user/bindPhone'); //绑定手机
+    Route::post(':ver/user/upload_avatar', 'api/:ver.user/uploadAvatar'); //上传头像
+    Route::post(':ver/user/set_info', 'api/:ver.user/setInfo'); //更新用户信息
 
     //登陆
     Route::post(':ver/login', 'api/:ver.user/login');
