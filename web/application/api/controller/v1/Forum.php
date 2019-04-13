@@ -58,6 +58,15 @@ class Forum extends Base
     }
 
     /**
+     * 加载更多
+     * @return array
+     */
+    public function lookComment()
+    {
+        return (new Logic)->getLookCommentList();
+    }
+
+    /**
      * 评论
      * @return array
      */

@@ -156,6 +156,25 @@ class Forum extends Base
         return $data;
     }
 
+    /**
+     * 获取查看评论
+     */
+    public function getLookCommentList()
+    {
+        $param = $this->param();
+        //提交数据验证 -> 暂缺
+
+        $comment = new \app\api\service\ForumPostComment;
+        //返回评论内容
+        $itemData = $this->getCommonCommentList($comment, [['ForumPostComment.id', '=', $param['id']]]);
+        $listData = $this->getCommonCommentList($comment, [['ForumPostComment.reply_id', '=', $param['id']]]);
+        $data = [
+            'item' => $itemData['list'][0], //主评论内容
+            'list' => $listData['list'], //所有回复的评论
+        ];
+
+        return showResult(0, '', $data);
+    }
 
     /**
      * 评论帖子

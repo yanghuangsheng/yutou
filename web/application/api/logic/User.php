@@ -117,6 +117,14 @@ class User extends Base
     }
 
     /**
+     * 我的帖子
+     */
+    public function myPost()
+    {
+
+    }
+
+    /**
      * 我的收藏
      */
     public function collection()

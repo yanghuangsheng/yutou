@@ -45,6 +45,15 @@ class News extends Base
     }
 
     /**
+     * 查看评论
+     * @return array
+     */
+    public function lookComment()
+    {
+        return (new Logic)->getLookCommentList();
+    }
+
+    /**
      * 评论
      * @return array
      */

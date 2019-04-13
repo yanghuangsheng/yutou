@@ -52,6 +52,7 @@ Route::group('api', function () {
     Route::post(':ver/news/praise', 'api/:ver.news/praise'); //点赞
     Route::post(':ver/news/praise_comment', 'api/:ver.news/praiseComment'); //点赞评论
     Route::get(':ver/news/more_comment', 'api/:ver.news/moreComment'); //加载更多评论
+    Route::get(':ver/news/look_comment', 'api/:ver.news/lookComment'); //加载更多评论
     Route::post(':ver/news/submit_comment', 'api/:ver.news/submitComment'); //评论
     //社区
     Route::get(':ver/forum/all', 'api/:ver.forum/index');
@@ -61,6 +62,7 @@ Route::group('api', function () {
     Route::post(':ver/forum/praise', 'api/:ver.forum/praise'); //点赞
     Route::post(':ver/forum/praise_comment', 'api/:ver.forum/praiseComment'); //点赞
     Route::get(':ver/forum/more_comment', 'api/:ver.forum/moreComment'); //加载更多评论
+    Route::get(':ver/forum/look_comment', 'api/:ver.forum/lookComment'); //查看评论
     Route::post(':ver/forum/submit_comment', 'api/:ver.forum/submitComment'); //评论
     //彩票
     Route::get(':ver/lottery/list', 'api/:ver.lottery/index');
