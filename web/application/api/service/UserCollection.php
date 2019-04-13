@@ -30,7 +30,7 @@ class UserCollection extends Common
     public function newsView()
     {
         $this->view = $this->model->view('UserCollection', 'id,user_id,create_time')
-            ->view('PortalNews', ['id'=>'news_id','title','description','image_url'], 'PortalNews.id = UserCollection.o_id')
+            ->view('PortalNews', ['id'=>'news_id','title','description','image_url', 'source_name', 'author'], 'PortalNews.id = UserCollection.o_id')
             ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT');
 
         return $this;

@@ -93,6 +93,22 @@ class User extends Base
     }
 
     /**
+     * 获取用户的金币
+     * @return array
+     */
+    public function golds()
+    {
+        $this->checkToken();
+        $userId = $this->tokenData['id'];
+
+        $capital = new \app\common\model\UserCapital;
+
+        $golds = $capital->where('user_id', $userId)->value('golds');
+
+        return showResult(0, '', ['golds' => $golds?$golds:0]);
+    }
+
+    /**
      * 绑定手机
      */
     public function bindPhone()
@@ -120,9 +136,39 @@ class User extends Base
     /**
      * 我的帖子
      */
-    public function myPost()
+    public function forumPost()
     {
+        $param = $this->param();
+        //验证参数 缺
 
+        $userId = $param['user_id'];
+        $service = new \app\api\service\ForumPost;
+        $data = [
+            'list' => $this->commonForumPostList($service, [['ForumPost.user_id','=', $userId]]),
+            'start_id' => $service->newsId(),
+        ];
+
+        return showResult(0, '', $data);
+    }
+
+    /**
+     * 加载更多 我的帖子
+     */
+    public function moreForumPost()
+    {
+        $param = $this->param();
+        //验证参数 缺
+
+        $userId = $param['user_id'];
+        $service = new \app\api\service\ForumPost;
+
+        $data = $this->commonForumPostList(
+            $service,
+            [['ForumPost.user_id','=', $userId], ['ForumPost.id', '<=', $param['start_id']]],
+            $param['page']
+        );
+
+        return showResult(0, '', $data);
     }
 
     /**
@@ -130,8 +176,46 @@ class User extends Base
      */
     public function collection()
     {
+        $param = $this->param();
+        //验证参数 缺
+
+        $userId = $param['user_id'];
+
+        $collect = new \app\api\service\UserCollection;
+        $where = [['UserCollection.user_id','=', $userId]];
+        $data = [
+            'post_list' => $this->commonCollectPostList($collect, $where),
+            'news_list' => $this->commonCollectNewsList($collect, $where),
+            'start_id' => $collect->newsId(),
+        ];
+
+        return showResult(0, '', $data);
+    }
+
+    /**
+     * 加载更多收藏
+     */
+    public function moreCollection()
+    {
+        $param = $this->param();
+        //验证参数 缺
+
+        $userId = $param['user_id'];
+
+        $collectFunction = 'commonCollectNewsList';
+        if($param['type'] == 'post_list'){
+            $collectFunction = 'commonCollectPostList';
+        }
+
+        $collect = new \app\api\service\UserCollection;
+        $where = [['UserCollection.user_id','=', $userId], ['UserCollection.id', '<=', $param['start_id']]];
+
+        $data = $this->$collectFunction($collect, $where, $param['page']);
+
+        return showResult(0, '', $data);
 
     }
+
 
     /**
      * 处理上传头像 200*200 100*100 50*50
@@ -188,6 +272,81 @@ class User extends Base
 
         return showResult(-1, $user->getError());
 
+    }
+
+    /**
+     * 公共我的帖子
+     * @param $forum
+     * @param $where
+     * @param int $page
+     * @return mixed
+     */
+    protected function commonForumPostList($forum, $where, $page = 1)
+    {
+        $data = $forum->initWhere($where)->initLimit($page)->getListData();
+
+        $data['list'] = $data['list']->toArray();
+        $domain = $this->getDomain();
+        foreach ($data['list'] as $key => &$value){
+            $value['description'] = clean_html($value['content'], 60);
+            //$value['user_avatar'] = json_decode($value['user_avatar'], true);
+            $value['user_avatar'] = $domain . $value['user_avatar']['100'];
+            foreach ($value['image_url'] as $key1 => &$value1){
+                $value1 = $domain . $value1;
+            }
+
+        }
+        return $data['list'];
+    }
+
+    /**
+     * 公共收藏帖子
+     * @param $collect
+     * @param $where
+     * @param int $page
+     * @return mixed
+     */
+    protected function commonCollectPostList($collect, $where, $page = 1)
+    {
+        $data = $collect->postView()->initWhere($where)->initLimit($page)->getListData();
+
+        $data['list'] = $data['list']->toArray();
+        $domain = $this->getDomain();
+        foreach ($data['list'] as $key => &$value){
+            $value['description'] = clean_html($value['content'], 60);
+            $value['user_avatar'] = $domain . $value['user_avatar']['100'];
+            $value['image_url'] = json_decode($value['image_url'], true);
+            $value['create_time'] = friendlyDate($value['create_time']);
+            foreach ($value['image_url'] as $key1 => &$value1){
+                $value1 = $domain . $value1;
+            }
+
+        }
+        //print_r($data);
+        return $data['list'];
+
+    }
+
+    /**
+     * 公共收藏新闻
+     * @param $collect
+     * @param $where
+     * @param int $page
+     * @return mixed
+     */
+    protected function commonCollectNewsList($collect, $where, $page = 1)
+    {
+        $data = $collect->newsView()->initWhere($where)->initLimit($page)->getListData();
+
+        $data['list'] = $data['list']->toArray();
+        $domain = $this->getDomain();
+        foreach ($data['list'] as $key => &$value){
+            $value['description'] = clean_html($value['description'], 60);
+            $value['create_time'] = friendlyDate($value['create_time']);
+            $value['image_url'] = $domain . $value['image_url'];
+        }
+
+        return $data['list'];
     }
 
     /**

@@ -44,7 +44,7 @@ Route::rule('/user', 'www/User/index');
 
 //API
 Route::group('api', function () {
-    //主页
+     //主页
     Route::get(':ver/index/all', 'api/:ver.index/all');
     Route::get(':ver/news/list', 'api/:ver.news/index'); //加载更多
     //新闻详情
@@ -74,6 +74,12 @@ Route::group('api', function () {
     //用户相关
     Route::get(':ver/user/info', 'api/:ver.user/info'); //用户信息
     Route::get(':ver/user/arr', 'api/:ver.user/arr'); //属性
+    Route::get(':ver/user/golds', 'api/:ver.user/golds'); //鱼头币
+    Route::get(':ver/user/my_post', 'api/:ver.user/myPost'); //我的帖子
+    Route::get(':ver/user/more_my_post', 'api/:ver.user/moreMyPost'); //加载更多 我的帖子
+    Route::get(':ver/user/collect', 'api/:ver.user/collection'); //我的收藏
+    Route::get(':ver/user/more_collect', 'api/:ver.user/moreCollection'); //加载更多 我的收藏
+
     Route::post(':ver/user/fans', 'api/:ver.user/fans'); //关注用户
     Route::post(':ver/user/bind_phone', 'api/:ver.user/bindPhone'); //绑定手机
     Route::post(':ver/user/upload_avatar', 'api/:ver.user/uploadAvatar'); //上传头像
@@ -84,7 +90,7 @@ Route::group('api', function () {
     Route::post(':ver/register', 'api/:ver.user/register');
     Route::post(':ver/send_sms', 'api/:ver.user/sendSms');
 
-    //获取时间
+    //获取同步时间
     Route::get(':ver/time', 'api/:ver.time/index');
 })
     ->header('Access-Control-Allow-Origin','*')

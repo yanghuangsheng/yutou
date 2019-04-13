@@ -32,6 +32,7 @@ class User extends Base
 
     /**
      * 发送验证
+     * @return mixed
      */
     public function sendSms()
     {
@@ -42,6 +43,7 @@ class User extends Base
 
     /**
      * 关注用户
+     * @return mixed
      */
     public function fans()
     {
@@ -50,6 +52,7 @@ class User extends Base
 
     /**
      * 属性
+     * @return mixed
      */
     public function arr()
     {
@@ -66,6 +69,15 @@ class User extends Base
     }
 
     /**
+     * 我的鱼头币
+     * @return mixed
+     */
+    public function golds()
+    {
+        return (new Logic)->golds();
+    }
+
+    /**
      * 更新用户信息
      * @return mixed
      */
@@ -76,6 +88,7 @@ class User extends Base
 
     /**
      * 上传头像
+     * @return array
      */
     public function uploadAvatar()
     {
@@ -84,6 +97,7 @@ class User extends Base
 
     /**
      * 绑定手机
+     * @return array
      */
     public function bindPhone()
     {
@@ -92,18 +106,38 @@ class User extends Base
 
     /**
      * 我的帖子
+     * @return array
      */
     public function myPost()
     {
+        return (new Logic)->forumPost();
+    }
 
+    /**
+     * 加载更多 我的帖子
+     * @return array
+     */
+    public function moreMyPost()
+    {
+        return (new Logic)->moreForumPost();
     }
 
     /**
      * 我的收藏
+     * @return array
      */
     public function collection()
     {
         return (new Logic)->collection();
+    }
+
+    /**
+     * 我的收藏 加载更多
+     * @return array
+     */
+    public function moreCollection()
+    {
+        return (new Logic)->moreCollection();
     }
 
 
