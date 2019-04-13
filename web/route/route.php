@@ -78,9 +78,9 @@ Route::group('api', function () {
     Route::post(':ver/user/bind_Phone', 'app/:ver.user/bindPhone'); //绑定手机
 
     //登陆
-    Route::get(':ver/login', 'api/:ver.user/login');
-    Route::get(':ver/register', 'api/:ver.user/register');
-    Route::get(':ver/send_sms', 'api/:ver.user/sendSms');
+    Route::post(':ver/login', 'api/:ver.user/login');
+    Route::post(':ver/register', 'api/:ver.user/register');
+    Route::post(':ver/send_sms', 'api/:ver.user/sendSms');
 
     //获取时间
     Route::get(':ver/time', 'api/:ver.time/index');
