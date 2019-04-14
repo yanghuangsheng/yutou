@@ -33,7 +33,7 @@ class User extends Common
     }
 
     /**
-     * 获取用户信息
+     * 获取用户属性
      * @param $user_id
      * @return array|null|\PDOStatement|string|\think\Model
      */
@@ -42,7 +42,9 @@ class User extends Common
         $data = $this->model->view('UserAttr', 'praise_num,tread_num,comment_num,post_num,follow_num,fans_num')
             ->where('user_id', $user_id)
             ->find();
-
+        if(!$data){
+            $data = ['praise_num'=>0, 'tread_num'=>0, 'comment_num'=>0, 'post_num'=>0,'follow_num'=>0, 'fans_num'=>0 ];
+        }
         return $data;
     }
 
