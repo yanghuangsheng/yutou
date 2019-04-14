@@ -74,10 +74,10 @@ class Forum extends Base
         $data['user_avatar'] = $domain . $data['user_avatar'][100];
         $data['content'] = $this->ruleImg($data['content']);
 
-        $data['collect'] = 0;
+        $data['is_fans'] = 0;
         //关注情况
         if(isset($this->tokenData['id'])){
-            $data['collect'] = (new \app\api\service\UserFans)->checkFans($data['user_id'], $this->tokenData['id']);
+            $data['is_fans'] = (new \app\api\service\UserFans)->checkFans($data['user_id'], $this->tokenData['id']);
         }
 
         //更新浏览量
