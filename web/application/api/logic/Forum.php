@@ -43,10 +43,10 @@ class Forum extends Base
                 $value1 = $this->getDomain().$value1;
             }
 
-            $data['is_fans'] = 0;
+            $value['is_fans'] = 0;
             //关注情况
             if(isset($this->tokenData['id'])){
-                $data['is_fans'] = (new \app\api\service\UserFans)->checkFans($data['user_id'], $this->tokenData['id']);
+                $value['is_fans'] = (new \app\api\service\UserFans)->checkFans($value['user_id'], $this->tokenData['id']);
             }
 
         }
