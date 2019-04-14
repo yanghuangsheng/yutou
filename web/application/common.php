@@ -469,15 +469,38 @@ function adType($key)
 
 /**
  * 用户默认头像
- * @return array
+ * @param int $index
+ * @return mixed
  */
-function userAvatar()
+function userAvatar($index = 1)
 {
-    return [
-        '200' => '/static/www/images/user_avatar.png',
-        '100' => '/static/www/images/user_avatar_100.png',
-        '50' => '/static/www/images/user_avatar_50.png',
+    $data = [
+        [
+            '200' => '/static/www/images/user_avatar.png',
+            '100' => '/static/www/images/user_avatar_100.png',
+            '50' => '/static/www/images/user_avatar_50.png',
+        ],
+        [
+            '200' => '/static/www/images/user_avatar_01.jpg',
+            '100' => '/static/www/images/user_avatar_01_100.jpg',
+            '50' => '/static/www/images/user_avatar_01_50.jpg',
+        ]
+
     ];
+    return $data[$index];
+}
+
+/**
+ * 生成随机名字
+ * @param $id
+ * @param int $index
+ * @return string
+ */
+function randomUserName($id, $index = 0)
+{
+    $data = ['鱼头妹'];
+    $userName = $data[0]. '_' . random_string('4') . ($id +1);
+    return $userName;
 }
 
 /**
