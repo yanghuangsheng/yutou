@@ -33,6 +33,15 @@ class Forum extends Base
         return showResult(0, '', $data);
     }
 
+    /**
+     * 热门话题
+     * @return mixed
+     */
+    public function hotTopic()
+    {
+        return (new Logic)->sevenDayHotTopic();
+    }
+
     //帖子详情
     public function item()
     {

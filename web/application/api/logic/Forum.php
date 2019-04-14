@@ -68,6 +68,17 @@ class Forum extends Base
     }
 
     /**
+     * 7天热门话题
+     * @return mixed
+     */
+    public function sevenDayHotTopic()
+    {
+        $data = (new ForumPost)->hotData(30, 10, [['ForumPost.hot', '=', 1]]);
+
+        return showResult(0, '', $data['list']);
+    }
+
+    /**
      * 获取帖子详情
      * @return mixed
      */

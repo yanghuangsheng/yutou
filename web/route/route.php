@@ -57,6 +57,8 @@ Route::group('api', function () {
     //社区
     Route::get(':ver/forum/all', 'api/:ver.forum/index');
     Route::get(':ver/forum/list', 'api/:ver.forum/loadList');
+    Route::get(':ver/forum/hot_topic', 'api/:ver.forum/hotTopic'); //热门话题
+
     //帖子详情
     Route::get(':ver/forum/item', 'api/:ver.forum/item');
     Route::post(':ver/forum/praise', 'api/:ver.forum/praise'); //点赞
