@@ -216,6 +216,68 @@ class User extends Base
 
     }
 
+    /**
+     * 上传图片 (社区帖子)
+     * @param string $path
+     * @param array $size
+     * @return array
+     */
+    public function uploadForumImage($path = 'content', $size = [700, 700])
+    {
+        $this->checkToken();
+        $upload = new \app\api\service\Upload;
+        $data = $upload->upFile('forum_'.$path);
+
+        if (isset($data['error'])) {
+
+            return showResult(-1, $data['error']);
+        }
+        else{
+            //压缩图片
+            resultThumb($data['file'], 'no', $size[0], $size[1], 0, 1);
+
+            return showResult(0, '上传成功', ['image_url'=> $data['file'], 'domain'=> $this->getDomain(), 'tmp_name'=> $data['tmp_name']]);
+        }
+    }
+
+    /**
+     * 发布帖子
+     * @return array
+     */
+    public function pubForumPost()
+    {
+        $this->checkToken();
+        $param = $this->param();
+        //提交数据验证 -> 暂缺
+
+        $forum = new \app\api\service\ForumPost;
+        //用户ID
+        $saveData['user_id'] = $this->tokenData['id'];
+        $saveData['status'] = 1;
+
+        //组新 content
+        $saveData['title'] = $param['title'];
+        $saveData['content'] = '<div>' . $param['content'] . '</div> <div style="height:20px;"></div>';
+        $saveData['image_url'] = []; //缩略图
+        foreach ($param['content_image'] as $key => $value){
+            $saveData['content'] .= '<div style="text-align: center;"> <img src="'. $value .'"> </div><div style="height:10px;"></div>';
+            if($key < 3){
+                //最多3个做缩略图
+                $saveData['image_url'][] = resultThumb($value, '/forum_cover/', 218, 129, 0, 3);
+            }
+
+        }
+
+        if($data = $forum->save($saveData, 0, 1)){
+            (new \app\api\service\UserAttr)->saveNum(['id'=>$saveData['user_id']], 'post');
+            (new \app\api\service\SystemBroadcast)->trigger(1, 'put', ['name'=>$this->tokenData['name'], 'id'=>$data['id'], 'title'=>$data['title'], 'num'=>0]);
+
+            return showResult(0, '发布成功');
+        }
+
+        return showResult(-1, $forum->getError()?$forum->getError():'发布失败');
+    }
+
 
     /**
      * 处理上传头像 200*200 100*100 50*50

@@ -140,6 +140,22 @@ class User extends Base
         return (new Logic)->moreCollection();
     }
 
+    /**
+     * 上传帖子图片
+     * @return array
+     */
+    public function uploadForumImage()
+    {
+        return (new Logic)->uploadForumImage();
+    }
+
+    /**
+     * 发布帖子
+     */
+    public function pubForumPost()
+    {
+        return (new logic)->pubForumPost();
+    }
 
     /**
      * 处理登陆

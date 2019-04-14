@@ -85,6 +85,11 @@ Route::group('api', function () {
     Route::post(':ver/user/upload_avatar', 'api/:ver.user/uploadAvatar'); //上传头像
     Route::post(':ver/user/set_info', 'api/:ver.user/setInfo'); //更新用户信息
 
+    Route::post(':ver/user/upload_forum_image', 'api/:ver.user/uploadForumImage'); //上传帖子图片
+    Route::post(':ver/user/pub_post', 'api/:ver.user/pubForumPost'); //发布帖子
+
+
+
     //登陆
     Route::post(':ver/login', 'api/:ver.user/login');
     Route::post(':ver/register', 'api/:ver.user/register');
