@@ -20,6 +20,7 @@ class Forum extends Base
     public function getList($type = 'new')
     {
         $param = $this->param();
+
         isset($param['page']) || $param['page'] = 1;
 
         $service = new ForumPost;
@@ -40,6 +41,12 @@ class Forum extends Base
             }
             foreach ($value['image_url'] as $key1 => &$value1){
                 $value1 = $this->getDomain().$value1;
+            }
+
+            $data['is_fans'] = 0;
+            //关注情况
+            if(isset($this->tokenData['id'])){
+                $data['is_fans'] = (new \app\api\service\UserFans)->checkFans($data['user_id'], $this->tokenData['id']);
             }
 
         }
