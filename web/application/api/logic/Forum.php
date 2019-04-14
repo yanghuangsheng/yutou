@@ -75,7 +75,7 @@ class Forum extends Base
     {
         $data = (new ForumPost)->hotData(30, 10, [['ForumPost.hot', '=', 1]]);
 
-        return showResult(0, '', $data['list']);
+        return showResult(0, '', $data);
     }
 
     /**
