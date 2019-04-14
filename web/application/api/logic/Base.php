@@ -304,7 +304,7 @@ class Base
     protected function ruleImg($content)
     {
         $domain = $this->getDomain();
-        $pregRule = "/<[img|IMG].*?src=[\'|\"]([\/uploads].*?(?:[\.jpg|\.jpeg|\.png|\.gif|\.bmp]))[\'|\"].*?[\/]?>/";
+        $pregRule = "/<[img|IMG].*?src=[\'|\"]([\/uploads].*?(?:[\.jpg|\.jpeg|\.png|\.gif|\.bmp|\.JPG|\.JPEG|\.PNG|\.GIF]))[\'|\"].*?[\/]?>/";
         $contents = preg_replace($pregRule, '<img src="'.$domain.'${1}" style="max-width:100%">', $content);
         $pregRule = "/<[img|IMG].*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/";
         $contents = preg_replace($pregRule, '<img src="${1}" style="max-width:100%">', $contents);
