@@ -79,6 +79,15 @@ class Forum extends Base
     }
 
     /**
+     * 搜索话题
+     */
+    public function searchTopic()
+    {
+        $keyword = $this->param('keyword');
+
+    }
+
+    /**
      * 获取帖子详情
      * @return mixed
      */
@@ -295,16 +304,19 @@ class Forum extends Base
      */
     public function praiseComment()
     {
+        $this->checkToken();
         $param = $this->param();
         //提交数据验证 -> 暂缺
 
         $praise = new \app\api\service\ForumPostCommentClick;
         //用户ID
         $param['user_id'] = $this->tokenData['id'];
+
         if($praise->savePraise($param)){
             $praiseNum = (new \app\api\service\ForumPostCommentAttr)->saveNum(['id'=>$param['id']] ,'praise');
 
-            $forum = (new \app\api\service\ForumPostComment)->getField($param['id'], 'user_id,title', 1);
+            $forum = (new \app\api\service\ForumPostComment)->getField($param['id'], 'user_id', 1);
+            //dump($forum);
             //更新评论用户的点赞数
             (new \app\api\service\UserAttr)->saveNum(['id'=>$forum['user_id']], 'praise');
 

@@ -261,6 +261,7 @@ class News extends Base
      */
     public function praiseComment()
     {
+        $this->checkToken();
         $param = $this->param();
         //提交数据验证 -> 暂缺
 

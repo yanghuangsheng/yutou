@@ -27,7 +27,8 @@ class ForumPostCommentAttr extends Common
     public function saveNum($data, $field)
     {
         $field .= '_num';
-        if($this->model->where('comment_id', $data['id'])->count()){
+        $count = $this->model->where('comment_id', $data['id'])->count();
+        if($count){
 
             return $this->updateInc(['comment_id', $data['id']], $field);
         }
