@@ -308,6 +308,9 @@ class Base
         $contents = preg_replace($pregRule, '<img src="'.$domain.'${1}" style="max-width:100%">', $content);
         $pregRule = "/<[img|IMG].*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/";
         $contents = preg_replace($pregRule, '<img src="${1}" style="max-width:100%">', $contents);
+        $content = str_replace(['<section>','</section>'], ['', ''], $contents);
+
+
         return $contents;
 
     }
