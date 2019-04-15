@@ -24,7 +24,7 @@ class ForumPost extends Base
     }
 
     /**
-     * 删除分类
+     * 删除
      */
     public function delete()
     {

@@ -361,6 +361,7 @@ class User extends Base
             $forumPost = new \app\www\service\ForumPost;
 
             if($forumPost->checkDel($data)){
+                (new \app\common\model\SystemBroadcast)->where('o_id', '=', $id)->where('type', '=', 0)->data(['delete_time' => time()])->update();
                 $this->resultJson(0, '删除成功');
             }
 

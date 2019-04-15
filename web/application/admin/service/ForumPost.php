@@ -46,6 +46,7 @@ class ForumPost extends Common
     {
         $oTime = time();
         (new \app\common\model\ForumPostContent)->where('post_id', 'IN', $id)->data(['delete_time' => $oTime])->update();
+        (new \app\common\model\SystemBroadcast)->where('o_id', 'IN', $id)->where('type', '=', 0)->data(['delete_time' => $oTime])->update();
     }
 
     /**
