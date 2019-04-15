@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'app_debug' => true,
+    'app_debug' => false,
 
     'default_return_type' => 'json',
     'exception_tmpl'         => Env::get('think_path'). 'tpl/think_exception.tpl',
