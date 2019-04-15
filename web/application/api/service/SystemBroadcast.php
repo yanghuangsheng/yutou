@@ -38,7 +38,7 @@ class SystemBroadcast extends Common
                     }
             }
             $tplUrl = ($type?'/forum/item':'/news/item') . '?id=' . $data['id'];
-            isset($content) && $this->save(['content'=>"<a href=\"{$tplUrl}\" target=\"_blank\">{$content}</a>", 'type'=>0]);
+            isset($content) && $this->save(['content'=>"<a href=\"{$tplUrl}\" target=\"_blank\">{$content}</a>", 'o_id'=>$data['id'], 'type'=>0]);
         }
 
     }

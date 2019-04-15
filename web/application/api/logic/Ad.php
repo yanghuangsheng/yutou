@@ -36,4 +36,13 @@ class Ad extends Base
     {
         return (new AdImages)->getBanner($ad_id);
     }
+
+    /**
+     * 获取广播
+     * @return mixed
+     */
+    public function getBroadcast()
+    {
+        return (new \app\api\service\SystemBroadcast)->initField('content')->getListData();
+    }
 }

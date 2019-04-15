@@ -29,7 +29,6 @@ Route::rule('/user/uploadavatarimage', 'www/User/uploadAvatarImage');
 Route::rule('/user/uploadcoverimage', 'www/User/uploadcoverimage');
 
 
-
 Route::rule('/user/login', 'www/User/login');
 Route::rule('/user/register', 'www/User/register');
 Route::rule('/user/logout', 'www/User/logout');
