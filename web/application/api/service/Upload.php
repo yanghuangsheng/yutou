@@ -12,7 +12,7 @@ namespace app\api\service;
 class Upload
 {
     //上传文件
-    public function upFile($upCatalog, $fileName = 'file', $size = 2, $ext = 'jpg,jpeg,png,gif')
+    public function upFile($upCatalog, $fileName = 'file', $size = 5, $ext = 'jpg,jpeg,png,gif')
     {
 
         $rootDirectory = './uploads/' . $upCatalog . '/';
