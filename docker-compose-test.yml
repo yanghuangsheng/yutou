@@ -14,7 +14,7 @@ services:
   m_server:
     image: webdevops/php-apache:alpine
     volumes:
-      - ./test_sites/m:/app
+      - ./wap:/app
     restart: always
     environment:
       WEB_ALIAS_DOMAIN: m.bh3721.com
@@ -27,10 +27,11 @@ services:
   www_server:
       image: webdevops/php-apache:alpine
       volumes:
-        - ./test_sites/w:/app
-        - ./docker/ssl/Apache/www.bh3721.com_ssl.crt:/opt/docker/etc/httpd/ssl/server.crt
-        - ./docker/ssl/Apache/www.bh3721.com_ssl.key:/opt/docker/etc/httpd/ssl/server.key
-        - ./docker/ssl/Apache/www.bh3721.com_chain.crt:/opt/docker/etc/httpd/ssl/server_chain.crt
+        - ./web:/app
+        #- /home/www/uploads:/app/public/uploads
+        - ./docker/proxy/ssl/Apache/www.bh3721.com_ssl.crt:/opt/docker/etc/httpd/ssl/server.crt
+        - ./docker/proxy/ssl/Apache/www.bh3721.com_ssl.key:/opt/docker/etc/httpd/ssl/server.key
+        - ./docker/proxy/ssl/Apache/www.bh3721.com_chain.crt:/opt/docker/etc/httpd/ssl/server_chain.crt
         - ./docker/vhost.ssl.conf:/opt/docker/etc/httpd/vhost.ssl.conf
       restart: always
       logging:
@@ -42,7 +43,25 @@ services:
         WEB_ALIAS_DOMAIN: www.bh3721.com
         TZ: Asia/Shanghai
         PHP_DATE_TIMEZONE: Asia/Shanghai
-        WEB_DOCUMENT_ROOT: /app
+        WEB_DOCUMENT_ROOT: /app/public
         #XDEBUG_REMOTE_CONNECT_BACK: 0
         #XDEBUG_REMOTE_HOST: host.docker.internal
         #XDEBUG_REMOTE_AUTOSTART: 1
+
+  db_host:
+        image: mysql:5.6
+        ports:
+         - "3389:3306"
+        volumes:
+          - ./mysql_data:/var/lib/mysql
+          - ./mysql/config/my.cnf:/etc/my.cnf
+          #- ./mysql/init:/docker-entrypoint-initdb.d/
+        restart: always
+        logging:
+          driver: "json-file"
+          options:
+             max-size: "50m"
+             max-file: "3"
+        environment:
+          TZ: Asia/Shanghai
+          MYSQL_ROOT_PASSWORD: 123456
