@@ -19,6 +19,9 @@ class Base extends Controller
      */
     protected function initialize()
     {
+//        $domain = Request::domain();
+//        echo str_replace(['_80','_443'], ['', ''], $domain);
+//        echo "\n";
         $user = new \app\www\logic\User;
         $data = $user->getSessionUserInfo();
 

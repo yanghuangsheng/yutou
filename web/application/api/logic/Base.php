@@ -284,7 +284,7 @@ class Base
      */
     public function getDomain()
     {
-        return Request::domain();
+        return str_replace(['_80','_443'], ['', ''], Request::domain());
     }
 
     /**

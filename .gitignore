@@ -1,4 +1,5 @@
 .idea
 mysql_data
-web/public/uploads
+web/public/uploads/*
 docker-compose.yml
+uploads
