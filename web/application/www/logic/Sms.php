@@ -18,6 +18,8 @@ class Sms extends Base
     public function send()
     {
         if($this->isAjax()){
+            header("content-Type: text/html; charset=Utf-8");
+
             $data = $this->param();
             //手机号码验证 -> 暂缺
 
