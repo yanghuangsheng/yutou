@@ -11,7 +11,23 @@ services:
         - 80:80
         - 443:443
       restart: always
+
   m_server:
+    image: webdevops/php-apache-dev:7.1
+    volumes:
+      - ./wap:/app
+      #- /home/www/uploads:/app/public/uploads
+    restart: always
+    environment:
+      WEB_ALIAS_DOMAIN: m.bh3721.com
+      TZ: Asia/Shanghai
+      PHP_DATE_TIMEZONE: Asia/Shanghai
+      #WEB_DOCUMENT_ROOT: /app/public
+      XDEBUG_REMOTE_CONNECT_BACK: 0
+      XDEBUG_REMOTE_HOST: host.docker.internal
+      XDEBUG_REMOTE_AUTOSTART: 1
+
+  www_server:
       image: webdevops/php-apache:7.1
       volumes:
         - ./web:/app
@@ -20,9 +36,6 @@ services:
         - ./docker/ssl/Apache/www.bh3721.com_ssl.key:/opt/docker/etc/httpd/ssl/server.key
         - ./docker/ssl/Apache/www.bh3721.com_chain.crt:/opt/docker/etc/httpd/ssl/server_chain.crt
         - ./docker/vhost.ssl.conf:/opt/docker/etc/httpd/vhost.ssl.conf
-      ports:
-        - 80:80
-        - 443:443
       restart: always
       logging:
         driver: "json-file"
