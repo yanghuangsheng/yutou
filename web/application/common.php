@@ -120,6 +120,34 @@ function clean_html($string, $length, $open_len = 0)
 }
 
 /**
+ * 上传文章
+ * @param $content
+ * @param $path
+ * @return mixed
+ */
+function uploadContent($content, $path)
+{
+    $path = './uploads' . $path;
+    $pattern = "/<[img|IMG].*?src=[\'|\"]((https:\/\/|http:\/\/|\/\/)(\w+).*?([\.jpg|\.jpeg|\.png|\.gif|\.bmp|\.JPG|\.JPEG|\.PNG|\.GIF])(.*?))[\'|\"].*?[\/]?>/";
+    preg_match_all($pattern, $content, $match);
+//    print_r($match);
+//    exit();
+    if($match[1]) {
+        $path = $path.date('Ymd');
+        !file_exists($path) && mkdir($path,0777,true);
+        $new_url = [];
+        foreach($match[1] as $k=>$vo) {
+            $filename = $vo;
+            $a = downloadFile(ltrim($filename, "//"),$path);
+            $new_url[$k] = ltrim($a, '.');
+        }
+        $content = str_replace($match[1], $new_url, $content);
+    }
+    return $content;
+
+}
+
+/**
  * 文章内容处理 图片本地化处理
  * @param $content
  * @param string $path
@@ -128,8 +156,7 @@ function clean_html($string, $length, $open_len = 0)
 function articleContent($content, $path)
 {
     $path = './uploads' . $path;
-
-    $pattern = '/<img.*?src=[\'|"](.*?(?:[\.gif|\.jpg|\.png|\.jpeg|\.bmp]))[\'|"].*?[\/]?>/i';
+    $pattern = '/<img.*?src=[\'|"](.*?(?:[\.gif|\.jpg|\.png|\.jpeg|\.bmp|\.JPG|\.JPEG|\.PNG|\.GIF]))[\'|"].*?[\/]?>/i';
     preg_match_all($pattern, $content, $match);
     if($match[1]) {
         $path = $path.date('Ymd');

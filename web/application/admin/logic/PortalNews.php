@@ -118,6 +118,12 @@ class PortalNews extends Base
     {
         if($this->isAjax()){
             $postData = $this->post();
+            try {
+                $postData['content'] = uploadContent($postData['content'], '/partal_news/content/images/');
+            }catch(\Exception $e){
+                $this->resultJson(-1, '下载图片失败');
+            }
+
             if($data = (new oService)->save($postData, 0, 1)){
 
                 if(Config::get('app_debug') == false){
@@ -144,6 +150,14 @@ class PortalNews extends Base
             !isset($postData['hot']) && $postData['hot'] = 0;
             !isset($postData['top']) && $postData['top'] = 0;
             !isset($postData['recommended']) && $postData['recommended'] = 0;
+
+            try {
+                $postData['content'] = uploadContent($postData['content'], '/partal_news/content/images/');
+            }catch(\Exception $e){
+
+                $this->resultJson(-1, $e->getMessage());
+            }
+
             $oService = new oService;
             if($oService->save($postData, 1)){
                 $categoryTxt = $oService->newsCategory($postData['category_id']);
