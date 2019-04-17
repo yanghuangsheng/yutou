@@ -28,7 +28,7 @@ class Sms extends Base
 
             //短信模板
             $content = '您的验证码是' . $code . '，在10分钟内输入有效。如非本人操作请忽略此短信。';
-            $content = urlencode(mb_convert_encoding($content, 'GBK', 'utf-8'));
+            //$content = urlencode(mb_convert_encoding($content, 'GBK', 'utf-8'));
             $data = (new SmsService)->smsSend($data['mobile'], $content);
 
             if(isset($data['error'])){

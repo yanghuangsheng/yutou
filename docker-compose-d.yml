@@ -28,7 +28,7 @@ services:
       image: webdevops/php-apache:alpine
       volumes:
         - ./web:/app
-        - /home/www/uploads:/app/public/uploads
+        - ./uploads:/app/public/uploads
         - ./docker/proxy/ssl/Apache/www.bh3721.com_ssl.crt:/opt/docker/etc/httpd/ssl/server.crt
         - ./docker/proxy/ssl/Apache/www.bh3721.com_ssl.key:/opt/docker/etc/httpd/ssl/server.key
         - ./docker/proxy/ssl/Apache/www.bh3721.com_chain.crt:/opt/docker/etc/httpd/ssl/server_chain.crt

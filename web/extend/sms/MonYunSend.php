@@ -55,7 +55,8 @@ class MonYunSend
     public function encrypt_content($content)
     {
         try {
-            return urlencode(iconv('UTF-8', 'GBK', $content));//短信内容转化为GBK格式再进行urlencode格式加密
+            //$encode = mb_detect_encoding($content, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
+            return urlencode(mb_convert_encoding($content, 'GBK', 'utf-8'));//短信内容转化为GBK格式再进行urlencode格式加密
         }catch (Exception $e) {
             print_r($e->getMessage());  //输出捕获的异常消息
         }
