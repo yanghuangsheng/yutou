@@ -374,7 +374,7 @@ class User extends Base
      * 获取广播
      * @return mixed
      */
-    protected function commonBroadcast()
+    public function commonBroadcast()
     {
         //广播
         $broadcastData = (new \app\api\service\SystemBroadcast)->initWhere([['type', '=', 0]])->initField('o_id,content')->initLimit(1)->getListData();
