@@ -36,7 +36,7 @@ class Index extends Base
     //广播
     protected function broadcast()
     {
-        return [];
+        return (new \app\api\logic\User)->getBroadcast();
 
     }
 

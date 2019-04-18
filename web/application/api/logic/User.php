@@ -61,12 +61,7 @@ class User extends Base
         }
 
         //广播
-        $broadcastData = (new \app\api\service\SystemBroadcast)->initWhere([['type', '=', 0]])->initField('o_id,content')->initLimit(1)->getListData();
-        $data['broadcast'] = $broadcastData['list'];
-
-        foreach ($data['broadcast'] as $key => &$value){
-            $value['content'] = str_replace(['<font color="#aa5500">','</font>'], ['<span style="color:#aa5500">', '</span>'], $value['content']);
-        }
+        $data['broadcast'] = $this->commonBroadcast();
 
         //我的帖子
         $postService = new \app\api\service\ForumPost;
@@ -373,6 +368,23 @@ class User extends Base
 
         return showResult(-1, $user->getError());
 
+    }
+
+    /**
+     * 获取广播
+     * @return mixed
+     */
+    protected function commonBroadcast()
+    {
+        //广播
+        $broadcastData = (new \app\api\service\SystemBroadcast)->initWhere([['type', '=', 0]])->initField('o_id,content')->initLimit(1)->getListData();
+        $data = $broadcastData['list'];
+
+        foreach ($data as $key => &$value){
+            $value['content'] = str_replace(['<font color="#aa5500">','</font>'], ['<span style="color:#aa5500">', '</span>'], $value['content']);
+        }
+
+        return $data;
     }
 
     /**
