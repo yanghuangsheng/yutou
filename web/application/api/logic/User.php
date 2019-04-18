@@ -47,7 +47,8 @@ class User extends Base
         $userId = $this->param('user_id');
         $userService = new \app\api\service\User;
         //用户信息
-        $data['info'] = $userService->getOneInfo($userId);
+        $data['info'] = $userService->getOneInfo($userId)->toArray();
+        $data['info']['avatar'] = $this->getDomain() . $data['info']['avatar'][100];
         //用户属性
         $data['arr'] = $userService->getOneArr($userId);
         $data['info']['is_fans'] = 0;
