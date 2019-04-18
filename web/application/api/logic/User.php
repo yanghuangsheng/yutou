@@ -64,6 +64,10 @@ class User extends Base
         $broadcastData = (new \app\api\service\SystemBroadcast)->initWhere([['type', '=', 0]])->initField('o_id,content')->initLimit(1)->getListData();
         $data['broadcast'] = $broadcastData['list'];
 
+        foreach ($data['broadcast'] as $key => &$value){
+            $value['contents'] = str_replace(['<font color="#aa5500">','</font>'], ['<span style="color:#aa5500">', '</span>'], $value['contents']);
+        }
+
         //我的帖子
         $postService = new \app\api\service\ForumPost;
         $data['post_list'] = [
