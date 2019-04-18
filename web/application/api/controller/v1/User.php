@@ -39,6 +39,14 @@ class User extends Base
     }
 
     /**
+     * 微信小程序登陆
+     */
+    public function mpWxLogin()
+    {
+        return (new Logic)->saveMpWxLogin();
+    }
+
+    /**
      * 发送验证
      * @return mixed
      */
@@ -173,4 +181,6 @@ class User extends Base
     {
         return (new Logic)->login();
     }
+
+
 }

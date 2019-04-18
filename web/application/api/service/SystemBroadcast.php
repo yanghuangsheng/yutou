@@ -15,6 +15,7 @@ class SystemBroadcast extends Common
     public function __construct()
     {
         $this->model = new \app\common\model\SystemBroadcast;
+        $this->order = ['id', 'desc'];
     }
 
     /**
