@@ -40,6 +40,37 @@ class User extends Base
     }
 
     /**
+     * 个人主页
+     */
+    public function getHome()
+    {
+        $userId = $this->param('user_id');
+        $userService = new \app\api\service\User;
+        //用户信息
+        $data['info'] = $userService->getOneInfo($userId);
+        //用户属性
+        $data['arr'] = $userService->getOneArr($userId);
+        $data['info']['is_fans'] = 0;
+        //关注情况
+        if(isset($this->tokenData['id'])){
+            $data['info']['is_fans'] = (new \app\api\service\UserFans)->checkFans($userId, $this->tokenData['id']);
+        }
+
+        //广播
+        $broadcastData = (new \app\api\service\SystemBroadcast)->initWhere([['type', '=', 0]])->initField('o_id,content')->initLimit(1)->getListData();
+        $data['broadcast'] = $broadcastData['list'];
+
+        //我的帖子
+        $postService = new \app\api\service\ForumPost;
+        $data['post_list'] = [
+            'list' => $this->commonForumPostList($postService, [['ForumPost.user_id','=', $userId]]),
+            'start_id' => $postService->newsId(),
+        ];
+
+        return showResult(0, '', $data);
+    }
+
+    /**
      * 关注用户
      */
     public function fans()

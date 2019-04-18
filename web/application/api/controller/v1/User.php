@@ -13,6 +13,14 @@ use \app\api\logic\User as Logic;
 class User extends Base
 {
     /**
+     * 个人主页内容
+     */
+    public function home()
+    {
+        return (new Logic)->getHome();
+    }
+
+    /**
      * 登陆
      * @return mixed
      */

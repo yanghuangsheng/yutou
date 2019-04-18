@@ -73,6 +73,7 @@ Route::group('api', function () {
     Route::get(':ver/search/list', 'api/:ver.search/loadList');
 
     //用户相关
+    Route::get(':ver/user/home', 'api/:ver.user/home'); //用户信息
     Route::get(':ver/user/info', 'api/:ver.user/info'); //用户信息
     Route::get(':ver/user/arr', 'api/:ver.user/arr'); //属性
     Route::get(':ver/user/golds', 'api/:ver.user/golds'); //鱼头币
