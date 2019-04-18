@@ -65,7 +65,7 @@ class User extends Base
         $data['broadcast'] = $broadcastData['list'];
 
         foreach ($data['broadcast'] as $key => &$value){
-            $value['contents'] = str_replace(['<font color="#aa5500">','</font>'], ['<span style="color:#aa5500">', '</span>'], $value['contents']);
+            $value['content'] = str_replace(['<font color="#aa5500">','</font>'], ['<span style="color:#aa5500">', '</span>'], $value['content']);
         }
 
         //我的帖子
