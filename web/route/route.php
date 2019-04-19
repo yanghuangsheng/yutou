@@ -94,6 +94,7 @@ Route::group('api', function () {
 
     //登陆
     Route::post(':ver/login', 'api/:ver.user/login');
+    Route::post(':ver/wx_login', 'api/:ver.user/mpWxLogin');
     Route::post(':ver/register', 'api/:ver.user/register');
     Route::post(':ver/send_sms', 'api/:ver.user/sendSms');
 

@@ -40,6 +40,67 @@ class User extends Base
     }
 
     /**
+     * 微信小程序授权登陆
+     * @return array
+     */
+    public function saveMpWxLogin()
+    {
+        $param = $this->param();
+        //验证相关 暂缺
+
+        $data = (new \oauth\MpWeixin)->getUserInfo($param);
+
+        if(isset($data['err'])){
+            return showResult(-1, $data['err']);
+        }
+        $userBind = new \app\api\service\UserBind;
+        $user = new \app\api\service\User;
+
+        if($data['union_id'] && $userBind->checkBind([['union_id', '=', $data['union_id']]])){
+            $userId = $userBind->getField([['open_id', '=', $data['open_id']]], 'user_id');
+            $statusData = $user->getUserInfo($userId,'id')->toArray();
+        }
+        elseif ($userBind->checkBind($data['open_id'], 1)) {  //1:微信 2:QQ
+
+            $userId = $userBind->getField([['open_id', '=', $data['open_id']]], 'user_id');
+            $statusData = $user->getUserInfo($userId,'id')->toArray();
+
+        }
+        else{
+            if($data['id'] = $user->createUser($data)){
+                $bindData = [
+                    'open_id'=>$data['open_id'],
+                    'union_id'=>$data['union_id'],
+                    'type'=>1, //1:微信 2:QQ
+                    'user_id' => $data['id'],
+                ];
+                if($userBind->save($bindData)){
+                    $statusData = [
+                        'id' => $data['id'],
+                        'name' => $data['name'],
+                        'avatar' => $data['avatar'],
+                    ];
+
+                }
+                else{
+                    //删除没用记录
+                    $user->delete($data['id']);
+                    return false;
+                }
+
+            }
+
+        }
+
+        $user->updateLoginTime($statusData['id']);
+
+        $result = $this->saveLoginStatus($this->unId('login_token'), $statusData);
+        return showResult(0, '登陆成功', $result);
+
+    }
+
+
+    /**
      * 个人主页
      */
     public function getHome()
