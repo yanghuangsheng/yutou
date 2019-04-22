@@ -24,7 +24,10 @@ class Base extends Controller
 //        echo "\n";
         $user = new \app\www\logic\User;
         $data = $user->getSessionUserInfo();
-
+        //如果手机访问跳转
+        if (\think\facade\Request::isMobile()){
+            header('location:http://m.bh3721.com/');exit;
+        }
         $this->assign('index', $user->getController());
         $this->assign('app_debug', Config::get('app_debug'));
         $this->assign('user_data', $data);
