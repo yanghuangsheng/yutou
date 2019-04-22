@@ -56,7 +56,7 @@ class User extends Base
         $userBind = new \app\api\service\UserBind;
         $user = new \app\api\service\User;
 
-        if($data['union_id'] && $userBind->checkBind([['union_id', '=', $data['union_id']]])){
+        if($data['union_id'] && $userBind->checkBind([['union_id', '=', $data['union_id']]], 1)){
             $userId = $userBind->getField([['open_id', '=', $data['open_id']]], 'user_id');
             $statusData = $user->getUserInfo($userId,'id')->toArray();
         }
