@@ -124,7 +124,9 @@ class Weixin
      */
     protected function downloadImage($img_url)
     {
-        $img_url = str_replace(['/0','/46','/64','/96','/132'], '', $img_url).'/0';
+        $img_url.='@@';
+        $img_url = str_replace(['/0@@','/46@@','/64@@','/96@@','/132@@','@@'], '', $img_url).'/0';
+
         $imageUrl = downloadFile($img_url, './uploads/user_avatar','date');
         //echo $imageUrl;
         return  [
