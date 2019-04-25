@@ -21,7 +21,7 @@ class Publish extends Base
         //如果存在定时任务
          if($TaskList){
              $idArr = array_column($TaskList, 'id');
-             $news->where('id', 'in', implode(',', $idArr))->update(['status'=>1]);
+             $news->where('id', 'in', implode(',', $idArr))->update(['status'=>1, 'task'=>0]);
          }
     }
 }
