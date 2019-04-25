@@ -52,12 +52,13 @@
                 <ul class="flex-start flex-align-stretch">
                     <li class="child"><a href="javascript:void(0);">最新文章<i class="b-img"></i></a></li>
                     <li><a href="javascript:void(0);">竞彩大神<i class="b-img"></i></a></li>
-                    <li><a href="javascript:void(0);">数字彩讯<i class="b-img"></i></a></li>
+                    <!--<li><a href="javascript:void(0);">数字彩讯<i class="b-img"></i></a></li>-->
                     <li><a href="javascript:void(0);">电竞地带<i class="b-img"></i></a></li>
                 </ul>
             </div>
             <div class="news-content" id="newsContentBox">
                 {volist name="data['news_list']['data']" id="news_list"}
+                {if $key != 2}
                 <div class="news-list {$key?'box-hide':''}">
                     <ul>
                         {volist name="news_list['list']" id="item"}
@@ -98,6 +99,7 @@
                         <a href="javascript:void(0);" class="loadNewsBtn" data-start="{$data['news_list']['start_id']}" data-status="0" data-category="{$news_list['category']}" data-page="1">点击加载资讯</a>
                     </div>
                 </div>
+                {/if}
                 {/volist}
             </div>
         </div>
