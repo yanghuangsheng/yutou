@@ -18,6 +18,6 @@ class Update extends Base
             'wgt_url' => $this->getDomain() . '/app_update/app-20190426.wgt',
             'pkg_url' => '', //$this->getDomain() . '/app_update/app-20190426.apk',
         ];
-        return showResult(0, '', $data);
+        return showResult(-1, '', $data);
     }
 }
