@@ -15,8 +15,8 @@ class Update extends Base
     {
         $data = [
             'content' => '更新...',
-            'wgt_url' => $this->getDomain() . '/app_update/app-20190426.wgt',
-            'pkg_url' => '',
+            'wgt_url' => '',//$this->getDomain() . '/app_update/app-20190426.wgt',
+            'pkg_url' => $this->getDomain() . '/app_update/app-20190426.pak',
         ];
         return showResult(0, '', $data);
     }
