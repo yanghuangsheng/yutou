@@ -13,6 +13,6 @@ class Update extends Base
 {
     public function index()
     {
-        return showResult(-1, '', ['wgt_url'=>'', 'pkg_url'=>'']);
+        return (new \app\api\logic\Update)->getUpdate();
     }
 }
