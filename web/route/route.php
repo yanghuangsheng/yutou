@@ -100,6 +100,7 @@ Route::group('api', function () {
 
     //获取同步时间
     Route::get(':ver/time', 'api/:ver.time/index');
+    Route::get(':ver/app_update', 'api/:ver.update/index');
 })
     ->header('Access-Control-Allow-Origin','*')
     ->header('Access-Control-Allow-Credentials', 'true')
