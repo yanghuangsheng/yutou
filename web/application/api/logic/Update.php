@@ -24,7 +24,7 @@ class Update extends Base
             //大版本
             $data = [
                 'content' => '更新...',
-                'wgt_url' => $this->getDomain() . '/app_update/app-20190429s.wgt',
+                'wgt_url' => $this->getDomain() . '/app_update/app-2019042901.wgt',
                 'pkg_url' => '',
             ];
             return showResult(0, '', $data);
