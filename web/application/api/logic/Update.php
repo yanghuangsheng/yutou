@@ -16,12 +16,39 @@ class Update extends Base
     public function getUpdate()
     {
         $param = $this->param();
-        //$param['version'];
-        $data = [
-            'content' => '更新...',
-            'wgt_url' => $this->getDomain() . '/app_update/app-20190429s.wgt',
-            'pkg_url' => '', //$this->getDomain() . '/app_update/app-20190426.apk',
-        ];
-        return showResult(-1, '', $data);
+        $oVersion = explode('.', $param['version']);
+        $version = explode('.', $this->versions);
+        $platform = $param['platform'];
+
+        if($version[0] > $oVersion[0]){
+            //大版本
+            $data = [
+                'content' => '更新...',
+                'wgt_url' => $this->getDomain() . '/app_update/app-20190429s.wgt',
+                'pkg_url' => '',
+            ];
+            return showResult(0, '', $data);
+        }
+        elseif ($version[1] != $oVersion[1] || $version[2] != $oVersion[2]){
+            //小版本
+            //默认安卓
+            $updateUrl = $this->getDomain() . '/app_update/app-20190429.apk';
+            //苹果
+            if($platform == 'ios'){
+                $updateUrl = '';
+            }
+
+            $data = [
+                'content' => '更新...',
+                'wgt_url' => '',
+                'pkg_url' => $updateUrl,
+            ];
+            return showResult(0, '', $data);
+
+        }else{
+
+            return showResult(-1, '');
+        }
+
     }
 }
