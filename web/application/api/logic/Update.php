@@ -12,6 +12,7 @@ namespace app\api\logic;
 class Update extends Base
 {
     protected $versions = '1.0.1';
+
     public function getUpdate()
     {
         $param = $this->param();
