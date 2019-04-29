@@ -24,7 +24,7 @@ class Update extends Base
             //大版本
             $data = [
                 'content' => '更新...',
-                'wgt_url' => $this->getDomain() . '/app_update/app-2019042901.wgt',
+                'wgt_url' => $this->getDomain() . '/app_update/app-20190429_01.wgt',
                 'pkg_url' => '',
             ];
             return showResult(0, '', $data);
@@ -32,7 +32,7 @@ class Update extends Base
         elseif ($version[1] != $oVersion[1] || $version[2] != $oVersion[2]){
             //小版本
             //默认安卓
-            $updateUrl = $this->getDomain() . '/app_update/app-20190429.apk';
+            $updateUrl = $this->getDomain() . '/app_update/app-20190429_01.apk';
             //苹果
             if($platform == 'ios'){
                 $updateUrl = '';
