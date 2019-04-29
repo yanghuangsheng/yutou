@@ -11,7 +11,7 @@ namespace app\api\logic;
 
 class Update extends Base
 {
-    protected $versions = '1.0.3';
+    protected $versions = '1.0.4';
 
     public function getUpdate()
     {
@@ -42,7 +42,7 @@ class Update extends Base
 
             $data = [
                 'content' => '更新...',
-                'wgt_url' => $this->getDomain() . '/app_update/app-20190429_01.wgt',
+                'wgt_url' => $this->getDomain() . '/app_update/app-20190429_02.wgt',
                 'pkg_url' => '',
             ];
             return showResult(0, '', $data);
