@@ -11,7 +11,7 @@ namespace app\api\logic;
 
 class Update extends Base
 {
-    protected $versions = '1.0.1';
+    protected $versions = '1.0.3';
 
     public function getUpdate()
     {
