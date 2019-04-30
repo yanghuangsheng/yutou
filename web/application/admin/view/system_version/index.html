@@ -1,0 +1,158 @@
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="margin:3px;padding:20px;background-color: #fff;">
+    <div style="height:25px;"></div>
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-sm9 layui-col-xs9">
+                <fieldset class="layui-elem-field box-top">
+                    <legend>APP检测更新<font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <select name="data[open]" lay-verify="">
+                                        <option value="1" {$data['open']?'selected':''} >开启</option>
+                                        <option value="0" {$data['open']?'':'selected'} >关闭</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field box-top">
+                    <legend>版本号 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="data[version]" value="{$data['version']?:''} " placeholder="1.0.0" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">APP客户端检测更新唯一标识</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field box-top">
+                    <legend>源包更新 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">资源包</label>
+                                <div class="layui-input-inline" style="width: 250px;">
+                                    <input type="text" name="data[wgt_url]" value="{$data['wgt_url']?:''}" placeholder="上传新的资源包" class="layui-input input_value">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux"><a href="javascript:void(0);" class="uploadFileBtn" data-ext="wgt">上传</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field box-top">
+                    <legend>整包更新 <font color="#ccc"></font></legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">Ios</label>
+                                <div class="layui-input-inline" style="width: 250px;">
+                                    <input type="text" name="data[ios]" value="{$data['ios']?:''}" placeholder="上传新的Ios包" class="layui-input input_value">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux"><a href="javascript:void(0);" class="uploadFileBtn" data-ext="ipa">上传</a></div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">Android</label>
+                                <div class="layui-input-inline" style="width: 250px;">
+                                    <input type="text" name="data[android]" value="{$data['android']?:''}" placeholder="上传新的Android包" class="layui-input input_value">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux"><a href="javascript:void(0);" class="uploadFileBtn" data-ext="apk">上传</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field box-top">
+
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">功能简述</label>
+                                <div class="layui-input-inline" style="width: 350px;">
+                                    <textarea name="data[content]" placeholder="简短的介绍更新内容" class="layui-textarea">{$data['content']?:''}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="layui-col-sm3 layui-col-xs3"></div>
+            <div class="layui-col-sm9 layui-col-xs9" style="text-align: center;">
+                <button class="layui-btn" lay-submit lay-filter="submit">立即提交</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align: center;">
+
+    </div>
+</div>
+
+<script>
+    bodyD.use(['index','form','upload','laydate','formSelects'], function () {
+        var $ = layui.$, laydate = layui.laydate, form = layui.form, admin = layui.admin, upload = layui.upload;
+
+        $('a.uploadFileBtn').each(function () {
+            //console.log(this);
+            uploadFile($(this));
+        });
+
+
+
+        form.on('submit(submit)', function(data){
+            console.log(data);
+            layer.load(2);
+            admin.req({
+                url: window.location.href,
+                data: data.field,
+                done: function (res) {
+                    layer.closeAll('loading');
+                    layer.msg(res.msg, {icon: res.code == 0?1:0});
+                }
+            });
+        });
+
+
+        //上传图
+        function uploadFile(uploadName) {
+            var ext = uploadName.data('ext');
+            console.log(ext);
+
+            var oUrl = '{:url("SystemVersion/uploadFile")}';
+            //上传头像
+            upload.render({
+                elem: uploadName
+                , url: oUrl
+                , accept: 'file' //普通文件
+                , exts: ext //只允许上传压缩文件
+                , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    layer.load(); //上传loading
+                }
+                , done: function (res) {
+                    layer.closeAll('loading');
+                    if(res.code == 0){
+                        var item = this.item;
+                        item.parent().parent().find('input.input_value').val(res.data.file);
+                        layer.msg('上传成功', {icon: 1});
+
+                        return;
+                    }
+                    layer.msg(res.msg, {icon: 0});
+                }
+                , error: function () {
+                    layer.closeAll('loading');
+                    layer.msg('上传错误！', {icon: 0});
+                }
+            });
+        }
+    });
+</script>
+
+
