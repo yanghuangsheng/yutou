@@ -12,6 +12,7 @@ namespace app\api\logic;
 class Update extends Base
 {
     protected $versions = '1.0.4';
+    protected $open = false;
 
     public function getUpdate()
     {
@@ -19,6 +20,10 @@ class Update extends Base
         $oVersion = explode('.', $param['version']);
         $version = explode('.', $this->versions);
         $platform = $param['platform'];
+
+        if($this->open == false){
+            return showResult(-1, '');
+        }
 
         if($version[0] > $oVersion[0]){
             //大版本
