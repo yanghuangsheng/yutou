@@ -21,7 +21,11 @@ class Update extends Base
         $version = explode('.', $this->versions);
         $platform = $param['platform'];
 
-        if($this->open == false){
+        $versionData = (new \app\api\service\System)->getVersionData();
+        $this->open = $versionData['open'];
+        $this->versions = $versionData['version'];
+
+        if(!$this->open){
             return showResult(-1, '');
         }
 
@@ -29,25 +33,25 @@ class Update extends Base
             //大版本
 
             //默认安卓
-            $updateUrl = $this->getDomain() . '/app_update/app-20190429_01.apk';
+            $updateUrl = $this->getDomain() . $versionData['android'];
             //苹果
             if($platform == 'ios'){
-                $updateUrl = '';
+                $updateUrl = $this->getDomain() . $versionData['ios'];
             }
 
             $data = [
-                'content' => '更新...',
+                'content' => $versionData['content'],
                 'wgt_url' => '',
                 'pkg_url' => $updateUrl,
             ];
             return showResult(0, '', $data);
         }
-        elseif ($version[1] != $oVersion[1] || $version[2] != $oVersion[2]){
+        elseif ($version[1] > $oVersion[1] || $version[2] > $oVersion[2]){
             //小版本
 
             $data = [
-                'content' => '更新...',
-                'wgt_url' => $this->getDomain() . '/app_update/app-20190429_02.wgt',
+                'content' => $versionData['content'],
+                'wgt_url' => $this->getDomain() . $versionData['wgt_url'],
                 'pkg_url' => '',
             ];
             return showResult(0, '', $data);
