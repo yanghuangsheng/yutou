@@ -37,7 +37,6 @@ class PortalNewsCommentClick extends Common
             'comment_id' => $data['id'],
             'user_id' => $data['user_id'],
             'type' => 0,
-
         ];
         return $this->save($updateData);
 

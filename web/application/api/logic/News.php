@@ -9,6 +9,8 @@
 namespace app\api\logic;
 
 use app\api\service\PortalNews;
+use app\api\service\PortalNewsCommentClick;
+use app\api\service\PortalNewsPraise;
 
 class News extends Base
 {
@@ -82,7 +84,11 @@ class News extends Base
         $data['image_url'] = $this->getDomain().$data['image_url'];
         $data['published_time_txt'] = date('Y-m-d H:i', $data['published_time']);
         $data['content'] = $this->ruleImg($data['content']);
-
+        $data['is_praise'] = 0;
+        $praise = new PortalNewsPraise;
+        if(isset($this->tokenData['id'])){
+            $data['is_praise'] = $praise->getCount([['news_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']]]);
+        }
 
 
 
@@ -140,6 +146,7 @@ class News extends Base
      */
     public function getCommonCommentList($comment, $where, $page = 1)
     {
+        $praise = new PortalNewsCommentClick;
         $data = $comment
             //->initWhere([['PortalNewsComment.news_id', '=', $newsId]])
             ->initWhere($where)
@@ -154,6 +161,11 @@ class News extends Base
             }
             foreach ($value['reply_avatar'] as $keys => $values){
                 $value['reply_avatar'][$keys] = $domain.$values;
+            }
+
+            $value['is_praise'] = 0;
+            if(isset($this->tokenData['id'])){
+                $data['is_praise'] = $praise->getCount([['comment_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']], ['type', '=', 0]]);
             }
 
         }
