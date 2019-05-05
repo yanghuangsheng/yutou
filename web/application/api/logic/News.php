@@ -86,9 +86,9 @@ class News extends Base
         $data['content'] = $this->ruleImg($data['content']);
         $data['is_praise'] = 0;
         $praise = new PortalNewsPraise;
-//        if(isset($this->tokenData['id'])){
-//            $data['is_praise'] = $praise->getCount([['news_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']]]);
-//        }
+        if(isset($this->tokenData['id'])){
+            $data['is_praise'] = $praise->getCount([['news_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']]]);
+        }
 
 
 
@@ -164,9 +164,9 @@ class News extends Base
             }
 
             $value['is_praise'] = 0;
-//            if(isset($this->tokenData['id'])){
-//                $data['is_praise'] = $praise->getCount([['comment_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']], ['type', '=', 0]]);
-//            }
+            if(isset($this->tokenData['id'])){
+                $value['is_praise'] = $praise->getCount([['comment_id', '=', $value['id']], ['user_id', '=', $this->tokenData['id']], ['type', '=', 0]]);
+            }
 
         }
 
