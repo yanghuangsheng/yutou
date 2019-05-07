@@ -50,6 +50,7 @@ Route::group('api', function () {
     Route::get(':ver/news/item', 'api/:ver.news/item');
     Route::post(':ver/news/praise_comment', 'api/:ver.news/praiseComment'); //点赞评论
     Route::post(':ver/news/praise', 'api/:ver.news/praise'); //点赞
+    Route::post(':ver/news/collect', 'api/:ver.news/collect'); //收藏
     Route::get(':ver/news/more_comment', 'api/:ver.news/moreComment'); //加载更多评论
     Route::get(':ver/news/look_comment', 'api/:ver.news/lookComment'); //加载更多评论
     Route::post(':ver/news/submit_comment', 'api/:ver.news/submitComment'); //评论

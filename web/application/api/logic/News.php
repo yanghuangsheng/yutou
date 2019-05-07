@@ -11,6 +11,7 @@ namespace app\api\logic;
 use app\api\service\PortalNews;
 use app\api\service\PortalNewsCommentClick;
 use app\api\service\PortalNewsPraise;
+use app\api\service\UserCollection;
 
 class News extends Base
 {
@@ -85,12 +86,12 @@ class News extends Base
         $data['published_time_txt'] = date('Y-m-d H:i', $data['published_time']);
         $data['content'] = $this->ruleImg($data['content']);
         $data['is_praise'] = 0;
-        $praise = new PortalNewsPraise;
+        $data['is_collect'] = 0;
+
         if(isset($this->tokenData['id'])){
-            $data['is_praise'] = $praise->getCount([['news_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']]]);
+            $data['is_praise'] = (new PortalNewsPraise)->getCount([['news_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']]]);
+            $data['is_collect'] = (new UserCollection)->getCont([['o_id', '=', $data['id']],['type', '=', 0],['user_id', '=', $this->tokenData['id']]]);
         }
-
-
 
         //更新浏览量
         $browseNum = (new \app\www\service\PortalNewsAttr)->saveNum(['id'=>$newsId], 'browse');
@@ -233,6 +234,42 @@ class News extends Base
     }
 
     /**
+     * 收藏新闻
+     */
+    public function collect()
+    {
+        $this->checkToken();
+
+        $param = $this->param();
+        $newsId = $param['id'];
+        $userId = $this->tokenData['id'];
+
+        $data = [
+            'id' => $newsId,
+            'user_id' => $userId,
+            'type' => 0
+
+        ];
+
+        $collect = new \app\api\service\UserCollection;
+        if(false == $collect->addCollect($data)){
+            return showResult(-1, $collect->getError());
+        }
+
+        $newsAttr = new \app\api\service\PortalNewsAttr;
+        if($collectNum = $newsAttr->saveNum($data, 'collect')){
+            //触发规则
+            $this->ruleTrigger('collect_num', ['id'=>$newsId, 'num'=>$collectNum]);
+            return showResult(0, '收藏成功');
+        }
+
+        return showResult(-1, '收藏失败');
+
+
+    }
+
+
+    /**
      * 点赞新闻
      * @return array
      */
@@ -251,17 +288,9 @@ class News extends Base
         }
         $newsAttr = new \app\api\service\PortalNewsAttr;
         if($praiseNum = $newsAttr->saveNum($param, 'praise')){
-            //同时收藏
-            $data = [
-                'id' => $newsId,
-                'user_id' => $userId,
-                'type' => 0
-            ];
-            (new \app\api\service\UserCollection)->addCollect($data);
-            $collectNum = $newsAttr->saveNum($param, 'collect');
+
             //规则触发
             $this->ruleTrigger('praise_num', ['id'=>$newsId, 'num'=>$praiseNum]);
-            $this->ruleTrigger('collect_num', ['id'=>$newsId, 'num'=>$collectNum]);
 
             return showResult(0, '点赞成功');
         }
