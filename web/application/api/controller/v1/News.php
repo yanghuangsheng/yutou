@@ -64,6 +64,15 @@ class News extends Base
     }
 
     /**
+     * 收藏新闻
+     * @return mixed
+     */
+    public function collect()
+    {
+        return (new Logic)->collect();
+    }
+
+    /**
      * 点赞新闻
      * @return mixed
      */
