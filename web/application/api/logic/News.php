@@ -90,7 +90,7 @@ class News extends Base
 
         if(isset($this->tokenData['id'])){
             $data['is_praise'] = (new PortalNewsPraise)->getCount([['news_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']]]);
-            $data['is_collect'] = (new UserCollection)->getCont([['o_id', '=', $data['id']],['type', '=', 0],['user_id', '=', $this->tokenData['id']]]);
+            $data['is_collect'] = (new UserCollection)->getCount([['o_id', '=', $data['id']],['type', '=', 0],['user_id', '=', $this->tokenData['id']]]);
         }
 
         //更新浏览量
