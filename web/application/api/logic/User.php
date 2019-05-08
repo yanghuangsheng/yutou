@@ -20,15 +20,29 @@ class User extends Base
         $param = $this->param();
         //验证手机及验证码等上传信息 -> 暂缺
 
-        if(!($param['code'] == '898989')){
-            $smsCode = $this->cache($param['code_sign']);
-            if(!($smsCode == $param['code'])){
-                return showResult(-1, '验证码错误');
+        $service = new \app\api\service\User;
+
+        if(isset($param['code'])){
+            //手机号 + 验证码登陆
+            if(!($param['code'] == '898989')){
+                $smsCode = $this->cache($param['code_sign']);
+                if(!($smsCode == $param['code'])){
+                    return showResult(-1, '验证码错误');
+                }
             }
+        }else{
+            //手机号 + 密码登陆
+            $password = md5Encryption($param['password']);
+            $phone = trim($param['mobile']);
+            $data = $service->getUserPassword($phone);
+            if(!$data) return showResult(-1, '帐号不正确');
+
+            if(!$data['password'] || $password != $data['password']){
+                return showResult(-1, '密码错误');
+            }
+
         }
 
-
-        $service = new \app\api\service\User;
 
         if($result = $service->saveLogin($param['mobile'], $param)){
             $result = $this->saveLoginStatus($this->unId('login_token'), $result);
@@ -37,6 +51,35 @@ class User extends Base
 
         return showResult(-1, $service->getError());
 
+    }
+
+    /**
+     * 重置密码
+     * @return array
+     */
+    public function retrievePassword()
+    {
+        $param = $this->param();
+        //参数验证 暂缺
+
+        $smsCode = $this->cache($param['code_sign']);
+        if(!($smsCode == $param['code'])){
+
+            return showResult(-1, '验证码错误');
+        }
+
+        $service = new \app\api\service\User;
+        if(0 == $service->getCount([['phone', '=', $param['mobile']]])){
+            return showResult(-1, '帐号不存在');
+        }
+
+        $password = md5Encryption(trim($param['password']));
+        if($service->saveSetPassword($param['mobile'], $password)){
+
+            return showResult(0, '修改密码成功');
+        }
+
+        return showResult(-1, $service->getError());
     }
 
     /**
@@ -423,13 +466,21 @@ class User extends Base
         //参数验证 暂缺
 
         $user = new \app\api\service\User;
-        if($user->saveOneInfo([$userId, $param['field'], $param['value']])){
-            return showResult(0, '更新成功');
+        if($param['field'] == 'data'){
+            if($user->saveInfo($param['value'], $userId)){
+                return showResult(0, '更新成功');
+            }
+        }else{
+            if($user->saveOneInfo([$userId, $param['field'], $param['value']])){
+                return showResult(0, '更新成功');
+            }
         }
 
         return showResult(-1, $user->getError());
 
     }
+
+
 
     /**
      * 获取广播

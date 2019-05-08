@@ -104,7 +104,7 @@ class User extends Common
             return true;
         }
 
-        $this->error = '更新失败';
+        $this->error = '保存失败';
         return false;
     }
 
@@ -122,6 +122,7 @@ class User extends Common
             $data = [
                 'name' => randomUserName($this->newsId()),
                 'phone' => $phone,
+//                'password' => isset($param['password'])?$param['password']:'',
                 'last_login_time' => time(),
             ];
             if($data['id'] = $this->createUser($data) ){
@@ -148,6 +149,27 @@ class User extends Common
     public function getUserInfo($value, $name = 'phone')
     {
         return $this->model->where($name, $value)->field('id,name,avatar,last_login_time')->find();
+    }
+
+    /**
+     * @param $value
+     * @param string $name
+     * @return array|null|\PDOStatement|string|\think\Model
+     */
+    public function getUserPassword($value, $name = 'phone')
+    {
+        return $this->model->where($name, $value)->field('id,password')->find();
+    }
+
+    /**
+     * 重置密码
+     * @param $phone
+     * @param $password
+     * @return static
+     */
+    public function saveSetPassword($phone, $password)
+    {
+        return $this->model->where('phone', $phone)->update(['password'=>$password]);
     }
 
     /**

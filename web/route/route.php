@@ -92,11 +92,11 @@ Route::group('api', function () {
     Route::post(':ver/user/pub_post', 'api/:ver.user/pubForumPost'); //发布帖子
 
 
-
     //登陆
     Route::post(':ver/login', 'api/:ver.user/login');
     Route::post(':ver/wx_login', 'api/:ver.user/mpWxLogin');
     Route::post(':ver/register', 'api/:ver.user/register');
+    Route::post(':ver/retrieve', 'api/:ver.user/retrieve');
     Route::post(':ver/send_sms', 'api/:ver.user/sendSms');
 
     //获取同步时间

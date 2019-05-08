@@ -39,6 +39,15 @@ class User extends Base
     }
 
     /**
+     * 找回密码
+     * @return mixed
+     */
+    public function retrieve()
+    {
+        return (new Logic)->retrievePassword();
+    }
+
+    /**
      * 微信小程序登陆
      */
     public function mpWxLogin()
@@ -181,6 +190,5 @@ class User extends Base
     {
         return (new Logic)->login();
     }
-
 
 }
