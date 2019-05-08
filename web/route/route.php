@@ -69,9 +69,11 @@ Route::group('api', function () {
     //彩票
     Route::get(':ver/lottery/list', 'api/:ver.lottery/index');
     Route::get(':ver/lottery/one_list', 'api/:ver.lottery/oneList');
+
     //搜索
-    Route::get(':ver/search', 'api/:ver.search/index');
     Route::get(':ver/search/list', 'api/:ver.search/loadList');
+    Route::get(':ver/search/hot_news', 'api/:ver.search/hotNews'); //热门
+    Route::get(':ver/search', 'api/:ver.search/index');
 
     //用户相关
     Route::get(':ver/user/home', 'api/:ver.user/home'); //用户信息

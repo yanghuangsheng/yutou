@@ -8,6 +8,7 @@
 
 namespace app\api\controller\v1;
 
+use app\api\logic\Search as searchService;
 
 class Search extends Base
 {
@@ -17,9 +18,8 @@ class Search extends Base
      */
     public function index()
     {
-        $search = new \app\api\logic\Search;
 
-        return $search->getList();
+        return (new searchService)->getList();
     }
 
     /**
@@ -28,8 +28,17 @@ class Search extends Base
      */
     public function loadList()
     {
-        $search = new \app\api\logic\Search;
 
-        return $search->loadList();
+        return (new searchService)->loadList();
+    }
+
+    /**
+     * 热门
+     * @return mixed
+     */
+    public function hotNews()
+    {
+
+        return (new searchService)->hotNews();
     }
 }

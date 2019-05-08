@@ -38,6 +38,17 @@ class Search extends Base
     }
 
     /**
+     * 热门
+     * @return array
+     */
+    public function hotNews()
+    {
+        $data = (new newsService)->hotData(30, 10, [['PortalNews.hot','=',1]]);
+
+        return showResult(0, '', $data->toArray());
+    }
+
+    /**
      * 获取列表
      * @return mixed
      */
@@ -65,7 +76,6 @@ class Search extends Base
             $value['published_time'] = friendlyDate($value['published_time']);
 
         }
-
 
         return $data;
     }
