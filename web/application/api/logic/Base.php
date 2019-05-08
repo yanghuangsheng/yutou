@@ -21,7 +21,7 @@ class Base
     protected $validate;
     protected $error;
 
-    protected $isAuth = false;
+    protected $isAuth = true;
     protected $isToken = false;
     protected $app = [];
     protected $headers = [];
