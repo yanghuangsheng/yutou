@@ -67,7 +67,7 @@ class SystemMessage extends Common
      * 发送用户互动消息
      * @param $user_id
      * @param $data ['content' 'o_id' 'o_user_id'] 内容 被动ID 动作用户
-     * @param $type 1回复帖子 2回复评论 3点赞帖子 4点赞评论 6踩评论
+     * @param $type  被动类型 社区：1回复帖子 2回复评论 3点赞帖子 4点赞评论 6踩评论    用户：11关注   新闻： 21回复评论 22点赞评论
      * @return bool
      */
     public function toUser($user_id, $data, $type)
@@ -75,6 +75,22 @@ class SystemMessage extends Common
         $data['user_id'] = $user_id;
         $data['type'] = 1; //互动
         $data['o_type'] = $type;
+
+        return $this->save($data);
+    }
+
+    /**
+     * 发送系统消息
+     * @param $user_id
+     * @param $data  ['content' 'o_id' 'o_user_id'] 内容 被动ID 动作用户
+     * @param $type 0：系统通知 1：竞猜通知 2：中奖通知 3：兑换通知 4：提现通知 5：鱼磷通知
+     * @return bool
+     */
+    public function toUserSystem($user_id, $data, $type)
+    {
+        $data['user_id'] = $user_id;
+        $data['type'] = 0; //系统
+        $data['t_type'] = $type;
 
         return $this->save($data);
     }

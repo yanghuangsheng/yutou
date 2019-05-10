@@ -67,7 +67,7 @@ class SystemMessage extends Common
      * 发送用户互动消息
      * @param $user_id
      * @param $data ['content' 'o_id' 'o_user_id'] 内容 被动ID 动作用户
-     * @param $type 1回复帖子 2回复评论 3点赞帖子 4点赞评论 6踩评论
+     * @param $type  被动类型 社区：1回复帖子 2回复评论 3点赞帖子 4点赞评论 6踩评论    用户：11关注   新闻： 21回复评论 22点赞评论
      * @return bool
      */
     public function toUser($user_id, $data, $type)

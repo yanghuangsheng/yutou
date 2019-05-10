@@ -43,7 +43,7 @@ class Search extends Base
      */
     public function hotNews()
     {
-        $data = (new newsService)->hotData(30, 10, [['PortalNews.hot','=',1]]);
+        $data = (new newsService)->hotData(30, 10, [['PortalNews.hot','=',0]]);
 
         return showResult(0, '', $data->toArray());
     }

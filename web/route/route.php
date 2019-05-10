@@ -100,6 +100,9 @@ Route::group('api', function () {
     Route::post(':ver/register', 'api/:ver.user/register');
     Route::post(':ver/retrieve', 'api/:ver.user/retrieve');
     Route::post(':ver/send_sms', 'api/:ver.user/sendSms');
+    
+    //表情包
+    Route::get(':ver/face', 'api/:ver.face/index');
 
     //获取同步时间
     Route::get(':ver/time', 'api/:ver.time/index');
