@@ -22,12 +22,27 @@ class Face extends Base
 
     /**
      * 转换图片表表
+     * @param $contents
+     * @return mixed
      */
-    public function ruleFace()
+    public function ruleFace($contents)
     {
+        $ruleName = [];
+        $ruleImg = [];
 
+        foreach ($this->faceData() as $value)
+        {
+            $ruleName[] = $value['name'];
+            $ruleImg[] = '<img src="'.$value['image_url'].'" >';
+        }
+
+        return str_replace($ruleName, $ruleImg, $contents);
     }
 
+    /**
+     * 表情图数据包
+     * @return array
+     */
     protected function faceData()
     {
         $domain = $this->getDomain();

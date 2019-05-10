@@ -209,6 +209,8 @@ class News extends Base
         $comment = new \app\api\service\PortalNewsComment;
         //用户ID
         $param['user_id'] = $this->tokenData['id'];
+        $param['content'] = (new Face)->ruleFace($param['content']);
+
         if($result = $comment->addComment($param)){
 
             //累加新闻评论数
