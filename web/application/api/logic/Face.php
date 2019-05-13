@@ -82,7 +82,7 @@ class Face extends Base
             ['name' => '[惊恐]', 'image_url' => $domain.'jingkong.gif'],
             ['name' => '[流汗]', 'image_url' => $domain.'liuhan.gif'],
             ['name' => '[憨笑]', 'image_url' => $domain.'haha.gif'],
-            ['name' => '[大兵]', 'image_url' => $domain.'dabing.gif'],
+            ['name' => '[休闲]', 'image_url' => $domain.'dabing.gif'],
             ['name' => '[奋斗]', 'image_url' => $domain.'fendou.gif'],
             ['name' => '[咒骂]', 'image_url' => $domain.'ma.gif'],
 
@@ -133,10 +133,46 @@ class Face extends Base
             ['name' => '[闪电]', 'image_url' => $domain.'shandian.gif'],
             ['name' => '[炸弹]', 'image_url' => $domain.'zhadan.gif'],
 
+            ['name' => '[刀]', 'image_url' => $domain.'dao.gif'],
+            ['name' => '[足球]', 'image_url' => $domain.'qiu.gif'],
+            ['name' => '[虫]', 'image_url' => $domain.'chong.gif'],
+            ['name' => '[便便]', 'image_url' => $domain.'dabian.gif'],
+            ['name' => '[月亮]', 'image_url' => $domain.'yueliang.gif'],
+            ['name' => '[太阳]', 'image_url' => $domain.'taiyang.gif'],
+            ['name' => '[礼物]', 'image_url' => $domain.'liwu.gif'],
+            ['name' => '[拥抱]', 'image_url' => $domain.'yongbao.gif'],
+
+            ['name' => '[强]', 'image_url' => $domain.'qiang.gif'],
+            ['name' => '[弱]', 'image_url' => $domain.'ruo.gif'],
+            ['name' => '[握手]', 'image_url' => $domain.'woshou.gif'],
+            ['name' => '[胜利]', 'image_url' => $domain.'shengli.gif'],
+            ['name' => '[抱拳]', 'image_url' => $domain.'peifu.gif'],
+            ['name' => '[勾引]', 'image_url' => $domain.'gouyin.gif'],
+            ['name' => '[拳头]', 'image_url' => $domain.'quantou.gif'],
+            ['name' => '[差劲]', 'image_url' => $domain.'chajin.gif'],
+
+
+            ['name' => '[干杯]', 'image_url' => $domain.'cheer.gif'],
+            ['name' => '[NO]', 'image_url' => $domain.'no.gif'],
+            ['name' => '[OK]', 'image_url' => $domain.'ok.gif'],
+            ['name' => '[给力]', 'image_url' => $domain.'geili.gif'],
+            ['name' => '[飞吻]', 'image_url' => $domain.'feiwen.gif'],
+            ['name' => '[跳跳]', 'image_url' => $domain.'tiao.gif'],
+            ['name' => '[发抖]', 'image_url' => $domain.'fadou.gif'],
+
+            ['name' => '[大叫]', 'image_url' => $domain.'dajiao.gif'],
+            ['name' => '[转圈]', 'image_url' => $domain.'zhuanquan.gif'],
+            ['name' => '[磕头]', 'image_url' => $domain.'ketou.gif'],
+            ['name' => '[回头]', 'image_url' => $domain.'huitou.gif'],
+            ['name' => '[跳绳]', 'image_url' => $domain.'tiaosheng.gif'],
+            ['name' => '[挥手]', 'image_url' => $domain.'huishou.gif'],
+            ['name' => '[激动]', 'image_url' => $domain.'jidong.gif'],
+            ['name' => '[街舞]', 'image_url' => $domain.'tiaowu.gif'],
+            ['name' => '[献吻]', 'image_url' => $domain.'xianwen.gif'],
+            ['name' => '[左太极]', 'image_url' => $domain.'zuotaiji.gif'],
+            ['name' => '[右太极]', 'image_url' => $domain.'youtaiji.gif'],
+
 //            ['name' => '[]', 'image_url' => $domain.'.gif'],
-
-
-
 
 
 
