@@ -46,7 +46,7 @@ class Face extends Base
      *
      */
     protected function faceData()
-    {
+    { 
         $domain = $this->getDomain();
         $domain .= '/static/face/';
         return [
@@ -85,7 +85,6 @@ class Face extends Base
             ['name' => '[休闲]', 'image_url' => $domain.'dabing.gif', 'jpg_url' => $domain.'jpg/dabing.jpg'],
             ['name' => '[奋斗]', 'image_url' => $domain.'fendou.gif', 'jpg_url' => $domain.'jpg/fendou.jpg'],
             ['name' => '[咒骂]', 'image_url' => $domain.'ma.gif', 'jpg_url' => $domain.'jpg/ma.jpg'],
-
 
             ['name' => '[疑问]', 'image_url' => $domain.'wen.gif', 'jpg_url' => $domain.'jpg/wen.jpg'],
             ['name' => '[嘘]', 'image_url' => $domain.'xu.gif', 'jpg_url' => $domain.'jpg/xu.jpg'],
