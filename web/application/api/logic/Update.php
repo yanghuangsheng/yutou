@@ -22,6 +22,8 @@ class Update extends Base
         $platform = $param['platform'];
 
         $versionData = (new \app\api\service\System)->getVersionData();
+        is_array($versionData) || $versionData = json_decode($versionData, true);
+
         $this->open = $versionData['open'];
         $this->versions = $versionData['version'];
 
@@ -33,10 +35,10 @@ class Update extends Base
             //大版本
 
             //默认安卓
-            $updateUrl = $this->getDomain() . $versionData['android'];
+            $updateUrl = $versionData['android']?$this->getDomain() . $versionData['android']:'';
             //苹果
             if($platform == 'ios'){
-                $updateUrl = $this->getDomain() . $versionData['ios'];
+                $updateUrl = $versionData['ios']?$this->getDomain() . $versionData['ios']:'';
             }
 
             $data = [
@@ -51,7 +53,7 @@ class Update extends Base
 
             $data = [
                 'content' => $versionData['content'],
-                'wgt_url' => $this->getDomain() . $versionData['wgt_url'],
+                'wgt_url' => $versionData['wgt_url']?$this->getDomain() . $versionData['wgt_url']:'',
                 'pkg_url' => '',
             ];
             return showResult(0, '', $data);
