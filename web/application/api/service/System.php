@@ -9,7 +9,7 @@
 namespace app\api\service;
 
 
-class System extends common
+class System extends Common
 {
     //初始化类
     public function __construct()
