@@ -18,7 +18,6 @@ class Update extends Base
     {
         $param = $this->param();
         $oVersion = explode('.', $param['version']);
-        $version = explode('.', $this->versions);
         $platform = $param['platform'];
 
         $versionData = (new \app\api\service\System)->getVersionData();
@@ -30,6 +29,8 @@ class Update extends Base
         if(!$this->open){
             return showResult(-1, '');
         }
+
+        $version = explode('.', $this->versions);
 
         if($version[0] > $oVersion[0]){
             //大版本
