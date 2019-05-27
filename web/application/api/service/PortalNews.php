@@ -28,7 +28,10 @@ class PortalNews extends Common
         $this->order = ['published_time', 'desc'];
         return $this->model->view('PortalNews', 'id,title,image_url,published_time,description,author,source_name')
             ->view('PortalNewsInCategory', 'category_id', 'PortalNewsInCategory.news_id = PortalNews.id')
-            ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT');
+            ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT')
+            ->view('Matche', ['id'=>'matche_status', 'type'=>'matche_type', 'league_name', 'attr_data', 'open_time', 'support_main_num', 'support_o_num', 'support_passenger_num'], 'Matche.news_id = PortalNews.id', 'LEFT')
+            ->view('Team Main', ['id'=>'main_id', 'name'=>'main_name', 'image_url'=>'main_image_url'], 'Main.id = Matche.main_id', 'LEFT')
+            ->view('Team Passenger', ['id'=>'passenger_id', 'name'=>'passenger_name', 'image_url'=>'passenger_image_url'], 'Passenger.id = Matche.passenger_id', 'LEFT');
     }
 
     /**

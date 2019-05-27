@@ -82,6 +82,7 @@ class News extends Base
 
         $service = new PortalNews;
         $data = $service->getOneData($newsId);
+        $data['attr_data'] = $data['attr_data']?json_decode($data['attr_data'], 1):[];
         $data['image_url'] = $this->getDomain().$data['image_url'];
         $data['published_time_txt'] = date('Y-m-d H:i', $data['published_time']);
         $data['content'] = $this->ruleImg($data['content']);

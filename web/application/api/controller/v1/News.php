@@ -34,7 +34,6 @@ class News extends Base
         return showResult(0, '', $data);
     }
 
-
     /**
      * 加载更多
      * @return array
