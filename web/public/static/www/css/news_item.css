@@ -387,6 +387,7 @@
     width: 726px;
     height: auto;
     background-color: #ffffff;
+    font-size: 14px;
 }
 .jingcai .jingcai_top {
     text-align: left;
@@ -426,10 +427,11 @@
     flex-direction: row;
     align-items: center;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
 }
 .jingcai_info .table,.td{
     padding: 4px 0px;
+    font-size: 14px;
 }
 .jingcai_info .serial_number{
     margin-right: 9px;
@@ -439,7 +441,7 @@
 .jingcai_info .serial_number .td{
     padding: 4px 22px;
     color: #4f4e4e;
-    font-size: 12px;
+    font-size: 14px;
     border-bottom: 2px solid #f6f6f5;
 }
 .jingcai_info .serial_number .td:last-child{
@@ -459,7 +461,7 @@
 .jingcai_info .outcome_data .tr .td{
     flex: 1;
     color: #4f4e4e;
-    font-size: 12px;
+    font-size: 14px;
     border-right: 2px solid #f6f6f5;
 }
 .jingcai_info .outcome_data .tr .td:last-child{

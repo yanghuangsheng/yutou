@@ -46,9 +46,9 @@
                         <div class="outcome_data">
                             {volist name="data['item']['attr_data']" id="vl"}
                             <div class="tr">
-                                <div class="td" style="color: {$vl['param'][0]['color']};">胜{$vl['param'][0]['value']}</div>
-                                <div class="td" style="color: {$vl['param'][1]['color']};">平{$vl['param'][1]['value']}</div>
-                                <div class="td" v-if="!basket" style="color: {$vl['param'][2]['color']};">负{$vl['param'][2]['value']}</div>
+                                <div class="td" style="color: {$vl['param'][0]['color']};">胜 {$vl['param'][0]['value']}</div>
+                                <div class="td" style="color: {$vl['param'][1]['color']};">平 {$vl['param'][1]['value']}</div>
+                                <div class="td" v-if="!basket" style="color: {$vl['param'][2]['color']};">负 {$vl['param'][2]['value']}</div>
                             </div>
                             {/volist}
                         </div>
