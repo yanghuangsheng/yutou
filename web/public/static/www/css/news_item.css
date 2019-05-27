@@ -383,6 +383,89 @@
     margin-top: 8px;
 }
 
+.jingcai{
+    width: 726px;
+    height: auto;
+    background-color: #ffffff;
+}
+.jingcai .jingcai_top {
+    text-align: left;
+    padding: 25px 60px;
+}
+.jingcai .jingcai_top span{
+    margin-right: 8px;
+    color: #8c8c8c;
+    font-size: 14px;
+}
+.jingcai .team_logo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.team_logo .home_team,.visit_team{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.team_logo .logo{
+    width: 150px;
+    height: 150px;
+}
+.team_logo .duel{
+    margin: 0px 60px;
+}
+.jingcai_info{
+    margin: 5px 60px 25px 60px;
+}
+.jingcai_info .titles{
+    padding-left: 10px;
+}
+.jingcai_info .table,.tr{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+}
+.jingcai_info .table,.td{
+    padding: 4px 0px;
+}
+.jingcai_info .serial_number{
+    margin-right: 9px;
+    border-radius: 10px;
+    border: 2px solid #f6f6f5;
+}
+.jingcai_info .serial_number .td{
+    padding: 4px 22px;
+    color: #4f4e4e;
+    font-size: 12px;
+    border-bottom: 2px solid #f6f6f5;
+}
+.jingcai_info .serial_number .td:last-child{
+    border: none;
+}
+.jingcai_info .outcome_data{
+    border-radius: 10px;
+    border: 2px solid #f6f6f5;
+}
+.jingcai_info .outcome_data .tr{
+    width: 524px;
+    border-bottom: 2px solid #f6f6f5;
+}
+.jingcai_info .outcome_data .tr:last-child{
+    border: none;
+}
+.jingcai_info .outcome_data .tr .td{
+    flex: 1;
+    color: #4f4e4e;
+    font-size: 12px;
+    border-right: 2px solid #f6f6f5;
+}
+.jingcai_info .outcome_data .tr .td:last-child{
+    border: none;
+}
+
 
 
 

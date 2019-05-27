@@ -1,3 +1,31 @@
+<style>
+    .main-item{
+        margin-bottom: 5px;
+    }
+    .teamShowBox{
+        background-color: #FFFFFF;
+        border: 1px solid #C0C4CC;
+        position: absolute;
+        top: 100%;
+        left: 0px;
+        right: 0px;
+        min-height: 26px;
+        max-height: 150px;
+        overflow-y: auto;
+
+    }
+    .teamShowBox li{
+        padding-left: 8px;
+        height: 25px;
+        line-height: 25px;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #FFFFFF;
+    }
+    .teamShowBox li:last-child{
+        border-bottom: 0px;
+    }
+
+</style>
 <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="margin:3px;padding:20px;background-color: #fff;">
     <div style="height:25px;"></div>
     <div class="layui-container">
@@ -59,9 +87,120 @@
                                     <textarea name="description" placeholder="请输入文章摘要" class="layui-textarea"></textarea>
                                 </div>
                             </div>
+                            <div class="layui-form-item">
+                                <input type="checkbox" name="matche_status" lay-skin="switch" lay-filter="matche" value="1" lay-text="开启赛事|关闭赛事">
+                            </div>
+                            <div class="layui-form-item" id="matche-box" style="display: none;">
+                                <fieldset class="layui-elem-field box-top">
+                                    <legend>赛事信息 <font color="#ccc"></font></legend>
+                                    <div class="layui-field-box">
+                                        <div class="layui-row">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label"></label>
+                                                <div class="layui-form-block">
+                                                    <div class="layui-input-inline" style="width: 70px;">
+                                                        <select name="matche_type">
+                                                            <option value="0">足球</option>
+                                                            <option value="1">蓝球</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="layui-input-inline" style="width: 80px;">
+                                                        <input type="text" name="league_name" placeholder="联赛名称" class="layui-input">
+                                                    </div>
+                                                    <div class="layui-input-inline" style="width: 150px;">
+                                                        <input type="text" name="open_time" placeholder="开赛时间" class="layui-input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label"></label>
+                                                <div class="layui-form-block" style="display: flex; align-items: center;">
+                                                    <div>
+                                                        <div style="text-align: center;">
+                                                            <img src="/static/admin/style/images/default-thumbnail.png" style="width:100px; height:100px;" class="teamAddImage">
+                                                            <input type="hidden" name="team[0][image_url]" value="" class="image_value">
+                                                            <input type="hidden" name="team[0][id]" value="0" class="id_value">
+                                                        </div>
+                                                        <div style="height: 25px; font-size: 12px; line-height: 25px; text-align: center;">主队</div>
+                                                        <div style="position: relative;">
+                                                            <input type="text" name="team[0][name]" placeholder="请输入队名" class="layui-input teamNamechange" style="padding-left: 0px;text-align: center;">
+                                                            <div class="teamShowBox" style="display: none;">
+                                                                <ul>
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div style="width: 100px; font-size: 36px; text-align: center;">vs</div>
+                                                    <div>
+                                                        <div style="text-align: center;">
+                                                            <img src="/static/admin/style/images/default-thumbnail.png" style="width:100px; height:100px;" class="teamAddImage">
+                                                            <input type="hidden" name="team[1][image_url]" value="" class="image_value">
+                                                            <input type="hidden" name="team[1][id]" value="0" class="id_value">
+                                                        </div>
+                                                        <div style="height: 25px; font-size: 12px; line-height: 25px; text-align: center;">客队</div>
+                                                        <div style="position: relative;">
+                                                            <input type="text" name="team[1][name]" placeholder="请输入队名" class="layui-input teamNamechange" style="padding-left: 0px;text-align: center;">
+                                                            <div class="teamShowBox" style="display: none;">
+                                                                <ul>
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div id="main-box">
+                                                <div class="layui-form-item main-item">
+                                                    <label class="layui-form-label"></label>
+                                                    <div class="layui-form-block" style="display: flex; justify-content: flex-start;">
+                                                        <div>
+                                                            <input type="text" name="attr[0][main][value]" placeholder="胜平负" class="layui-input" style="padding-left: 0px;text-align: center;">
+                                                            <input type="hidden" name="attr[0][main][color]" value="#333333" class="color-value">
+                                                        </div>
+                                                        <div style="margin-left: 35px;">
+                                                            <input type="text" name="attr[0][param][0][value]" placeholder="胜" class="layui-input" style="padding-left: 0px;text-align: center;">
+                                                            <input type="hidden" name="attr[0][param][0][color]" value="#333333" class="color-value">
+                                                        </div>
+                                                        <div>
+                                                            <input type="text" name="attr[0][param][1][value]" placeholder="平" class="layui-input" style="padding-left: 0px;text-align: center;">
+                                                            <input type="hidden" name="attr[0][param][1][color]" value="#333333" class="color-value">
+                                                        </div>
+                                                        <div style="margin-right: 15px;">
+                                                            <input type="text" name="attr[0][param][2][value]" placeholder="负" class="layui-input" style="padding-left: 0px;text-align: center;">
+                                                            <input type="hidden" name="attr[0][param][2][color]" value="#333333" class="color-value">
+                                                        </div>
+                                                        <div style="text-align: left; margin-right: 30px;">
+                                                            <a href="javascript: void(0);" class="delMainItem" style="margin-top: 5px;color: #dd0000;background-color: #f0f0f0;display: inline-block;width:20px;height:20px;line-height:20px;text-align: center;"> - </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item" id="main-end">
+                                                <label class="layui-form-label"></label>
+                                                <div class="layui-form-block" style="display: flex; justify-content: space-between;">
+                                                    <div>
+                                                        <a href="javascript:void(0);" id="addMainItem" style="display: inline-block; width:20px; height:20px; text-align: center;background-color: #C0C4CC;"> + </a>
+                                                    </div>
+                                                    <div class="color-btn">
+                                                        <a href="javascript:void(0);" data-value="#4DAF29" style="display: inline-block; width:20px; height:20px; background-color: #4DAF29"></a>
+                                                        <a href="javascript:void(0);" data-value="#dd0000" style="display: inline-block; width:20px; height:20px; background-color: #dd0000"></a>
+                                                        <a href="javascript:void(0);" data-value="#333333" style="display: inline-block; width:20px; height:20px; background-color: #3F3F3F"></a>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
                         </div>
                     </div>
                 </fieldset>
+
+
 
                 <fieldset class="layui-elem-field box-top">
                     <legend>文章内容 <font color="#ccc"></font></legend>
@@ -158,6 +297,7 @@
             form = layui.form,
             laydate = layui.laydate,
             upload = layui.upload,
+            admin = layui.admin,
             formSelects = layui.formSelects;
 
         //分类下拉
@@ -167,8 +307,66 @@
             elem: 'input[name="published_time"]',
             type: 'datetime',
         });
+        //开赛时间
+        laydate.render({
+            elem: 'input[name="open_time"]',
+            type: 'datetime',
+        });
         //上传缩略图
-        uploadImages($('#upload-thumbnail'));
+        uploadImages($('#upload-thumbnail'), '{:url("PortalNews/uploadImage",["type"=>"__type__"])}');
+        //上传taem图
+        uploadImages($('.teamAddImage'), '{:url("PortalNews/uploadTeamImage")}');
+
+        //关联历史taem
+        $(".teamNamechange").on('keyup', function () {
+            var teamName = $(this).val();
+            var teamShowBox = $(this).siblings('.teamShowBox');
+            if(teamName){
+                var teamType = $('select[name="matche_type"]').val();
+                console.log(teamType);
+                teamShowBox.find('ul').html('');
+                admin.req({
+                    url:  '{:url("PortalNews/team")}',
+                    data: {'name': teamName, 'type': teamType},
+                    type: 'Get',
+                    done: function (res) {
+
+                        if(res.data.length){
+                            $.each(res.data, function (i, n) {
+                                teamShowBox.find('ul').append('<li data-id="'+ n.id +'" data-name="'+ n.name +'" data-image="'+ n.image_url +'">'+ n.name +'</li>');
+                            })
+                            teamShowBox.show();
+                        }else{
+                            teamShowBox.hide();
+                        }
+
+                    }
+                });
+
+            }else{
+                teamShowBox.hide();
+            }
+        }).on('focusout', function () {
+            var that = $(this).siblings('.teamShowBox');
+            setTimeout(function () {
+                that.hide();
+            }, 500);
+        }).on('focusin', function () {
+            if($(this).siblings('.teamShowBox li').length){
+                $(this).siblings('.teamShowBox').show();
+            }
+        });
+
+        $('.teamShowBox').on('click', 'li', function () {
+            var oThat = $(this);
+            var oInputBox = oThat.parent().parent().parent().parent();
+
+            oThat.parent().parent().parent().find('input.teamNamechange').val(oThat.data('name'));
+            oInputBox.find('input.image_value').val(oThat.data('image'));
+            oInputBox.find('input.id_value').val(oThat.data('id'));
+            oInputBox.find('img').attr('src', oThat.data('image'));
+        });
+
         //监听定时任务
         form.on('checkbox(task)', function(data){
             if(data.elem.checked){
@@ -181,6 +379,74 @@
                 $("input[name=\"task\"]").prop("checked", false);
                 form.render();
             }
+        });
+        //监听盘口开关
+        form.on('switch(matche)', function(data){
+            var matcheBox = $("#matche-box");
+            if(data.elem.checked){
+                matcheBox.show();
+                return false;
+            }
+            matcheBox.hide();
+        });
+        //增加 盘口
+        $("#addMainItem").on('click', function () {
+            // console.log('@@@');
+            var mainItem = $("#main-box .layui-form-item.main-item").first();
+            var mainCount = $("#main-box .layui-form-item.main-item").length;
+            $("#main-box").append(mainItem.clone());
+            var itemLast = $("#main-box .layui-form-item.main-item").last();
+
+            itemLast.find('input').each(function () {
+                var that = $(this);
+                var thatName = that.attr('name');
+                var newName = thatName.replace('attr[0]', 'attr[' + mainCount + ']');
+                that.attr('name', newName).val('').css({'color': '#333333'});
+
+            });
+            itemLast.find('input[type="hidden"]').val('#3F3F3F');
+
+        });
+        //删除 盘口
+        $("#main-box").on('click', 'a.delMainItem', function () {
+            if($("#main-box .layui-form-item.main-item").length == 1){
+                return false;
+            }
+            var that = $(this).parent().parent().parent();
+            that.remove();
+
+            $("#main-box .main-item").each(function (i,n) {
+                var that = $(this).find('input');
+                var firstName = that.attr('name');
+                //console.log(firstName);
+                var numIndex = firstName.match(/\d+(\d+)?/)[0];
+                //console.log(numIndex);
+                that.each(function () {
+                    var thatName = $(this).attr('name');
+                    //console.log(thatName);
+                    $(this).attr('name', thatName.replace('attr['+numIndex+']', 'attr['+i+']'));
+                })
+            });
+
+        });
+        var inputFocus = '';
+        //绑定事件
+        $("#main-box").on('focusin', 'input', function () {
+            inputFocus = $(this);
+            //console.log('focusin');
+        });
+        //设置颜色
+        $("#main-end .color-btn a").on('click', function () {
+            //console.log('@@@@@');
+            var oColor = $(this).data('value');
+            if(inputFocus.length){
+                //console.log('1');
+                inputFocus.css({'color': oColor});
+                inputFocus.siblings('input[type="hidden"]').val(oColor);
+
+                return false;
+            }
+            //console.log('0');
         });
 
         var ue = UE.getEditor('content', {
@@ -197,9 +463,9 @@
         });
 
         //上传图
-        function uploadImages(uploadName, label) {
+        function uploadImages(uploadName, oUrl, label) {
             var type = uploadName.data('type');
-            var oUrl = '{:url("PortalNews/uploadImage",["type"=>"__type__"])}';
+            // var oUrl = '{:url("PortalNews/uploadImage",["type"=>"__type__"])}';
             //上传头像
             upload.render({
                 elem: uploadName

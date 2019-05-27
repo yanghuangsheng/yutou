@@ -16,6 +16,7 @@ class PortalNews extends Common
     {
         $this->model = new \app\common\model\PortalNews;
         $this->order = ['id', 'desc'];
+        $this->keyId = 'PortalNews.id';
     }
 
     /**
@@ -55,7 +56,10 @@ class PortalNews extends Common
     {
         return $this->model->view('PortalNews', '*')
             ->view('PortalNewsInCategory', ['category_id'=>'o_category_id'], 'PortalNewsInCategory.news_id = PortalNews.id', 'LEFT')
-            ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT');
+            ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT')
+            ->view('Matche', ['id'=>'matche_status', 'type'=>'matche_type', 'league_name', 'attr_data', 'open_time'], 'Matche.news_id = PortalNews.id', 'LEFT')
+            ->view('Team Main', ['id'=>'main_id', 'name'=>'main_name', 'image_url'=>'main_image_url'], 'Main.id = Matche.main_id', 'LEFT')
+            ->view('Team Passenger', ['id'=>'passenger_id', 'name'=>'passenger_name', 'image_url'=>'passenger_image_url'], 'Passenger.id = Matche.passenger_id', 'LEFT');
     }
 
     /**
@@ -123,6 +127,7 @@ class PortalNews extends Common
     protected function resetFindData($data)
     {
         $data['content'] = (new \app\common\model\PortalNewsContent)->where('news_id', $data['id'])->value('content');
+        $data['attr_data'] = $data['attr_data']?json_decode($data['attr_data'], 1):[];
 
         return $data;
     }
@@ -140,6 +145,7 @@ class PortalNews extends Common
     /**
      * 额外新增
      * @param $data
+     * @throws \Exception
      */
     protected function setSaveAdd($data)
     {
@@ -147,7 +153,7 @@ class PortalNews extends Common
         $content->news_id = $data['id'];
         $content->content = $data['content'];
         $content->save();
-
+        //分类
         if(isset($data['category_id'])){
             $InCategory = new \app\common\model\PortalNewsInCategory;
             $addData = [];
@@ -158,11 +164,39 @@ class PortalNews extends Common
 
         }
 
+        //赛事
+        if(isset($data['matche_status']) && $data['matche_status'] == 1){
+            $teamData = $data['team'];
+            foreach($teamData as $key => &$value){
+                $teamModel = new \app\common\model\Team;
+                if($value['id'] == 0){
+                    $teamModel->save(['type'=>$data['matche_type'], 'name'=>trim($value['name']), 'image_url'=>$value['image_url']]);
+                    $value['id'] = $teamModel['id'];
+                }
+            }
+            $matcheModel = new \app\common\model\Matche;
+
+            $matcheData = [
+                'news_id' => $data['id'],
+                'type' => $data['matche_type'],
+                'league_name' => $data['league_name'],
+                'name' => $teamData[0]['name'] . ' vs ' . $teamData[1]['name'],
+                'main_id' => $teamData[0]['id'],
+                'passenger_id' => $teamData[1]['id'],
+                'attr_data' => $data['attr'],
+                'open_time' => $data['open_time'],
+            ];
+
+            $matcheModel->save($matcheData);
+
+        }
+
     }
 
     /**
      * 额外修改
      * @param $data
+     * @throws \Exception
      */
     protected function setSaveUpdate($data)
     {
@@ -179,6 +213,60 @@ class PortalNews extends Common
             $InCategory->saveAll($addData);
         }
 
+        //赛事
+        if(isset($data['matche_status']) && $data['matche_status'] == 1){
+            $teamData = $data['team'];
+            foreach($teamData as $key => &$value){
+                $teamModel = new \app\common\model\Team;
+                if($value['id'] == 0){
+                    $teamModel->save(['type'=>$data['matche_type'], 'name'=>trim($value['name']), 'image_url'=>$value['image_url']]);
+                    $value['id'] = $teamModel['id'];
+                }
+            }
+            $matcheModel = new \app\common\model\Matche;
+
+            $matcheData = [
+                'type' => $data['matche_type'],
+                'league_name' => $data['league_name'],
+                'name' => $teamData[0]['name'] . ' vs ' . $teamData[1]['name'],
+                'main_id' => $teamData[0]['id'],
+                'passenger_id' => $teamData[1]['id'],
+                'attr_data' => $data['attr'],
+                'open_time' => $data['open_time'],
+            ];
+            if($matcheModel->where('news_id', '=', $data['id'])->count()){
+
+                $matcheModel->save($matcheData, ['news_id' => $data['id']]);
+            }else{
+
+                $matcheData['news_id'] = $data['id'];
+                $matcheModel->save($matcheData);
+
+            }
+
+            //print_r($teamData);
+        }else{
+            $matcheModel = new \app\common\model\Matche;
+            $matcheModel->where('news_id', $data['id'])->delete();
+        }
+
     }
+
+    /**
+     * 获取队
+     * @param $where
+     * @return array|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getTeamList($where)
+    {
+        return (new \app\common\model\Team)
+            ->field('id,name,image_url')
+            ->where($where)->limit(10)->select();
+    }
+
+
 
 }

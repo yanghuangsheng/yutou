@@ -117,6 +117,8 @@ class News extends Base
         $service = new newsService;
         $data = $service->getOneData($newsId);
 
+        $data['attr_data'] = $data['attr_data']?json_decode($data['attr_data'], 1):[];
+
         //更新浏览量
         $browseNum = (new \app\www\service\PortalNewsAttr)->saveNum(['id'=>$newsId], 'browse');
         //规则触发

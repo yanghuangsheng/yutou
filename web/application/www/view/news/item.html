@@ -12,6 +12,50 @@
                     <span>评论 {$data['item']['comment_num']?:'0'}</span>
                 </div>
             </div>
+            {if $data['item']['matche_status']}
+            <div class="jingcai">
+                <div class="jingcai_top">
+                    <span>{$data['item']['league_name']}</span>
+                    <span>{:date('m-d', $data['item']['open_time'])}</span>
+                    <span>{:date('H:i', $data['item']['open_time'])}</span>
+                </div>
+                <!-- 队伍logo -->
+                <div class="team_logo">
+                    <div class="home_team">
+                        <img src="{$data['item']['main_image_url']}" alt="" class="logo">
+                        <span>{$data['item']['main_name']}</span>
+                    </div>
+                    <div class="duel">
+                        <img src="/static/www/images/vs.png" alt="">
+                    </div>
+                    <div class="visit_team">
+                        <img src="{$data['item']['passenger_image_url']}" alt="" class="logo">
+                        <span>{$data['item']['passenger_name']}</span>
+                    </div>
+                </div>
+                <!-- 胜负数据 -->
+                <div class="jingcai_info">
+                    <div class="titles">胜平负</div>
+                    <div class="table">
+                        <!--{"main":{"value":"-1","color":"#4DAF29"},"param":[{"value":"3","color":"#dd0000"},{"value":"4","color":"#dd0000"},{"value":"7","color":"#4DAF29"}]},{"main":{"value":"0","color":"#333333"},"param":[{"value":"3","color":"#3F3F3F"},{"value":"4","color":"#dd0000"},{"value":"9","color":"#3F3F3F"}]}]-->
+                        <div class="serial_number">
+                            {volist name="data['item']['attr_data']" id="vl"}
+                            <div class="td" style="color: {$vl['main']['color']};">{$vl['main']['value']}</div>
+                            {/volist}
+                        </div>
+                        <div class="outcome_data">
+                            {volist name="data['item']['attr_data']" id="vl"}
+                            <div class="tr">
+                                <div class="td" style="color: {$vl['param'][0]['color']};">胜{$vl['param'][0]['value']}</div>
+                                <div class="td" style="color: {$vl['param'][1]['color']};">平{$vl['param'][1]['value']}</div>
+                                <div class="td" v-if="!basket" style="color: {$vl['param'][2]['color']};">负{$vl['param'][2]['value']}</div>
+                            </div>
+                            {/volist}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/if}
             <div class="item-details">
                 {$data['item']['content']|raw}
             </div>

@@ -29,6 +29,22 @@ class PortalNews extends Base
     }
 
     /**
+     * 获取队信息列表
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getTeamList()
+    {
+        $param = $this->param();
+        $where = [['type', '=', $param['type']], ['name', 'like', $param['name'].'%']];
+        $data = (new oService)->getTeamList($where)->toArray();
+
+        $this->resultJson(0, '', $data);
+
+    }
+
+    /**
      * 获取新增页面相关
      * @return mixed
      */
@@ -57,6 +73,7 @@ class PortalNews extends Base
 
 
         $data = (new oService)->getOneData($edit_id);
+        $data['open_time'] = $data['open_time']?date('Y-m-d H:i:s', $data['open_time']):'';
 
         $data['category_list'] = (new \app\admin\service\TreeList)->toItems($categoryList['list']->toArray(),isset($data['category_id'])?explode(',',$data['category_id']):0);
 

@@ -86,12 +86,36 @@ class PortalNews extends Base
     }
 
     /**
+     * 上传队图片
+     */
+    public function uploadTeamImage(){
+        $upload = (new \app\admin\logic\Upload);
+        $data = $upload->upFile('team');
+        if(isset($data['error'])){
+            $upload->resultJson(-1,$data['error']);
+        }
+        $upload->resultJson(0,'success',$data);
+    }
+
+
+    /**
      * 新闻正文相关上传 图片 视频
      * @param $type
      */
     public function upDetailsImages($type)
     {
         (new \app\admin\logic\Upload)->upDetailsImages('partal_news',$type);
+    }
+
+    /**
+     * 搜索列表
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function team()
+    {
+        (new PortalNewsLogic)->getTeamList();
     }
 
 }

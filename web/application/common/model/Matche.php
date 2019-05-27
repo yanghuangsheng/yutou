@@ -9,7 +9,23 @@
 namespace app\common\model;
 
 
-class Matche
+class Matche extends Base
 {
+    protected $type = [
+        'attr_data' => 'array',
+    ];
+
+    /**
+     * 发布时间
+     * @param $value
+     * @param $data
+     * @return false|int
+     */
+    protected function setOpenTimeAttr($value, $data)
+    {
+        return $value?strtotime($value):time();
+    }
+
+
 
 }
