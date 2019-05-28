@@ -102,10 +102,10 @@ class News extends Base
         return (new newsService)->relatedData($this->param('id'));
     }
 
-
     /**
      * 获取新闻详情
      * @return mixed
+     * @throws \Exception
      */
     public function getItem()
     {

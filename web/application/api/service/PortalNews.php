@@ -21,7 +21,7 @@ class PortalNews extends Common
 
     /**
      * 查询列表View
-     * @return $this
+     * @return \app\common\model\PortalNews
      */
     protected function setWithOnView()
     {
@@ -33,22 +33,25 @@ class PortalNews extends Common
 
     /**
      * 查询单条详情View
-     * @return $this
+     * @return \app\common\model\PortalNews
      */
     protected function setOneWithOnView()
     {
         return $this->model->view('PortalNews', 'id,title,image_url,published_time,keywords,description,author,source_name')
             ->view('PortalNewsContent', 'content', 'PortalNewsContent.news_id = PortalNews.id')
             ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT')
-            ->view('Matche', ['id'=>'matche_status', 'type'=>'matche_type', 'league_name', 'attr_data', 'open_time', 'support_main_num', 'support_o_num', 'support_passenger_num'], 'Matche.news_id = PortalNews.id', 'LEFT')
-            ->view('Team Main', ['id'=>'main_id', 'name'=>'main_name', 'image_url'=>'main_image_url'], 'Main.id = Matche.main_id', 'LEFT')
-            ->view('Team Passenger', ['id'=>'passenger_id', 'name'=>'passenger_name', 'image_url'=>'passenger_image_url'], 'Passenger.id = Matche.passenger_id', 'LEFT');
+            ->view('Match', ['id'=>'match_status', 'type'=>'match_type', 'league_name', 'attr_data', 'open_time', 'support_main_num', 'support_o_num', 'support_passenger_num'], 'Match.news_id = PortalNews.id', 'LEFT')
+            ->view('Team Main', ['id'=>'main_id', 'name'=>'main_name', 'image_url'=>'main_image_url'], 'Main.id = Match.main_id', 'LEFT')
+            ->view('Team Passenger', ['id'=>'passenger_id', 'name'=>'passenger_name', 'image_url'=>'passenger_image_url'], 'Passenger.id = Match.passenger_id', 'LEFT');
     }
 
     /**
      * 上一条 下一条
      * @param $id
-     * @return mixed
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function relatedData($id)
     {
@@ -64,7 +67,10 @@ class PortalNews extends Common
      * @param int $day
      * @param int $num
      * @param array $map
-     * @return mixed
+     * @return array|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function hotData($day = 7, $num = 15, $map = [])
     {
@@ -82,7 +88,7 @@ class PortalNews extends Common
 
     /**
      * 查询上一条下一条View
-     * @return $this
+     * @return \app\common\model\PortalNews
      */
     protected function oneView()
     {

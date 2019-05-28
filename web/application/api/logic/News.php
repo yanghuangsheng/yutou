@@ -63,7 +63,10 @@ class News extends Base
 
     /**
      * 首页快讯
-     * @return mixed
+     * @return array|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function sevenDayTopData()
     {
@@ -136,8 +139,6 @@ class News extends Base
 
         return showResult(0, '', $data['list']);
     }
-
-
 
     /**
      * 指定获取评论ID

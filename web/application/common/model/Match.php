@@ -9,7 +9,7 @@
 namespace app\common\model;
 
 
-class Matche extends Base
+class Match extends Base
 {
     protected $type = [
         'attr_data' => 'array',

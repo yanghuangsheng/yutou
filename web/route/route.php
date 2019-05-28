@@ -54,6 +54,10 @@ Route::group('api', function () {
     Route::get(':ver/news/more_comment', 'api/:ver.news/moreComment'); //加载更多评论
     Route::get(':ver/news/look_comment', 'api/:ver.news/lookComment'); //加载更多评论
     Route::post(':ver/news/submit_comment', 'api/:ver.news/submitComment'); //评论
+
+    //竟猜
+    Route::post(':ver/match/submit', 'api/:ver.match/submit'); //提交竟猜
+
     //社区
     Route::get(':ver/forum/all', 'api/:ver.forum/index');
     Route::get(':ver/forum/list', 'api/:ver.forum/loadList');
