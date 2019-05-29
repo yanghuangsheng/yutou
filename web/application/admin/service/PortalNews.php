@@ -57,9 +57,9 @@ class PortalNews extends Common
         return $this->model->view('PortalNews', '*')
             ->view('PortalNewsInCategory', ['category_id'=>'o_category_id'], 'PortalNewsInCategory.news_id = PortalNews.id', 'LEFT')
             ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNews.id', 'LEFT')
-            ->view('Matche', ['id'=>'matche_status', 'type'=>'matche_type', 'league_name', 'attr_data', 'open_time'], 'Matche.news_id = PortalNews.id', 'LEFT')
-            ->view('Team Main', ['id'=>'main_id', 'name'=>'main_name', 'image_url'=>'main_image_url'], 'Main.id = Matche.main_id', 'LEFT')
-            ->view('Team Passenger', ['id'=>'passenger_id', 'name'=>'passenger_name', 'image_url'=>'passenger_image_url'], 'Passenger.id = Matche.passenger_id', 'LEFT');
+            ->view('Match', ['id'=>'match_status', 'type'=>'match_type', 'league_name', 'attr_data', 'open_time'], 'Match.news_id = PortalNews.id', 'LEFT')
+            ->view('Team Main', ['id'=>'main_id', 'name'=>'main_name', 'image_url'=>'main_image_url'], 'Main.id = Match.main_id', 'LEFT')
+            ->view('Team Passenger', ['id'=>'passenger_id', 'name'=>'passenger_name', 'image_url'=>'passenger_image_url'], 'Passenger.id = Match.passenger_id', 'LEFT');
     }
 
     /**
@@ -170,13 +170,13 @@ class PortalNews extends Common
             foreach($teamData as $key => &$value){
                 $teamModel = new \app\common\model\Team;
                 if($value['id'] == 0){
-                    $teamModel->save(['type'=>$data['matche_type'], 'name'=>trim($value['name']), 'image_url'=>$value['image_url']]);
+                    $teamModel->save(['type'=>$data['match_type'], 'name'=>trim($value['name']), 'image_url'=>$value['image_url']]);
                     $value['id'] = $teamModel['id'];
                 }
             }
-            $matcheModel = new \app\common\model\Matche;
+            $matchModel = new \app\common\model\Match;
 
-            $matcheData = [
+            $matchData = [
                 'news_id' => $data['id'],
                 'type' => $data['matche_type'],
                 'league_name' => $data['league_name'],
@@ -187,7 +187,7 @@ class PortalNews extends Common
                 'open_time' => $data['open_time'],
             ];
 
-            $matcheModel->save($matcheData);
+            $matchModel->save($matchData);
 
         }
 
@@ -219,13 +219,13 @@ class PortalNews extends Common
             foreach($teamData as $key => &$value){
                 $teamModel = new \app\common\model\Team;
                 if($value['id'] == 0){
-                    $teamModel->save(['type'=>$data['matche_type'], 'name'=>trim($value['name']), 'image_url'=>$value['image_url']]);
+                    $teamModel->save(['type'=>$data['match_type'], 'name'=>trim($value['name']), 'image_url'=>$value['image_url']]);
                     $value['id'] = $teamModel['id'];
                 }
             }
-            $matcheModel = new \app\common\model\Matche;
+            $matcheModel = new \app\common\model\Match;
 
-            $matcheData = [
+            $matchData = [
                 'type' => $data['matche_type'],
                 'league_name' => $data['league_name'],
                 'name' => $teamData[0]['name'] . ' vs ' . $teamData[1]['name'],
@@ -236,18 +236,18 @@ class PortalNews extends Common
             ];
             if($matcheModel->where('news_id', '=', $data['id'])->count()){
 
-                $matcheModel->save($matcheData, ['news_id' => $data['id']]);
+                $matcheModel->save($matchData, ['news_id' => $data['id']]);
             }else{
 
-                $matcheData['news_id'] = $data['id'];
-                $matcheModel->save($matcheData);
+                $matchData['news_id'] = $data['id'];
+                $matcheModel->save($matchData);
 
             }
 
             //print_r($teamData);
         }else{
-            $matcheModel = new \app\common\model\Matche;
-            $matcheModel->where('news_id', $data['id'])->delete();
+            $matchModel = new \app\common\model\Matche;
+            $matchModel->where('news_id', $data['id'])->delete();
         }
 
     }
