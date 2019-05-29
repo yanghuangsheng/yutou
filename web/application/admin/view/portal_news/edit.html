@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <input type="checkbox" name="matche_status" lay-skin="switch" lay-filter="matche" value="1" lay-text="开启赛事|关闭赛事" {$data['match_status']?'checked':''}>
+                                <input type="checkbox" name="match_status" lay-skin="switch" lay-filter="matche" value="1" lay-text="开启赛事|关闭赛事" {$data['match_status']?'checked':''}>
                             </div>
                             <div class="layui-form-item" id="matche-box" style="display: {$data['match_status']?'block':'none'};">
                                 <fieldset class="layui-elem-field box-top">
@@ -99,7 +99,7 @@
                                                 <label class="layui-form-label"></label>
                                                 <div class="layui-form-block">
                                                     <div class="layui-input-inline" style="width: 70px;">
-                                                        <select name="matche_type">
+                                                        <select name="match_type">
                                                             <option value="0" {$data['match_type']?'':'selected'}>足球</option>
                                                             <option value="1" {$data['match_type']?'selected':''}>蓝球</option>
                                                         </select>
@@ -351,7 +351,7 @@
                 var teamName = $(this).val();
                 var teamShowBox = $(this).siblings('.teamShowBox');
                 if(teamName){
-                    var teamType = $('select[name="matche_type"]').val();
+                    var teamType = $('select[name="match_type"]').val();
                     console.log(teamType);
                     teamShowBox.find('ul').html('');
                     admin.req({
@@ -410,7 +410,7 @@
                 }
             });
             //监听盘口开关
-            form.on('switch(matche)', function(data){
+            form.on('switch(match)', function(data){
                 var matcheBox = $("#matche-box");
                 if(data.elem.checked){
                     matcheBox.show();

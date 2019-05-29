@@ -165,7 +165,7 @@ class PortalNews extends Common
         }
 
         //赛事
-        if(isset($data['matche_status']) && $data['matche_status'] == 1){
+        if(isset($data['match_status']) && $data['match_status'] == 1){
             $teamData = $data['team'];
             foreach($teamData as $key => &$value){
                 $teamModel = new \app\common\model\Team;
@@ -178,7 +178,7 @@ class PortalNews extends Common
 
             $matchData = [
                 'news_id' => $data['id'],
-                'type' => $data['matche_type'],
+                'type' => $data['match_type'],
                 'league_name' => $data['league_name'],
                 'name' => $teamData[0]['name'] . ' vs ' . $teamData[1]['name'],
                 'main_id' => $teamData[0]['id'],
@@ -214,7 +214,7 @@ class PortalNews extends Common
         }
 
         //赛事
-        if(isset($data['matche_status']) && $data['matche_status'] == 1){
+        if(isset($data['match_status']) && $data['match_status'] == 1){
             $teamData = $data['team'];
             foreach($teamData as $key => &$value){
                 $teamModel = new \app\common\model\Team;
@@ -226,7 +226,7 @@ class PortalNews extends Common
             $matcheModel = new \app\common\model\Match;
 
             $matchData = [
-                'type' => $data['matche_type'],
+                'type' => $data['match_type'],
                 'league_name' => $data['league_name'],
                 'name' => $teamData[0]['name'] . ' vs ' . $teamData[1]['name'],
                 'main_id' => $teamData[0]['id'],
