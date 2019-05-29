@@ -82,11 +82,15 @@ class News extends Base
     public function getItem()
     {
         $newsId = $this->param('id');
-
+        $domain = $this->getDomain();
         $service = new PortalNews;
         $data = $service->getOneData($newsId);
+        $data['image_url'] = $domain.$data['image_url'];
+
         $data['attr_data'] = $data['attr_data']?json_decode($data['attr_data'], 1):[];
-        $data['image_url'] = $this->getDomain().$data['image_url'];
+        $data['main_image_url'] = $data['main_image_url']?$domain.$data['main_image_url']:'';
+        $data['passenger_image_url'] = $data['passenger_image_url']?$domain.$data['passenger_image_url']:'';
+
         $data['published_time_txt'] = date('Y-m-d H:i', $data['published_time']);
         $data['content'] = $this->ruleImg($data['content']);
         $data['is_praise'] = 0;
