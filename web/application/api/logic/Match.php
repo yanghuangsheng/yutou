@@ -34,10 +34,14 @@ class Match extends Base
 
         ];
 
-        Db::startTrans();
         $matchSupportService = new MatchSupportService;
         $userCapital = new UserCapital;
         $userCapitalLog = new UserCapitalLog;
+
+        Db::startTrans();
+//        if($matchSupportService->getCount([['match_id', '=', $saveData['match_id']], ['user_id', '=', $saveData['user_id']]]) > 0){
+//            return showResult(-1, '已竞猜过了');
+//        }
 
         $goldsNum = $userCapital->deductGolds($saveData['user_id'], $saveData['golds_num']);
         if($goldsNum === false){
@@ -48,7 +52,7 @@ class Match extends Base
         $userCapitalLog->giveGoldsLog(
             [
                 'user_id' => $saveData['user_id'],
-                'pay' => $saveData['golds_num'],
+                'pay' => '-'.$saveData['golds_num'],
                 'residue'=> $goldsNum,
                 'explain'=> '预测消费金币',
             ]
