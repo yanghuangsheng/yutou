@@ -176,6 +176,7 @@ class PortalNews extends Common
             }
             $matchModel = new \app\common\model\Match;
 
+            $attrData = ($data['attr'][0]['main']['value'] == '')?[]:$data['attr'];
             $matchData = [
                 'news_id' => $data['id'],
                 'type' => $data['match_type'],
@@ -183,7 +184,7 @@ class PortalNews extends Common
                 'name' => $teamData[0]['name'] . ' vs ' . $teamData[1]['name'],
                 'main_id' => $teamData[0]['id'],
                 'passenger_id' => $teamData[1]['id'],
-                'attr_data' => $data['attr'],
+                'attr_data' => $attrData,
                 'open_time' => $data['open_time'],
             ];
 
@@ -223,24 +224,25 @@ class PortalNews extends Common
                     $value['id'] = $teamModel['id'];
                 }
             }
-            $matcheModel = new \app\common\model\Match;
+            $matchModel = new \app\common\model\Match;
 
+            $attrData = ($data['attr'][0]['main']['value'] == '')?[]:$data['attr'];
             $matchData = [
                 'type' => $data['match_type'],
                 'league_name' => $data['league_name'],
                 'name' => $teamData[0]['name'] . ' vs ' . $teamData[1]['name'],
                 'main_id' => $teamData[0]['id'],
                 'passenger_id' => $teamData[1]['id'],
-                'attr_data' => $data['attr'],
+                'attr_data' => $attrData,
                 'open_time' => $data['open_time'],
             ];
-            if($matcheModel->where('news_id', '=', $data['id'])->count()){
+            if($matchModel->where('news_id', '=', $data['id'])->count()){
 
-                $matcheModel->save($matchData, ['news_id' => $data['id']]);
+                $matchModel->save($matchData, ['news_id' => $data['id']]);
             }else{
 
                 $matchData['news_id'] = $data['id'];
-                $matcheModel->save($matchData);
+                $matchModel->save($matchData);
 
             }
 

@@ -60,7 +60,7 @@ class Match extends Base
         );
         //支持加1
         $indField = ['support_o_num','support_main_num','support_passenger_num'];
-        $incResult= $matchService->updateInc(['id', $saveData['match_id']], $indField[$saveData['support_status']]);
+        $incResult = $matchService->updateInc(['id', $saveData['match_id']], $indField[$saveData['support_status']]);
 
         //预测
         if($logResult &&  $incResult && $matchSupportService->save($saveData)){
@@ -70,6 +70,14 @@ class Match extends Base
 
         Db::rollback();
         return showResult(-1, '预测失败');
+
+    }
+
+    /**
+     * 预测记录
+     */
+    public function supportLog()
+    {
 
     }
 }
