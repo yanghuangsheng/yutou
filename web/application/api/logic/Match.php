@@ -34,6 +34,7 @@ class Match extends Base
 
         ];
 
+        $matchService = new MatchService;
         $matchSupportService = new MatchSupportService;
         $userCapital = new UserCapital;
         $userCapitalLog = new UserCapitalLog;
@@ -49,7 +50,7 @@ class Match extends Base
             return showResult(-1, $userCapital->getError());
         }
         //记录消费日志
-        $userCapitalLog->giveGoldsLog(
+        $logResult = $userCapitalLog->giveGoldsLog(
             [
                 'user_id' => $saveData['user_id'],
                 'pay' => '-'.$saveData['golds_num'],
@@ -57,10 +58,12 @@ class Match extends Base
                 'explain'=> '预测消费金币',
             ]
         );
+        //支持加1
+        $indField = ['support_o_num','support_main_num','support_passenger_num'];
+        $incResult= $matchService->updateInc(['id', $saveData['match_id']], $indField[$saveData['support_status']]);
 
         //预测
-        if($matchSupportService->save($saveData)){
-
+        if($logResult &&  $incResult && $matchSupportService->save($saveData)){
             Db::commit();
             return showResult(0, '预测成功');
         }

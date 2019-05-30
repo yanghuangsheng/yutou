@@ -20,4 +20,13 @@ class Match extends Base
     {
         return (new MatchLogic)->submitSupport();
     }
+
+    /**
+     * 预测记录
+     * @return mixed
+     */
+    public function bettingLog()
+    {
+        return (new MatchLogic)->supportLog();
+    }
 }

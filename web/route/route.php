@@ -57,6 +57,8 @@ Route::group('api', function () {
 
     //竟猜
     Route::post(':ver/match/betting', 'api/:ver.match/betting'); //提交竟猜
+    Route::get(':ver/match/log_list', 'api/:ver.match/bettingLog'); //竟猜记录
+
 
     //社区
     Route::get(':ver/forum/all', 'api/:ver.forum/index');
