@@ -75,9 +75,51 @@ class Match extends Base
 
     /**
      * 预测记录
+     * @return array
+     * @throws \app\api\exception\ApiException
      */
     public function supportLog()
     {
+        $this->checkToken();
+        $param = $this->param();
+        $userId = $this->tokenData['id'];
 
+        $where = [
+            ['MatchSupport.user_id', '=', $userId]
+        ];
+        $page = isset($param['page'])?$param['page']:1;
+
+        $matchSupportService = new MatchSupportService;
+
+        $data = $this->commonSupportList($matchSupportService, $where, $page);
+
+        $page == 1 && $data['start_id'] = $matchSupportService->newsId();
+
+        return showResult(0, '', $data);
+    }
+
+    /**
+     * 公共预测列表
+     * @param $service
+     * @param $where
+     * @param int $page
+     * @return mixed
+     */
+    protected function commonSupportList($service, $where, $page = 1)
+    {
+        $data = $service
+            ->initWhere($where)
+            ->initLimit($page)
+            ->getListData();
+
+        $domain = $this->getDomain();
+        $data['list'] = $data['list']->toArray();
+        foreach ($data['list'] as $key => &$value){
+            $value['main_image_url'] = $domain.$value['main_image_url'];
+            $value['passenger_image_url'] = $domain.$value['passenger_image_url'];
+            $value['open_time'] = date('m-d H:i', $value['open_time']);
+        }
+
+        return $data;
     }
 }
