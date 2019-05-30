@@ -56,7 +56,7 @@ Route::group('api', function () {
     Route::post(':ver/news/submit_comment', 'api/:ver.news/submitComment'); //评论
 
     //竟猜
-    Route::post(':ver/match/submit', 'api/:ver.match/submit'); //提交竟猜
+    Route::post(':ver/match/betting', 'api/:ver.match/betting'); //提交竟猜
 
     //社区
     Route::get(':ver/forum/all', 'api/:ver.forum/index');

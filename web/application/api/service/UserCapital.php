@@ -6,7 +6,7 @@
  * Time: 18:16
  */
 
-namespace app\admin\service;
+namespace app\api\service;
 
 
 class UserCapital extends Common
@@ -53,6 +53,33 @@ class UserCapital extends Common
 
         ];
         return $this->save($updateData)?$num:false;
+    }
+
+    /**
+     * 消费金币
+     * @param $user_id
+     * @param $num
+     * @return bool
+     */
+    public function deductGolds($user_id, $num)
+    {
+        if($this->model->where('user_id', $user_id)->where('golds', '>=', $num)->count()){
+
+            $oGolds = $this->getOneField([['user_id', '=', $user_id]], 'golds');
+            if($this->updateDec(['user_id', $user_id], 'golds', $num)){
+
+                return $oGolds - $num;
+            }else{
+
+                $this->error = '服务器繁忙';
+            }
+        }else{
+
+            $this->error = '金币不足';
+        }
+
+        return false;
+
     }
 
 
