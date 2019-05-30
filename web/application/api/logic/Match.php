@@ -12,6 +12,7 @@ use app\api\service\UserCapital;
 use app\api\service\UserCapitalLog;
 use app\api\service\Match as MatchService;
 use app\api\service\MatchSupport as MatchSupportService;
+use think\Db;
 
 class Match extends Base
 {
