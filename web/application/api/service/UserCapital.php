@@ -37,7 +37,7 @@ class UserCapital extends Common
         $operation = substr($num, 0, 1);
         $num = abs($num);
         if($this->model->where('user_id', $user_id)->count()){
-            $oGolds = $this->getOneField([['user_id', '=', $user_id]], 'golds');
+            $oGolds = $this->getField([['user_id', '=', $user_id]], 'golds');
             if($operation == '+' || is_numeric($operation)){
                 return $this->updateInc(['user_id', $user_id], 'golds', $num) ? $oGolds + $num : false;
             }elseif($operation == '-'){
@@ -65,7 +65,7 @@ class UserCapital extends Common
     {
         if($this->model->where('user_id', $user_id)->where('golds', '>=', $num)->count()){
 
-            $oGolds = $this->getOneField([['user_id', '=', $user_id]], 'golds');
+            $oGolds = $this->getField([['user_id', '=', $user_id]], 'golds');
             if($this->updateDec(['user_id', $user_id], 'golds', $num)){
 
                 return $oGolds - $num;
