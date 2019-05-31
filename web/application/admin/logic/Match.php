@@ -37,7 +37,7 @@ class Match extends Base
 
             Db::startTrans();
             $service = new MatchService;
-            $error = '';
+            $error = '处理中奖数据出错';
             if($service->saveResult($param)){
 
                 $matchSupportModel = new MatchSupportModel;
@@ -70,15 +70,15 @@ class Match extends Base
                             ]);
                         }else{
                             $foreachVal = false;
-                            $error = '$goldsNum: ' . $goldsNum;
+                            //$error = '$goldsNum: ' . $goldsNum;
                             break;//出错终止
                         }
 
                     }
 
-                    if($matchSupportModel->where('id', $value['id'])->update($updateData)){
+                    if(!$matchSupportModel->where('id', $value['id'])->update($updateData)){
                         $foreachVal = false;
-                        $error = '$updateData: ' . json_encode($updateData);
+                        //$error = '$updateData: ' . json_encode($updateData);
                         break;//出错终止
                     }
                 }
