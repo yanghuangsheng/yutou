@@ -62,12 +62,12 @@ class Match extends Base
                         $updateData['settlement_golds_num'] = $value['golds_num'] * 2;
 
                         if($goldsNum = $userCapitalService->saveGolds($value['user_id'], $updateData['settlement_golds_num'])){
-                            $userCapitalLogService->giveGoldsLog([
-                                'user_id' => $value['user_id'],
-                                'pay' => '+' . $updateData['settlement_golds_num'],
-                                'residue'=> $goldsNum,
-                                'explain'=> '赛事预测中奖，赠送鱼币',
-                            ]);
+//                            $userCapitalLogService->giveGoldsLog([
+//                                'user_id' => $value['user_id'],
+//                                'pay' => '+' . $updateData['settlement_golds_num'],
+//                                'residue'=> $goldsNum,
+//                                'explain'=> '赛事预测中奖，赠送鱼币',
+//                            ]);
                         }else{
                             $foreachVal = false;
                             //$error = '$goldsNum: ' . $goldsNum;
