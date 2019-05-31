@@ -16,6 +16,16 @@ class Base
     protected $whereMap = []; //查询模型条件
     protected $limit = 0; //默认不分页
     protected $order = [];
+    protected $error = '';
+
+    /**
+     * 外部获取错误信息
+     * @return string
+     */
+    public function getError(){
+
+        return $this->error;
+    }
 
     /**
      * 设置分页

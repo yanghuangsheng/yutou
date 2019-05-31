@@ -1,0 +1,26 @@
+<style>
+    html{
+        background-color: #FFFFFF;
+    }
+</style>
+<div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list" style="margin:3px;padding:0px 20px;background-color: #fff;">
+    <div style="height:25px;"></div>
+    <div class="layui-form-item" style="text-align: center;">
+        <div class="layui-input-block" style="width:auto; margin-left: auto; margin-right:auto;">
+            <input type="radio" name="result_value" value="1" title="主队">
+            <input type="radio" name="result_value" value="0" title="平局" checked="">
+            <input type="radio" name="result_value" value="2" title="客队">
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="hidden" name="id" value="">
+        <button class="layui-btn" lay-submit="" id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit">立即提交</button>
+    </div>
+</div>
+
+<script>
+    bodyD.use(['index','form','upload','laydate','formSelects'], function () {
+        var $ = layui.$,laydate = layui.laydate,form = layui.form,upload = layui.upload;
+
+    });
+</script>
