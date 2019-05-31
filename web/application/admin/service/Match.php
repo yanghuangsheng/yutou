@@ -17,7 +17,7 @@ class Match extends Common
     public function __construct()
     {
         $this->model = new \app\common\model\Match;
-        $this->order = ['match.id', 'desc'];
+        $this->order = ['Match.id', 'desc'];
     }
 
     /**
