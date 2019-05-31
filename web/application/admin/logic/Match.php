@@ -37,6 +37,7 @@ class Match extends Base
 
             Db::startTrans();
             $service = new MatchService;
+            $error = '';
             if($service->saveResult($param)){
 
                 $matchSupportModel = new MatchSupportModel;
@@ -69,6 +70,7 @@ class Match extends Base
                             ]);
                         }else{
                             $foreachVal = false;
+                            $error = '$goldsNum: ' . $goldsNum;
                             break;//出错终止
                         }
 
@@ -76,6 +78,7 @@ class Match extends Base
 
                     if($matchSupportModel->where('id', $value['id'])->update($updateData)){
                         $foreachVal = false;
+                        $error = '$updateData: ' . json_encode($updateData);
                         break;//出错终止
                     }
                 }
@@ -88,7 +91,7 @@ class Match extends Base
             }
 
             Db::rollback();
-            $this->resultJson(-1, $service->getError()?$service->getError():'处理数据出错');
+            $this->resultJson(-1, $service->getError()?$service->getError():$error);
 
         }
     }
