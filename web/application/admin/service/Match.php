@@ -16,7 +16,7 @@ class Match extends Common
     //初始化类
     public function __construct()
     {
-        $this->model = new \app\common\model\match;
+        $this->model = new \app\common\model\Match;
         $this->order = ['match.id', 'desc'];
     }
 
