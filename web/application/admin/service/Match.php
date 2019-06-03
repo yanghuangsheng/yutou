@@ -86,7 +86,7 @@ class Match extends Common
             '3' => '<span class="layui-badge layui-bg-gray">未处理</span>',
         ];
 
-        ($value == null || $value == '') && $value = 3;
+        is_numeric($value) || $value = 3;
 
         return $data[$value];
     }
