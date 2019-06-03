@@ -63,8 +63,7 @@ class Match extends Base
                         $updateData['settlement_golds_num'] = $value['golds_num'] * 2;
 
                         if($goldsNum = $userCapitalService->saveGolds($value['user_id'], $updateData['settlement_golds_num'])){
-//                            $foreachVal = false;
-//                            $error = '$goldsNum: ' . $goldsNum;
+
                             $logData[] = [
                                 'user_id' => $value['user_id'],
                                 'pay' => '+' . $updateData['settlement_golds_num'],
@@ -75,7 +74,7 @@ class Match extends Base
 //                            $userCapitalLogService->giveGoldsLog($logData);
                         }else{
                             $foreachVal = false;
-                            $error = '$goldsNum: ' . $goldsNum;
+//                            $error = '$goldsNum: ' . $goldsNum;
                             break;//出错终止
                         }
 
@@ -83,7 +82,7 @@ class Match extends Base
 
                     if(!$matchSupportModel->where('id', $value['id'])->update($updateData)){
                         $foreachVal = false;
-                        $error = '$updateData: ' . json_encode($updateData);
+//                        $error = '$updateData: ' . json_encode($updateData);
                         break;//出错终止
                     }
                 }
@@ -91,8 +90,8 @@ class Match extends Base
                 if($logData){
                     $resultArr = $userCapitalLogService->allGoldsLog($logData);
                     if(!$resultArr){
-                        json_encode($resultArr);
-                        $error = 'resultArr:' . json_encode($resultArr);
+//                        json_encode($resultArr);
+//                        $error = 'resultArr:' . json_encode($resultArr);
                         $foreachVal = false;
                     }
                 }
