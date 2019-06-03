@@ -58,7 +58,9 @@ class Match extends Common
      */
     public function saveResult($param)
     {
-        if(0 == $this->model->whereNull('result_status')->where('id', $param['id'])->count()){
+        if(0 == $this->model
+                //->whereNull('result_status')
+                ->where('id', $param['id'])->count()){
 
             $this->error = '不支持重复设置比赛结果';
             return false;
