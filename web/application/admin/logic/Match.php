@@ -49,6 +49,7 @@ class Match extends Base
                     ->select()->toArray();
                 $time = time();
                 $foreachVal = true;
+                $logData = []; // 日志
                 foreach ($supportData as $key => $value){
 
                     $updateData = [
@@ -63,14 +64,14 @@ class Match extends Base
 
                         if($goldsNum = $userCapitalService->saveGolds($value['user_id'], $updateData['settlement_golds_num'])){
                             $foreachVal = false;
-                            $logData = [
+                            $logData[] = [
                                 'user_id' => $value['user_id'],
                                 'pay' => '+' . $updateData['settlement_golds_num'],
                                 'residue'=> $goldsNum,
                                 'explain'=> '赛事预测中奖，赠送鱼币',
                             ];
-                            json_encode($logData);
-                            $userCapitalLogService->giveGoldsLog($logData);
+//                            json_encode($logData);
+//                            $userCapitalLogService->giveGoldsLog($logData);
                         }else{
                             $foreachVal = false;
                             //$error = '$goldsNum: ' . $goldsNum;
@@ -83,6 +84,13 @@ class Match extends Base
                         $foreachVal = false;
                         //$error = '$updateData: ' . json_encode($updateData);
                         break;//出错终止
+                    }
+                }
+
+                if($logData){
+                    $resultArr = $userCapitalLogService->allGoldsLog($logData);
+                    if(!$resultArr){
+                        $foreachVal = false;
                     }
                 }
 

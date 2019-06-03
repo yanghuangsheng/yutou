@@ -29,7 +29,7 @@ class UserCapitalLog extends Common
 
     /**
      * 列表View
-     * @return $this
+     * @return \app\common\model\UserCapitalLog
      */
     protected function setWithOnView()
     {
@@ -38,7 +38,7 @@ class UserCapitalLog extends Common
     }
 
     /**
-     * 记录日志
+     * 记录单条日志
      * @param $data
      * @return bool
      */
@@ -50,6 +50,15 @@ class UserCapitalLog extends Common
             return true;
         }
         return false;
+    }
+
+    /**记录多条金币交易日志
+     * @param $data
+     * @return int|string
+     */
+    public function allGoldsLog($data)
+    {
+        return $this->model->data($data)->limit(100)->insertAll();
     }
 
 
