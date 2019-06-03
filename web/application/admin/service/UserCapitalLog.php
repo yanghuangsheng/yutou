@@ -52,13 +52,15 @@ class UserCapitalLog extends Common
         return false;
     }
 
-    /**记录多条金币交易日志
+    /**
+     * 记录多条金币交易日志
      * @param $data
-     * @return int|string
+     * @return \think\Collection
+     * @throws \Exception
      */
     public function allGoldsLog($data)
     {
-        return $this->model->data($data)->limit(100)->insertAll();
+        return $this->model->limit(100)->saveAll($data);
     }
 
 
