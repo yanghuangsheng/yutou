@@ -60,7 +60,7 @@ class UserCapitalLog extends Common
      */
     public function allGoldsLog($data)
     {
-        return $this->model->limit(100)->saveAll($data);
+        return $this->model->saveAll($data);
     }
 
 
