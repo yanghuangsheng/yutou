@@ -63,7 +63,8 @@ class Match extends Base
                         $updateData['settlement_golds_num'] = $value['golds_num'] * 2;
 
                         if($goldsNum = $userCapitalService->saveGolds($value['user_id'], $updateData['settlement_golds_num'])){
-                            $foreachVal = false;
+//                            $foreachVal = false;
+//                            $error = '$goldsNum: ' . $goldsNum;
                             $logData[] = [
                                 'user_id' => $value['user_id'],
                                 'pay' => '+' . $updateData['settlement_golds_num'],
