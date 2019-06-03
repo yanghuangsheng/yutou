@@ -74,7 +74,7 @@ class Match extends Base
 //                            $userCapitalLogService->giveGoldsLog($logData);
                         }else{
                             $foreachVal = false;
-                            //$error = '$goldsNum: ' . $goldsNum;
+                            $error = '$goldsNum: ' . $goldsNum;
                             break;//出错终止
                         }
 
@@ -82,7 +82,7 @@ class Match extends Base
 
                     if(!$matchSupportModel->where('id', $value['id'])->update($updateData)){
                         $foreachVal = false;
-                        //$error = '$updateData: ' . json_encode($updateData);
+                        $error = '$updateData: ' . json_encode($updateData);
                         break;//出错终止
                     }
                 }
