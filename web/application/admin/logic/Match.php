@@ -89,8 +89,9 @@ class Match extends Base
 
                 if($logData){
                     $resultArr = $userCapitalLogService->allGoldsLog($logData);
-                    json_encode($resultArr);
                     if(!$resultArr){
+                        json_encode($resultArr);
+                        $error = 'resultArr:' . json_encode($resultArr);
                         $foreachVal = false;
                     }
                 }
