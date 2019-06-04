@@ -31,7 +31,6 @@ class Match extends Base
             'match_id' => $param['match_id'],
             'support_status' => $param['status'],
             'golds_num' => $param['golds_num'],
-
         ];
 
         $matchService = new MatchService;

@@ -169,6 +169,14 @@
                                         done: function (res) {
                                             layer.closeAll('loading');
                                             if(res.code == 0){
+                                                var resultTxt = [
+                                                    '<span class="layui-badge layui-bg-warm">平局</span>',
+                                                    '<span class="layui-badge layui-bg-green">主队胜</span>',
+                                                    '<span class="layui-badge layui-bg-normal">客队胜</span>'
+                                                ];
+                                                obj.update({
+                                                    result_status_txt: resultTxt[data.field.result_value],
+                                                });
                                                 layer.close(index);
                                                 layer.close(confirm_index);
                                                 return ;
