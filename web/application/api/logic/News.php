@@ -12,6 +12,7 @@ use app\api\service\PortalNews;
 use app\api\service\PortalNewsCommentClick;
 use app\api\service\PortalNewsPraise;
 use app\api\service\UserCollection;
+use app\api\service\MatchSupport;
 
 class News extends Base
 {
@@ -95,11 +96,15 @@ class News extends Base
         $data['content'] = $this->ruleImg($data['content']);
         $data['is_praise'] = 0;
         $data['is_collect'] = 0;
+        $data['user_support_status'] = '';
 
         if(isset($this->tokenData['id'])){
             $data['is_praise'] = (new PortalNewsPraise)->getCount([['news_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']]]);
             $data['is_collect'] = (new UserCollection)->getCount([['o_id', '=', $data['id']],['type', '=', 0],['user_id', '=', $this->tokenData['id']]]);
+            $data['user_support_status'] = (new MatchSupport)->getField([['user_id', '=', $this->tokenData['id']]], 'support_status');
         }
+
+
 
         //更新浏览量
         $browseNum = (new \app\www\service\PortalNewsAttr)->saveNum(['id'=>$newsId], 'browse');
