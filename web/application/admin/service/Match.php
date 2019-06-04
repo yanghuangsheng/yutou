@@ -80,7 +80,7 @@ class Match extends Common
     private function resultStatus($value)
     {
         $data = [
-            '0' => '<span class="layui-badge layui-btn-warm">平局</span>',
+            '0' => '<span class="layui-badge layui-bg-warm">平局</span>',
             '1' => '<span class="layui-badge layui-bg-green">主队胜</span>',
             '2' => '<span class="layui-badge layui-bg-normal">客队胜</span>',
             '3' => '<span class="layui-badge layui-bg-gray">未处理</span>',
