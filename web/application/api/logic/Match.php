@@ -40,9 +40,9 @@ class Match extends Base
         $userCapitalLog = new UserCapitalLog;
 
         Db::startTrans();
-//        if($matchSupportService->getCount([['match_id', '=', $saveData['match_id']], ['user_id', '=', $saveData['user_id']]]) > 0){
-//            return showResult(-1, '已竞猜过了');
-//        }
+        if($matchSupportService->getCount([['match_id', '=', $saveData['match_id']], ['user_id', '=', $saveData['user_id']]]) > 0){
+            return showResult(-1, '已竞猜过了');
+        }
 
         $goldsNum = $userCapital->deductGolds($saveData['user_id'], $saveData['golds_num']);
         if($goldsNum === false){
