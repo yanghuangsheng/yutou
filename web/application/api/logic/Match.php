@@ -62,10 +62,10 @@ class Match extends Base
         $indField = ['support_o_num','support_main_num','support_passenger_num'];
         $incResult = $matchService->updateInc(['id', $saveData['match_id']], $indField[$saveData['support_status']]);
         //系统通知
-        $matchData = (new MatchService)->getFiles($saveData('match_id'), 'name, open_time', 1);
+        $matchData = (new MatchService)->getFiles($saveData('match_id'), 'name,open_time', 1);
         $msgResult = (new SystemMessageService)->toUserSystem(
             $saveData['user_id'],
-            ['content' => $matchData['name'] . '将于' . date('Y-m-d H:i:s', $matchData['open_time'] + 6000) . '准备开奖，敬请期待。'],
+            [$matchData['name'] . '将于' . date('Y-m-d H:i:s', $matchData['open_time'] + 6000) . '准备开奖，敬请期待。'],
             1
         );
 
