@@ -72,10 +72,10 @@ class Match extends Base
                                 'residue'=> $goldsNum,
                                 'explain'=> '赛事预测中奖，赠送鱼币',
                             ];
-
+                            $resultSupportArr = ['平局','主队胜','客队胜'];
                             $userMessage[] = [
                                 'user_id' => $value['user_id'],
-                                'content' => '你参与的竞猜【'. $value['name'] .'】，恭喜获得'. $updateData['settlement_golds_num'] .'鱼币。',
+                                'content' => '你参与的竞猜【'. $value['name'] .'】，'. $resultSupportArr[$param['result_value']] .'，恭喜获得'. $updateData['settlement_golds_num'] .'鱼币。',
                                 't_type' => 2
                             ];
 //                            json_encode($logData);
