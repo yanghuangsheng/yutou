@@ -37,4 +37,6 @@ class SystemMessage extends Common
         //return $this->model->data($data)->limit(100)->insertAll();
         return \think\Db::name('systemMessage')->data($data)->limit(100)->insertAll();
     }
+
+
 }

@@ -71,7 +71,7 @@ class Match extends Base
         );
 
         //预测
-        if($logResult &&  $incResult && $matchSupportService->save($saveData)){
+        if($logResult &&  $incResult && $msgResult && $matchSupportService->save($saveData)){
 
             Db::commit();
             return showResult(0, '预测成功');
