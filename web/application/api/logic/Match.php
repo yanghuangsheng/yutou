@@ -65,7 +65,7 @@ class Match extends Base
         $matchData = (new MatchService)->getFiles($saveData('match_id'), 'name,open_time', 1);
         $msgResult = (new SystemMessageService)->toUserSystem(
             $saveData['user_id'],
-            [$matchData['name'] . '将于' . date('Y-m-d H:i:s', $matchData['open_time'] + 6000) . '准备开奖，敬请期待。'],
+            ['content' => $matchData['name'] . '将于' . date('Y-m-d H:i:s', $matchData['open_time'] + 6000) . '准备开奖，敬请期待。'],
             1
         );
 
