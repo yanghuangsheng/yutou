@@ -12,6 +12,7 @@ use app\api\service\UserCapital;
 use app\api\service\UserCapitalLog;
 use app\api\service\Match as MatchService;
 use app\api\service\MatchSupport as MatchSupportService;
+use app\api\service\SystemMessage as SystemMessageService;
 use think\Db;
 
 class Match extends Base
@@ -60,9 +61,17 @@ class Match extends Base
         //支持加1
         $indField = ['support_o_num','support_main_num','support_passenger_num'];
         $incResult = $matchService->updateInc(['id', $saveData['match_id']], $indField[$saveData['support_status']]);
+        //系统通知
+        $matchData = (new MatchService)->getFiles($saveData('match_id'), 'name, open_time', 1);
+        $msgResult = (new SystemMessageService)->toUserSystem(
+            $saveData['user_id'],
+            ['content' => $matchData['name'] . '将于' . date('Y-m-d H:i:s', $matchData['open_time'] + 6000) . '准备开奖，敬请期待。'],
+            1
+        );
 
         //预测
         if($logResult &&  $incResult && $matchSupportService->save($saveData)){
+
             Db::commit();
             return showResult(0, '预测成功');
         }
