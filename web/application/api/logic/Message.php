@@ -24,7 +24,7 @@ class Message extends Base
         $messageService = new SystemMessageService;
 
         $data['message'][0] = $this->commonList($messageService, [['user_id', '=', $userId], ['type', '=', 0]], 1);
-        $data['message'][0] = $this->commonList($messageService, [['user_id', '=', $userId], ['type', '=', 1]], 1);
+        $data['message'][1] = $this->commonList($messageService, [['user_id', '=', $userId], ['type', '=', 1]], 1);
 
         $data['start_id'] = $messageService->newsId();
 
