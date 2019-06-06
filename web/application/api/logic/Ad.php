@@ -15,7 +15,7 @@ class Ad extends Base
     /**
      * 获取轮播
      * @return array
-     */
+     */ 
     public function getCarousel()
     {
         $data = (new AdImages)->getCarousel(2);

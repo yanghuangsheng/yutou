@@ -76,7 +76,9 @@ class Match extends Base
                             $userMessage[] = [
                                 'user_id' => $value['user_id'],
                                 'content' => '你参与的竞猜【'. $value['name'] .'】，'. $resultSupportArr[$param['result_value']] .'，恭喜获得'. $updateData['settlement_golds_num'] .'鱼币。',
-                                't_type' => 2
+                                't_type' => 2,
+                                'create_time' => $time,
+                                'update_time' => $time,
                             ];
 //                            json_encode($logData);
 //                            $userCapitalLogService->giveGoldsLog($logData);
