@@ -23,7 +23,7 @@ class SystemMessage extends Common
      */
     protected function setWithOnView()
     {
-        return $this->model->view('SystemMessage','id,type,o_type,o_id,content,status,create_time')
+        return $this->model->view('SystemMessage','id,type,o_type,o_id,t_type,content,status,create_time')
             ->view('User', ['id'=>'user_id','name'=>'user_name','avatar'=>'user_avatar'], 'User.id = SystemMessage.o_user_id', 'LEFT')
             ->order('id', 'desc');
     }

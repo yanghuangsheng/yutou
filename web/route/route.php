@@ -91,6 +91,9 @@ Route::group('api', function () {
     Route::get(':ver/user/collect', 'api/:ver.user/collection'); //我的收藏
     Route::get(':ver/user/more_collect', 'api/:ver.user/moreCollection'); //加载更多 我的收藏
 
+    Route::get(':ver/user/message', 'api/:ver.message/index'); //我的消息
+    Route::get(':ver/user/more_message', 'api/:ver.message/moreList'); //加载更多 我的消息
+
     Route::post(':ver/user/fans', 'api/:ver.user/fans'); //关注用户
     Route::post(':ver/user/bind_phone', 'api/:ver.user/bindPhone'); //绑定手机
     Route::post(':ver/user/upload_avatar', 'api/:ver.user/uploadAvatar'); //上传头像
