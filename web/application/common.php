@@ -627,3 +627,29 @@ function getWeek($date){
     //获取数字对应的星期
     return $weekArr[$number_wk];
 }
+
+/**
+ * 签到赠送规则
+ * @return array
+ */
+function signGiveRuleData(){
+    //num 个数 type 0鱼泡 1鱼鳞
+    return [
+        ['num' => 10, 'type' => 0],
+        ['num' => 20, 'type' => 0],
+        ['num' => 3, 'type' => 1],
+        ['num' => 30, 'type' => 0],
+        ['num' => 5, 'type' => 1],
+        ['num' => 40, 'type' => 0],
+        ['num' => 20, 'type' => 1],
+    ];
+}
+
+/**
+ * 返回当天日期 时间戳
+ * @return false|int
+ */
+function returnTodayTime()
+{
+    return strtotime(date('Y-m-d', time()));
+}

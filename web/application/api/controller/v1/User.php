@@ -13,6 +13,14 @@ use \app\api\logic\User as Logic;
 class User extends Base
 {
     /**
+     * 用户检测签到
+     */
+    public function todaySign()
+    {
+        return (new Logic)->checkTodaySign();
+    }
+
+    /**
      * 个人主页内容
      */
     public function home()

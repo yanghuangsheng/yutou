@@ -32,16 +32,16 @@ class Update extends Base
 
         $version = explode('.', $this->versions);
 
+        //整包更新地址
+        //安卓
+        $updateUrl = $versionData['android']?$this->getDomain() . $versionData['android']:'';
+        //苹果
+        if($platform == 'ios'){
+            $updateUrl = $versionData['ios']?$this->getDomain() . $versionData['ios']:'';
+        }
+
         if($version[0] > $oVersion[0]){
             //大版本
-
-            //默认安卓
-            $updateUrl = $versionData['android']?$this->getDomain() . $versionData['android']:'';
-            //苹果
-            if($platform == 'ios'){
-                $updateUrl = $versionData['ios']?$this->getDomain() . $versionData['ios']:'';
-            }
-
             $data = [
                 'content' => $versionData['content'],
                 'wgt_url' => '',
@@ -51,11 +51,10 @@ class Update extends Base
         }
         elseif ($version[1] > $oVersion[1] || $version[2] > $oVersion[2]){
             //小版本
-
             $data = [
                 'content' => $versionData['content'],
                 'wgt_url' => $versionData['wgt_url']?$this->getDomain() . $versionData['wgt_url']:'',
-                'pkg_url' => '',
+                'pkg_url' => $updateUrl,
             ];
             return showResult(0, '', $data);
 

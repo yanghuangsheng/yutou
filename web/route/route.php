@@ -43,7 +43,7 @@ Route::rule('/user', 'www/User/index');
 
 //API
 Route::group('api', function () {
-     //主页
+    //主页
     Route::get(':ver/index/all', 'api/:ver.index/all');
     Route::get(':ver/news/list', 'api/:ver.news/index'); //加载更多
     //新闻详情
