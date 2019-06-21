@@ -74,8 +74,6 @@ class News extends Base
         return (new PortalNews)->hotData(30, 10, [['PortalNews.recommended','=',1]]);
     }
 
-
-
     /**
      * 获取新闻详情
      * @return mixed

@@ -56,6 +56,35 @@ class UserCapital extends Common
     }
 
     /**
+     * 更新鱼鳞
+     * @param $user_id
+     * @param $num
+     * @return bool|float|int|mixed
+     */
+    public function saveScale($user_id, $num)
+    {
+        $operation = substr($num, 0, 1);
+        $num = abs($num);
+        if($this->model->where('user_id', $user_id)->count()){
+            $oGolds = $this->getField([['user_id', '=', $user_id]], 'scale');
+            if($operation == '+' || is_numeric($operation)){
+                return $this->updateInc(['user_id', $user_id], 'scale', $num) ? $oGolds + $num : false;
+            }elseif($operation == '-'){
+                return $this->updateDec(['user_id', $user_id], 'scale', $num) ? $oGolds - $num : false;
+            }else{
+                return false;
+            }
+
+        }
+        $updateData = [
+            'user_id' => $user_id,
+            'scale' => $num,
+
+        ];
+        return $this->save($updateData)?$num:false;
+    }
+
+    /**
      * 消费金币
      * @param $user_id
      * @param $num

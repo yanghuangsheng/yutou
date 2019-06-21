@@ -103,6 +103,13 @@ Route::group('api', function () {
     Route::post(':ver/user/pub_post', 'api/:ver.user/pubForumPost'); //发布帖子
 
 
+    Route::get(':ver/user/check_today', 'api/:ver.user/checkTodaySign'); //是否已签到
+    Route::post(':ver/user/today_sign', 'api/:ver.user/todaySign'); //签到
+
+
+
+
+
     //登陆
     Route::post(':ver/login', 'api/:ver.user/login');
     Route::post(':ver/wx_login', 'api/:ver.user/mpWxLogin');

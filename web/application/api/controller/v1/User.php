@@ -15,9 +15,22 @@ class User extends Base
     /**
      * 用户检测签到
      */
-    public function todaySign()
+    public function checkTodaySign()
     {
         return (new Logic)->checkTodaySign();
+    }
+
+    /**
+     * 签到
+     * @return array
+     * @throws \app\api\exception\ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function todaySign()
+    {
+        return (new Logic)->todaySign();
     }
 
     /**

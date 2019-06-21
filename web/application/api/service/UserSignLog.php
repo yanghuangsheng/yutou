@@ -25,7 +25,7 @@ class UserSignLog extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function isSign($user_id)
+    public function checkTodaySign($user_id)
     {
         $todayTime = returnTodayTime();
         if(0 == $this->model->where('user_id', $user_id)->where('date_index', $todayTime)->count()){
@@ -34,6 +34,42 @@ class UserSignLog extends Common
         }
 
         return false;
+    }
+
+    /**
+     * 签到
+     * @param $user_id
+     * @return array|bool
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function onTodaySign($user_id)
+    {
+        $todayTime = returnTodayTime();
+        $data = $this->model
+            ->where('user_id', $user_id)
+            ->where('date_index', $todayTime - 86400)
+            ->field('give_index,date_index')->find();
+
+        //签到数据
+        $weekIndex = $data?$data['give_index']++:0;
+        $giveData = signGiveRuleData()[$weekIndex];
+
+        $saveData = [
+            'user_id' => $user_id,
+            'give_index' => $weekIndex,
+            'date_index' => $todayTime,
+            'give_data' => $giveData,
+        ];
+
+        if($this->save($saveData)){
+
+            return $saveData;
+        }else{
+
+            return false;
+        }
     }
 
     /**

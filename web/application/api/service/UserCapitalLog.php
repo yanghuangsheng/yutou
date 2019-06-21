@@ -61,6 +61,34 @@ class UserCapitalLog extends Common
         return $this->model->data($data)->limit(100)->insertAll();
     }
 
+    /**
+     * 记录鱼鳞单条日志
+     * @param $data
+     * @return bool
+     */
+    public function giveScaleLog($data)
+    {
+        $operation = substr($data['pay'], 0, 1);
+        is_numeric($operation) && $data['pay'] = '+'.$data['pay'];
+        $data['type'] = 1;
+        if($this->save($data)){
+            return true;
+        }
+        return false;
+    }
+
+    /**记录多条鱼鳞交易日志
+     * @param $data
+     * @return int|string
+     */
+    public function allScaleLog($data)
+    {
+        foreach ($data as $key => &$value){
+            $value['type'] = 1;
+        }
+        return $this->model->data($data)->limit(100)->insertAll();
+    }
+
 
 
 }

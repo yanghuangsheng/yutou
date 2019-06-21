@@ -8,9 +8,98 @@
 
 namespace app\api\logic;
 
+use app\api\service\UserSignLog;
+use app\api\service\UserCapital;
+use app\api\service\UserCapitalLog;
+use think\Db;
 
 class User extends Base
 {
+
+    /**
+     * 检测是否已签到
+     * @return array
+     * @throws \app\api\exception\ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function checkTodaySign()
+    {
+        $this->checkToken();
+
+        $service = new UserSignLog;
+        if($data = $service->checkTodaySign($this->tokenData['id'])) {
+
+            return showResult(0, '', $data);
+        }
+
+        return showResult(-1, '');
+
+    }
+
+    /**
+     * 签到
+     * @return array
+     * @throws \app\api\exception\ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function todaySign()
+    {
+        $this->checkToken();
+
+        $service = new UserSignLog;
+        $userCapital = new UserCapital;
+        $userCapitalLog = new UserCapitalLog;
+        $userId = $this->tokenData['id'];
+
+        Db::startTrans();
+        if($resultData = $service->onTodaySign($this->tokenData['id'])){
+
+            if($resultData['give_data']['type'] == 0){
+                //鱼币
+                $residueNum = $userCapital->saveGolds($userId, $resultData['give_data']['num']);
+                //记录日志
+                $logResult = $userCapitalLog->giveGoldsLog(
+                    [
+                        'user_id' => $userId,
+                        'pay' => $resultData['give_data']['num'],
+                        'residue'=> $residueNum,
+                        'explain'=> '签到赠送鱼泡' . $resultData['give_data']['num'] . '个',
+                    ]
+                );
+
+            }else{
+                //鱼鳞
+                $residueNum = $userCapital->saveScale($userId, $resultData['give_data']['num']);
+                //记录日志
+                $logResult = $userCapitalLog->giveScaleLog(
+                    [
+                        'user_id' => $userId,
+                        'pay' => $resultData['give_data']['num'],
+                        'residue'=> $residueNum,
+                        'explain'=> '签到赠送鱼鳞' . $resultData['give_data']['num'] . '个',
+                    ]
+                );
+            }
+
+            if($residueNum && $logResult){
+                Db::commit();
+                return showResult(0, '签到成功', $resultData);
+            }
+
+        }
+
+        Db::rollback();
+        return showResult(-1, '签到失败');
+
+
+    }
+
+
+
     /**
      * 登陆
      */
