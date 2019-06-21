@@ -115,12 +115,32 @@ class User extends Base
     }
 
     /**
-     * 我的鱼头币
-     * @return mixed
+     * 我的鱼泡
+     * @return array
+     * @throws \app\api\exception\ApiException
      */
     public function golds()
     {
         return (new Logic)->golds();
+    }
+
+    /**
+     * 我的鱼鳞
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
+    public function scale()
+    {
+        return (new Logic)->scale();
+    }
+
+    /**
+     *
+     */
+    public function moreCapitalLog()
+    {
+
+        return (new Logic)->moreCapitalLog();
     }
 
     /**

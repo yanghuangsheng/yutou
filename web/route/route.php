@@ -85,11 +85,15 @@ Route::group('api', function () {
     Route::get(':ver/user/home', 'api/:ver.user/home'); //用户信息
     Route::get(':ver/user/info', 'api/:ver.user/info'); //用户信息
     Route::get(':ver/user/arr', 'api/:ver.user/arr'); //属性
-    Route::get(':ver/user/golds', 'api/:ver.user/golds'); //鱼头币
     Route::get(':ver/user/my_post', 'api/:ver.user/myPost'); //我的帖子
     Route::get(':ver/user/more_my_post', 'api/:ver.user/moreMyPost'); //加载更多 我的帖子
     Route::get(':ver/user/collect', 'api/:ver.user/collection'); //我的收藏
     Route::get(':ver/user/more_collect', 'api/:ver.user/moreCollection'); //加载更多 我的收藏
+
+    Route::get(':ver/user/golds', 'api/:ver.user/golds'); //鱼泡
+    Route::get(':ver/user/scale', 'api/:ver.user/scale'); //鱼鳞
+    Route::get(':ver/user/more_capital', 'api/:ver.user/moreCapitalLog'); //加载更多 交易记录
+
 
     Route::get(':ver/user/message', 'api/:ver.message/index'); //我的消息
     Route::get(':ver/user/more_message', 'api/:ver.message/moreList'); //加载更多 我的消息

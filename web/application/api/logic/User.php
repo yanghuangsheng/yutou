@@ -253,15 +253,15 @@ class User extends Base
             $data['info']['is_fans'] = (new \app\api\service\UserFans)->checkFans($userId, $this->tokenData['id']);
         }
 
-        //广播
-        $data['broadcast'] = $this->commonBroadcast();
-
-        //我的帖子
-        $postService = new \app\api\service\ForumPost;
-        $data['post_list'] = [
-            'list' => $this->commonForumPostList($postService, [['ForumPost.user_id','=', $userId]]),
-            'start_id' => $postService->newsId(),
-        ];
+//        //广播
+//        $data['broadcast'] = $this->commonBroadcast();
+//
+//        //我的帖子
+//        $postService = new \app\api\service\ForumPost;
+//        $data['post_list'] = [
+//            'list' => $this->commonForumPostList($postService, [['ForumPost.user_id','=', $userId]]),
+//            'start_id' => $postService->newsId(),
+//        ];
 
         return showResult(0, '', $data);
     }
@@ -322,17 +322,60 @@ class User extends Base
     /**
      * 获取用户的金币
      * @return array
+     * @throws \app\api\exception\ApiException
      */
     public function golds()
     {
         $this->checkToken();
         $userId = $this->tokenData['id'];
+        $param = $this->param();
 
         $capital = new \app\common\model\UserCapital;
 
         $golds = $capital->where('user_id', $userId)->value('golds');
+        $data['golds'] = $golds?$golds:0;
+        $param['log'] && $data['log_list'] = $this->commonCapitalList($userId,1);
 
-        return showResult(0, '', ['golds' => $golds?$golds:0]);
+        return showResult(0, '', $data);
+
+    }
+
+    /**
+     * 获取用户鱼鳞
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
+    public function scale()
+    {
+        $this->checkToken();
+        $userId = $this->tokenData['id'];
+        $param = $this->param();
+
+        $capital = new \app\common\model\UserCapital;
+
+        $scale = $capital->where('user_id', $userId)->value('scale');
+        $data['scale'] = $scale?$scale:0;
+        $param['log'] && $data['log_list'] = $this->commonCapitalList($userId,1,1);
+
+        return showResult(0, '', $data);
+    }
+
+    /**
+     * 获取更多交易记录
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
+    public function moreCapitalLog()
+    {
+        $this->checkToken();
+        $userId = $this->tokenData['id'];
+        $param = $this->param();
+        $type = ['scale'=>1, 'golds'=>0];
+
+        $data = $this->commonCapitalList($userId,$param['page'],$type[$param['log']]);
+
+        return showResult(0, '', $data);
+
     }
 
     /**
@@ -664,6 +707,25 @@ class User extends Base
     }
 
     /**
+     * 获取公共交易记录
+     * @param $user_id
+     * @param int $page
+     * @param int $type
+     * @return mixed
+     */
+    protected function commonCapitalList($user_id, $page = 1, $type = 0)
+    {
+        $userCapitalLog = new UserCapitalLog;
+
+        $data = $userCapitalLog->initField('pay,residue,type,explain,create_time')
+            ->initWhere([['$user_id', '=', $user_id], ['type', '=', $type]])
+            ->initLimit($page)
+            ->getListData();
+
+        return $data;
+    }
+
+    /**
      * 保存登陆状态
      * @param $sign
      * @param $result
@@ -684,6 +746,8 @@ class User extends Base
 
         return $result;
     }
+
+
 
     /**
      * 安全登出
