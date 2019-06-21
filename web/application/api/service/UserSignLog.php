@@ -29,7 +29,6 @@ class UserSignLog extends Common
     {
         $todayTime = returnTodayTime();
         if(0 == $this->model->where('user_id', $user_id)->where('date_index', $todayTime)->count()){
-
             return $this->returnWeek($todayTime, $user_id);
         }
 
@@ -85,20 +84,25 @@ class UserSignLog extends Common
     public function returnWeek($today_time, $user_id, $day = 6)
     {
         $weekTimeArr = [];
-        for ($i=$day; $i<=0; $i--)
+        for ($i=$day; $i>=0; $i--)
         {
-            $weekTimeArr[$i] = $today_time - $i * 86400;
+            $weekTimeArr[] = $today_time - $i * 86400;
         }
+
+
 
         $resultList = $this->model->where('date_index', 'in', implode(',', $weekTimeArr))
             ->where('user_id', $user_id)
             ->field('give_index,date_index,give_data')
             ->select()->toArray();
         $resultList = array_merge_more('date_index', $resultList);
+
         $weekData = [];
         foreach ($weekTimeArr as $value){
             if(isset($resultList[$value]) && $value['give_index'] != 6){
-                $weekData[] = $resultList[$value];
+                $findData = $resultList[$value];
+                $findData['status'] = 1;
+                $weekData[] = $findData;
             }else{
                 $weekData = [];
             }
@@ -106,33 +110,32 @@ class UserSignLog extends Common
 
         $weekIndex = count($weekData);
 
-        if($weekIndex){
-            $weekNum = 6 - $weekIndex;
-            if($weekData[$weekIndex - 1]['date_index'] == $today_time){
-                //有今天
-                for ($i=1; $i>=($weekNum+1); $i++){
-                    $weekData[] = [
-                        'status' => 1,
-                        'give_index' => $weekIndex,
-                        'data_index' => $today_time + $i * 86400,
-                        'give_data' => signGiveRuleData()[$weekIndex],
-                    ];
-                    $weekIndex ++;
-                }
-            }else{
-                //没今天
-                for ($i=0; $i>=$weekNum; $i++){
-                    $weekData[] = [
-                        'status' => 1,
-                        'give_index' => $weekIndex,
-                        'data_index' => $today_time + $i * 86400,
-                        'give_data' => signGiveRuleData()[$weekIndex],
-                    ];
-                    $weekIndex ++;
-                }
+        $weekNum = 6 - $weekIndex;
+        if(isset($weekData[$weekIndex - 1]['date_index']) && $weekData[$weekIndex - 1]['date_index'] == $today_time){
+            //有今天
+            for ($i=1; $i<=($weekNum+1); $i++){
+                $weekData[] = [
+                    'status' => 0,
+                    'give_index' => $weekIndex,
+                    'data_index' => $today_time + $i * 86400,
+                    'give_data' => signGiveRuleData()[$weekIndex],
+                ];
+                $weekIndex ++;
             }
-
+        }else{
+            //没今天
+            for ($i=0; $i<=$weekNum; $i++){
+                $weekData[] = [
+                    'status' => 0,
+                    'give_index' => $weekIndex,
+                    'data_index' => $today_time + $i * 86400,
+                    'give_data' => signGiveRuleData()[$weekIndex],
+                ];
+                $weekIndex ++;
+            }
         }
+
+
 
 
         return $weekData;
