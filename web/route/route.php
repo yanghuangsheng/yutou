@@ -112,10 +112,6 @@ Route::group('api', function () {
     Route::get(':ver/user/today_details', 'api/:ver.user/todayDetails'); //签到详情
 
 
-
-
-
-
     //登陆
     Route::post(':ver/login', 'api/:ver.user/login');
     Route::post(':ver/wx_login', 'api/:ver.user/mpWxLogin');

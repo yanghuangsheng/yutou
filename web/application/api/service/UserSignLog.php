@@ -105,16 +105,15 @@ class UserSignLog extends Common
         $weekTimeArr = [];
         for ($i=$day; $i>=0; $i--)
         {
-            $weekTimeArr[] = $today_time - $i * 86400;
+            $weekTimeArr[] = $today_time - ($i * 86400);
         }
 
-
-
-        $resultList = $this->model->where('date_index', 'in', implode(',', $weekTimeArr))
+        $resultList = $this->model->whereIn('date_index', implode(',', $weekTimeArr))
             ->where('user_id', $user_id)
             ->field('give_index,date_index,give_data')
             ->select()->toArray();
-        $resultList = array_merge_more('date_index', $resultList);
+
+        $resultList = keyData($resultList,'date_index');
 
         $weekData = [];
         foreach ($weekTimeArr as $value){

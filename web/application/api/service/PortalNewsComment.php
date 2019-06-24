@@ -15,7 +15,7 @@ class PortalNewsComment extends Common
     public function __construct()
     {
         $this->model = new \app\common\model\PortalNewsComment;
-        $this->order =  ['id', 'desc'];
+        $this->order =  ['PortalNewsComment.id', 'desc'];
     }
 
 
@@ -32,9 +32,16 @@ class PortalNewsComment extends Common
             ->view('PortalNewsCommentAttr', ['praise_num','tread_num'], 'PortalNewsCommentAttr.comment_id = PortalNewsComment.id', 'LEFT');
     }
 
+    /**
+     * 用户评论
+     * @return $this
+     */
     public function userCommentView()
     {
-        $this->view = $this->model->view('PortalNewsComment', 'content,create_time as date_time');
+        $this->view = $this->model->view('PortalNewsComment', 'content,create_time as date_time')
+            ->view('User', 'name,avatar', 'User.id = PortalNewsComment.user_id')
+            ->view('PortalNews', 'title,image_url,description', 'PortalNews.id = PortalNewsComment.news_id')
+            ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNewsComment.news_id');
 
         return $this;
     }

@@ -8,6 +8,7 @@
 
 namespace app\api\logic;
 
+use app\api\service\PortalNewsComment;
 use app\api\service\UserSignLog;
 use app\api\service\UserCapital;
 use app\api\service\UserCapitalLog;
@@ -264,9 +265,23 @@ class User extends Base
         //用户属性
         $data['arr'] = $userService->getOneArr($userId);
         $data['info']['is_fans'] = 0;
+
         //关注情况
         if(isset($this->tokenData['id'])){
             $data['info']['is_fans'] = (new \app\api\service\UserFans)->checkFans($userId, $this->tokenData['id']);
+        }
+
+        $domain = $this->getDomain();
+
+        $comment = (new PortalNewsComment)->userCommentView()
+            ->initWhere([['PortalNewsComment.user_id', '=', $userId]])
+            ->initLimit(1)
+            ->getListData();
+
+        $data['news_comment'] = $comment->toArray();
+
+        foreach ($data['news_comment'] as $key => $value){
+
         }
 
 //        //广播
