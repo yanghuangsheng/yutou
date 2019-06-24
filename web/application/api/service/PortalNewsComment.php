@@ -39,9 +39,9 @@ class PortalNewsComment extends Common
     public function userCommentView()
     {
         $this->view = $this->model->view('PortalNewsComment', 'content,create_time as date_time')
-            ->view('User', 'name,avatar as user_avatar', 'User.id = PortalNewsComment.user_id')
-            ->view('PortalNews', 'title,image_url,description', 'PortalNews.id = PortalNewsComment.news_id')
-            ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNewsComment.news_id');
+            ->view('User', 'name,avatar as user_avatar', 'User.id = PortalNewsComment.user_id','LEFT')
+            ->view('PortalNews', 'title,image_url,description', 'PortalNews.id = PortalNewsComment.news_id', 'LEFT')
+            ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNewsComment.news_id', 'LEFT');
 
         return $this;
     }

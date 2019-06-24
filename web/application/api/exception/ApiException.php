@@ -15,6 +15,7 @@ class ApiException extends Exception {
     public $message = '';
     public $httpCode = 500;
     public $code = 0;
+
     /**
      * @param string $message
      * @param int $httpCode

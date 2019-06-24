@@ -277,12 +277,11 @@ class User extends Base
             ->initWhere([['PortalNewsComment.user_id', '=', $userId]])
             ->initLimit(1)
             ->getListData();
+        $data['news_comment_list'] = $comment['list']->toArray();
 
-        $data['news_comment'] = $comment['list']->toArray();
-
-        foreach ($data['news_comment'] as $key => &$value){
+        foreach ($data['news_comment_list'] as $key => &$value){
             $value['image_url'] =  $domain . $value['image_url'];
-            $value['user_avatar'] = $value['user_avatar'][100];
+            $value['user_avatar'] = $domain . $value['user_avatar'][100];
         }
 
 //        //广播
