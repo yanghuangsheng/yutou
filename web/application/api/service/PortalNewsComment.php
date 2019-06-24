@@ -32,6 +32,13 @@ class PortalNewsComment extends Common
             ->view('PortalNewsCommentAttr', ['praise_num','tread_num'], 'PortalNewsCommentAttr.comment_id = PortalNewsComment.id', 'LEFT');
     }
 
+    public function userCommentView()
+    {
+        $this->view = $this->model->view('PortalNewsComment', 'content,create_time as date_time');
+
+        return $this;
+    }
+
     /**
      * 新增评论记录
      * @param $data

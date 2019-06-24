@@ -334,7 +334,7 @@ class User extends Base
 
         $golds = $capital->where('user_id', $userId)->value('golds');
         $data['golds'] = $golds?$golds:0;
-        $param['log'] && $data['log_list'] = $this->commonCapitalList($userId,1);
+        isset($param['log']) && $data['log_list'] = $this->commonCapitalList($userId,1);
 
         return showResult(0, '', $data);
 
@@ -355,7 +355,7 @@ class User extends Base
 
         $scale = $capital->where('user_id', $userId)->value('scale');
         $data['scale'] = $scale?$scale:0;
-        $param['log'] && $data['log_list'] = $this->commonCapitalList($userId,1,1);
+        isset($param['log']) && $data['log_list'] = $this->commonCapitalList($userId,1,1);
 
         return showResult(0, '', $data);
     }
