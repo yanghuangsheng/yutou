@@ -135,7 +135,7 @@ class UserSignLog extends Common
                 $weekData[] = [
                     'status' => 0,
                     'give_index' => $weekIndex,
-                    'data_index' => $today_time + $i * 86400,
+                    'date_index' => $today_time + $i * 86400,
                     'give_data' => signGiveRuleData()[$weekIndex],
                 ];
                 $weekIndex ++;
@@ -146,7 +146,7 @@ class UserSignLog extends Common
                 $weekData[] = [
                     'status' => 0,
                     'give_index' => $weekIndex,
-                    'data_index' => $today_time + $i * 86400,
+                    'date_index' => $today_time + $i * 86400,
                     'give_data' => signGiveRuleData()[$weekIndex],
                 ];
                 $weekIndex ++;
