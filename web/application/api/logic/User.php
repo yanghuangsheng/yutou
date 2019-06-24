@@ -280,8 +280,9 @@ class User extends Base
 
         $data['news_comment'] = $comment->toArray();
 
-        foreach ($data['news_comment'] as $key => $value){
-
+        foreach ($data['news_comment'] as $key => &$value){
+            $value['image_url'] =  $domain . $value['image_url'];
+            $value['user_avatar'] = $value['user_avatar'][100];
         }
 
 //        //广播
