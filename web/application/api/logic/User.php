@@ -278,7 +278,7 @@ class User extends Base
             ->initLimit(1)
             ->getListData();
 
-        $data['news_comment'] = $comment->toArray();
+        $data['news_comment'] = $comment['list']->toArray();
 
         foreach ($data['news_comment'] as $key => &$value){
             $value['image_url'] =  $domain . $value['image_url'];

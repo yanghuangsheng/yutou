@@ -99,6 +99,12 @@ Route::group('api', function () {
     Route::get(':ver/user/more_message', 'api/:ver.message/moreList'); //加载更多 我的消息
 
     Route::post(':ver/user/fans', 'api/:ver.user/fans'); //关注用户
+    Route::post(':ver/user/no_fans', 'api/:ver.user/noFans'); //关注用户
+
+    Route::get(':ver/user/my_fans', 'api/:ver.user/myFans'); //我的粉丝
+    Route::get(':ver/user/my_follow', 'api/:ver.user/myFollow'); //我的关注
+
+
     Route::post(':ver/user/bind_phone', 'api/:ver.user/bindPhone'); //绑定手机
     Route::post(':ver/user/upload_avatar', 'api/:ver.user/uploadAvatar'); //上传头像
     Route::post(':ver/user/set_info', 'api/:ver.user/setInfo'); //更新用户信息
