@@ -34,6 +34,18 @@ class User extends Base
     }
 
     /**
+     * 签到详情
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function todayDetails()
+    {
+        return (new Logic)->todayDetails();
+    }
+
+    /**
      * 个人主页内容
      */
     public function home()

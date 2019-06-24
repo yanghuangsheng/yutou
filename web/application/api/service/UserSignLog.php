@@ -36,6 +36,25 @@ class UserSignLog extends Common
     }
 
     /**
+     * 获取签到详情
+     * @param $user_id
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getTodayDetails($user_id)
+    {
+        $todayTime = returnTodayTime();
+
+        $data['status'] = $this->model->where('user_id', $user_id)->where('date_index', $todayTime)->count();
+        $data['today_list'] = $this->returnWeek($todayTime, $user_id);
+
+        return $data;
+
+    }
+
+    /**
      * 签到
      * @param $user_id
      * @return array|bool

@@ -109,6 +109,8 @@ Route::group('api', function () {
 
     Route::get(':ver/user/check_today', 'api/:ver.user/checkTodaySign'); //是否已签到
     Route::post(':ver/user/today_sign', 'api/:ver.user/todaySign'); //签到
+    Route::get(':ver/user/today_details', 'api/:ver.user/todayDetails'); //签到详情
+
 
 
 

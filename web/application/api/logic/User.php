@@ -98,7 +98,23 @@ class User extends Base
 
     }
 
+    /**
+     * 签到详情
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function todayDetails()
+    {
+        $service = new UserSignLog;
+        $userId = isset($this->tokenData['id'])?$this->tokenData['id']:0;
 
+        $data = $service->getTodayDetails($userId);
+
+        return showResult(0, '', $data);
+
+    }
 
     /**
      * 登陆
