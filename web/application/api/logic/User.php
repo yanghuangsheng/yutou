@@ -56,6 +56,7 @@ class User extends Base
         $userCapitalLog = new UserCapitalLog;
         $userId = $this->tokenData['id'];
 
+
         Db::startTrans();
         if($resultData = $service->onTodaySign($this->tokenData['id'])){
 
