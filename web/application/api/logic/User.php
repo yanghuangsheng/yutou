@@ -304,11 +304,11 @@ class User extends Base
      */
     public function moreMyComment()
     {
-        $userId = $this->param('user_id');
+        $param = $this->param();
 
         $comment = (new PortalNewsComment)->userCommentView()
-            ->initWhere([['PortalNewsComment.user_id', '=', $userId]])
-            ->initLimit(1)
+            ->initWhere([['PortalNewsComment.user_id', '=', $param['user_id']]])
+            ->initLimit($param['page'])
             ->getListData();
 
         $data = $comment['list']->toArray();
