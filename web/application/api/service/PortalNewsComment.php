@@ -11,7 +11,6 @@ namespace app\api\service;
 
 class PortalNewsComment extends Common
 {
-    protected $resetReply = false;
     //初始化类
     public function __construct()
     {
@@ -26,8 +25,6 @@ class PortalNewsComment extends Common
      */
     protected function setWithOnView()
     {
-        $this->resetReply = true;
-
         return $this->model->view('PortalNewsComment', 'id,parent_id,user_id,news_id,content,create_time as date_time')
             ->view('User', ['name'=>'user_name', 'avatar'=>'user_avatar'], 'User.id = PortalNewsComment.user_id', 'LEFT')
             ->view('User reply', ['name'=>'reply_name', 'avatar'=>'reply_avatar'], 'reply.id = PortalNewsComment.reply_user_id', 'LEFT')
@@ -43,6 +40,7 @@ class PortalNewsComment extends Common
     {
         $this->view = $this->model->view('PortalNewsComment', 'content,create_time as date_time')
             ->view('User', 'name,avatar as user_avatar', 'User.id = PortalNewsComment.user_id','LEFT')
+            ->view('User reply', ['name'=>'reply_name', 'avatar'=>'reply_avatar'], 'reply.id = PortalNewsComment.reply_user_id', 'LEFT')
             ->view('PortalNews', 'title,image_url,description', 'PortalNews.id = PortalNewsComment.news_id', 'LEFT')
             ->view('PortalNewsAttr', 'browse_num,praise_num,collect_num,comment_num', 'PortalNewsAttr.news_id = PortalNewsComment.news_id', 'LEFT');
 
@@ -79,9 +77,8 @@ class PortalNewsComment extends Common
     protected function resetListData($data)
     {
         foreach ($data as $key => &$value){
-            if($this->resetReply == true){
-                $value['reply_avatar'] = $value['reply_avatar'] ? json_decode($value['reply_avatar'],1) :userAvatar();
-            }
+
+            $value['reply_avatar'] = $value['reply_avatar'] ? json_decode($value['reply_avatar'],1) :userAvatar();
             $value['user_avatar'] = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
             $value['date_time'] = friendlyDate($value['date_time']);
 
