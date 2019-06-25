@@ -86,8 +86,10 @@ Route::group('api', function () {
     Route::get(':ver/user/info', 'api/:ver.user/info'); //用户信息
     Route::get(':ver/user/arr', 'api/:ver.user/arr'); //属性
     Route::get(':ver/user/my_post', 'api/:ver.user/myPost'); //我的帖子
-    Route::get(':ver/user/more_my_post', 'api/:ver.user/moreMyPost'); //加载更多 我的帖子
     Route::get(':ver/user/collect', 'api/:ver.user/collection'); //我的收藏
+
+    Route::get(':ver/user/more_my_post', 'api/:ver.user/moreMyPost'); //加载更多 我的帖子
+    Route::get(':ver/user/more_my_comment', 'api/:ver.user/moreMyComment'); //加载更多 我的帖子
     Route::get(':ver/user/more_collect', 'api/:ver.user/moreCollection'); //加载更多 我的收藏
 
     Route::get(':ver/user/golds', 'api/:ver.user/golds'); //鱼泡

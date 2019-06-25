@@ -298,6 +298,17 @@ class User extends Base
         return showResult(0, '', $data);
     }
 
+    public function moreMyComment()
+    {
+        $userId = $this->param('user_id');
+
+        $comment = (new PortalNewsComment)->userCommentView()
+            ->initWhere([['PortalNewsComment.user_id', '=', $userId]])
+            ->initLimit(1)
+            ->getListData();
+
+    }
+
     /**
      * 关注用户
      */
@@ -750,7 +761,7 @@ class User extends Base
         $userCapitalLog = new UserCapitalLog;
 
         $data = $userCapitalLog->initField('pay,residue,type,explain,create_time')
-            ->initWhere([['$user_id', '=', $user_id], ['type', '=', $type]])
+            ->initWhere([['user_id', '=', $user_id], ['type', '=', $type]])
             ->initLimit($page)
             ->getListData();
 
