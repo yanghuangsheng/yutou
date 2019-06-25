@@ -298,6 +298,10 @@ class User extends Base
         return showResult(0, '', $data);
     }
 
+    /**
+     * 加载更多的用户评论
+     * @return array
+     */
     public function moreMyComment()
     {
         $userId = $this->param('user_id');
@@ -306,6 +310,10 @@ class User extends Base
             ->initWhere([['PortalNewsComment.user_id', '=', $userId]])
             ->initLimit(1)
             ->getListData();
+
+        $data = $comment['list']->toArray();
+
+        return showResult(0, '', $data);
 
     }
 

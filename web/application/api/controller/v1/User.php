@@ -201,6 +201,15 @@ class User extends Base
     }
 
     /**
+     * 加载更多用户的评论
+     * @return array
+     */
+    public function moreMyComment()
+    {
+        return (new Logic)->moreMyComment();
+    }
+
+    /**
      * 我的收藏
      * @return array
      */
