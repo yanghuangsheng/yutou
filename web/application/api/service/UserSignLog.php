@@ -69,9 +69,8 @@ class UserSignLog extends Common
             ->where('user_id', $user_id)
             ->where('date_index', $todayTime - 86400)
             ->field('give_index,date_index')->find();
-
         //签到数据
-        $weekIndex = $data?$data['give_index']++:0;
+        $weekIndex = $data?$data['give_index']+1:0;
         $giveData = signGiveRuleData()[$weekIndex];
 
         $saveData = [
@@ -111,17 +110,19 @@ class UserSignLog extends Common
         $resultList = $this->model->whereIn('date_index', implode(',', $weekTimeArr))
             ->where('user_id', $user_id)
             ->field('give_index,date_index,give_data')
-            ->select()->toArray();
-
+            ->select();
         $resultList = keyData($resultList,'date_index');
+
 
         $weekData = [];
         foreach ($weekTimeArr as $value){
             if(isset($resultList[$value]) && $value['give_index'] != 6){
+
                 $findData = $resultList[$value];
                 $findData['status'] = 1;
                 $weekData[] = $findData;
-            }else{
+
+            }else if($value != $today_time){
                 $weekData = [];
             }
         }
