@@ -313,6 +313,13 @@ class User extends Base
 
         $data = $comment['list']->toArray();
 
+        $domain = $this->getDomain();
+
+        foreach ($data as $key => &$value){
+            $value['image_url'] =  $domain . $value['image_url'];
+            $value['user_avatar'] = $domain . $value['user_avatar'][100];
+        }
+
         return showResult(0, '', $data);
 
     }
