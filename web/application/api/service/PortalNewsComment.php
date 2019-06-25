@@ -76,10 +76,9 @@ class PortalNewsComment extends Common
     protected function resetListData($data)
     {
         foreach ($data as $key => &$value){
-            if(isset($value['reply_avatar'])){
-                $value['reply_avatar'] = $value['reply_avatar'] ? json_decode($value['reply_avatar'],1) :userAvatar();
-            }
             $value['user_avatar'] = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
+            $value['reply_avatar'] = $value['reply_avatar'] ? json_decode($value['reply_avatar'],1) :userAvatar();
+
             $value['date_time'] = friendlyDate($value['date_time']);
 
         }
