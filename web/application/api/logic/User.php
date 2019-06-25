@@ -760,8 +760,8 @@ class User extends Base
     {
         $userCapitalLog = new UserCapitalLog;
 
-        $data = $userCapitalLog->initField('pay,residue,type,explain,create_time')
-            ->initWhere([['user_id', '=', $user_id], ['type', '=', $type]])
+        $data = $userCapitalLog
+            ->initWhere([['UserCapitalLog.user_id', '=', $user_id], ['UserCapitalLog.type', '=', $type]])
             ->initLimit($page)
             ->getListData();
 
