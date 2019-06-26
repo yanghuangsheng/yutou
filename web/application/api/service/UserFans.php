@@ -83,4 +83,23 @@ class UserFans extends Common
         return $this->save($updateData);
 
     }
+
+    /**
+     * 取消关注
+     * @param $data
+     * @return bool
+     */
+    public function delFans($data)
+    {
+        $where = [['user_id', $data['id']], ['fans_id', $data['user_id']]];
+        if($this->model->where($where)->count()){
+
+            if($this->model->where($where)->delete()){
+                return true;
+            }
+
+        }
+
+        return false;
+    }
 }

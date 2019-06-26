@@ -39,4 +39,22 @@ class UserAttr extends Common
         ];
         return $this->save($updateData);
     }
+
+    /**
+     * 更新用户属性数据
+     * @param $data
+     * @param $field
+     * @return bool|mixed
+     */
+    public function decNum($data, $field)
+    {
+        $field .= '_num';
+        if($this->model->where('user_id', $data['id'])->count()){
+
+            return $this->updateDec(['user_id', $data['id']], $field);
+        }
+
+        return false;
+
+    }
 }

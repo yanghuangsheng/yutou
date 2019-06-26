@@ -108,10 +108,14 @@ class User extends Base
         return (new Logic)->fans();
     }
 
-
+    /**
+     * 取关用户
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
     public function noFans()
     {
-
+        return (new Logic)->noFans();
     }
 
     /**

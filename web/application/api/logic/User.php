@@ -346,6 +346,30 @@ class User extends Base
     }
 
     /**
+     * 取消关注
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
+    public function noFans()
+    {
+        $this->checkToken();
+
+        $param = $this->param();
+        $oUserId = $this->tokenData['id'];
+
+        if((new \app\api\service\UserFans)->delFans(['id'=>$param['user_id'], 'fans_id'=>$oUserId])){
+
+            $user = new \app\api\service\UserAttr;
+            $user->decNum(['id'=>$param['user_id']], 'fans');
+            $user->decNum(['id'=>$oUserId], 'follow');
+
+            return showResult(0, '取关成功');
+        }
+
+        return showResult(-1, '取关失败');
+    }
+
+    /**
      * 用户的粉丝
      * @return mixed
      * @throws \app\api\exception\ApiException
@@ -375,6 +399,22 @@ class User extends Base
         foreach ($data as $key => &$value){
             $avatar = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
             $value['user_avatar'] = $domain . $avatar[100];
+            $value['btn_status'] = 0; //未关注
+//            if(isset($this->tokenData['id'])){
+//                if($this->tokenData['id'] = $userId){
+//                    //已关注 查看自己的
+//                    $value['btn_status'] = 1;
+//
+//                }elseif($userFans->getCount([['fans_id', $this->tokenData['id']], ['user_id', $userId]])){
+//                    //已关注 查看个人空间的
+//                    $value['btn_status'] = 1;
+//                }
+//
+//
+//
+//            }
+
+
         }
 
         return showResult(0, '', $data);
@@ -411,6 +451,7 @@ class User extends Base
         foreach ($data as $key => &$value){
             $avatar = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
             $value['user_avatar'] = $domain . $avatar[100];
+            $value['btn_status'] = 0; //未关注
         }
 
         return showResult(0, '', $data);;
