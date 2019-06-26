@@ -91,7 +91,7 @@ class UserFans extends Common
      */
     public function delFans($data)
     {
-        $where = [['user_id', '=', $data['id']], ['fans_id', '=',$data['fans_id']]];
+        $where = [['user_id', '=', $data['id']], ['fans_id', '=', $data['fans_id']]];
         if($this->model->where($where)->count()){
 
             if($this->model->where($where)->delete()){

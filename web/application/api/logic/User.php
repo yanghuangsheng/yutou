@@ -360,6 +360,7 @@ class User extends Base
         if((new \app\api\service\UserFans)->delFans(['id'=>$param['user_id'], 'fans_id'=>$oUserId])){
 
             $user = new \app\api\service\UserAttr;
+
             $user->decNum(['id'=>$param['user_id']], 'fans');
             $user->decNum(['id'=>$oUserId], 'follow');
 
@@ -406,13 +407,13 @@ class User extends Base
                     //已关注 查看自己的
                     $value['btn_status'] = 1;
 
-                }elseif($userFans->getCount([['fans_id', $this->tokenData['id']], ['user_id', $userId]])){
+                }elseif($userFans->getCount([['fans_id', '=', $this->tokenData['id']], ['user_id', '=', $userId]])){
                     //已关注 查看别人空间的
                     $value['btn_status'] = 1;
                 }
 
                 //判断互关注
-                if($value['btn_status'] && $userFans->getCount([['fans_id', $userId], ['user_id', $this->tokenData['id']]])){
+                if($value['btn_status'] && $userFans->getCount([['fans_id', '=', $userId], ['user_id', '=', $this->tokenData['id']]])){
                     $value['btn_status'] = 2;
                 }
 
@@ -436,16 +437,16 @@ class User extends Base
     {
         $param = $this->param();
 
-        if(!isset($param['user_id'])) {
-
-            $this->checkToken();
-            $userId = $this->tokenData['id'];
-        }else{
+        if(isset($param['user_id'])) {
 
             $userId = $param['user_id'];
+        }else{
+            $this->checkToken();
+            $userId = $this->tokenData['id'];
+
         }
 
-        $page = $param['page'];
+        $page = isset($param['page'])?$param['page']:1;
 
         $userFans = new \app\api\service\UserFans;
 
@@ -453,21 +454,22 @@ class User extends Base
             ->getListData();
         $data = $fansData['list']->toArray();
 
+
         $domain = $this->getDomain();
         foreach ($data as $key => &$value){
-            $avatar = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
+            $avatar = $value['user_avatar'] ? json_decode($value['user_avatar'],1):userAvatar();
             $value['user_avatar'] = $domain . $avatar[100];
             $value['btn_status'] = 0; //未关注
 
             if(isset($this->tokenData['id'])){
 
-                if($userFans->getCount([['fans_id', $this->tokenData['id']], ['user_id', $userId]])){
+                if($userFans->getCount([['fans_id', '=', $this->tokenData['id']], ['user_id', '=', $userId]])){
                     //已关注 查看别人空间的
                     $value['btn_status'] = 1;
                 }
 
                 //判断互关注
-                if($value['btn_status'] && $userFans->getCount([['fans_id', $userId], ['user_id', $this->tokenData['id']]])){
+                if($value['btn_status'] && $userFans->getCount([['fans_id', '=', $userId], ['user_id', '=', $this->tokenData['id']]])){
                     $value['btn_status'] = 2;
                 }
 
