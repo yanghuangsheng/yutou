@@ -400,19 +400,25 @@ class User extends Base
             $avatar = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
             $value['user_avatar'] = $domain . $avatar[100];
             $value['btn_status'] = 0; //未关注
-//            if(isset($this->tokenData['id'])){
-//                if($this->tokenData['id'] = $userId){
-//                    //已关注 查看自己的
-//                    $value['btn_status'] = 1;
-//
-//                }elseif($userFans->getCount([['fans_id', $this->tokenData['id']], ['user_id', $userId]])){
-//                    //已关注 查看个人空间的
-//                    $value['btn_status'] = 1;
-//                }
-//
-//
-//
-//            }
+
+            if(isset($this->tokenData['id'])){
+                if($this->tokenData['id'] = $userId){
+                    //已关注 查看自己的
+                    $value['btn_status'] = 1;
+
+                }elseif($userFans->getCount([['fans_id', $this->tokenData['id']], ['user_id', $userId]])){
+                    //已关注 查看别人空间的
+                    $value['btn_status'] = 1;
+                }
+
+                //判断互关注
+                if($value['btn_status'] && $userFans->getCount([['fans_id', $userId], ['user_id', $this->tokenData['id']]])){
+                    $value['btn_status'] = 2;
+                }
+
+
+
+            }
 
 
         }
@@ -452,6 +458,21 @@ class User extends Base
             $avatar = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
             $value['user_avatar'] = $domain . $avatar[100];
             $value['btn_status'] = 0; //未关注
+
+            if(isset($this->tokenData['id'])){
+
+                if($userFans->getCount([['fans_id', $this->tokenData['id']], ['user_id', $userId]])){
+                    //已关注 查看别人空间的
+                    $value['btn_status'] = 1;
+                }
+
+                //判断互关注
+                if($value['btn_status'] && $userFans->getCount([['fans_id', $userId], ['user_id', $this->tokenData['id']]])){
+                    $value['btn_status'] = 2;
+                }
+
+
+            }
         }
 
         return showResult(0, '', $data);;
