@@ -101,7 +101,7 @@ Route::group('api', function () {
     Route::get(':ver/user/more_message', 'api/:ver.message/moreList'); //加载更多 我的消息
 
     Route::post(':ver/user/fans', 'api/:ver.user/fans'); //关注用户
-    Route::post(':ver/user/no_fans', 'api/:ver.user/noFans'); //关注用户
+    Route::post(':ver/user/no_fans', 'api/:ver.user/noFans'); //取关注用户
 
     Route::get(':ver/user/my_fans', 'api/:ver.user/myFans'); //我的粉丝
     Route::get(':ver/user/my_follow', 'api/:ver.user/myFollow'); //我的关注

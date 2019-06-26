@@ -346,6 +346,77 @@ class User extends Base
     }
 
     /**
+     * 用户的粉丝
+     * @return mixed
+     * @throws \app\api\exception\ApiException
+     */
+    public function myFans()
+    {
+        $param = $this->param();
+
+        if(!isset($param['user_id'])) {
+
+            $this->checkToken();
+            $userId = $this->tokenData['id'];
+        }else{
+
+            $userId = $param['user_id'];
+        }
+
+        $page = $param['page'];
+
+        $userFans = new \app\api\service\UserFans;
+
+        $fansData = $userFans->fansView()->initWhere([['user_id', '=', $userId]])->initLimit($page)
+            ->getListData();
+        $data = $fansData['list']->toArray();
+
+        $domain = $this->getDomain();
+        foreach ($data as $key => &$value){
+            $avatar = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
+            $value['user_avatar'] = $domain . $avatar[100];
+        }
+
+        return showResult(0, '', $data);
+
+    }
+
+    /**
+     * 用户的关注
+     * @return mixed
+     * @throws \app\api\exception\ApiException
+     */
+    public function myFollow()
+    {
+        $param = $this->param();
+
+        if(!isset($param['user_id'])) {
+
+            $this->checkToken();
+            $userId = $this->tokenData['id'];
+        }else{
+
+            $userId = $param['user_id'];
+        }
+
+        $page = $param['page'];
+
+        $userFans = new \app\api\service\UserFans;
+
+        $fansData = $userFans->followView()->initWhere([['fans_id', '=', $userId]])->initLimit($page)
+            ->getListData();
+        $data = $fansData['list']->toArray();
+
+        $domain = $this->getDomain();
+        foreach ($data as $key => &$value){
+            $avatar = $value['user_avatar'] ? json_decode($value['user_avatar'],1) :userAvatar();
+            $value['user_avatar'] = $domain . $avatar[100];
+        }
+
+        return showResult(0, '', $data);;
+    }
+
+    /**
      * 属性
      */
     public function arr()

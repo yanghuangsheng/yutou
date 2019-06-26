@@ -15,7 +15,36 @@ class UserFans extends Common
     public function __construct()
     {
         $this->model = new \app\common\model\UserFans;
+        $this->order =  ['UserFans.create_time', 'desc'];
+
     }
+
+    /**
+     * 用户的粉丝
+     * @return $this
+     */
+    public function fansView()
+    {
+        $this->view = $this->model->view('UserFans', 'fans_id as user_id')
+            ->view('User', 'name,avatar as user_avatar', 'User.id = UserFans.fans_id');
+
+        return $this;
+    }
+
+    /**
+     * 用户关注的
+     * @return $this
+     */
+    public function followView()
+    {
+        $this->view = $this->model->view('UserFans', 'user_id')
+            ->view('User', 'name,avatar as user_avatar', 'User.id = UserFans.user_id');
+
+        return $this;
+
+    }
+
+
 
     /**
      * 检测关注

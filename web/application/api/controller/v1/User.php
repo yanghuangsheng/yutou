@@ -108,6 +108,32 @@ class User extends Base
         return (new Logic)->fans();
     }
 
+
+    public function noFans()
+    {
+
+    }
+
+    /**
+     * 用户的粉丝
+     * @return mixed
+     * @throws \app\api\exception\ApiException
+     */
+    public function myFans()
+    {
+        return (new Logic)->myFans();
+    }
+
+    /**
+     * 用户的关注
+     * @return mixed
+     * @throws \app\api\exception\ApiException
+     */
+    public function myFollow()
+    {
+        return (new Logic)->myFollow();
+    }
+
     /**
      * 属性
      * @return mixed
