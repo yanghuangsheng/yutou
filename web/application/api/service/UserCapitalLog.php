@@ -40,12 +40,14 @@ class UserCapitalLog extends Common
     /**
      * 记录单条日志
      * @param $data
+     * @param int $o_type
      * @return bool
      */
-    public function giveGoldsLog($data)
+    public function giveGoldsLog($data, $o_type = 0)
     {
         $operation = substr($data['pay'], 0, 1);
         is_numeric($operation) && $data['pay'] = '+'.$data['pay'];
+        $data['o_type'] = $o_type;
         if($this->save($data)){
             return true;
         }
@@ -64,13 +66,15 @@ class UserCapitalLog extends Common
     /**
      * 记录鱼鳞单条日志
      * @param $data
+     * @param int $o_type
      * @return bool
      */
-    public function giveScaleLog($data)
+    public function giveScaleLog($data, $o_type = 0)
     {
         $operation = substr($data['pay'], 0, 1);
         is_numeric($operation) && $data['pay'] = '+'.$data['pay'];
         $data['type'] = 1;
+        $data['o_type'] = $o_type;
         if($this->save($data)){
             return true;
         }
