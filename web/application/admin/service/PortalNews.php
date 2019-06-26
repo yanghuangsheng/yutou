@@ -248,7 +248,7 @@ class PortalNews extends Common
 
             //print_r($teamData);
         }else{
-            $matchModel = new \app\common\model\Matche;
+            $matchModel = new \app\common\model\Match;
             $matchModel->where('news_id', $data['id'])->delete();
         }
 
