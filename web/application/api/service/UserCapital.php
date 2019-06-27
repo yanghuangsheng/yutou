@@ -140,5 +140,59 @@ class UserCapital extends Common
 
     }
 
+    /**
+     * 消费鱼鳞
+     * @param $user_id
+     * @param $num
+     * @return bool
+     */
+    public function deductScale($user_id, $num)
+    {
+        if($this->model->where('user_id', $user_id)->where('scale', '>=', $num)->count()){
+
+            $oNum = $this->getField([['user_id', '=', $user_id]], 'scale');
+            if($this->updateDec(['user_id', $user_id], 'scale', $num)){
+
+                return $oNum - $num;
+            }else{
+
+                $this->error = '服务器繁忙';
+            }
+        }else{
+
+            $this->error = '鱼鳞不足';
+        }
+
+        return false;
+
+    }
+
+    /**
+     * 消费额度
+     * @param $user_id
+     * @param $num
+     * @return bool
+     */
+    public function deductQuota($user_id, $num)
+    {
+        if($this->model->where('user_id', $user_id)->where('quota', '>=', $num)->count()){
+
+            $oNum = $this->getField([['user_id', '=', $user_id]], 'quota');
+            if($this->updateDec(['user_id', $user_id], 'quota', $num)){
+
+                return $oNum - $num;
+            }else{
+
+                $this->error = '服务器繁忙';
+            }
+        }else{
+
+            $this->error = '提现额度不足';
+        }
+
+        return false;
+
+    }
+
 
 }

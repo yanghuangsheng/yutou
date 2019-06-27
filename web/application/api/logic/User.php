@@ -13,6 +13,7 @@ use app\api\service\UserSignLog;
 use app\api\service\UserCapital;
 use app\api\service\UserCapitalLog;
 use app\api\service\SystemMessage as SystemMessageService;
+use app\api\service\UserCashLog;
 use think\Db;
 
 class User extends Base
@@ -584,7 +585,7 @@ class User extends Base
         $param = $this->param();
 
         Db::startTrans();
-        $capital = new \app\common\model\UserCapital;
+        $capital = new UserCapital;
         //要消耗的鱼泡
         $decNum = $param['num'] * 100;
         //扣掉鱼泡
@@ -604,7 +605,8 @@ class User extends Base
                     'pay' => '-'.$decNum,
                     'residue'=> $residueNum,
                     'explain'=> '兑换'.$param['num'].'个提现额度消费金币',
-                ]
+                ],
+                1
             );
             //通知
             $msgResult = (new SystemMessageService)->toUserSystem(
@@ -622,6 +624,79 @@ class User extends Base
 
         Db::rollback();
         return showResult(-1, '兑换失败');
+    }
+
+    /**
+     * 提现
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
+    public function exchangeCash()
+    {
+        $this->checkToken();
+        $userId = $this->tokenData['id'];
+
+        $param = $this->param();
+
+        //money account_number real_name
+        $userCashLog = new UserCashLog;
+        $capital = new UserCapital;
+
+        $saveData = [
+            'user_id' => $userId,
+            'money' => $param['money'],
+            'account_number' => $param['account_number'],
+            'real_name' => $param['real_name']
+        ];
+
+        if($reData = $userCashLog->save($saveData,0, 1)){
+            $decNum = $saveData['money'] * 10;
+            //消费鱼鳞 1:10
+            $scaleResult = $capital->deductScale($userId, $decNum);
+
+            if($scaleResult === false){
+
+                Db::rollback();
+                return showResult(-1, $capital->getError());
+            }
+
+            //消耗提现额度 1:1
+            $quotaResult = $capital->deductQuota($userId, $saveData['money']);
+
+            if($quotaResult === false){
+
+                Db::rollback();
+                return showResult(-1, $capital->getError());
+            }
+
+            //记录消费日志
+            $logResult = (new UserCapitalLog)->giveScaleLog(
+                [
+                    'user_id' => $userId,
+                    'pay' => '-'.$decNum,
+                    'residue'=> $scaleResult,
+                    'explain'=> '提现'.$saveData['money'].'.00元',
+                    'o_id' => $reData['id'],
+                ],
+                2
+            );
+            //通知
+            $msgResult = (new SystemMessageService)->toUserSystem(
+                $userId,
+                ['content' => '你成功提现'.$saveData['money'].'.00元，消耗鱼鳞'.$decNum.'个、提现额度'.$saveData['money']],
+                4
+            );
+
+
+            if($logResult && $msgResult){
+                Db::commit();
+                return showResult(0, '提现成功');
+            }
+
+        }
+
+        Db::rollback();
+        return showResult(-1, '提现失败');
     }
 
     /**

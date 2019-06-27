@@ -96,6 +96,7 @@ Route::group('api', function () {
     Route::get(':ver/user/scale', 'api/:ver.user/scale'); //鱼鳞
     Route::get(':ver/user/quota', 'api/:ver.user/quota'); //提现额度
     Route::get(':ver/user/exchange_quota', 'api/:ver.user/exchangeQuota'); //兑换额度
+    Route::get(':ver/user/exchange_cash', 'api/:ver.user/exchangeCash'); //兑换现金
 
 
 

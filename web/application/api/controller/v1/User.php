@@ -197,7 +197,19 @@ class User extends Base
     }
 
     /**
-     *
+     * 提现
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
+    public function exchangeCash()
+    {
+        return (new Logic)->exchangeCash();
+    }
+
+    /**
+     * 加载更多交易日志
+     * @return array
+     * @throws \app\api\exception\ApiException
      */
     public function moreCapitalLog()
     {
