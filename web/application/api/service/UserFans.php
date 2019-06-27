@@ -26,7 +26,7 @@ class UserFans extends Common
     public function fansView()
     {
         $this->view = $this->model->view('UserFans', 'fans_id as user_id')
-            ->view('User', 'name,avatar as user_avatar', 'User.id = UserFans.fans_id');
+            ->view('User', 'name,avatar as user_avatar,hobby', 'User.id = UserFans.fans_id');
 
         return $this;
     }
@@ -38,7 +38,7 @@ class UserFans extends Common
     public function followView()
     {
         $this->view = $this->model->view('UserFans', 'user_id')
-            ->view('User', 'name,avatar as user_avatar', 'User.id = UserFans.user_id');
+            ->view('User', 'name,avatar as user_avatar,hobby', 'User.id = UserFans.user_id');
 
         return $this;
 
