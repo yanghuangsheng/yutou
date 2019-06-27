@@ -678,7 +678,7 @@ class User extends Base
                     'explain'=> '提现'.$saveData['money'].'.00元',
                     'o_id' => $reData['id'],
                 ],
-                2
+                1
             );
             //通知
             $msgResult = (new SystemMessageService)->toUserSystem(
@@ -709,9 +709,27 @@ class User extends Base
         $this->checkToken();
         $userId = $this->tokenData['id'];
         $param = $this->param();
+
         $type = ['scale'=>1, 'golds'=>0];
 
-        $data = $this->commonCapitalList($userId,$param['page'],$type[$param['log']]);
+        $data = $this->commonCapitalList($userId, $param['page'], $type[$param['log']]);
+
+        return showResult(0, '', $data);
+
+    }
+
+    /**
+     *兑换记录
+     */
+    public function exchangeLog()
+    {
+        $this->checkToken();
+        $userId = $this->tokenData['id'];
+        $param = $this->param();
+
+        $type = ['scale'=>1, 'golds'=>0];
+
+        $data = $this->commonCapitalList($userId, $param['page'], $type[$param['log']], 1);
 
         return showResult(0, '', $data);
 
@@ -1050,14 +1068,18 @@ class User extends Base
      * @param $user_id
      * @param int $page
      * @param int $type
+     * @param int $o_type
      * @return mixed
      */
-    protected function commonCapitalList($user_id, $page = 1, $type = 0)
+    protected function commonCapitalList($user_id, $page = 1, $type = 0, $o_type = 0)
     {
         $userCapitalLog = new UserCapitalLog;
 
+        $where = [['UserCapitalLog.user_id', '=', $user_id], ['UserCapitalLog.type', '=', $type]];
+        $o_type && $where[] = ['o_type', '=', 1];
+
         $data = $userCapitalLog
-            ->initWhere([['UserCapitalLog.user_id', '=', $user_id], ['UserCapitalLog.type', '=', $type]])
+            ->initWhere($where)
             ->initLimit($page)
             ->getListData();
 

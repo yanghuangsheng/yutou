@@ -97,6 +97,7 @@ Route::group('api', function () {
     Route::get(':ver/user/quota', 'api/:ver.user/quota'); //提现额度
     Route::get(':ver/user/exchange_quota', 'api/:ver.user/exchangeQuota'); //兑换额度
     Route::get(':ver/user/exchange_cash', 'api/:ver.user/exchangeCash'); //兑换现金
+    Route::get(':ver/user/exchange_log', 'api/:ver.user/exchangeLog'); //兑换现金
 
 
 

@@ -218,6 +218,14 @@ class User extends Base
     }
 
     /**
+     * 兑换记录
+     */
+    public function exchangeLog()
+    {
+        return (new Logic)->exchangeLog();
+    }
+
+    /**
      * 更新用户信息
      * @return mixed
      */
