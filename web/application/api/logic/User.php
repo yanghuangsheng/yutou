@@ -12,6 +12,7 @@ use app\api\service\PortalNewsComment;
 use app\api\service\UserSignLog;
 use app\api\service\UserCapital;
 use app\api\service\UserCapitalLog;
+use app\api\service\SystemMessage as SystemMessageService;
 use think\Db;
 
 class User extends Base
@@ -551,6 +552,76 @@ class User extends Base
         isset($param['log']) && $data['log_list'] = $this->commonCapitalList($userId,1,1);
 
         return showResult(0, '', $data);
+    }
+
+    /**
+     * 获取提现额度
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
+    public function quota()
+    {
+        $this->checkToken();
+        $userId = $this->tokenData['id'];
+
+        $capital = new \app\common\model\UserCapital;
+
+        $num = $capital->where('user_id', $userId)->value('quota');
+        $data['quota'] = $num?$num:0;
+
+        return showResult(0, '', $data);
+    }
+
+    /**
+     * 兑换额度
+     * @throws \app\api\exception\ApiException
+     */
+    public function exchangeQuota()
+    {
+        $this->checkToken();
+        $userId = $this->tokenData['id'];
+
+        $param = $this->param();
+
+        Db::startTrans();
+        $capital = new \app\common\model\UserCapital;
+        //要消耗的鱼泡
+        $decNum = $param['num'] * 100;
+        //扣掉鱼泡
+        $residueNum = $capital->deductGolds($userId, $decNum);
+
+        if($residueNum == false){
+            Db::rollback();
+            return showResult(-1, $capital->getError());
+        }
+
+        if($quotaNum = $capital->saveQuota($userId, $param['num'])){
+
+            //记录消费日志
+            $logResult = (new UserCapitalLog)->giveGoldsLog(
+                [
+                    'user_id' => $userId,
+                    'pay' => '-'.$decNum,
+                    'residue'=> $residueNum,
+                    'explain'=> '兑换'.$param['num'].'个提现额度消费金币',
+                ]
+            );
+            //通知
+            $msgResult = (new SystemMessageService)->toUserSystem(
+                $userId,
+                ['content' => '你成功兑换'.$param['num'].'个提现额度'],
+                3
+            );
+
+            if($logResult && $msgResult){
+
+                Db::commit();
+                return showResult(0, '兑换成功');
+            }
+        }
+
+        Db::rollback();
+        return showResult(-1, '兑换失败');
     }
 
     /**

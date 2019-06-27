@@ -94,6 +94,11 @@ Route::group('api', function () {
 
     Route::get(':ver/user/golds', 'api/:ver.user/golds'); //鱼泡
     Route::get(':ver/user/scale', 'api/:ver.user/scale'); //鱼鳞
+    Route::get(':ver/user/quota', 'api/:ver.user/quota'); //提现额度
+    Route::get(':ver/user/exchange_quota', 'api/:ver.user/exchangeQuota'); //兑换额度
+
+
+
     Route::get(':ver/user/more_capital', 'api/:ver.user/moreCapitalLog'); //加载更多 交易记录
 
 

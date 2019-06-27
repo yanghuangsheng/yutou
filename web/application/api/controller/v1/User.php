@@ -177,6 +177,26 @@ class User extends Base
     }
 
     /**
+     * 获取提现客度
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
+    public function quota()
+    {
+        return (new Logic)->quota();
+    }
+
+    /**
+     * 兑换额度
+     * @return array
+     * @throws \app\api\exception\ApiException
+     */
+    public function exchangeQuota()
+    {
+        return (new Logic)->exchangeQuota();
+    }
+
+    /**
      *
      */
     public function moreCapitalLog()
