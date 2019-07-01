@@ -35,7 +35,7 @@ class UserCapitalLog extends Common
     {
         return $this->model->view('UserCapitalLog', 'id,user_id,pay,residue,explain,create_time')
             ->view('User', 'name', 'User.id = UserCapitalLog.user_id', 'LEFT')
-            ->view('UserCashLog', 'money,account_number,real_name', 'LEFT');
+            ->view('UserCashLog', 'money,account_number,real_name', 'UserCashLog.id = UserCapitalLog.o_id', 'LEFT');
     }
 
     /**
