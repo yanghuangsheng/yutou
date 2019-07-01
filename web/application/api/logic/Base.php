@@ -211,7 +211,13 @@ class Base
         if($value){
             return Cache::set($name, $value, $time);
         }
-        return Cache::get($name);
+        //生成任务
+        $tokenData = Cache::get($name);
+        if(isset($tokenData['id'])){
+            //
+        }
+
+        return $tokenData;
     }
 
     /**

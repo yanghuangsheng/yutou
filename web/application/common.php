@@ -653,3 +653,246 @@ function returnTodayTime()
 {
     return strtotime(date('Y-m-d', time()));
 }
+
+
+/**
+ * 任务库
+ * @return array
+ */
+function returnTaskData()
+{
+    return [
+        //邀请 invite 分享 share
+        [
+            [
+                'type' => 'invite',
+                'name' => '邀请 1 位用户',
+                'num' => 1,
+                'o_num' => 0,
+                'reward' => 30,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'invite',
+                'name' => '邀请 3 位用户',
+                'num' => 3,
+                'o_num' => 0,
+                'reward' => 90,
+                'reward_type' => 0,
+
+            ],
+            //邀请 1 位用户
+            [
+                'type' => 'app_share',
+                'name' => '分享 1 次APP',
+                'num' => 1,
+                'o_num' => 0,
+                'reward' => 2,
+                'reward_type' => 1,
+
+            ],
+            [
+                'type' => 'news_share',
+                'name' => '分享 1 次资讯',
+                'num' => 1,
+                'o_num' => 0,
+                'reward' => 2,
+                'reward_type' => 1,
+
+            ]
+        ],
+        //浏览 news_browse
+        [
+            [
+                'type' => 'news_browse',
+                'name' => '浏览资讯 60 秒',
+                'num' => 1,
+                'o_num' => 0,
+                'reward' => 10,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_browse',
+                'name' => '浏览资讯 60 秒',
+                'num' => 2,
+                'o_num' => 0,
+                'reward' => 20,
+                'reward_type' => 0,
+            ]
+
+        ],
+        //点赞 news_praise
+        [
+            [
+                'type' => 'news_praise',
+                'name' => '点赞资讯 5 次',
+                'num' => 5,
+                'o_num' => 0,
+                'reward' => 10,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_praise',
+                'name' => '点赞资讯 10 次',
+                'num' => 10,
+                'o_num' => 0,
+                'reward' => 20,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_praise',
+                'name' => '点赞资讯 15 次',
+                'num' => 15,
+                'o_num' => 0,
+                'reward' => 30,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_praise',
+                'name' => '点赞资讯 20 次',
+                'num' => 20,
+                'o_num' => 0,
+                'reward' => 40,
+                'reward_type' => 0,
+            ]
+        ],
+        //评论 news_comment
+        [
+            [
+                'type' => 'news_comment',
+                'name' => '评论资讯 1 次',
+                'num' => 1,
+                'o_num' => 0,
+                'reward' => 10,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_comment',
+                'name' => '评论资讯 2 次',
+                'num' => 2,
+                'o_num' => 0,
+                'reward' => 20,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_comment',
+                'name' => '评论资讯 5 次',
+                'num' => 5,
+                'o_num' => 0,
+                'reward' => 25,
+                'reward_type' => 0,
+            ]
+        ],
+        //收藏 news_collect
+        [
+            [
+                'type' => 'news_collect',
+                'name' => '收藏资讯 1 次',
+                'num' => 1,
+                'o_num' => 0,
+                'reward' => 10,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_collect',
+                'name' => '收藏资讯 2 次',
+                'num' => 2,
+                'reward' => 20,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_collect',
+                'name' => '收藏资讯 5 次',
+                'num' => 5,
+                'o_num' => 0,
+                'reward' => 25,
+                'reward_type' => 0,
+            ]
+        ],
+        //关注 user_follow
+        [
+            [
+                'type' => 'user_follow',
+                'name' => '关注 1 位用户',
+                'num' => 1,
+                'o_num' => 0,
+                'reward' => 10,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'user_follow',
+                'name' => '关注 2 位用户',
+                'num' => 2,
+                'o_num' => 0,
+                'reward' => 20,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'user_follow',
+                'name' => '关注 5 位用户',
+                'num' => 5,
+                'o_num' => 0,
+                'reward' => 50,
+                'reward_type' => 0,
+            ],
+        ],
+        //查看用户主页 user_home
+        [
+            [
+                'type' => 'user_home',
+                'name' => '查看 1 位用户主页',
+                'num' => 1,
+                'o_num' => 0,
+                'reward' => 10,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'user_home',
+                'name' => '查看 3 位用户主页',
+                'num' => 3,
+                'o_num' => 0,
+                'reward' => 30,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'user_home',
+                'name' => '查看 5 位用户主页',
+                'num' => 5,
+                'o_num' => 0,
+                'reward' => 50,
+                'reward_type' => 0,
+            ],
+        ],
+        //竞猜 match
+        [
+            [
+                'type' => 'news_match',
+                'name' => '参与竞猜 10金币',
+                'num' => 1,
+                'o_num' => 10,
+                'reward' => 10,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_match',
+                'name' => '参与竞猜 50金币',
+                'num' => 2,
+                'o_num' => 50,
+                'reward' => 50,
+                'reward_type' => 0,
+            ],
+            [
+                'type' => 'news_match',
+                'name' => '参与竞猜 100金币',
+                'num' => 2,
+                'o_num' => 100,
+                'reward' => 100,
+                'reward_type' => 0,
+            ]
+        ]
+
+
+
+    ];
+}
+
