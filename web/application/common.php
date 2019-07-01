@@ -654,6 +654,39 @@ function returnTodayTime()
     return strtotime(date('Y-m-d', time()));
 }
 
+/**
+ * 随机5条任务
+ * @param int $type
+ * @return array
+ */
+function randomTaskData($type = 0)
+{
+    $task_data = returnTaskData();
+    $num = count($task_data);
+    $random_data = [];
+    //列表随机源
+    for($i=1; $i<=$num-1; $i++){
+        $random_data[] = $i;
+    }
+    $result_data = [];
+    for($i=1; $i<=4; $i++){
+        $rend_num = mt_rand(0, count($random_data));
+        $task_num = mt_rand(0, count($task_data[$rend_num]));
+        $result_data[] = $task_data[$rend_num][$task_num];
+        array_splice($random_data, $rend_num, 1);
+    }
+
+    $task_num = mt_rand(0, count($task_data[0]));
+    $result_data[] = $task_data[0][$task_num];
+
+    if($type){
+        foreach ($result_data as $key => &$value){
+            $value['finish_num'] = 0;
+        }
+    }
+
+    return $result_data;
+}
 
 /**
  * 任务库
@@ -691,6 +724,7 @@ function returnTaskData()
                 'reward_type' => 1,
 
             ],
+
             [
                 'type' => 'news_share',
                 'name' => '分享 1 次资讯',

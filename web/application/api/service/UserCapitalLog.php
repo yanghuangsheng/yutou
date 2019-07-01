@@ -34,7 +34,8 @@ class UserCapitalLog extends Common
     protected function setWithOnView()
     {
         return $this->model->view('UserCapitalLog', 'id,user_id,pay,residue,explain,create_time')
-            ->view('User', 'name', 'User.id = UserCapitalLog.user_id', 'LEFT');
+            ->view('User', 'name', 'User.id = UserCapitalLog.user_id', 'LEFT')
+            ->view('UserCashLog', 'money,account_number,real_name', 'LEFT');
     }
 
     /**
