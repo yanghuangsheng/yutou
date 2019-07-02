@@ -37,7 +37,6 @@ class Base
         //exit();
         $this->isAuth && $this->checkRequestAuth();
         $this->tokenData = $this->cache($this->getHeaders('token'));
-        $this->initUserTask();
     }
 
     /**
@@ -324,10 +323,18 @@ class Base
     /**
      * 初始化用户任务
      */
-    protected function initUserTask()
+    public function initUserTask()
     {
         if(isset($this->tokenData['id'])) {
-            //(new \app\api\service\UserTask)->initTask($this->tokenData['id']);
+            $date_index = returnTodayTime();
+            $cache_name = $date_index.'_'.$this->tokenData['id'];
+            //Cache::store('redis')->get($cache_name)
+            if($this->cache($cache_name)) {
+                return false;
+            }
+            //Cache::store('redis')->set($cache_name,1,4);
+            $this->cache($cache_name,1, 4);
+            (new \app\api\service\UserTask)->initTask($this->tokenData['id'], $date_index);
         }
     }
 

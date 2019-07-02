@@ -16,6 +16,8 @@ class Base extends Controller
     protected function initialize()
     {
         parent::initialize();
+        //初始化用户任务
+        (new \app\api\logic\Base)->initUserTask();
     }
 
 

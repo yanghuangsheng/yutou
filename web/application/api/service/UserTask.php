@@ -22,19 +22,23 @@ class UserTask extends Common
     /**
      * 初始化任务
      * @param $user_id
+     * @param $date_index
+     * @return bool|\think\Collection
+     * @throws \Exception
      */
-    public function initTask($user_id)
+    public function initTask($user_id, $date_index)
     {
-        $date_index = returnTodayTime();
         $count = $this->model->where('date_index', '=', $date_index)->where('user_id', '=', $user_id)->count();
         if($count == 0){
-            $task_list= randomTaskData();
+            $task_list = randomTaskData();
             foreach ($task_list as $key => &$value) {
                 $value['user_id'] = $user_id;
                 $value['date_index'] = $date_index;
             }
-
-            $this->model->data($task_list)->insertAll();
+            //print_r($task_list);
+            return $this->model->saveAll($task_list);
         }
+
+        return false;
     }
 }

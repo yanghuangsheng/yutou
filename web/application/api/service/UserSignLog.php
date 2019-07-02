@@ -50,6 +50,15 @@ class UserSignLog extends Common
         $data['status'] = $this->model->where('user_id', $user_id)->where('date_index', $todayTime)->count();
         $data['today_list'] = $this->returnWeek($todayTime, $user_id);
 
+        if($user_id){
+            $data['task_list'] = \app\common\model\UserTask::where('user_id', '=', $user_id)
+                ->where('date_index', '=', $todayTime)
+                ->field('type,name,num,o_num,reward,reward_type,finish_num')
+                ->select();
+        }else{
+            $data['task_list'] = randomTaskData(1);
+        }
+
         return $data;
 
     }
