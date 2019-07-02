@@ -26,7 +26,7 @@ class UserTask extends Common
     public function initTask($user_id)
     {
         $date_index = returnTodayTime();
-        $count = $this->model->where('date_index', '=', $date_index)->where('user_id', '=', $user_id)->count();
+        $count = 0;
         if($count == 0){
             $task_list= randomTaskData();
             foreach ($task_list as $key => &$value) {
