@@ -34,7 +34,7 @@ class UserTask extends Common
                 $value['date_index'] = $date_index;
             }
 
-            $this->model->data($task_list)->insertAll();
+            //$this->model->data($task_list)->insertAll();
         }
     }
 }
