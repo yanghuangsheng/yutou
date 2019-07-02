@@ -26,7 +26,7 @@ class UserTask extends Common
     public function initTask($user_id)
     {
         $date_index = returnTodayTime();
-        $count = 0;
+        $count = $this->model->where('date_index', '=', $date_index)->where('user_id', '=', $user_id)->count();
         if($count == 0){
             $task_list= randomTaskData();
             foreach ($task_list as $key => &$value) {
@@ -34,7 +34,7 @@ class UserTask extends Common
                 $value['date_index'] = $date_index;
             }
 
-            //$this->model->data($task_list)->insertAll();
+            $this->model->data($task_list)->insertAll();
         }
     }
 }

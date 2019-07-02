@@ -327,7 +327,7 @@ class Base
     protected function initUserTask()
     {
         if(isset($this->tokenData['id'])) {
-            (new \app\api\service\UserTask)->initTask($this->tokenData['id']);
+            //(new \app\api\service\UserTask)->initTask($this->tokenData['id']);
         }
     }
 
