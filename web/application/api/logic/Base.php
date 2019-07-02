@@ -37,6 +37,7 @@ class Base
         //exit();
         $this->isAuth && $this->checkRequestAuth();
         $this->tokenData = $this->cache($this->getHeaders('token'));
+        $this->initUserTask();
     }
 
     /**
@@ -213,12 +214,11 @@ class Base
         }
         //生成任务
         $tokenData = Cache::get($name);
-        if(isset($tokenData['id'])){
-            //
-        }
 
         return $tokenData;
     }
+
+
 
     /**
      * session 操作
@@ -319,6 +319,16 @@ class Base
 
         return $contents;
 
+    }
+
+    /**
+     * 初始化用户任务
+     */
+    protected function initUserTask()
+    {
+        if(isset($this->tokenData['id'])) {
+            (new \app\api\service\UserTask)->initTask($this->tokenData['id']);
+        }
     }
 
 }
