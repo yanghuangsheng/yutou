@@ -406,7 +406,7 @@ class User extends Base
             $value['btn_status'] = 0; //未关注
 
             if(isset($this->tokenData['id'])){
-                if($this->tokenData['id'] = $userId){
+                if($this->tokenData['id'] == $userId){
                     //已关注 查看自己的
                     $value['btn_status'] = 1;
 
