@@ -395,7 +395,7 @@ class User extends Base
 
         $userFans = new \app\api\service\UserFans;
 
-        $fansData = $userFans->fansView()->initWhere([['user_id', '=', $userId]])->initLimit($page)
+        $fansData = $userFans->fansView()->initWhere([['UserFans.user_id', '=', $userId]])->initLimit($page)
             ->getListData();
         $data = $fansData['list']->toArray();
 
@@ -453,7 +453,7 @@ class User extends Base
 
         $userFans = new \app\api\service\UserFans;
 
-        $fansData = $userFans->followView()->initWhere([['fans_id', '=', $userId]])->initLimit($page)
+        $fansData = $userFans->followView()->initWhere([['UserFans.fans_id', '=', $userId]])->initLimit($page)
             ->getListData();
         $data = $fansData['list']->toArray();
 
@@ -605,7 +605,7 @@ class User extends Base
                     'user_id' => $userId,
                     'pay' => '-'.$decNum,
                     'residue'=> $residueNum,
-                    'explain'=> '兑换'.$param['num'].'个提现额度消费金币',
+                    'explain'=> '兑换'.$param['num'].'个提现额度消费鱼泡',
                 ],
                 1
             );

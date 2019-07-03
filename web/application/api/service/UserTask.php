@@ -68,7 +68,7 @@ class UserTask extends Common
     /**
      * 更新任务
      */
-    public function updateTaskStatus($user_id, $task_type)
+    public function updateTaskStatus($user_id, $task_type, $o_id)
     {
         $date_index = returnTodayTime();
         $where = [
@@ -80,10 +80,30 @@ class UserTask extends Common
         if($this->model->where($where)->count()) {
             //获取任务
             $task = $this->model->where($where)->field('id,type,num,o_num,reward,reward_type,finish_num')->find();
+            //完成次数+1
+            $task->finish_num = ['inc', 1];
+
             if(($task['num'] - $task['finish_num']) == 1) {
                 //完成任务
+                $task->status = 1;
+                //赠送相关
+                $task-save();
+                $field = $task['reward_type']?'golds':'scale';
 
+                $capital = \app\common\model\UserCapital::where('user_id', $user_id)->field('golds,scale')->find();
+                $capital->$field = ['inc', $task['reward']];
+                $capital->save();
+                \app\common\model\UserCapitalLog::create([
+                    'user_id' => $user_id,
+                    'pay' => '+'.$task['reward'],
+                    'residue' => $capital[$field],
+                    'explain' => ''
+                ]);
+                return ['reward'=>$task['reward'], 'reward_type'=>$task['reward_type']];
             }
+
+            $task-save();
+            return [];
 
         }
     }
