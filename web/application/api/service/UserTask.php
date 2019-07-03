@@ -78,8 +78,13 @@ class UserTask extends Common
             ['status', '=', 0]
         ];
         if($this->model->where($where)->count()) {
-            //
-            $findData = $this->model->where($where)->field('id,num,')->find();
+            //获取任务
+            $task = $this->model->where($where)->field('id,type,num,o_num,reward,reward_type,finish_num')->find();
+            if(($task['num'] - $task['finish_num']) == 1) {
+                //完成任务
+
+            }
+
         }
     }
 }
