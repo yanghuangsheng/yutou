@@ -9,7 +9,7 @@
 namespace app\common\model;
 
 
-class UserTaskLog
+class UserTaskLog extends Base
 {
 
 }

@@ -55,7 +55,7 @@ class Index extends Base
             ['category_id'=>0, 'name'=>'最新文章'],
             ['category_id'=>9, 'name'=>'体育竞技'],
             //['category_id'=>10, 'name'=>'数字彩讯'],
-            ['category_id'=>11, 'name'=>'电竞地带']
+            ['category_id'=>11, 'name'=>'综合地带']
         ];
         $startId = $news->getNewsId();
         foreach ($data as $key => &$value){

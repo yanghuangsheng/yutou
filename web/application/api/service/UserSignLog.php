@@ -55,8 +55,10 @@ class UserSignLog extends Common
                 ->where('date_index', '=', $todayTime)
                 ->field('type,name,num,o_num,reward,reward_type,finish_num')
                 ->select();
+        }else{
+            $data['task_list'] = randomTaskData(1);
         }
-        $data['task_list'] = randomTaskData(1);
+
 
         return $data;
 
@@ -161,9 +163,6 @@ class UserSignLog extends Common
                 $weekIndex ++;
             }
         }
-
-
-
 
         return $weekData;
 

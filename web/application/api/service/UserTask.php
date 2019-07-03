@@ -41,4 +41,45 @@ class UserTask extends Common
 
         return false;
     }
+
+    /**
+     * 检测任务
+     * @param $user_id
+     * @param $task_type
+     * @return bool
+     */
+    public function checkTask($user_id, $task_type)
+    {
+        $date_index = returnTodayTime();
+        $where = [
+            ['user_id', '=', $user_id],
+            ['date_index', '=', $date_index],
+            ['type', '=', $task_type],
+            ['status', '=', 0]
+        ];
+        if($this->model->where($where)->count()){
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 更新任务
+     */
+    public function updateTaskStatus($user_id, $task_type)
+    {
+        $date_index = returnTodayTime();
+        $where = [
+            ['user_id', '=', $user_id],
+            ['date_index', '=', $date_index],
+            ['type', '=', $task_type],
+            ['status', '=', 0]
+        ];
+        if($this->model->where($where)->count()) {
+            //
+            $findData = $this->model->where($where)->field('id,num,')->find();
+        }
+    }
 }
