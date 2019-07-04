@@ -337,6 +337,10 @@ class User extends Base
         $param = $this->param();
         $oUserId = $this->tokenData['id'];
         $userFans = new \app\api\service\UserFans;
+        if($oUserId == $param['user_id']) {
+            return showResult(-1, '不能关注自己哦');
+        }
+
         if(false == $userFans->addFans(['id'=>$param['user_id'], 'user_id'=>$oUserId])){
 
             return showResult(-1, $userFans->getError()?$userFans->getError():'关注失败');

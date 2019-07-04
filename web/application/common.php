@@ -702,7 +702,7 @@ function returnTaskData()
         [
             [
                 'type' => 'invite',
-                'name' => '邀请 1 位用户',
+                'name' => '邀请1位用户',
                 'num' => 1,
                 'o_num' => 0,
                 'reward' => 30,
@@ -710,7 +710,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'invite',
-                'name' => '邀请 3 位用户',
+                'name' => '邀请3位用户',
                 'num' => 3,
                 'o_num' => 0,
                 'reward' => 90,
@@ -720,7 +720,7 @@ function returnTaskData()
             //邀请 1 位用户
             [
                 'type' => 'app_share',
-                'name' => '分享 1 次APP',
+                'name' => '分享1次APP',
                 'num' => 1,
                 'o_num' => 0,
                 'reward' => 2,
@@ -730,7 +730,7 @@ function returnTaskData()
 
             [
                 'type' => 'news_share',
-                'name' => '分享 1 次资讯',
+                'name' => '分享1次资讯',
                 'num' => 1,
                 'o_num' => 0,
                 'reward' => 2,
@@ -742,7 +742,7 @@ function returnTaskData()
         [
             [
                 'type' => 'news_browse',
-                'name' => '浏览资讯 60 秒',
+                'name' => '浏览资讯60秒',
                 'num' => 1,
                 'o_num' => 0,
                 'reward' => 10,
@@ -750,7 +750,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_browse',
-                'name' => '浏览资讯 60 秒',
+                'name' => '浏览资讯60秒',
                 'num' => 2,
                 'o_num' => 0,
                 'reward' => 20,
@@ -762,7 +762,7 @@ function returnTaskData()
         [
             [
                 'type' => 'news_praise',
-                'name' => '点赞资讯 5 次',
+                'name' => '点赞资讯5次',
                 'num' => 5,
                 'o_num' => 0,
                 'reward' => 10,
@@ -770,7 +770,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_praise',
-                'name' => '点赞资讯 10 次',
+                'name' => '点赞资讯10次',
                 'num' => 10,
                 'o_num' => 0,
                 'reward' => 20,
@@ -778,7 +778,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_praise',
-                'name' => '点赞资讯 15 次',
+                'name' => '点赞资讯15次',
                 'num' => 15,
                 'o_num' => 0,
                 'reward' => 30,
@@ -786,7 +786,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_praise',
-                'name' => '点赞资讯 20 次',
+                'name' => '点赞资讯20次',
                 'num' => 20,
                 'o_num' => 0,
                 'reward' => 40,
@@ -797,7 +797,7 @@ function returnTaskData()
         [
             [
                 'type' => 'news_comment',
-                'name' => '评论资讯 1 次',
+                'name' => '评论资讯1次',
                 'num' => 1,
                 'o_num' => 0,
                 'reward' => 10,
@@ -805,7 +805,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_comment',
-                'name' => '评论资讯 2 次',
+                'name' => '评论资讯2次',
                 'num' => 2,
                 'o_num' => 0,
                 'reward' => 20,
@@ -813,7 +813,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_comment',
-                'name' => '评论资讯 5 次',
+                'name' => '评论资讯5次',
                 'num' => 5,
                 'o_num' => 0,
                 'reward' => 25,
@@ -824,7 +824,7 @@ function returnTaskData()
         [
             [
                 'type' => 'news_collect',
-                'name' => '收藏资讯 1 次',
+                'name' => '收藏资讯1次',
                 'num' => 1,
                 'o_num' => 0,
                 'reward' => 10,
@@ -832,14 +832,14 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_collect',
-                'name' => '收藏资讯 2 次',
+                'name' => '收藏资讯2次',
                 'num' => 2,
                 'reward' => 20,
                 'reward_type' => 0,
             ],
             [
                 'type' => 'news_collect',
-                'name' => '收藏资讯 5 次',
+                'name' => '收藏资讯5次',
                 'num' => 5,
                 'o_num' => 0,
                 'reward' => 25,
@@ -850,7 +850,7 @@ function returnTaskData()
         [
             [
                 'type' => 'user_follow',
-                'name' => '关注 1 位用户',
+                'name' => '关注1位用户',
                 'num' => 1,
                 'o_num' => 0,
                 'reward' => 10,
@@ -858,7 +858,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'user_follow',
-                'name' => '关注 2 位用户',
+                'name' => '关注2位用户',
                 'num' => 2,
                 'o_num' => 0,
                 'reward' => 20,
@@ -866,7 +866,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'user_follow',
-                'name' => '关注 5 位用户',
+                'name' => '关注5位用户',
                 'num' => 5,
                 'o_num' => 0,
                 'reward' => 50,
@@ -877,7 +877,7 @@ function returnTaskData()
         [
             [
                 'type' => 'user_home',
-                'name' => '查看 1 位用户主页',
+                'name' => '查看1位用户主页',
                 'num' => 1,
                 'o_num' => 0,
                 'reward' => 10,
@@ -885,7 +885,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'user_home',
-                'name' => '查看 3 位用户主页',
+                'name' => '查看3位用户主页',
                 'num' => 3,
                 'o_num' => 0,
                 'reward' => 30,
@@ -893,7 +893,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'user_home',
-                'name' => '查看 5 位用户主页',
+                'name' => '查看5位用户主页',
                 'num' => 5,
                 'o_num' => 0,
                 'reward' => 50,
@@ -904,7 +904,7 @@ function returnTaskData()
         [
             [
                 'type' => 'news_match',
-                'name' => '参与竞猜 10金币',
+                'name' => '参与竞猜10金币',
                 'num' => 1,
                 'o_num' => 10,
                 'reward' => 10,
@@ -912,7 +912,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_match',
-                'name' => '参与竞猜 50金币',
+                'name' => '参与竞猜50金币',
                 'num' => 2,
                 'o_num' => 50,
                 'reward' => 50,
@@ -920,7 +920,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_match',
-                'name' => '参与竞猜 100金币',
+                'name' => '参与竞猜100金币',
                 'num' => 2,
                 'o_num' => 100,
                 'reward' => 100,

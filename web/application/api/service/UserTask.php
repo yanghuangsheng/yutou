@@ -67,6 +67,13 @@ class UserTask extends Common
 
     /**
      * 更新任务
+     * @param $user_id 用户ID
+     * @param $task_type 任务类型
+     * @param $o_id  完成任务记录ID
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function updateTaskStatus($user_id, $task_type, $o_id)
     {
@@ -79,30 +86,41 @@ class UserTask extends Common
         ];
         if($this->model->where($where)->count()) {
             //获取任务
-            $task = $this->model->where($where)->field('id,type,num,o_num,reward,reward_type,finish_num')->find();
+            $task = $this->model->where($where)->field('id,name,type,num,o_num,reward,reward_type,finish_num')->find();
             //完成次数+1
             $task->finish_num = ['inc', 1];
+            //日志
+            $task_log = \app\common\model\UserTaskLog::create([
+                'user_id' => $user_id,
+                'type' => $task_type,
+                'o_id' => $o_id,
+                'date_index' => $date_index
+            ]);
 
             if(($task['num'] - $task['finish_num']) == 1) {
                 //完成任务
                 $task->status = 1;
-                //赠送相关
-                $task-save();
-                $field = $task['reward_type']?'golds':'scale';
+                //任务更新
+                $task_save = $task-save();
 
+                $field = $task['reward_type']?'golds':'scale';
                 $capital = \app\common\model\UserCapital::where('user_id', $user_id)->field('golds,scale')->find();
                 $capital->$field = ['inc', $task['reward']];
-                $capital->save();
-                \app\common\model\UserCapitalLog::create([
+                $capital_save = $capital->save();
+
+                $capital_log = \app\common\model\UserCapitalLog::create([
                     'user_id' => $user_id,
-                    'pay' => '+'.$task['reward'],
+                    'pay' => '+' . $task['reward'],
                     'residue' => $capital[$field],
-                    'explain' => ''
+                    'explain' => '完成每日任务【'. $task['name'] .'】赠送',
+                    'type' => $task['reward_type']
                 ]);
                 return ['reward'=>$task['reward'], 'reward_type'=>$task['reward_type']];
             }
 
-            $task-save();
+            //任务更新
+            $task_save = $task-save();
+
             return [];
 
         }
