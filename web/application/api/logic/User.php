@@ -389,7 +389,7 @@ class User extends Base
             $this->checkToken();
             $userId = $this->tokenData['id'];
         }
-        echo '$userId:' . $userId;
+
         $page = $param['page'];
 
         $userFans = new \app\api\service\UserFans;
