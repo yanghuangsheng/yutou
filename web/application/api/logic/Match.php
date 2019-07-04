@@ -74,7 +74,7 @@ class Match extends Base
         );
 
         //更新竞猜任务
-        $data = (new UserTask)->updateTaskStatus($saveData['user_id'], 'news_match', $saveData['match_id']);
+        $data = (new UserTask)->updateTaskStatus($saveData['user_id'], 'news_match', $saveData['match_id'], $saveData['golds_num']);
 
         //预测
         if($logResult &&  $incResult && $msgResult && $matchSupportService->save($saveData)){

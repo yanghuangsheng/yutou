@@ -904,7 +904,7 @@ function returnTaskData()
         [
             [
                 'type' => 'news_match',
-                'name' => '参与竞猜10金币',
+                'name' => '参与竞猜10鱼泡',
                 'num' => 1,
                 'o_num' => 10,
                 'reward' => 10,
@@ -912,7 +912,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_match',
-                'name' => '参与竞猜50金币',
+                'name' => '参与竞猜50鱼泡',
                 'num' => 2,
                 'o_num' => 50,
                 'reward' => 50,
@@ -920,7 +920,7 @@ function returnTaskData()
             ],
             [
                 'type' => 'news_match',
-                'name' => '参与竞猜100金币',
+                'name' => '参与竞猜100鱼泡',
                 'num' => 2,
                 'o_num' => 100,
                 'reward' => 100,

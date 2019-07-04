@@ -107,8 +107,7 @@ class UserTask extends Common
             if($golds_num && $golds_num != $task['o_num']){
                 return false;
             }
-
-
+            
             //日志
             $task_log = \app\common\model\UserTaskLog::create([
                 'user_id' => $user_id,
