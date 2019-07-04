@@ -124,7 +124,7 @@ class UserTask extends Common
                 //任务更新
                 $task_save = $task->save();
 
-                $field = $task['reward_type']?'golds':'scale';
+                $field = $task['reward_type']?'scale':'golds';
                 $capital = \app\common\model\UserCapital::where('user_id', $user_id)->field('golds,scale')->find();
                 $capital->$field = $capital[$field] + $task['reward'];
                 $capital_save = $capital->save();
@@ -138,7 +138,6 @@ class UserTask extends Common
                 ]);
                 return ['reward'=>$task['reward'], 'reward_type'=>$task['reward_type']];
             }
-
 
             //完成次数+1
             $task->finish_num = $task['finish_num'] + 1;
