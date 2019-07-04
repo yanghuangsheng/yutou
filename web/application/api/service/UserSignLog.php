@@ -112,7 +112,7 @@ class UserSignLog extends Common
     public function returnWeek($today_time, $user_id, $day = 6)
     {
         $weekTimeArr = [];
-        for ($i=$day; $i>=0; $i--)
+        for ($i=$day; $i=0; $i--)
         {
             $weekTimeArr[] = $today_time - ($i * 86400);
         }
