@@ -405,11 +405,9 @@ class User extends Base
             $value['btn_status'] = 0; //未关注
 
             if(isset($this->tokenData['id'])){
-                if($this->tokenData['id'] == $userId){
-                    //已关注 查看自己的
-                    $value['btn_status'] = 1;
 
-                }elseif($userFans->getCount([['fans_id', '=', $this->tokenData['id']], ['user_id', '=', $value['user_id']]])){
+                if($userFans->getCount([['fans_id', '=', $this->tokenData['id']], ['user_id', '=', $value['user_id']]])){
+
                     //已关注 查看别人空间的
                     $value['btn_status'] = 1;
                 }
@@ -464,8 +462,10 @@ class User extends Base
             $value['btn_status'] = 0; //未关注
 
             if(isset($this->tokenData['id'])){
-
-                if($userFans->getCount([['fans_id', '=', $this->tokenData['id']], ['user_id', '=', $value['user_id']]])){
+                if($this->tokenData['id'] == $userId){
+                    //已关注 查看自己的
+                    $value['btn_status'] = 1;
+                }elseif($userFans->getCount([['fans_id', '=', $this->tokenData['id']], ['user_id', '=', $value['user_id']]])){
                     //已关注 查看别人空间的
                     $value['btn_status'] = 1;
                 }
