@@ -382,15 +382,14 @@ class User extends Base
     {
         $param = $this->param();
 
-        if(!isset($param['user_id'])) {
-
-            $this->checkToken();
-            $userId = $this->tokenData['id'];
-        }else{
+        if(isset($param['user_id'])) {
 
             $userId = $param['user_id'];
+        }else{
+            $this->checkToken();
+            $userId = $this->tokenData['id'];
         }
-
+        echo '$userId:' . $userId;
         $page = $param['page'];
 
         $userFans = new \app\api\service\UserFans;
