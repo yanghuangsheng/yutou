@@ -81,6 +81,7 @@ class UserSignLog extends Common
             ->field('give_index,date_index')->find();
         //签到数据
         $weekIndex = $data?$data['give_index']+1:0;
+        ($weekIndex == 7) && $weekIndex = 0;
         $giveData = signGiveRuleData()[$weekIndex];
 
         $saveData = [
