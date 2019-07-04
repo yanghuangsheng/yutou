@@ -13,6 +13,8 @@ use app\api\service\UserCapitalLog;
 use app\api\service\Match as MatchService;
 use app\api\service\MatchSupport as MatchSupportService;
 use app\api\service\SystemMessage as SystemMessageService;
+use app\api\service\UserTask;
+
 use think\Db;
 
 class Match extends Base
@@ -71,11 +73,14 @@ class Match extends Base
             1
         );
 
+        //更新竞猜任务
+        $data = (new UserTask)->updateTaskStatus($saveData['user_id'], 'news_match', $saveData['match_id']);
+
         //预测
         if($logResult &&  $incResult && $msgResult && $matchSupportService->save($saveData)){
 
             Db::commit();
-            return showResult(0, '预测成功');
+            return showResult(0, '预测成功', $data);
         }
 
         Db::rollback();

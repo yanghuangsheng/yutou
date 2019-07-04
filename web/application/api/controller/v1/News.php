@@ -35,6 +35,19 @@ class News extends Base
     }
 
     /**
+     * 更新任务
+     * @return array
+     * @throws \app\api\exception\ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function upTask()
+    {
+        return (new Logic)->updateTask();
+    }
+
+    /**
      * 加载更多
      * @return array
      */

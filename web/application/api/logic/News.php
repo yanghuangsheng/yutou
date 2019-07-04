@@ -13,6 +13,7 @@ use app\api\service\PortalNewsCommentClick;
 use app\api\service\PortalNewsPraise;
 use app\api\service\UserCollection;
 use app\api\service\MatchSupport;
+use app\api\service\UserTask;
 
 class News extends Base
 {
@@ -95,13 +96,14 @@ class News extends Base
         $data['is_praise'] = 0;
         $data['is_collect'] = 0;
         $data['user_support_status'] = '';
+        $data['is_task'] = 0;
 
         if(isset($this->tokenData['id'])){
             $data['is_praise'] = (new PortalNewsPraise)->getCount([['news_id', '=', $data['id']], ['user_id', '=', $this->tokenData['id']]]);
             $data['is_collect'] = (new UserCollection)->getCount([['o_id', '=', $data['id']],['type', '=', 0],['user_id', '=', $this->tokenData['id']]]);
             $data['user_support_status'] = (new MatchSupport)->getField([['user_id', '=', $this->tokenData['id']]], 'support_status');
+            $data['is_task'] = (new UserTask)->checkTask($this->tokenData['id'], 'news_browse', $data['id']);
         }
-
 
 
         //更新浏览量
@@ -111,6 +113,25 @@ class News extends Base
 
         return $data;
 
+    }
+
+    /**
+     * 更新每日任务
+     * @return array
+     * @throws \app\api\exception\ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function updateTask()
+    {
+        $this->checkToken();
+        $param = $this->param();
+        $id = $param['id'];
+
+        $data = (new UserTask)->updateTaskStatus($this->tokenData['id'], 'news_browse', $id);
+
+        return showResult(0, '', $data);
     }
 
     /**
@@ -236,7 +257,11 @@ class News extends Base
                 ['PortalNewsComment.news_id', '=', $result['news_id']],
                 ['PortalNewsComment.id', '=', $result['id']]
             ];
-            $data = $this->getCommonCommentList($comment, $where);
+            $comment_data = $this->getCommonCommentList($comment, $where);
+
+            //更新评论任务
+            $data['list'] = $comment_data['list'];
+            $data['task_data'] = (new UserTask)->updateTaskStatus($param['user_id'], 'news_comment', $result['news_id']);
 
             return showResult(0, '评论成功', $data['list']);
         }
@@ -271,7 +296,9 @@ class News extends Base
         if($collectNum = $newsAttr->saveNum($data, 'collect')){
             //触发规则
             $this->ruleTrigger('collect_num', ['id'=>$newsId, 'num'=>$collectNum]);
-            return showResult(0, '收藏成功');
+            //更新点赞任务
+            $data = (new UserTask)->updateTaskStatus($userId, 'news_collect', $newsId);
+            return showResult(0, '收藏成功', $data);
         }
 
         return showResult(-1, '收藏失败');
@@ -302,8 +329,10 @@ class News extends Base
 
             //规则触发
             $this->ruleTrigger('praise_num', ['id'=>$newsId, 'num'=>$praiseNum]);
+            //更新点赞任务
+            $data = (new UserTask)->updateTaskStatus($userId, 'news_praise', $newsId);
 
-            return showResult(0, '点赞成功');
+            return showResult(0, '点赞成功', $data);
         }
 
         return showResult(-1, '点赞失败');

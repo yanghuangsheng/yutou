@@ -9,6 +9,8 @@
 namespace app\api\service;
 
 
+use think\Db;
+
 class UserTask extends Common
 {
     //初始化类
@@ -48,7 +50,7 @@ class UserTask extends Common
      * @param $task_type
      * @return bool
      */
-    public function checkTask($user_id, $task_type)
+    public function checkTask($user_id, $task_type, $o_id)
     {
         $date_index = returnTodayTime();
         $where = [
@@ -57,25 +59,37 @@ class UserTask extends Common
             ['type', '=', $task_type],
             ['status', '=', 0]
         ];
-        if($this->model->where($where)->count()){
+        $log_where = [
+            ['data_index', '=', $date_index],
+            ['user_id', '=', $user_id],
+            ['type', '=', $task_type],
+            ['o_id', '=', $o_id]
+        ];
 
-            return true;
+        if($this->model->where($where)->count()) {
+            if(\app\common\model\UserTaskLog::where($log_where)->count()) {
+
+                return 0;
+            }
+
+            return 1;
         }
 
-        return false;
+        return 0;
     }
 
     /**
      * 更新任务
      * @param $user_id 用户ID
      * @param $task_type 任务类型
-     * @param $o_id  完成任务记录ID
+     * @param $o_id 完成任务记录ID
+     * @param int $golds_num 竞猜金币
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function updateTaskStatus($user_id, $task_type, $o_id)
+    public function updateTaskStatus($user_id, $task_type, $o_id, $golds_num = 0)
     {
         $date_index = returnTodayTime();
         $where = [
@@ -84,11 +98,17 @@ class UserTask extends Common
             ['type', '=', $task_type],
             ['status', '=', 0]
         ];
+
         if($this->model->where($where)->count()) {
             //获取任务
             $task = $this->model->where($where)->field('id,name,type,num,o_num,reward,reward_type,finish_num')->find();
-            //完成次数+1
-            $task->finish_num = ['inc', 1];
+
+            //如果是竞猜 判断鱼泡数条件
+            if($golds_num && $golds_num != $task['o_num']){
+                return false;
+            }
+
+
             //日志
             $task_log = \app\common\model\UserTaskLog::create([
                 'user_id' => $user_id,
@@ -99,13 +119,14 @@ class UserTask extends Common
 
             if(($task['num'] - $task['finish_num']) == 1) {
                 //完成任务
+                $task->finish_num = $task['finish_num'] + 1;
                 $task->status = 1;
                 //任务更新
-                $task_save = $task-save();
+                $task_save = $task->save();
 
                 $field = $task['reward_type']?'golds':'scale';
                 $capital = \app\common\model\UserCapital::where('user_id', $user_id)->field('golds,scale')->find();
-                $capital->$field = ['inc', $task['reward']];
+                $capital->$field = $capital[$field] + $task['reward'];
                 $capital_save = $capital->save();
 
                 $capital_log = \app\common\model\UserCapitalLog::create([
@@ -118,8 +139,10 @@ class UserTask extends Common
                 return ['reward'=>$task['reward'], 'reward_type'=>$task['reward_type']];
             }
 
-            //任务更新
-            $task_save = $task-save();
+
+            //完成次数+1
+            $task->finish_num = $task['finish_num'] + 1;
+            $task_save = $task->save();
 
             return [];
 

@@ -48,6 +48,7 @@ Route::group('api', function () {
     Route::get(':ver/news/list', 'api/:ver.news/index'); //加载更多
     //新闻详情
     Route::get(':ver/news/item', 'api/:ver.news/item');
+    Route::post(':ver/news/up_task', 'api/:ver.news/upTask'); //更新任务
     Route::post(':ver/news/praise_comment', 'api/:ver.news/praiseComment'); //点赞评论
     Route::post(':ver/news/praise', 'api/:ver.news/praise'); //点赞
     Route::post(':ver/news/collect', 'api/:ver.news/collect'); //收藏
