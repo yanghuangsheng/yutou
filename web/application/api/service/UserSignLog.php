@@ -127,9 +127,9 @@ class UserSignLog extends Common
 
         $weekData = [];
         foreach ($weekTimeArr as $value){
-            echo $value. "\n";
-            echo $resultList[$value]['date_index']."\n";
-            echo isset($resultList[$value]). ' && ' . $resultList[$value]['give_index'] . "<6\n";
+//            echo $value. "\n";
+//            echo $resultList[$value]['date_index']."\n";
+//            echo isset($resultList[$value]). ' && ' . $resultList[$value]['give_index'] . "<6\n";
             if(isset($resultList[$value]) && $resultList[$value]['give_index'] < 6){
 
                 $findData = $resultList[$value];
