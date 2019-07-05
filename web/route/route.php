@@ -46,9 +46,11 @@ Route::group('api', function () {
     //主页
     Route::get(':ver/index/all', 'api/:ver.index/all');
     Route::get(':ver/news/list', 'api/:ver.news/index'); //加载更多
+
     //新闻详情
     Route::get(':ver/news/item', 'api/:ver.news/item');
     Route::post(':ver/news/up_task', 'api/:ver.news/upTask'); //更新任务
+
     Route::post(':ver/news/praise_comment', 'api/:ver.news/praiseComment'); //点赞评论
     Route::post(':ver/news/praise', 'api/:ver.news/praise'); //点赞
     Route::post(':ver/news/collect', 'api/:ver.news/collect'); //收藏
@@ -73,6 +75,7 @@ Route::group('api', function () {
     Route::get(':ver/forum/more_comment', 'api/:ver.forum/moreComment'); //加载更多评论
     Route::get(':ver/forum/look_comment', 'api/:ver.forum/lookComment'); //查看评论
     Route::post(':ver/forum/submit_comment', 'api/:ver.forum/submitComment'); //评论
+
     //彩票
     Route::get(':ver/lottery/list', 'api/:ver.lottery/index');
     Route::get(':ver/lottery/one_list', 'api/:ver.lottery/oneList');
@@ -84,6 +87,9 @@ Route::group('api', function () {
 
     //用户相关
     Route::get(':ver/user/home', 'api/:ver.user/home'); //用户信息
+    Route::get(':ver/user/up_task', 'api/:ver.user/upTask'); //更新每日任务
+
+
     Route::get(':ver/user/info', 'api/:ver.user/info'); //用户信息
     Route::get(':ver/user/arr', 'api/:ver.user/arr'); //属性
     Route::get(':ver/user/my_post', 'api/:ver.user/myPost'); //我的帖子

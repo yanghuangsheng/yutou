@@ -14,6 +14,7 @@ use app\api\service\UserCapital;
 use app\api\service\UserCapitalLog;
 use app\api\service\SystemMessage as SystemMessageService;
 use app\api\service\UserCashLog;
+use app\api\service\UserTask;
 use think\Db;
 
 class User extends Base
@@ -269,10 +270,12 @@ class User extends Base
         //用户属性
         $data['arr'] = $userService->getOneArr($userId);
         $data['info']['is_fans'] = 0;
+        $data['is_task'] = 0;
 
         //关注情况
         if(isset($this->tokenData['id'])){
             $data['info']['is_fans'] = (new \app\api\service\UserFans)->checkFans($userId, $this->tokenData['id']);
+            $data['is_task'] = (new UserTask)->checkTask($this->tokenData['id'], 'user_home', $userId);
         }
 
         $domain = $this->getDomain();
@@ -288,6 +291,8 @@ class User extends Base
             $value['user_avatar'] = $domain . $value['user_avatar'][100];
         }
 
+
+
 //        //广播
 //        $data['broadcast'] = $this->commonBroadcast();
 //
@@ -297,6 +302,25 @@ class User extends Base
 //            'list' => $this->commonForumPostList($postService, [['ForumPost.user_id','=', $userId]]),
 //            'start_id' => $postService->newsId(),
 //        ];
+
+        return showResult(0, '', $data);
+    }
+
+    /**
+     * 更新每日任务 查看个人主页
+     * @return array
+     * @throws \app\api\exception\ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function updateTask()
+    {
+        $this->checkToken();
+        $param = $this->param();
+        $id = $param['id'];
+
+        $data = (new UserTask)->updateTaskStatus($this->tokenData['id'], 'user_home', $id);
 
         return showResult(0, '', $data);
     }
@@ -349,7 +373,10 @@ class User extends Base
         $user->saveNum(['id'=>$param['user_id']], 'fans');
         $user->saveNum(['id'=>$oUserId], 'follow');
 
-        return showResult(0, '关注成功');
+        //更新每日任务
+        $data = (new UserTask)->updateTaskStatus($oUserId, 'user_follow', $param['user_id']);
+
+        return showResult(0, '关注成功', $data);
     }
 
     /**

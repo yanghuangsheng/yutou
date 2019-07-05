@@ -54,6 +54,19 @@ class User extends Base
     }
 
     /**
+     * 更新每日任务
+     * @return array
+     * @throws \app\api\exception\ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function upTask()
+    {
+        return (new Logic)->updateTask();
+    }
+
+    /**
      * 登陆
      * @return mixed
      */
