@@ -124,7 +124,8 @@ class UserTask extends Common
                 $task_save = $task->save();
 
                 $field = $task['reward_type']?'scale':'golds';
-                $capital = \app\common\model\UserCapital::where('user_id', $user_id)->field('golds,scale')->find();
+
+                $capital = $this->getUserCapital($user_id);
                 $capital->$field = $capital[$field] + $task['reward'];
                 $capital_save = $capital->save();
 
@@ -145,5 +146,21 @@ class UserTask extends Common
         }
 
         return [];
+    }
+
+    /**
+     * 获取用户的鱼泡 鱼鳞
+     * @param $user_id
+     * @return mixed
+     */
+    public function getUserCapital($user_id)
+    {
+        $userCapital = \app\common\model\UserCapital;
+        if(0 == $userCapital::where('user_id', $user_id)->count()){
+            $userCapital::create(
+                ['user_id' => $user_id]
+            );
+        }
+        return $userCapital::where('user_id', $user_id)->field('golds,scale')->find();
     }
 }
