@@ -275,7 +275,11 @@ class User extends Base
         //关注情况
         if(isset($this->tokenData['id'])){
             $data['info']['is_fans'] = (new \app\api\service\UserFans)->checkFans($userId, $this->tokenData['id']);
-            $data['is_task'] = (new UserTask)->checkTask($this->tokenData['id'], 'user_home', $userId);
+            //浏览自己的不能是任务
+            if($this->tokenData['id'] != $userId){
+                $data['is_task'] = (new UserTask)->checkTask($this->tokenData['id'], 'user_home', $userId);
+            }
+
         }
 
         $domain = $this->getDomain();
