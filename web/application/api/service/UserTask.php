@@ -135,7 +135,7 @@ class UserTask extends Common
                     'explain' => '完成每日任务【'. $task['name'] .'】赠送',
                     'type' => $task['reward_type']
                 ]);
-                return ['reward'=>$task['reward'], 'reward_type'=>$task['reward_type']];
+                return ['name'=>$task['name'], 'reward'=>$task['reward'], 'reward_type'=>$task['reward_type']];
             }
 
             //完成次数+1

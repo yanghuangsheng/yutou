@@ -727,7 +727,6 @@ function returnTaskData()
                 'reward_type' => 1,
 
             ],
-
             [
                 'type' => 'news_share',
                 'name' => '分享1次资讯',
