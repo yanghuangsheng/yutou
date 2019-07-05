@@ -263,7 +263,7 @@ class News extends Base
             $data['list'] = $comment_data['list'];
             $data['task_data'] = (new UserTask)->updateTaskStatus($param['user_id'], 'news_comment', $result['news_id']);
 
-            return showResult(0, '评论成功', $data['list']);
+            return showResult(0, '评论成功', $data);
         }
 
         return showResult(-1, '评论失败');
