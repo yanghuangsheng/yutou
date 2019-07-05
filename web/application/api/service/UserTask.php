@@ -142,8 +142,8 @@ class UserTask extends Common
             $task->finish_num = $task['finish_num'] + 1;
             $task_save = $task->save();
 
-            return [];
-
         }
+
+        return [];
     }
 }
