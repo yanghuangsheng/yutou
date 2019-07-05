@@ -87,7 +87,7 @@ Route::group('api', function () {
 
     //用户相关
     Route::get(':ver/user/home', 'api/:ver.user/home'); //用户信息
-    Route::get(':ver/user/up_task', 'api/:ver.user/upTask'); //更新每日任务
+    Route::post(':ver/user/up_task', 'api/:ver.user/upTask'); //更新每日任务
 
 
     Route::get(':ver/user/info', 'api/:ver.user/info'); //用户信息
