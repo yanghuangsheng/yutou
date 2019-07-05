@@ -60,7 +60,7 @@ class UserTask extends Common
             ['status', '=', 0]
         ];
         $log_where = [
-            ['data_index', '=', $date_index],
+            ['date_index', '=', $date_index],
             ['user_id', '=', $user_id],
             ['type', '=', $task_type],
             ['o_id', '=', $o_id]
