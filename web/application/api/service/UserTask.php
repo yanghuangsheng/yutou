@@ -10,6 +10,7 @@ namespace app\api\service;
 
 
 use think\Db;
+use app\common\model\UserCapital;
 
 class UserTask extends Common
 {
@@ -151,16 +152,18 @@ class UserTask extends Common
     /**
      * 获取用户的鱼泡 鱼鳞
      * @param $user_id
-     * @return mixed
+     * @return array|\PDOStatement|string|\think\Model|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getUserCapital($user_id)
     {
-        $userCapital = \app\common\model\UserCapital;
-        if(0 == $userCapital::where('user_id', $user_id)->count()){
-            $userCapital::create(
+        if(0 == UserCapital::where('user_id', $user_id)->count()){
+            UserCapital::create(
                 ['user_id' => $user_id]
             );
         }
-        return $userCapital::where('user_id', $user_id)->field('golds,scale')->find();
+        return UserCapital::where('user_id', $user_id)->field('golds,scale')->find();
     }
 }
