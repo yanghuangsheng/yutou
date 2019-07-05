@@ -105,7 +105,7 @@ class UserTask extends Common
 
             //如果是竞猜 判断鱼泡数条件
             if($golds_num && $golds_num != $task['o_num']){
-                return false;
+                return [];
             }
             
             //日志
