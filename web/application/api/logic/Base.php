@@ -13,7 +13,7 @@ use think\facade\Session;
 use think\facade\Request;
 use think\facade\Cookie;
 use think\facade\Config;
-use app\api\exception\ApiException;
+use app\api\exception\ErrorException;
 
 
 class Base
@@ -41,32 +41,32 @@ class Base
 
     /**
      * 检测登陆状态
-     * @throws ApiException
+     * @throws ErrorException
      */
     protected function checkToken()
     {
         if (!$this->tokenData){
-            throw new ApiException('登陆过期', 401);
+            throw new ErrorException('登陆过期', 401);
         }
     }
 
     /**
      * 检测请求是否合法
-     * @throws ApiException
+     * @throws ErrorException
      */
     protected function checkRequestAuth()
     {
         //基础参数校验
         if(empty($this->getHeaders('sign'))) {
-            throw new ApiException('sign不存在', 400);
+            throw new ErrorException('sign不存在', 400);
         }
         //客户端
         if(!in_array($this->getHeaders('app-type'), $this->app['app_type'])) {
-            throw new ApiException('app_type不合法', 400);
+            throw new ErrorException('app_type不合法', 400);
         }
         //检查sign
         if(!$this->checkSignPass()){
-            throw new ApiException('sign不合法', 400);
+            throw new ErrorException('sign不合法', 400);
         }
     }
 

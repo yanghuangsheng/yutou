@@ -9,6 +9,8 @@
 namespace app\api\logic;
 
 use \app\api\service\ForumPost;
+use \app\api\exception\ErrorException;
+use \app\api\exception\SuccessException;
 
 class Forum extends Base
 {
@@ -69,13 +71,13 @@ class Forum extends Base
 
     /**
      * 7天热门话题
-     * @return mixed
+     * @throws SuccessException
      */
     public function sevenDayHotTopic()
     {
         $data = (new ForumPost)->hotData(30, 10, [['ForumPost.hot', '=', 1]]);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
@@ -151,7 +153,7 @@ class Forum extends Base
             $param['page']
         );
 
-        return showResult(0, '', $data['list']);
+        throw new SuccessException('success', $data['list']);
     }
 
     /**
@@ -185,6 +187,7 @@ class Forum extends Base
 
     /**
      * 获取查看评论
+     * @throws SuccessException
      */
     public function getLookCommentList()
     {
@@ -200,11 +203,13 @@ class Forum extends Base
             'list' => $listData['list'], //所有回复的评论
         ];
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 评论帖子
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function submitComment()
     {
@@ -252,14 +257,18 @@ class Forum extends Base
             ];
             $data = $this->getCommonCommentList($comment, $where);
 
-            return showResult(0, '评论成功', $data['list']);
+            throw new SuccessException('评论成功', $data['list']);
+
         }
 
-        return showResult(-1, '评论失败');
+        throw new ErrorException('评论失败');
     }
+
 
     /**
      * 点赞帖子
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function praisePost()
     {
@@ -272,7 +281,7 @@ class Forum extends Base
         $click_userId = $this->tokenData['id'];
         if(false == $praise->addUserPraise(['post_id'=>$param['id'], 'user_id'=>$click_userId])){
 
-            return showResult(-1, $praise->getError());
+            throw new ErrorException($praise->getError());
         }
         if($praiseNum = (new \app\api\service\ForumPostAttr)->saveNum($param, 'praise')){
             //更新评论用户的点赞数
@@ -293,10 +302,10 @@ class Forum extends Base
             ];
             (new \app\api\service\SystemMessage)->toUser($forum['user_id'], $toData, 3);
 
-            return showResult(0, '点赞成功');
+            throw new SuccessException('点赞成功');
         }
 
-        return showResult(-1, '点赞失败');
+        throw new ErrorException('点赞失败');
     }
 
     /**
@@ -327,10 +336,10 @@ class Forum extends Base
             ];
             (new \app\api\service\SystemMessage)->toUser($forum['user_id'], $toData, 4);
 
-            return showResult(0, '点赞成功');
+            throw new SuccessException('点赞成功');
         }
 
-        return showResult(-1, $praise->getError()?$praise->getError():'点赞失败');
+        throw new ErrorException($praise->getError()?$praise->getError():'点赞失败');
     }
 
     /**

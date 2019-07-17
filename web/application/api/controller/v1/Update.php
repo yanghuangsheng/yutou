@@ -11,8 +11,13 @@ namespace app\api\controller\v1;
 
 class Update extends Base
 {
+    /**
+     * app更新接口
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
+     */
     public function index()
     {
-        return (new \app\api\logic\Update)->getUpdate();
+        (new \app\api\logic\Update)->getUpdate();
     }
 }

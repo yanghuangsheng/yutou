@@ -9,11 +9,19 @@
 namespace app\api\logic;
 
 
+use app\api\exception\ErrorException;
+use app\api\exception\SuccessException;
+
 class Update extends Base
 {
     protected $versions = '1.0.4';
     protected $open = false;
 
+    /**
+     * app版本更新
+     * @throws ErrorException
+     * @throws SuccessException
+     */
     public function getUpdate()
     {
         $param = $this->param();
@@ -27,7 +35,8 @@ class Update extends Base
         $this->versions = $versionData['version'];
 
         if(!$this->open){
-            return showResult(-1, '');
+
+            throw new ErrorException('已经最新版本');
         }
 
         $version = explode('.', $this->versions);
@@ -47,7 +56,8 @@ class Update extends Base
                 'wgt_url' => '',
                 'pkg_url' => $updateUrl,
             ];
-            return showResult(0, '', $data);
+
+            throw new SuccessException('success', $data);
         }
         elseif ($version[1] > $oVersion[1] || $version[2] > $oVersion[2]){
             //小版本
@@ -56,12 +66,12 @@ class Update extends Base
                 'wgt_url' => $versionData['wgt_url']?$this->getDomain() . $versionData['wgt_url']:'',
                 'pkg_url' => $updateUrl,
             ];
-            return showResult(0, '', $data);
 
+            throw new SuccessException('success', $data);
 
         }else{
 
-            return showResult(-1, '');
+            throw new ErrorException('已经最新版本：' . $this->versions);
         }
 
     }

@@ -8,6 +8,8 @@
 
 namespace app\api\logic;
 
+use app\api\exception\ErrorException;
+use app\api\exception\SuccessException;
 use app\api\service\PortalNewsComment;
 use app\api\service\UserSignLog;
 use app\api\service\UserCapital;
@@ -22,8 +24,8 @@ class User extends Base
 
     /**
      * 检测是否已签到
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -35,17 +37,17 @@ class User extends Base
         $service = new UserSignLog;
         if($data = $service->checkTodaySign($this->tokenData['id'])) {
 
-            return showResult(0, '', $data);
+            throw new SuccessException('未签到', $data);
         }
 
-        return showResult(-1, '');
+        throw new ErrorException('已签到');
 
     }
 
     /**
      * 签到
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -91,21 +93,21 @@ class User extends Base
             }
 
             if($residueNum && $logResult){
+
                 Db::commit();
-                return showResult(0, '签到成功', $resultData);
+                throw new SuccessException('签到成功', $resultData);
             }
 
         }
 
         Db::rollback();
-        return showResult(-1, '签到失败');
-
+        throw new ErrorException('签到失败');
 
     }
 
     /**
      * 签到详情
-     * @return array
+     * @throws SuccessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -117,13 +119,14 @@ class User extends Base
 
         $data = $service->getTodayDetails($userId);
 
-
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
 
     }
 
     /**
      * 登陆
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function login()
     {
@@ -136,37 +139,42 @@ class User extends Base
         if(isset($param['code'])){
             //手机号 + 验证码登陆
             if(!($param['code'] == '898989')){
+
                 $smsCode = $this->cache($param['code_sign']);
                 if(!($smsCode == $param['code'])){
-                    return showResult(-1, '验证码错误');
+
+                    throw new ErrorException('验证码错误');
                 }
             }
+
         }else{
             //手机号 + 密码登陆
             $password = md5Encryption($param['password']);
             $phone = trim($param['mobile']);
             $data = $service->getUserPassword($phone);
-            if(!$data) return showResult(-1, '帐号不正确');
+            if(!$data) throw new ErrorException('帐号不正确');
 
             if(!$data['password'] || $password != $data['password']){
-                return showResult(-1, '密码错误');
+
+                throw new ErrorException('密码错误');
             }
 
         }
 
-
         if($result = $service->saveLogin($param['mobile'], $param)){
+
             $result = $this->saveLoginStatus($this->unId('login_token'), $result);
-            return showResult(0, '登陆成功', $result);
+            throw new SuccessException('登陆成功', $result);
         }
 
-        return showResult(-1, $service->getError());
+        throw new ErrorException($service->getError());
 
     }
 
     /**
      * 重置密码
-     * @return array
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function retrievePassword()
     {
@@ -176,26 +184,28 @@ class User extends Base
         $smsCode = $this->cache($param['code_sign']);
         if(!($smsCode == $param['code'])){
 
-            return showResult(-1, '验证码错误');
+            throw new ErrorException('验证码错误');
         }
 
         $service = new \app\api\service\User;
         if(0 == $service->getCount([['phone', '=', $param['mobile']]])){
-            return showResult(-1, '帐号不存在');
+
+            throw new ErrorException('帐号不存在');
         }
 
         $password = md5Encryption(trim($param['password']));
         if($service->saveSetPassword($param['mobile'], $password)){
 
-            return showResult(0, '修改密码成功');
+            throw new SuccessException('修改密码成功');
         }
 
-        return showResult(-1, $service->getError());
+        throw new ErrorException($service->getError());
     }
 
     /**
      * 微信小程序授权登陆
-     * @return array
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function saveMpWxLogin()
     {
@@ -205,7 +215,8 @@ class User extends Base
         $data = (new \oauth\MpWeixin)->getUserInfo($param);
 
         if(isset($data['err'])){
-            return showResult(-1, $data['err']);
+
+            throw new ErrorException($data['err']);
         }
         $userBind = new \app\api\service\UserBind;
         $user = new \app\api\service\User;
@@ -239,7 +250,7 @@ class User extends Base
                 else{
                     //删除没用记录
                     $user->delete($data['id']);
-                    return false;
+                    throw new ErrorException('授权失败');
                 }
 
             }
@@ -247,15 +258,15 @@ class User extends Base
         }
 
         $user->updateLoginTime($statusData['id']);
-
         $result = $this->saveLoginStatus($this->unId('login_token'), $statusData);
-        return showResult(0, '登陆成功', $result);
+
+        throw new SuccessException('登陆成功', $result);
 
     }
 
-
     /**
      * 个人主页
+     * @throws SuccessException
      */
     public function getHome()
     {
@@ -295,8 +306,6 @@ class User extends Base
             $value['user_avatar'] = $domain . $value['user_avatar'][100];
         }
 
-
-
 //        //广播
 //        $data['broadcast'] = $this->commonBroadcast();
 //
@@ -307,13 +316,13 @@ class User extends Base
 //            'start_id' => $postService->newsId(),
 //        ];
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 更新每日任务 查看个人主页
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -326,12 +335,12 @@ class User extends Base
 
         $data = (new UserTask)->updateTaskStatus($this->tokenData['id'], 'user_home', $id);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 加载更多的用户评论
-     * @return array
+     * @throws SuccessException
      */
     public function moreMyComment()
     {
@@ -351,12 +360,16 @@ class User extends Base
             $value['user_avatar'] = $domain . $value['user_avatar'][100];
         }
 
-        return showResult(0, '', $data);
-
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 关注用户
+     * @throws ErrorException
+     * @throws SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function fans()
     {
@@ -366,12 +379,13 @@ class User extends Base
         $oUserId = $this->tokenData['id'];
         $userFans = new \app\api\service\UserFans;
         if($oUserId == $param['user_id']) {
-            return showResult(-1, '不能关注自己哦');
+
+            throw new ErrorException('不能关注自己哦');
         }
 
         if(false == $userFans->addFans(['id'=>$param['user_id'], 'user_id'=>$oUserId])){
 
-            return showResult(-1, $userFans->getError()?$userFans->getError():'关注失败');
+            throw new ErrorException($userFans->getError()?$userFans->getError():'关注失败');
         }
         $user = new \app\api\service\UserAttr;
         $user->saveNum(['id'=>$param['user_id']], 'fans');
@@ -380,13 +394,13 @@ class User extends Base
         //更新每日任务
         $data = (new UserTask)->updateTaskStatus($oUserId, 'user_follow', $param['user_id']);
 
-        return showResult(0, '关注成功', $data);
+        throw new SuccessException('关注成功', $data);
     }
 
     /**
      * 取消关注
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function noFans()
     {
@@ -402,16 +416,16 @@ class User extends Base
             $user->decNum(['id'=>$param['user_id']], 'fans');
             $user->decNum(['id'=>$oUserId], 'follow');
 
-            return showResult(0, '取关成功');
+            throw new SuccessException('取关成功');
         }
 
-        return showResult(-1, '取关失败');
+        throw new ErrorException('取关失败');
     }
 
     /**
      * 用户的粉丝
-     * @return mixed
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function myFans()
     {
@@ -459,14 +473,14 @@ class User extends Base
 
         }
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
 
     }
 
     /**
      * 用户的关注
-     * @return mixed
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function myFollow()
     {
@@ -514,11 +528,12 @@ class User extends Base
             }
         }
 
-        return showResult(0, '', $data);;
+        throw new SuccessException('success', $data);
     }
 
     /**
-     * 属性
+     * 用户属性
+     * @throws SuccessException
      */
     public function arr()
     {
@@ -530,11 +545,13 @@ class User extends Base
 
         $data = $service->getOneArr($param['user_id']);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
+
     }
 
     /**
      * 用户信息
+     * @throws SuccessException
      */
     public function info()
     {
@@ -546,13 +563,13 @@ class User extends Base
         $data = $service->getOneInfo($param['user_id'])->toArray();
         $data['avatar'] = $this->getDomain() . $data['avatar'][100];
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 获取用户的金币
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function golds()
     {
@@ -566,14 +583,14 @@ class User extends Base
         $data['golds'] = $golds?$golds:0;
         isset($param['log']) && $data['log_list'] = $this->commonCapitalList($userId,1);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
 
     }
 
     /**
-     * 获取用户鱼鳞
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * 获取用户的鱼鳞
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function scale()
     {
@@ -587,13 +604,14 @@ class User extends Base
         $data['scale'] = $scale?$scale:0;
         isset($param['log']) && $data['log_list'] = $this->commonCapitalList($userId,1,1);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
+
     }
 
     /**
      * 获取提现额度
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function quota()
     {
@@ -605,12 +623,13 @@ class User extends Base
         $num = $capital->where('user_id', $userId)->value('quota');
         $data['quota'] = $num?$num:0;
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 兑换额度
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function exchangeQuota()
     {
@@ -627,8 +646,9 @@ class User extends Base
         $residueNum = $capital->deductGolds($userId, $decNum);
 
         if($residueNum == false){
+
             Db::rollback();
-            return showResult(-1, $capital->getError());
+            throw new ErrorException($capital->getError());
         }
 
         if($quotaNum = $capital->saveQuota($userId, $param['num'])){
@@ -653,18 +673,18 @@ class User extends Base
             if($logResult && $msgResult){
 
                 Db::commit();
-                return showResult(0, '兑换成功');
+                throw new SuccessException('兑换成功');
             }
         }
 
         Db::rollback();
-        return showResult(-1, '兑换失败');
+        throw new ErrorException('兑换失败');
     }
 
     /**
      * 提现
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function exchangeCash()
     {
@@ -692,7 +712,7 @@ class User extends Base
             if($scaleResult === false){
 
                 Db::rollback();
-                return showResult(-1, $capital->getError());
+                throw new ErrorException($capital->getError());
             }
 
             //消耗提现额度 1:1
@@ -701,7 +721,7 @@ class User extends Base
             if($quotaResult === false){
 
                 Db::rollback();
-                return showResult(-1, $capital->getError());
+                throw new ErrorException($capital->getError());
             }
 
             //记录消费日志
@@ -725,19 +745,18 @@ class User extends Base
 
             if($logResult && $msgResult){
                 Db::commit();
-                return showResult(0, '提现成功');
+                throw new SuccessException('提现成功');
             }
 
         }
 
         Db::rollback();
-        return showResult(-1, '提现失败');
+        throw new ErrorException('提现失败');
     }
 
-    /**
-     * 获取更多交易记录
-     * @return array
-     * @throws \app\api\exception\ApiException
+    /**获取更多交易记录
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function moreCapitalLog()
     {
@@ -749,12 +768,14 @@ class User extends Base
 
         $data = $this->commonCapitalList($userId, $param['page'], $type[$param['log']]);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
 
     }
 
     /**
-     *兑换记录
+     * 兑换记录
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function exchangeLog()
     {
@@ -766,12 +787,14 @@ class User extends Base
 
         $data = $this->commonCapitalList($userId, $param['page'], $type[$param['log']], 1);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
 
     }
 
     /**
      * 绑定手机
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function bindPhone()
     {
@@ -783,20 +806,21 @@ class User extends Base
         $smsCode = $this->cache($param['code_sign']);
         if(!($smsCode == $param['code'])){
 
-            return showResult(-1, '验证码错误');
+            throw new ErrorException('验证码错误');
         }
 
         $service = new \app\api\service\User;
         if($service->saveBindPhone($param['mobile'], $userId)){
 
-            return showResult(0, '绑定成功');
+            throw new SuccessException('绑定成功');
         }
 
-        return showResult(-1, $service->getError());
+        throw new ErrorException($service->getError());
     }
 
     /**
      * 我的帖子
+     * @throws SuccessException
      */
     public function forumPost()
     {
@@ -810,11 +834,12 @@ class User extends Base
             'start_id' => $service->newsId(),
         ];
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 加载更多 我的帖子
+     * @throws SuccessException
      */
     public function moreForumPost()
     {
@@ -830,11 +855,12 @@ class User extends Base
             $param['page']
         );
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 我的收藏
+     * @throws SuccessException
      */
     public function collection()
     {
@@ -851,11 +877,12 @@ class User extends Base
             'start_id' => $collect->newsId(),
         ];
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
-     * 加载更多收藏
+     * 加载更多我的收藏
+     * @throws SuccessException
      */
     public function moreCollection()
     {
@@ -874,15 +901,16 @@ class User extends Base
 
         $data = $this->$collectFunction($collect, $where, $param['page']);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
 
     }
 
     /**
-     * 上传图片 (社区帖子)
+     * 上传图片 （社区帖子）
      * @param string $path
      * @param array $size
-     * @return array
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function uploadForumImage($path = 'content', $size = [700, 700])
     {
@@ -892,19 +920,20 @@ class User extends Base
 
         if (isset($data['error'])) {
 
-            return showResult(-1, $data['error']);
+            throw new ErrorException($data['error']);
         }
         else{
             //压缩图片
             resultThumb($data['file'], 'no', $size[0], $size[1], 0, 1);
 
-            return showResult(0, '上传成功', ['image_url'=> $data['file'], 'domain'=> $this->getDomain(), 'tmp_name'=> $data['tmp_name']]);
+            throw new SuccessException('上传成功', ['image_url'=> $data['file'], 'domain'=> $this->getDomain(), 'tmp_name'=> $data['tmp_name']]);
         }
     }
 
     /**
      * 发布帖子
-     * @return array
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function pubForumPost()
     {
@@ -934,15 +963,16 @@ class User extends Base
             (new \app\api\service\UserAttr)->saveNum(['id'=>$saveData['user_id']], 'post');
             (new \app\api\service\SystemBroadcast)->trigger(1, 'put', ['name'=>$this->tokenData['name'], 'id'=>$data['id'], 'title'=>$data['title'], 'num'=>0]);
 
-            return showResult(0, '发布成功');
+            throw new SuccessException('发布成功');
         }
 
-        return showResult(-1, $forum->getError()?$forum->getError():'发布失败');
+        throw new ErrorException($forum->getError()?$forum->getError():'发布失败');
     }
 
-
     /**
-     * 处理上传头像 200*200 100*100 50*50
+     * 用户上传头像 200*200 100*100 50*50
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function uploadAvatarImage()
     {
@@ -953,7 +983,8 @@ class User extends Base
 
         //"error" => "0", "pic" => $pic_url, "name" => $pic_name
         if (isset($data['error'])) {
-            return showResult(-1, $data['error']);
+
+            throw new ErrorException($data['error']);
         }
         else{
             //缩略图
@@ -965,7 +996,8 @@ class User extends Base
 
             $updateData = ['id'=> $this->tokenData['id'], 'field'=>'avatar', 'value'=>$avatarImg];
             if((new \app\api\service\User)->updateFieldByValue($updateData) == false){
-                return showResult(-1, '上传失败');
+
+                throw new ErrorException('上传失败');
             }
 
             $domain = $this->getDomain();
@@ -973,7 +1005,7 @@ class User extends Base
                 $value = $domain . $value;
             }
 
-            return showResult(0, '上传成功', ['image_url'=> $avatarImg, 'tmp_name'=> $data['tmp_name']]);
+            throw new SuccessException('上传成功', ['image_url'=> $avatarImg, 'tmp_name'=> $data['tmp_name']]);
         }
 
 
@@ -981,6 +1013,8 @@ class User extends Base
 
     /**
      * 更新用户信息
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function updateInfo()
     {
@@ -992,15 +1026,17 @@ class User extends Base
         $user = new \app\api\service\User;
         if($param['field'] == 'data'){
             if($user->saveInfo($param['value'], $userId)){
-                return showResult(0, '更新成功');
+
+                throw new SuccessException('更新成功');
             }
         }else{
             if($user->saveOneInfo([$userId, $param['field'], $param['value']])){
-                return showResult(0, '更新成功');
+
+                throw new SuccessException('更新成功');
             }
         }
 
-        return showResult(-1, $user->getError());
+        throw new ErrorException($user->getError());
 
     }
 
@@ -1125,6 +1161,7 @@ class User extends Base
      * 保存登陆状态
      * @param $sign
      * @param $result
+     * @return mixed
      */
     public function saveLoginStatus($sign, $result)
     {
@@ -1153,7 +1190,7 @@ class User extends Base
         if($this->isAjax()){
             $this->session('user', 'del');
             $this->cookie('user', 'del');
-            $this->resultJson(0, '安全登出成功');
+            //$this->resultJson(0, '安全登出成功');
         }
     }
 }

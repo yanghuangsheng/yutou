@@ -12,94 +12,103 @@ use \app\api\logic\News as Logic;
 
 class News extends Base
 {
-    //新闻列表
+    /**
+     * 新闻列表
+     * @throws \app\api\exception\SuccessException
+     */
     public function index()
     {
-        $data = (new Logic)->loadList();
-
-        return showResult(0, '', $data['list']);
+        (new Logic)->loadList();
     }
 
-    //新闻详情
+    /**
+     * 新闻详情
+     * @throws \app\api\exception\SuccessException
+     */
     public function item()
     {
-        $logic = new Logic;
-        $comment = $logic->getCommentList();
-
-        $data['item'] = $logic->getItem();
-        $data['start_id'] = $comment['start_id'];
-        $data['new_comment_list'] = $comment['list'];
-        $data['hot_comment_list'] = [];
-
-        return showResult(0, '', $data);
+        (new Logic)->getItem();
     }
 
     /**
      * 更新任务
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
     public function upTask()
     {
-        return (new Logic)->updateTask();
+        (new Logic)->updateTask();
     }
 
     /**
      * 加载更多
-     * @return array
+     * @throws \app\api\exception\SuccessException
      */
     public function moreComment()
     {
-        return (new Logic)->getMoreCommentList();
+        (new Logic)->getMoreCommentList();
     }
 
     /**
      * 查看评论
-     * @return array
+     * @throws \app\api\exception\SuccessException
      */
     public function lookComment()
     {
-        return (new Logic)->getLookCommentList();
+        (new Logic)->getLookCommentList();
     }
 
     /**
      * 评论
-     * @return array
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function submitComment()
     {
-        return (new Logic)->addComment();
+        (new Logic)->addComment();
 
     }
 
     /**
      * 收藏新闻
-     * @return mixed
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function collect()
     {
-        return (new Logic)->collect();
+        (new Logic)->collect();
     }
 
     /**
      * 点赞新闻
-     * @return mixed
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function praise()
     {
-        return (new Logic)->praiseNews();
+        (new Logic)->praiseNews();
     }
 
     /**
      * 点赞评论
-     * @return array
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function praiseComment()
     {
-        return (new Logic)->praiseComment();
+        (new Logic)->praiseComment();
     }
 
 

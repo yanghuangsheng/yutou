@@ -8,27 +8,27 @@
 
 namespace app\api\controller\v1;
 
+use \app\api\logic\Lottery as LotteryLogic;
 
 class Lottery extends Base
 {
     /**
      * 开奖列表
+     * @throws \app\api\exception\SuccessException
      */
     public function index()
     {
-        $data = (new \app\api\logic\Lottery)->getList();
+        (new LotteryLogic)->getList();
 
-        return showResult(0, '', $data);
     }
 
     /**
      * 单个往期记录
-     * @return array
+     * @throws \app\api\exception\SuccessException
      */
     public function oneList()
     {
-        $data = (new \app\api\logic\Lottery)->formatOneLotteryList();
-        return showResult(0, '', $data);
+        (new LotteryLogic)->formatOneLotteryList();
     }
 
 

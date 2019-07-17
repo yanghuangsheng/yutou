@@ -8,38 +8,40 @@
 
 namespace app\api\logic;
 
+use app\api\exception\SuccessException;
 use \app\api\service\PortalNews as newsService;
 
 class Search extends Base
 {
     /**
      * 获取列表
-     * @return mixed
+     * @throws SuccessException
      */
     public function getList()
     {
         $data = $this->searchData();
         $data['start_id'] = $this->getNewId();
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
 
     }
 
     /**
      * 加载更多
+     * @throws SuccessException
      */
     public function loadList()
     {
 
         $data = $this->searchData();
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
 
     }
 
     /**
      * 热门
-     * @return array
+     * @throws SuccessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -48,7 +50,7 @@ class Search extends Base
     {
         $data = (new newsService)->hotData(30, 10, [['PortalNews.hot','=',0]]);
 
-        return showResult(0, '', $data->toArray());
+        throw new SuccessException('success', $data->toArray());
     }
 
     /**

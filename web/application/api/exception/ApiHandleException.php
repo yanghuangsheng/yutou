@@ -18,15 +18,30 @@ class ApiHandleException extends  Handle {
      * @var int
      */
     public $httpCode = 500;
+    public $code = 0;
+    public $message = '';
+    public $data = [];
 
+    /**
+     * 异常处理
+     * @param \Exception $e
+     * @return array|\think\Response
+     */
     public function render(\Exception $e) {
 
         if(config('app_debug') == true) {
             return parent::render($e);
         }
-        if ($e instanceof ApiException) {
+        if($e instanceof ErrorException) {
             $this->httpCode = $e->httpCode;
+            $this->code = $e->getCode();
         }
-        return  showResult(0, $e->getMessage(), [], $this->httpCode);
+        if($e instanceof SuccessException) {
+            $this->httpCode = $e->httpCode;
+            $this->code = $e->getCode();
+            $this->data = $e->getData();
+            //print_r($this->data);
+        }
+        return  showResult($this->code, $e->getMessage(), $this->data, $this->httpCode);
     }
 }

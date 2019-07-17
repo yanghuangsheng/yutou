@@ -10,11 +10,15 @@ namespace app\api\controller\v1;
 
 use app\api\logic\News as news;
 use app\api\logic\Ad as ad;
+use app\api\exception\SuccessException;
 
 class Index extends Base
 {
 
-    //获取首页所有肉容
+    /**
+     * 获取首页所有肉容
+     * @throws SuccessException
+     */
     public function all()
     {
         $data = [
@@ -24,8 +28,10 @@ class Index extends Base
             'news_column' => $this->newsColumn()
         ];
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
+
+
 
     //轮播图
     protected function banner()

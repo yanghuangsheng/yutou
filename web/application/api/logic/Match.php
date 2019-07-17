@@ -14,6 +14,8 @@ use app\api\service\Match as MatchService;
 use app\api\service\MatchSupport as MatchSupportService;
 use app\api\service\SystemMessage as SystemMessageService;
 use app\api\service\UserTask;
+use app\api\exception\SuccessException;
+use app\api\exception\ErrorException;
 
 use think\Db;
 
@@ -21,6 +23,11 @@ class Match extends Base
 {
     /**
      * 提交预测
+     * @throws ErrorException
+     * @throws SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function submitSupport()
     {
@@ -44,13 +51,15 @@ class Match extends Base
 
         Db::startTrans();
         if($matchSupportService->getCount([['match_id', '=', $saveData['match_id']], ['user_id', '=', $saveData['user_id']]]) > 0){
-            return showResult(-1, '已竞猜过了');
+
+            throw new ErrorException('已竞猜过了');
         }
 
         $goldsNum = $userCapital->deductGolds($saveData['user_id'], $saveData['golds_num']);
         if($goldsNum === false){
+
             Db::rollback();
-            return showResult(-1, $userCapital->getError());
+            throw new ErrorException($userCapital->getError());
         }
         //记录消费日志
         $logResult = $userCapitalLog->giveGoldsLog(
@@ -80,18 +89,18 @@ class Match extends Base
         if($logResult &&  $incResult && $msgResult && $matchSupportService->save($saveData)){
 
             Db::commit();
-            return showResult(0, '预测成功', $data);
+            throw new SuccessException('预测成功', $data);
         }
 
         Db::rollback();
-        return showResult(-1, '预测失败');
+        throw new ErrorException('预测失败');
 
     }
 
     /**
      * 预测记录
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function supportLog()
     {
@@ -110,7 +119,7 @@ class Match extends Base
 
         $page == 1 && $data['start_id'] = $matchSupportService->newsId();
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**

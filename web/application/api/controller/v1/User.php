@@ -9,331 +9,346 @@
 namespace app\api\controller\v1;
 
 use \app\api\logic\User as Logic;
+use \app\api\logic\Sms;
 
 class User extends Base
 {
     /**
      * 用户检测签到
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function checkTodaySign()
     {
-        return (new Logic)->checkTodaySign();
+        (new Logic)->checkTodaySign();
     }
 
     /**
      * 签到
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
     public function todaySign()
     {
-        return (new Logic)->todaySign();
+        (new Logic)->todaySign();
     }
 
     /**
      * 签到详情
-     * @return array
+     * @throws \app\api\exception\SuccessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
     public function todayDetails()
     {
-        return (new Logic)->todayDetails();
+        (new Logic)->todayDetails();
     }
 
     /**
      * 个人主页内容
+     * @throws \app\api\exception\SuccessException
      */
     public function home()
     {
-        return (new Logic)->getHome();
+        (new Logic)->getHome();
     }
 
     /**
      * 更新每日任务
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
     public function upTask()
     {
-        return (new Logic)->updateTask();
+        (new Logic)->updateTask();
     }
 
     /**
      * 登陆
-     * @return mixed
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function login()
     {
-        return $this->saveLogin();
+        (new Logic)->login();
     }
 
     /**
      * 注册
-     * @return mixed
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function register()
     {
-        return $this->saveLogin();
+        (new Logic)->login();
     }
 
     /**
      * 找回密码
-     * @return mixed
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function retrieve()
     {
-        return (new Logic)->retrievePassword();
+        (new Logic)->retrievePassword();
     }
 
     /**
      * 微信小程序登陆
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function mpWxLogin()
     {
-        return (new Logic)->saveMpWxLogin();
+        (new Logic)->saveMpWxLogin();
     }
 
     /**
      * 发送验证
-     * @return mixed
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function sendSms()
     {
-        $sms = new \app\api\logic\Sms;
-
-        return $sms->send();
+        (new Sms)->send();
     }
 
     /**
      * 关注用户
-     * @return mixed
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function fans()
     {
-        return (new Logic)->fans();
+        (new Logic)->fans();
     }
 
     /**
      * 取关用户
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function noFans()
     {
-        return (new Logic)->noFans();
+        (new Logic)->noFans();
     }
 
     /**
      * 用户的粉丝
-     * @return mixed
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function myFans()
     {
-        return (new Logic)->myFans();
+        (new Logic)->myFans();
     }
 
     /**
      * 用户的关注
-     * @return mixed
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function myFollow()
     {
-        return (new Logic)->myFollow();
+        (new Logic)->myFollow();
     }
 
     /**
      * 属性
-     * @return mixed
+     * @throws \app\api\exception\SuccessException
      */
     public function arr()
     {
-        return (new Logic)->arr();
+        (new Logic)->arr();
     }
 
     /**
      * 用户信息
-     * @return mixed
+     * @throws \app\api\exception\SuccessException
      */
     public function info()
     {
-        return (new Logic)->info();
+        (new Logic)->info();
     }
 
     /**
      * 我的鱼泡
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function golds()
     {
-        return (new Logic)->golds();
+        (new Logic)->golds();
     }
 
     /**
      * 我的鱼鳞
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function scale()
     {
-        return (new Logic)->scale();
+        (new Logic)->scale();
     }
 
     /**
      * 获取提现客度
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function quota()
     {
-        return (new Logic)->quota();
+        (new Logic)->quota();
     }
 
     /**
      * 兑换额度
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function exchangeQuota()
     {
-        return (new Logic)->exchangeQuota();
+        (new Logic)->exchangeQuota();
     }
 
     /**
      * 提现
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function exchangeCash()
     {
-        return (new Logic)->exchangeCash();
+        (new Logic)->exchangeCash();
     }
 
     /**
      * 加载更多交易日志
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function moreCapitalLog()
     {
 
-        return (new Logic)->moreCapitalLog();
+        (new Logic)->moreCapitalLog();
     }
 
     /**
      * 兑换记录
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function exchangeLog()
     {
-        return (new Logic)->exchangeLog();
+        (new Logic)->exchangeLog();
     }
 
     /**
      * 更新用户信息
-     * @return mixed
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function setInfo()
     {
-        return (new Logic)->updateInfo();
+        (new Logic)->updateInfo();
     }
 
     /**
      * 上传头像
-     * @return array
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function uploadAvatar()
     {
-        return (new Logic)->uploadAvatarImage();
+        (new Logic)->uploadAvatarImage();
     }
 
     /**
      * 绑定手机
-     * @return array
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function bindPhone()
     {
-        return (new Logic)->bindPhone();
+        (new Logic)->bindPhone();
     }
 
     /**
      * 我的帖子
-     * @return array
+     * @throws \app\api\exception\SuccessException
      */
     public function myPost()
     {
-        return (new Logic)->forumPost();
+        (new Logic)->forumPost();
     }
 
     /**
      * 加载更多 我的帖子
-     * @return array
+     * @throws \app\api\exception\SuccessException
      */
     public function moreMyPost()
     {
-        return (new Logic)->moreForumPost();
+        (new Logic)->moreForumPost();
     }
 
     /**
      * 加载更多用户的评论
-     * @return array
+     * @throws \app\api\exception\SuccessException
      */
     public function moreMyComment()
     {
-        return (new Logic)->moreMyComment();
+        (new Logic)->moreMyComment();
     }
 
     /**
      * 我的收藏
-     * @return array
+     * @throws \app\api\exception\SuccessException
      */
     public function collection()
     {
-        return (new Logic)->collection();
+        (new Logic)->collection();
     }
 
     /**
      * 我的收藏 加载更多
-     * @return array
+     * @throws \app\api\exception\SuccessException
      */
     public function moreCollection()
     {
-        return (new Logic)->moreCollection();
+        (new Logic)->moreCollection();
     }
 
     /**
      * 上传帖子图片
-     * @return array
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function uploadForumImage()
     {
-        return (new Logic)->uploadForumImage();
+        (new Logic)->uploadForumImage();
     }
 
     /**
      * 发布帖子
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function pubForumPost()
     {
-        return (new logic)->pubForumPost();
+        (new logic)->pubForumPost();
     }
 
-    /**
-     * 处理登陆
-     * @return array
-     */
-    private function saveLogin()
-    {
-        return (new Logic)->login();
-    }
 
 }

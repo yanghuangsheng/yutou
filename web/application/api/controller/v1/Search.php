@@ -14,31 +14,34 @@ class Search extends Base
 {
     /**
      * 搜索
-     * @return mixed
+     * @throws \app\api\exception\SuccessException
      */
     public function index()
     {
 
-        return (new searchService)->getList();
+        (new searchService)->getList();
     }
 
     /**
      * 加载更多
-     * @return mixed
+     * @throws \app\api\exception\SuccessException
      */
     public function loadList()
     {
 
-        return (new searchService)->loadList();
+        (new searchService)->loadList();
     }
 
     /**
      * 热门
-     * @return mixed
+     * @throws \app\api\exception\SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function hotNews()
     {
 
-        return (new searchService)->hotNews();
+        (new searchService)->hotNews();
     }
 }

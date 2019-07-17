@@ -14,6 +14,7 @@ class Face extends Base
 {
     /**
      * 获取所有表情包
+     * @throws \app\api\exception\SuccessException
      */
     public function index()
     {

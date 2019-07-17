@@ -9,10 +9,15 @@
 namespace app\api\controller\v1;
 
 use \app\api\logic\Forum as Logic;
+use \app\api\exception\SuccessException;
 
 class Forum extends Base
 {
-    //社区所有
+
+    /**
+     * 社区首页
+     * @throws SuccessException
+     */
     public function index()
     {
         $forum = new Logic;
@@ -20,29 +25,35 @@ class Forum extends Base
         $data['data'][] = $forum->getList('new'); //最新
         $data['start_id'] =  $forum->getNewsId(); //用于获取下一页数据，预防有新数据重复出现
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
 
     }
 
-    //加载更多
+    /**
+     * 加载更多
+     * @throws SuccessException
+     */
     public function loadList()
     {
         $forum = new Logic;
         $data = $forum->gitLoadList();
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 热门话题
-     * @return mixed
+     * @throws SuccessException
      */
     public function hotTopic()
     {
-        return (new Logic)->sevenDayHotTopic();
+        (new Logic)->sevenDayHotTopic();
     }
 
-    //帖子详情
+    /**
+     * 帖子详情
+     * @throws SuccessException
+     */
     public function item()
     {
         $forum = new Logic;
@@ -54,53 +65,57 @@ class Forum extends Base
         $data['new_comment_list'] = $comment['list'];
         $data['hot_comment_list'] = [];
 
-        return showResult(0, '', $data);
+        throw new SuccessException($data);
+
     }
 
     /**
      * 加载更多
-     * @return array
+     * @throws SuccessException
      */
     public function moreComment()
     {
-        return (new Logic)->getMoreCommentList();
+        (new Logic)->getMoreCommentList();
     }
 
     /**
      * 加载更多
-     * @return array
+     * @throws SuccessException
      */
     public function lookComment()
     {
-        return (new Logic)->getLookCommentList();
+        (new Logic)->getLookCommentList();
     }
 
     /**
      * 评论
-     * @return array
+     * @throws SuccessException
+     * @throws \app\api\exception\ErrorException
      */
     public function submitComment()
     {
-        return (new Logic)->submitComment();
+        (new Logic)->submitComment();
 
     }
 
     /**
      * 点赞新闻
-     * @return mixed
+     * @throws SuccessException
+     * @throws \app\api\exception\ErrorException
      */
     public function praise()
     {
-        return (new Logic)->praisePost();
+        (new Logic)->praisePost();
     }
 
     /**
      * 点赞评论
-     * @return array
+     * @throws SuccessException
+     * @throws \app\api\exception\ErrorException
      */
     public function praiseComment()
     {
-        return (new Logic)->praiseComment();
+        (new Logic)->praiseComment();
     }
 
 

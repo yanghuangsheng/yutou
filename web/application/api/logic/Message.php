@@ -9,12 +9,14 @@
 namespace app\api\logic;
 
 use app\api\service\SystemMessage as SystemMessageService;
+use app\api\exception\SuccessException;
 
 class Message extends Base
 {
     /**
      * 获取消息列表
-     * @throws \app\api\exception\ApiException
+     * @throws SuccessException
+     * @throws \app\api\exception\ErrorException
      */
     public function allList()
     {
@@ -28,13 +30,13 @@ class Message extends Base
 
         $data['start_id'] = $messageService->newsId();
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
      * 获取指定分页消息
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws SuccessException
+     * @throws \app\api\exception\ErrorException
      */
     public function pageList()
     {
@@ -52,7 +54,7 @@ class Message extends Base
 
         $data = $this->commonList($messageService, $where, $page);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**

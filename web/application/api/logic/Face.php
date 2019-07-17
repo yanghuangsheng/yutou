@@ -9,15 +9,18 @@
 namespace app\api\logic;
 
 
+use app\api\exception\SuccessException;
+
 class Face extends Base
 {
     /**
      * 获取表情
-     * @return array
+     * @throws SuccessException
      */
     public function getList()
     {
-        return showResult(0, '', $this->faceData());
+//        throw new SuccessException('success');
+        throw new SuccessException('success', $this->faceData());
     }
 
     /**

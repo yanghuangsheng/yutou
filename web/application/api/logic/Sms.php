@@ -8,6 +8,8 @@
 
 namespace app\api\logic;
 
+use app\api\exception\ErrorException;
+use app\api\exception\SuccessException;
 use app\api\service\Sms as SmsService;
 
 class Sms extends Base
@@ -32,10 +34,10 @@ class Sms extends Base
 
         if(isset($data['error'])){
 
-            return showResult( -1, '', ['error'=>$data['error']]);
+            throw new ErrorException($data['error']);
         }
 
-        return showResult( 0, '', ['sign'=>$codeSign]);
+        throw new SuccessException('success', ['sign'=>$codeSign]);
 
     }
 }

@@ -8,12 +8,15 @@
 
 namespace app\api\logic;
 
+use app\api\exception\ErrorException;
+use app\api\exception\SuccessException;
 use app\api\service\PortalNews;
 use app\api\service\PortalNewsCommentClick;
 use app\api\service\PortalNewsPraise;
 use app\api\service\UserCollection;
 use app\api\service\MatchSupport;
 use app\api\service\UserTask;
+use think\Exception;
 
 class News extends Base
 {
@@ -55,12 +58,14 @@ class News extends Base
 
     /**
      * 加载更多
-     * @return mixed
+     * @throws SuccessException
      */
     public function loadList()
     {
         $categoryId = $this->param('category_id');
-        return $this->getList($categoryId);
+        $data = $this->getList($categoryId);
+
+        throw new SuccessException('success', $data['list']);
     }
 
     /**
@@ -77,7 +82,7 @@ class News extends Base
 
     /**
      * 获取新闻详情
-     * @return mixed
+     * @throws SuccessException
      */
     public function getItem()
     {
@@ -85,6 +90,7 @@ class News extends Base
         $domain = $this->getDomain();
         $service = new PortalNews;
         $data = $service->getOneData($newsId);
+
         $data['image_url'] = $domain.$data['image_url'];
 
         $data['attr_data'] = $data['attr_data']?json_decode($data['attr_data'], 1):[];
@@ -111,14 +117,22 @@ class News extends Base
         //规则触发
         $this->ruleTrigger('browse_num', ['id'=>$newsId, 'num'=>$browseNum]);
 
-        return $data;
+        $resultData['item'] = $data;
+
+
+        $comment = $this->getCommentList();
+        $resultData['start_id'] = $comment['start_id'];
+        $resultData['new_comment_list'] = $comment['list'];
+        $resultData['hot_comment_list'] = [];
+
+        throw new SuccessException('success', $resultData);
 
     }
 
     /**
      * 更新每日任务
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws SuccessException
+     * @throws \app\api\exception\ErrorException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -131,7 +145,7 @@ class News extends Base
 
         $data = (new UserTask)->updateTaskStatus($this->tokenData['id'], 'news_browse', $id);
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
 
     /**
@@ -151,6 +165,7 @@ class News extends Base
 
     /**
      * 加载更多评论
+     * @throws SuccessException
      */
     public function getMoreCommentList()
     {
@@ -165,7 +180,7 @@ class News extends Base
             $param['page']
         );
 
-        return showResult(0, '', $data['list']);
+        throw new SuccessException('success', $data['list']);
     }
 
     /**
@@ -206,6 +221,7 @@ class News extends Base
 
     /**
      * 获取查看评论
+     * @throws SuccessException
      */
     public function getLookCommentList()
     {
@@ -221,12 +237,16 @@ class News extends Base
             'list' => $listData['list'], //所有回复的评论
         ];
 
-        return showResult(0, '', $data);
+        throw new SuccessException('success', $data);
     }
-
 
     /**
      * 评论新闻
+     * @throws ErrorException
+     * @throws SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function addComment()
     {
@@ -263,14 +283,19 @@ class News extends Base
             $data['list'] = $comment_data['list'];
             $data['task_data'] = (new UserTask)->updateTaskStatus($param['user_id'], 'news_comment', $result['news_id']);
 
-            return showResult(0, '评论成功', $data);
+            throw new SuccessException('评论成功', $data);
         }
 
-        return showResult(-1, '评论失败');
+        throw new ErrorException('评论失败');
     }
 
     /**
      * 收藏新闻
+     * @throws ErrorException
+     * @throws SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function collect()
     {
@@ -289,7 +314,8 @@ class News extends Base
 
         $collect = new \app\api\service\UserCollection;
         if(false == $collect->addCollect($data)){
-            return showResult(-1, $collect->getError());
+
+            throw new ErrorException($collect->getError());
         }
 
         $newsAttr = new \app\api\service\PortalNewsAttr;
@@ -298,18 +324,21 @@ class News extends Base
             $this->ruleTrigger('collect_num', ['id'=>$newsId, 'num'=>$collectNum]);
             //更新点赞任务
             $data = (new UserTask)->updateTaskStatus($userId, 'news_collect', $newsId);
-            return showResult(0, '收藏成功', $data);
+
+            throw new SuccessException('收藏成功', $data);
         }
 
-        return showResult(-1, '收藏失败');
-
+        throw new ErrorException('收藏失败');
 
     }
 
-
     /**
      * 点赞新闻
-     * @return array
+     * @throws ErrorException
+     * @throws SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function praiseNews()
     {
@@ -321,8 +350,7 @@ class News extends Base
         $praise = new \app\api\service\PortalNewsPraise;
         if(false == $praise->addUserPraise(['news_id'=>$newsId, 'user_id'=>$userId])){
 
-            return showResult(-1, $praise->getError());
-
+            throw new ErrorException($praise->getError());
         }
         $newsAttr = new \app\api\service\PortalNewsAttr;
         if($praiseNum = $newsAttr->saveNum($param, 'praise')){
@@ -332,15 +360,16 @@ class News extends Base
             //更新点赞任务
             $data = (new UserTask)->updateTaskStatus($userId, 'news_praise', $newsId);
 
-            return showResult(0, '点赞成功', $data);
+            throw new SuccessException('点赞成功', $data);
         }
 
-        return showResult(-1, '点赞失败');
-
+        throw new ErrorException('点赞失败');
     }
 
     /**
      * 点赞评论
+     * @throws ErrorException
+     * @throws SuccessException
      */
     public function praiseComment()
     {
@@ -357,9 +386,10 @@ class News extends Base
             $userId = (new \app\api\service\PortalNewsComment)->getField($param['id'], 'user_id');
             (new \app\api\service\UserAttr)->saveNum(['id'=>$userId], 'praise');
 
-            return showResult(0, '点赞成功');
+            throw new SuccessException('点赞成功');
         }
-        return showResult(-1, $praise->getError()?$praise->getError():'点赞失败');
+
+        throw new ErrorException($praise->getError()?$praise->getError():'点赞失败');
     }
 
     /**

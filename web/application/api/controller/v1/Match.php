@@ -14,19 +14,24 @@ class Match extends Base
 {
     /**
      * 竞猜预测
-     * @return array
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function betting()
     {
-        return (new MatchLogic)->submitSupport();
+        (new MatchLogic)->submitSupport();
     }
 
     /**
      * 预测记录
-     * @return mixed
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function bettingLog()
     {
-        return (new MatchLogic)->supportLog();
+        (new MatchLogic)->supportLog();
     }
 }

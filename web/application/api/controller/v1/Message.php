@@ -14,21 +14,21 @@ class Message extends Base
 {
     /**
      * 消息内容
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function index()
     {
-        return (new MessageLogic)->allList();
+        (new MessageLogic)->allList();
     }
 
     /**
      * 更多消息
-     * @return array
-     * @throws \app\api\exception\ApiException
+     * @throws \app\api\exception\ErrorException
+     * @throws \app\api\exception\SuccessException
      */
     public function moreList()
     {
-        return (new MessageLogic)->pageList();
+        (new MessageLogic)->pageList();
     }
 }
