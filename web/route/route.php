@@ -155,7 +155,9 @@ Route::group('api', function () {
     ->allowCrossDomain();
 
 
-
+if(request()->isOptions()){
+    exit();
+}
 
 
 
