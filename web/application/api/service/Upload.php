@@ -21,6 +21,10 @@ class Upload
         }
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file($fileName);
+
+        if(!$file) {
+            return $data['error'] = '没有文件上传';
+        }
         // 移动到框架应用根目录/uploads/ 目录下  //测试不在/public目录下
         $info = $file->validate(['size' => $size * 1024 * 1024, 'ext' => str_replace('.','',$ext)])->move($rootDirectory);
         if (empty($info)) {

@@ -149,8 +149,9 @@ Route::group('api', function () {
 })
     ->header('Access-Control-Allow-Origin','*')
     ->header('Access-Control-Allow-Credentials', 'true')
-    ->header('Access-Control-Allow-Methods', 'GET,POST')
-    ->header('Access-Control-Allow-Headers','token,app-type,content-type,sign')
+    ->header('Access-Control-Allow-Methods', 'OPTIONS,GET,POST')
+    ->header('Access-Control-Allow-Headers', 'token,app-type,content-type,sign')
+    ->header('Access-Control-Max-Age', 2592000)
     ->allowCrossDomain();
 
 
